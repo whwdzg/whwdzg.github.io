@@ -554,9 +554,9 @@ p{text-align: justify;}
 
     /*banner部分*/
     .banner_box {
-        width: 96%;
+        width: 100%;
         height: 222px;
-        background: #f8f8fa;
+        background-image:url("../img/banner1.png");
         box-shadow: 0 1px 3px #ddd;
         border: 1px #fff solid;
         -webkit-box-shadow: 0 1px 3px #ddd;
