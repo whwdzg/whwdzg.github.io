@@ -35,5 +35,9 @@
   "lang": "zh",
   "categories": [
     "lifestyle"
+  ],
+  "display_override": [
+    "standalone",
+    "window-controls-overlay"
   ]
 }
