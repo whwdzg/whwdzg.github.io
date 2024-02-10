@@ -1,0 +1,29 @@
+{
+  "background_color": "#ffffff",
+  "description": "水鱼的个人网站，分享自己的进步与发展",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "水鱼Blog",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "水鱼Blog",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "id": "shuiyublog",
+  "lang": "zh",
+  "categories": [
+    "lifestyle"
+  ]
+}
