@@ -84,7 +84,7 @@ p{text-align: justify;}
 .nav_hidden_zhanwei{display: none;}
 
 /*banner部分*/
-.banner_box{background-size: 100%;width: 100%;height: 300px;background-image:url("../img/banner1.png");box-shadow: 0 1px 3px #ddd;border: 1px #fff solid;-webkit-box-shadow: 0 1px 3px #ddd;margin-top: 30px;}
+.banner_box{background-size: 100%;width: 100%;height: 300px;background-image:url("../img/pigeongames5.avif");box-shadow: 0 1px 3px #ddd;border: 1px #fff solid;-webkit-box-shadow: 0 1px 3px #ddd;margin-top: 30px;}
 
 /*身体全部部分*/
 .article_box{width: 1100px;margin: 30px auto;}
