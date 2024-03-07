@@ -210,6 +210,13 @@ p{text-align: justify;}
 .article_btn_box_item ul li:first-child i:before{content: "1";}
 .article_btn_box_item ul li:nth-child(2) i:before{content: "2";}
 .article_btn_box_item ul li:nth-child(3) i:before{content: "3";}
+.article_btn_box_item ul li:nth-child(4) i:before{content: "4";}
+.article_btn_box_item ul li:nth-child(5) i:before{content: "5";}
+.article_btn_box_item ul li:nth-child(6) i:before{content: "6";}
+.article_btn_box_item ul li:nth-child(7) i:before{content: "7";}
+.article_btn_box_item ul li:nth-child(8) i:before{content: "8";}
+.article_btn_box_item ul li:nth-child(9) i:before{content: "9";}
+.article_btn_box_item ul li:nth-child(10) i:before{content: "10";}
 
 
 .article_btn_box_item ul li a{display: block;color: #6f6f6f;font-weight: bold;    white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
