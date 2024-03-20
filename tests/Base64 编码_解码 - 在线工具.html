@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Base64 编码/解码 - 在线工具</title>
+
+    
+<meta name="keywords" content="Base64,Base64编码,Base64解码,Base64在线编码,Base64在线解码">
+<meta name="description" content="对字符进行Base64编码与Base64字符串解码">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    
+<link rel='stylesheet' href='/lib/bootstrap/5.3.1/css/bootstrap.min.css?v=638464457706568671' />
+
+<link rel='stylesheet' href='/css/style.min.css?v=638464457706568671' />
+
+<script src='/lib/jquery/3.5.1/jquery.min.js?v=638464457706568671' type='text/javascript' ></script>
+
+<script src='/lib/bootstrap/5.3.1/js/bootstrap.bundle.js' type='text/javascript'></script>
+
+<script src='/js/yisha.min.js?v=638464457706568671' type='text/javascript' ></script>
+
+<script src='/lib/layer/3.1.1/layer.min.js?v=638464457706568671' type='text/javascript' ></script>
+
+<link rel='stylesheet' href='/lib/select2/4.0.6/css/select2.min.css?v=638464457706568671' />
+<script src='/lib/select2/4.0.6/js/select2.min.js?v=638464457706568671' type='text/javascript' ></script>
+
+<link rel='stylesheet' href='/lib/toastify-js/1.12.0/toastify.min.css?v=638464457706568671' />
+<script src='/lib/toastify-js/1.12.0/toastify.min.js?v=638464457706568671' type='text/javascript' ></script>
+
+    <script>
+        var timestamp = '1710934087000';
+        var version = '638464457706568671';
+    </script>
+ 
+ 
+    <script type="text/javascript">
+var apiHost = ys.getLocationOrigin() + '/toolhelper_api';</script> 
+</head>
+<body class="ready sticky">
+    <main>
+        <a class="sidebar-toggle" aria-label="Menu">
+            <div class="sidebar-toggle-button">
+                <span></span><span></span><span></span>
+            </div>
+        </a>
+        <aside class="sidebar">
+            <div class="search">
+                <div class="input-wrap">
+                    <input id="txtSearch" type="search" value="" style="background-color:var(--bs-body-bg)" onfocus="searchHistoryShow()" placeholder="搜索" autocomplete="off">
+                    <div class="clear-button" onclick="clearSearch()">
+                        <svg width="26" height="24">
+                            <circle cx="12" cy="12" r="11" fill="var(--bs-close-btn-bg)"></circle>
+                            <path stroke="var(--bs-close-btn-color)" stroke-width="2" d="M8.25,8.25,15.75,15.75"></path>
+                            <path stroke="var(--bs-close-btn-color)" stroke-width="2" d="M8.25,15.75,15.75,8.25"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="results-panel"></div>
+            </div>
+            <h1 class="app-name">
+                <a class="app-name-link" data-nosearch="" href="/">首页</a>
+            </h1>
+            <div class="sidebar-nav">
+                <ul id='menu'>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">JSON</a>
+        <ul>
+            <li><a class='section-link' href='/JSON/JSONFormat?type=1'>JSON 格式化</a></li>
+            <li><a class='section-link' href='/JSON/JSONEscape'>JSON 转义</a></li>
+            <li><a class='section-link' href='/JSON/JSONToModel'>JSON 生成实体类</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">格式化</a>
+        <ul>
+            <li><a class='section-link' href='/Format/DHtmlFormat?type=1'>Html/JavaScript 格式化</a></li>
+            <li><a class='section-link' href='/JSON/JSONFormat?type=2'>JSON 格式化</a></li>
+            <li><a class='section-link' href='/Format/SqlFormat'>Sql 格式化</a></li>
+            <li><a class='section-link' href='/Format/XmlFormat'>Xml 格式化</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">Url</a>
+        <ul>
+            <li><a class='section-link' href='/Url/UrlParameterFormat'>Url 参数格式化</a></li>
+            <li><a class='section-link' href='/Url/UrlParameterJson'>Url 参数与Json互转</a></li>
+            <li><a class='section-link' href='/EncodeDecode/UrlEncodeDecode?type=1'>Url&nbsp;&nbsp;编码/解码</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">编码与解码</a>
+        <ul>
+            <li><a class='section-link' href='/EncodeDecode/EncodeDecode'>字符&nbsp;&nbsp;编码/解码</a></li>
+            <li><a class='section-link' href='/EncodeDecode/ByteArrayEncodeDecode'>字节数组&nbsp;&nbsp;编码/解码</a></li>
+            <li><a class='section-link' href='/EncodeDecode/UrlEncodeDecode?type=2'>Url&nbsp;&nbsp;编码/解码</a></li>
+            <li><a class='section-link' href='/EncodeDecode/Base64EncodeDecode'>Base64&nbsp;&nbsp;编码/解码</a></li>
+            <li><a class='section-link' href='/EncodeDecode/UnicodeChineseEncodeDecode'>Unicode与中文&nbsp;&nbsp;编码/解码</a></li>
+            <li><a class='section-link' href='/EncodeDecode/PunycodeEncodeDecode'>Punycode&nbsp;&nbsp;编码/解码</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">编码查询</a>
+        <ul>
+            <li><a class='section-link' href='/Encoding/EncodingList'>编码列表</a></li>
+            <li><a class='section-link' href='/Encoding/ASCII'>ASCII 编码表</a></li>
+            <li><a class='section-link' href='/Encoding/GB2312'>GB2312 编码表</a></li>
+            <li><a class='section-link' href='/Encoding/GBK'>GBK 编码表</a></li>
+            <li><a class='section-link' href='/Encoding/GB18030'>GB18030 编码</a></li>
+            <li><a class='section-link' href='/Encoding/Big5'>Big5 编码表</a></li>
+            <li><a class='section-link' href='/Encoding/Unicode'>Unicode 编码</a></li>
+            <li><a class='section-link' href='/Encoding/UTF16'>UTF-16 编码表</a></li>
+            <li><a class='section-link' href='/Encoding/Emoji'>Emoji 表情符号</a></li>
+            <li><a class='section-link' href='/Encoding/Symbol'>特殊符号大全</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">数字工具</a>
+        <ul>
+            <li><a class='section-link' href='/Digit/BaseConvert'>进制转换（正整数）</a></li>
+            <li><a class='section-link' href='/Digit/BaseConvertNegative'>进制转换（负整数）</a></li>
+            <li><a class='section-link' href='/Digit/FractionConvert'>IEEE 754 浮点数</a></li>
+            <li><a class='section-link' href='/Digit/Calc'>计算器</a></li>
+            <li><a class='section-link' href='/Digit/IpConvert'>IPv4 转 IPv6</a></li>
+            <li><a class='section-link' href='/Digit/ByteCalc'>字节换算</a></li>
+            <li><a class='section-link' href='/Digit/LittleBigEndianConvert'>大小端转换</a></li>
+            <li><a class='section-link' href='/Digit/ReverseBinary?type=1'>二进制逆序</a></li>
+            <li><a class='section-link' href='/Digit/ReverseArray'>数组逆序</a></li>
+            <li><a class='section-link' href='/Digit/DigitSort'>数字排序</a></li>
+            <li><a class='section-link' href='/EncodeDecode/BinaryHexEncodeDecode'>二进制与十六进制互转</a></li>
+            <li><a class='section-link' href='/EncodeDecode/ByteArrayHexEncodeDecode'>字节数组与十六进制互转</a></li>
+            <li><a class='section-link' href='/Digit/ByteArraySignedUnsignedConvert'>字节数组有无符号数互转</a></li>
+            <li><a class='section-link' href='/EncodeDecode/Base64HexEncodeDecode'>Base64与十六进制互转</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">文本工具</a>
+        <ul>
+            <li><a class='section-link' href='/Char/TextCompare'>文本对比</a></li>
+            <li><a class='section-link' href='/Char/TextHandle'>文本处理</a></li>
+            <li><a class='section-link' href='/Char/TextFilter'>文本 去重/排序</a></li>
+            <li><a class='section-link' href='/Char/TextSplit'>文本分割</a></li>
+            <li><a class='section-link' href='/Char/TextJoin'>文本合并</a></li>
+            <li><a class='section-link' href='/Char/TextEscape'>文本转义</a></li>
+            <li><a class='section-link' href='/Digit/ReverseBinary?type=2'>文本倒序</a></li>
+            <li><a class='section-link' href='/Char/TextBeautify'>文本美化</a></li>
+            <li><a class='section-link' href='/Char/TextPunctuationConvert'>标点符号转换</a></li>
+            <li><a class='section-link' href='/Char/TextLineFilterLength'>文本行长度过滤</a></li>
+            <li><a class='section-link' href='/Char/TextLineSameLength'>文本行定长</a></li>
+            <li><a class='section-link' href='/Char/KeyValueConvert'>键值对转代码</a></li>
+            <li><a class='section-link' href='/Char/CharStatistics'>字数统计</a></li>
+            <li><a class='section-link' href='/Char/RegexTest'>正则表达式</a></li>
+            <li><a class='section-link' href='/Char/CharUpperLower'>英文字母大小写转换</a></li>
+            <li><a class='section-link' href='/Char/CharSimpleTraditional'>汉字简繁转换</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">日期工具</a>
+        <ul>
+            <li><a class='section-link' href='/Date/UnixTimestamp'>Unix 时间戳</a></li>
+            <li><a class='section-link' href='/Date/CronExpression'>Cron 表达式生成</a></li>
+            <li><a class='section-link' href='/Date/WorldTime'>世界时间表</a></li>
+            <li><a class='section-link' href='/Date/Calc'>日期计算器</a></li>
+            <li><a class='section-link' href='/Date/Age'>年龄计算器</a></li>
+            <li><a class='section-link' href='/Date/Calendar'>万年历</a></li>
+            <li><a class='section-link' href='/Date/SolarLunarConvert'>公历农历转换</a></li>
+            <li><a class='section-link' href='/Date/LeapYearCalc'>公历闰年查询</a></li>
+            <li><a class='section-link' href='/Date/LeapMonthCalc'>农历闰月查询</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">Html 工具</a>
+        <ul>
+            <li><a class='section-link' href='/Html/HtmlView'>查看网页源代码</a></li>
+            <li><a class='section-link' href='/Html/HtmlFilter'>Html 过滤</a></li>
+            <li><a class='section-link' href='/Format/DHtmlFormat?type=2'>Html/JavaScript 格式化</a></li>
+            <li><a class='section-link' href='/Html/TextToTable'>文本转 Html 表格</a></li>
+            <li><a class='section-link' href='/Html/Preview'>Html 在线预览</a></li>
+            <li><a class='section-link' href='/Html/EscapeChar'>Html 转义字符</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">图片工具</a>
+        <ul>
+            <li><a class='section-link' href='/Color/RGBToHex'>RGB与十六进制颜色码转换</a></li>
+            <li><a class='section-link' href='/Color/GetImageColor'>图片颜色提取</a></li>
+            <li><a class='section-link' href='/Image/ImageToBase64'>图片转 Base64</a></li>
+            <li><a class='section-link' href='/Image/Base64ToImage'>Base64 转图片</a></li>
+            <li><a class='section-link' href='/Image/ImageToIco'>图片转 ico 图标</a></li>
+            <li><a class='section-link' href='/Image/OCR'>OCR 图片文字识别</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">二维码工具</a>
+        <ul>
+            <li><a class='section-link' href='/QRCode/Recognize'>二维码识别</a></li>
+            <li><a class='section-link' href='/QRCode/Generate'>二维码生成</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">Http 工具</a>
+        <ul>
+            <li><a class='section-link' href='/Http/MyIp'>我的 IP</a></li>
+            <li><a class='section-link' href='/Http/My'>Http 我的浏览器</a></li>
+            <li><a class='section-link' href='/Http/Test'>Http 模拟请求</a></li>
+            <li><a class='section-link' href='/Http/PortCheck'>端口开放检测</a></li>
+            <li><a class='section-link' href='/SSL/SSLCheck?type=1'>SSL 证书检测</a></li>
+            <li><a class='section-link' href='/Http/WhoisCheck'>域名 Whois 查询</a></li>
+            <li><a class='section-link' href='/Http/DNSCheck'>域名 DNS 查询</a></li>
+            <li><a class='section-link' href='/Http/HttpStatusCheck'>Http 状态查询</a></li>
+            <li><a class='section-link' href='/Http/HttpRequestMethod'>Http 请求方式</a></li>
+            <li><a class='section-link' href='/Http/MimeType'>Http MimeType</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">SSL 证书</a>
+        <ul>
+            <li><a class='section-link' href='/SSL/SSLCheck?type=2'>SSL 证书检测</a></li>
+            <li><a class='section-link' href='/SSL/SSLDecode'>SSL 证书解析</a></li>
+            <li><a class='section-link' href='/SSL/PfxToPem'>Pfx To PEM</a></li>
+            <li><a class='section-link' href='/SSL/SSLGenerate'>SSL 证书生成</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">摘要算法</a>
+        <ul>
+            <li><a class='section-link' href='/DigestAlgorithm/MD5'>MD5</a></li>
+            <li><a class='section-link' href='/DigestAlgorithm/SHA'>SHA</a></li>
+            <li><a class='section-link' href='/DigestAlgorithm/HMAC_MD5'>HMAC-MD5</a></li>
+            <li><a class='section-link' href='/DigestAlgorithm/HMAC_SHA'>HMAC-SHA</a></li>
+            <li><a class='section-link' href='/DigestAlgorithm/SM3'>SM3</a></li>
+            <li><a class='section-link' href='/DigestAlgorithm/CRC'>CRC 校验</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">对称加密/解密</a>
+        <ul>
+            <li><a class='section-link' href='/SymmetricEncryption/SM4'>SM4</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/DES'>DES</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/TripleDES'>Triple DES</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/AES'>AES</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/RC2'>RC2</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/RC4'>RC4</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/RC5'>RC5</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/RC6'>RC6</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/Blowfish'>Blowfish</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/Rabbit'>Rabbit</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/XOR'>异或</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/MorseCode'>摩斯密码</a></li>
+            <li><a class='section-link' href='/SymmetricEncryption/CaesarCipher'>凯撒密码</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">非对称加密/解密</a>
+        <ul>
+            <li><a class='section-link' href='/AsymmetricEncryption/RSA'>RSA</a></li>
+            <li><a class='section-link' href='/AsymmetricEncryption/SM2'>SM2</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">随机数工具</a>
+        <ul>
+            <li><a class='section-link' href='/Random/Password'>随机密码生成器</a></li>
+            <li><a class='section-link' href='/Random/GUID'>GUID 生成器</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">设备辅助测试</a>
+        <ul>
+            <li><a class='section-link' href='/Keyboard/KeyboardTest'>键盘按键测试</a></li>
+            <li><a class='section-link' href='/Keyboard/KeyCode'>键盘 KeyCode 值</a></li>
+            <li><a class='section-link' href='/Device/MouseTest'>鼠标按键测试</a></li>
+            <li><a class='section-link' href='/Device/MicrophoneTest'>麦克风测试</a></li>
+            <li><a class='section-link' href='/Device/WebcamTest'>摄像头测试</a></li>
+            <li><a class='section-link' href='/Device/ScreenTest'>屏幕测试</a></li>
+        </ul>
+    </li>
+    <li>
+        <a href='#' onclick="return showChildMenu(this);">其他工具</a>
+        <ul>
+            <li><a class='section-link' href='/Other/TotoroWeiXinFavorite'>微信收藏助手</a></li>
+            <li><a class='section-link' href='/Other/TotoroHtmlDownload'>整站下载助手</a></li>
+        </ul>
+    </li>
+    <li class='border-top'>
+        <a href='#' onclick="return showChildMenu(this);" class="mt-1">广告Show</a>
+        <ul>
+            <li><a class='section-link' href='/Advertisement/CloudServer'>云服务器优惠购买</a></li>
+            <li><a class='section-link' href='/Home/Contact'>问题反馈</a></li>
+            <li><a class='section-link' href='/Home/Donate'>捐赠支持</a></li>
+            <li><a class='section-link' href='/Home/AboutUs'>关于我们</a></li>
+        </ul>
+    </li>
+</ul>
+            </div>
+        </aside>
+        <section class="content">
+            <article class="markdown-section" id="main">
+                
+
+<form id="form" class="container">
+    <div id="divUp" class="row mb-2">
+        <div class="col-sm-12">
+            <textarea class="form-control" id="txtEncode" col="encode" rows="8" placeholder="请输入需要 Base64编码 的文本"></textarea>
+        </div>
+    </div>
+
+    <div id="divMiddle" class="row mb-2">
+        <div class="col-sm-12 bd-example select-list">
+            <ul>
+                <li>
+                    字符编码：<div id="encoding" col="encoding" style="display:inline-block;margin-right:1em"></div>
+
+<script type="text/javascript">
+    var encodingArr = [
+       { "Key": "常用", "Value":
+           [
+                { "Key": "UTF-8", "Value": "UTF-8" },
+                { "Key": "UTF-16", "Value": "UTF-16" },
+                { "Key": "UTF-16BE", "Value": "UTF-16BE"},
+                { "Key": "GB2312", "Value": "GB2312" },
+                { "Key": "GB18030", "Value": "GB18030" },
+                { "Key": "US-ASCII", "Value": "US-ASCII" },
+                { "Key": "Hex", "Value": "Hex (16 进制，不编码)" },
+                { "Key": "Big5", "Value": "Big5" }
+           ]
+        },
+        { "Key": "其他", "Value":
+            [
+                { "Key": "ASMO-708", "Value": "ASMO-708"},
+                { "Key": "CP1025", "Value": "CP1025"},
+                { "Key": "CP866", "Value": "CP866"},
+                { "Key": "CP875", "Value": "CP875"},
+                { "Key": "DOS-720", "Value": "DOS-720"},
+                { "Key": "DOS-862", "Value": "DOS-862"},
+                { "Key": "EUC-JP", "Value": "EUC-JP"},
+                { "Key": "IBM-THAI", "Value": "IBM-THAI"},
+                { "Key": "IBM037", "Value": "IBM037"},
+                { "Key": "IBM273", "Value": "IBM273"},
+                { "Key": "IBM277", "Value": "IBM277"},
+                { "Key": "IBM278", "Value": "IBM278"},
+                { "Key": "IBM280", "Value": "IBM280"},
+                { "Key": "IBM284", "Value": "IBM284"},
+                { "Key": "IBM285", "Value": "IBM285"},
+                { "Key": "IBM290", "Value": "IBM290"},
+                { "Key": "IBM297", "Value": "IBM297"},
+                { "Key": "IBM420", "Value": "IBM420"},
+                { "Key": "IBM423", "Value": "IBM423"},
+                { "Key": "IBM424", "Value": "IBM424"},
+                { "Key": "IBM437", "Value": "IBM437"},
+                { "Key": "IBM500", "Value": "IBM500"},
+                { "Key": "IBM737", "Value": "IBM737"},
+                { "Key": "IBM775", "Value": "IBM775"},
+                { "Key": "IBM850", "Value": "IBM850"},
+                { "Key": "IBM852", "Value": "IBM852"},
+                { "Key": "IBM855", "Value": "IBM855"},
+                { "Key": "IBM857", "Value": "IBM857"},
+                { "Key": "IBM860", "Value": "IBM860"},
+                { "Key": "IBM861", "Value": "IBM861"},
+                { "Key": "IBM863", "Value": "IBM863"},
+                { "Key": "IBM864", "Value": "IBM864"},
+                { "Key": "IBM865", "Value": "IBM865"},
+                { "Key": "IBM869", "Value": "IBM869"},
+                { "Key": "IBM870", "Value": "IBM870"},
+                { "Key": "IBM871", "Value": "IBM871"},
+                { "Key": "IBM880", "Value": "IBM880"},
+                { "Key": "IBM905", "Value": "IBM905"},
+                { "Key": "IBM1026", "Value": "IBM1026"},
+                { "Key": "IBM00858", "Value": "IBM00858"},
+                { "Key": "IBM00924", "Value": "IBM00924"},
+                { "Key": "IBM01047", "Value": "IBM01047"},
+                { "Key": "IBM01140", "Value": "IBM01140"},
+                { "Key": "IBM01141", "Value": "IBM01141"},
+                { "Key": "IBM01142", "Value": "IBM01142"},
+                { "Key": "IBM01143", "Value": "IBM01143"},
+                { "Key": "IBM01144", "Value": "IBM01144"},
+                { "Key": "IBM01145", "Value": "IBM01145"},
+                { "Key": "IBM01146", "Value": "IBM01146"},
+                { "Key": "IBM01147", "Value": "IBM01147"},
+                { "Key": "IBM01148", "Value": "IBM01148"},
+                { "Key": "IBM01149", "Value": "IBM01149"},
+                { "Key": "ISO-8859-1", "Value": "ISO-8859-1" },
+                { "Key": "ISO-8859-2", "Value": "ISO-8859-2"},
+                { "Key": "ISO-8859-3", "Value": "ISO-8859-3"},
+                { "Key": "ISO-8859-4", "Value": "ISO-8859-4"},
+                { "Key": "ISO-8859-5", "Value": "ISO-8859-5"},
+                { "Key": "ISO-8859-6", "Value": "ISO-8859-6"},
+                { "Key": "ISO-8859-7", "Value": "ISO-8859-7"},
+                { "Key": "ISO-8859-8", "Value": "ISO-8859-8"},
+                { "Key": "ISO-8859-9", "Value": "ISO-8859-9"},
+                { "Key": "ISO-8859-13", "Value": "ISO-8859-13"},
+                { "Key": "ISO-8859-15", "Value": "ISO-8859-15"},
+                { "Key": "JOHAB", "Value": "JOHAB"},
+                { "Key": "KOI8-R", "Value": "KOI8-R"},
+                { "Key": "KOI8-U", "Value": "KOI8-U"},
+                { "Key": "KS_C_5601-1987", "Value": "KS_C_5601-1987"},
+                { "Key": "MACINTOSH", "Value": "MACINTOSH"},
+                { "Key": "SHIFT_JIS", "Value": "SHIFT_JIS"},
+                { "Key": "UTF-32", "Value": "UTF-32"},
+                { "Key": "UTF-32BE", "Value": "UTF-32BE"},
+                { "Key": "WINDOWS-1250", "Value": "WINDOWS-1250"},
+                { "Key": "WINDOWS-1251", "Value": "WINDOWS-1251"},
+                { "Key": "WINDOWS-1252", "Value": "WINDOWS-1252"},
+                { "Key": "WINDOWS-1253", "Value": "WINDOWS-1253"},
+                { "Key": "WINDOWS-1254", "Value": "WINDOWS-1254"},
+                { "Key": "WINDOWS-1255", "Value": "WINDOWS-1255"},
+                { "Key": "WINDOWS-1256", "Value": "WINDOWS-1256"},
+                { "Key": "WINDOWS-1257", "Value": "WINDOWS-1257"},
+                { "Key": "WINDOWS-1258", "Value": "WINDOWS-1258"},
+                { "Key": "WINDOWS-874", "Value": "WINDOWS-874"},
+                { "Key": "X-CHINESE-CNS", "Value": "X-CHINESE-CNS"},
+                { "Key": "X-CHINESE-ETEN", "Value": "X-CHINESE-ETEN"},
+                { "Key": "X-CP20001", "Value": "X-CP20001"},
+                { "Key": "X-CP20003", "Value": "X-CP20003"},
+                { "Key": "X-CP20004", "Value": "X-CP20004"},
+                { "Key": "X-CP20005", "Value": "X-CP20005"},
+                { "Key": "X-CP20261", "Value": "X-CP20261"},
+                { "Key": "X-CP20269", "Value": "X-CP20269"},
+                { "Key": "X-CP20936", "Value": "X-CP20936"},
+                { "Key": "X-CP20949", "Value": "X-CP20949"},
+                { "Key": "X-EBCDIC-KOREANEXTENDED", "Value": "X-EBCDIC-KOREANEXTENDED"},
+                { "Key": "X-EUROPA", "Value": "X-EUROPA"},
+                { "Key": "X-IA5", "Value": "X-IA5"},
+                { "Key": "X-IA5-GERMAN", "Value": "X-IA5-GERMAN"},
+                { "Key": "X-IA5-NORWEGIAN", "Value": "X-IA5-NORWEGIAN"},
+                { "Key": "X-IA5-SWEDISH", "Value": "X-IA5-SWEDISH"},
+                { "Key": "X-MAC-ARABIC", "Value": "X-MAC-ARABIC"},
+                { "Key": "X-MAC-CE", "Value": "X-MAC-CE"},
+                { "Key": "X-MAC-CHINESETRAD", "Value": "X-MAC-CHINESETRAD"},
+                { "Key": "X-MAC-CROATIAN", "Value": "X-MAC-CROATIAN"},
+                { "Key": "X-MAC-CYRILLIC", "Value": "X-MAC-CYRILLIC"},
+                { "Key": "X-MAC-GREEK", "Value": "X-MAC-GREEK"},
+                { "Key": "X-MAC-HEBREW", "Value": "X-MAC-HEBREW"},
+                { "Key": "X-MAC-ICELANDIC", "Value": "X-MAC-ICELANDIC"},
+                { "Key": "X-MAC-JAPANESE", "Value": "X-MAC-JAPANESE"},
+                { "Key": "X-MAC-ROMANIAN", "Value": "X-MAC-ROMANIAN"},
+                { "Key": "X-MAC-THAI", "Value": "X-MAC-THAI"},
+                { "Key": "X-MAC-TURKISH", "Value": "X-MAC-TURKISH"},
+                { "Key": "X-MAC-UKRAINIAN", "Value": "X-MAC-UKRAINIAN"},
+            ]
+        }
+    ];
+
+    $("#encoding").ysComboBox({
+        data: encodingArr,
+        width: 200
+    });
+</script>
+
+<style type="text/css">
+    .select2-container--default .select2-results > .select2-results__options {
+        max-height: 300px;
+    }
+
+    .select2-container--classic .select2-results > .select2-results__options {
+        max-height: 300px;
+    }
+</style>
+                </li>
+                <li>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input mt-input" type="checkbox" id="chkIsFilterNonBase64" col="isFilterNonBase64" value="1">
+                        <label class="form-check-label" for="chkIsFilterNonBase64">解码过滤非 Base64 字符</label>
+                    </div>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-outline-primary" onclick="base64Encode()">
+                        Base64 编码 &#8595;
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" onclick="base64Decode()">
+                        Base64 解码 &#8593;
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="divDown" class="row mb-2">
+        <div class="col-sm-12">
+            <textarea class="form-control" id="txtDecode" col="decode" rows="8" placeholder="请输入需要 Base64解码 的文本"></textarea>
+        </div>
+    </div>
+
+    <div id="divResult" class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-success fade show" role="alert">
+            </div>
+        </div>
+    </div>
+
+    
+<div id="divAd" class="row">
+    <div class="col-sm-12">
+        <script type="text/javascript" charset="UTF-8" src="https://cdn.wwads.cn/js/makemoney.js"async>
+</script>
+<div class="wwads-cn wwads-horizontal" data-id="223" style="max-width:728px;height:120px">
+</div>
+
+    </div>
+</div>
+
+    <div id="divRemark" class="row mb-2 mt-4">
+        <div class="col-sm-12">
+            <h4>说明</h4>
+            <div class="text">
+                图片 转 Base64，请参考 <a href="/Image/ImageToBase64" target="_blank">图片转 Base64</a>
+            </div>
+            <div class="text">
+                Base64 转 图片，请参考 <a href="/Image/Base64ToImage" target="_blank">Base64 转图片</a>
+                </p>
+                <div class="text">
+                    ASCII 码字符占 8 位二进制，而 Base64 占 6 位，取最小公倍数即为 24，即可以用 4 个 base64 字符去表示 3 个 ASCII 码字符。一个字节 8bit 存在 256 个状态，而一个 Base64 字符只有 64 个状态。
+                    机智的人们于是规定，用每 4 个 Base64 字符去表示 3 个二进制字节，因为：64 * 64 * 64 * 64 = 256 * 256 * 256。
+                    因为，Base64 将三个字节转化成四个字节，因此 Base64 编码后的文本，会比原文本大出三分之一左右。
+                </div>
+                <p class="text">
+                    选出 64 个字符——大写字母 A-Z、小写字母 a-z、数字 0-9、符号 "+"、"/"（再加上作为垫字的 "="，实际上是 65 个字符，垫字是当生成的 Base64 字符串的个数不是 4 的倍数时，添加在尾部的字符），作为一个基本字符集。然后，其他所有符号都转换成这个字符集中的字符。
+                </p>
+                <p class="text">比如字符串 ABC，对应的二进制序列为 01000001 01000010 01000011，按 6 位分组后为 010000 010100 001001 000011，根据编码表得到Base64 字符串 QUJD。</p>
+                <div class="mb-1">
+                    <strong>Base64 编码表</strong>
+                </div>
+                <table style="overflow-x: auto;max-width: 320px;">
+                    <thead>
+                        <tr>
+                            <th>码值</th>
+                            <th>二进制</th>
+                            <th>字符</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>000000</td>
+                            <td>A</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>000001</td>
+                            <td>B</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>000010</td>
+                            <td>C</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>000011</td>
+                            <td>D</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>000100</td>
+                            <td>E</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>000101</td>
+                            <td>F</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>000110</td>
+                            <td>G</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>000111</td>
+                            <td>H</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>001000</td>
+                            <td>I</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>001001</td>
+                            <td>J</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>001010</td>
+                            <td>K</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>001011</td>
+                            <td>L</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>001100</td>
+                            <td>M</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>001101</td>
+                            <td>N</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>001110</td>
+                            <td>O</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>001111</td>
+                            <td>P</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>010000</td>
+                            <td>Q</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>010001</td>
+                            <td>R</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td>010010</td>
+                            <td>S</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>010011</td>
+                            <td>T</td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td>010100</td>
+                            <td>U</td>
+                        </tr>
+                        <tr>
+                            <td>21</td>
+                            <td>010101</td>
+                            <td>V</td>
+                        </tr>
+                        <tr>
+                            <td>22</td>
+                            <td>010110</td>
+                            <td>W</td>
+                        </tr>
+                        <tr>
+                            <td>23</td>
+                            <td>010111</td>
+                            <td>X</td>
+                        </tr>
+                        <tr>
+                            <td>24</td>
+                            <td>011000</td>
+                            <td>Y</td>
+                        </tr>
+                        <tr>
+                            <td>25</td>
+                            <td>011001</td>
+                            <td>Z</td>
+                        </tr>
+                        <tr>
+                            <td>26</td>
+                            <td>011010</td>
+                            <td>a</td>
+                        </tr>
+                        <tr>
+                            <td>27</td>
+                            <td>011011</td>
+                            <td>b</td>
+                        </tr>
+                        <tr>
+                            <td>28</td>
+                            <td>011100</td>
+                            <td>c</td>
+                        </tr>
+                        <tr>
+                            <td>29</td>
+                            <td>011101</td>
+                            <td>d</td>
+                        </tr>
+                        <tr>
+                            <td>30</td>
+                            <td>011110</td>
+                            <td>e</td>
+                        </tr>
+                        <tr>
+                            <td>31</td>
+                            <td>011111</td>
+                            <td>f</td>
+                        </tr>
+                        <tr>
+                            <td>32</td>
+                            <td>100000</td>
+                            <td>g</td>
+                        </tr>
+                        <tr>
+                            <td>33</td>
+                            <td>100001</td>
+                            <td>h</td>
+                        </tr>
+                        <tr>
+                            <td>34</td>
+                            <td>100010</td>
+                            <td>i</td>
+                        </tr>
+                        <tr>
+                            <td>35</td>
+                            <td>100011</td>
+                            <td>j</td>
+                        </tr>
+                        <tr>
+                            <td>36</td>
+                            <td>100100</td>
+                            <td>k</td>
+                        </tr>
+                        <tr>
+                            <td>37</td>
+                            <td>100101</td>
+                            <td>i</td>
+                        </tr>
+                        <tr>
+                            <td>38</td>
+                            <td>100110</td>
+                            <td>m</td>
+                        </tr>
+                        <tr>
+                            <td>39</td>
+                            <td>100111</td>
+                            <td>n</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>101000</td>
+                            <td>o</td>
+                        </tr>
+                        <tr>
+                            <td>41</td>
+                            <td>101001</td>
+                            <td>p</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>101010</td>
+                            <td>q</td>
+                        </tr>
+                        <tr>
+                            <td>43</td>
+                            <td>101011</td>
+                            <td>r</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td>101100</td>
+                            <td>s</td>
+                        </tr>
+                        <tr>
+                            <td>45</td>
+                            <td>101101</td>
+                            <td>t</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>101110</td>
+                            <td>u</td>
+                        </tr>
+                        <tr>
+                            <td>47</td>
+                            <td>101111</td>
+                            <td>v</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>110000</td>
+                            <td>w</td>
+                        </tr>
+                        <tr>
+                            <td>49</td>
+                            <td>110001</td>
+                            <td>x</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>110010</td>
+                            <td>y</td>
+                        </tr>
+                        <tr>
+                            <td>51</td>
+                            <td>110011</td>
+                            <td>z</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>110100</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>53</td>
+                            <td>110101</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>54</td>
+                            <td>110110</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>55</td>
+                            <td>110111</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>56</td>
+                            <td>111000</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>57</td>
+                            <td>111001</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>58</td>
+                            <td>111010</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>59</td>
+                            <td>111011</td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td>60</td>
+                            <td>111100</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>61</td>
+                            <td>111101</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>62</td>
+                            <td>111110</td>
+                            <td>+</td>
+                        </tr>
+                        <tr>
+                            <td>63</td>
+                            <td>111111</td>
+                            <td>/</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src='/js/page/encode-decode/base64-encode-decode.min.js?v=638464457706568671' type='text/javascript' ></script>
+                
+<div id="historyContainer" class="container mt-3">
+    <div id="history"></div>
+</div>
+            </article>
+            <article id="bottom" class="mt-4">
+    <div style="text-align:center;padding-bottom:20px;">
+        &copy; 2021 - 2024 <a class="body-color" href="/">ToolHelper</a> All rights reserved.&nbsp;&nbsp;
+<br class="mobile" />
+<a class="body-color" href="/Advertisement/Contact">问题反馈</a> &nbsp;&nbsp;&nbsp;&nbsp;
+<a class="body-color" href="https://beian.miit.gov.cn/" rel="nofollow" target="_blank">皖ICP备2021019041号</a>
+        <script>
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?510ae5cf17bc4aa18caac7d0f1a093de";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+
+    </div>
+</article>
+            
+<link rel='stylesheet' href='/lib/joe-theme/joe-theme.min.css?v=638464457706568671' />
+
+<div class="joe_action">
+    <div class="joe_action_item scroll">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="25" height="25">
+            <path d="M725.902 498.916c18.205-251.45-93.298-410.738-205.369-475.592l-6.257-3.982-6.258 3.414c-111.502 64.853-224.711 224.142-204.8 475.59-55.751 53.476-80.214 116.623-80.214 204.8v15.36l179.2-35.27c11.378 40.39 58.596 69.973 113.21 69.973 54.613 0 101.262-29.582 112.64-68.836l180.337 36.41v-15.36c-.569-89.885-25.031-153.6-82.489-206.507zM571.733 392.533c-33.564 31.29-87.04 28.445-118.329-5.12s-28.444-87.04 5.12-117.76c33.565-31.289 87.04-28.444 118.33 5.12s28.444 86.471-5.12 117.76zm-56.32 368.64c-35.84 0-64.284 29.014-64.284 64.285 0 35.84 54.044 182.613 64.284 182.613s64.285-146.773 64.285-182.613c0-35.271-29.014-64.285-64.285-64.285z"></path>
+        </svg>
+    </div>
+    <div class="joe_action_item mode">
+        <svg class="icon-1" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="25" height="25">
+            <path d="M587.264 104.96c33.28 57.856 52.224 124.928 52.224 196.608 0 218.112-176.128 394.752-393.728 394.752-29.696 0-58.368-3.584-86.528-9.728C223.744 832.512 369.152 934.4 538.624 934.4c229.376 0 414.72-186.368 414.72-416.256 1.024-212.992-159.744-389.12-366.08-413.184z"></path>
+            <path d="M340.48 567.808l-23.552-70.144-70.144-23.552 70.144-23.552 23.552-70.144 23.552 70.144 70.144 23.552-70.144 23.552-23.552 70.144zM168.96 361.472l-30.208-91.136-91.648-30.208 91.136-30.208 30.72-91.648 30.208 91.136 91.136 30.208-91.136 30.208-30.208 91.648z"></path>
+        </svg>
+        <svg class="icon-2 active" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="25" height="25">
+            <path d="M234.24 512a277.76 277.76 0 1 0 555.52 0 277.76 277.76 0 1 0-555.52 0zM512 187.733a42.667 42.667 0 0 1-42.667-42.666v-102.4a42.667 42.667 0 0 1 85.334 0v102.826A42.667 42.667 0 0 1 512 187.733zm-258.987 107.52a42.667 42.667 0 0 1-29.866-12.373l-72.96-73.387a42.667 42.667 0 0 1 59.306-59.306l73.387 72.96a42.667 42.667 0 0 1 0 59.733 42.667 42.667 0 0 1-29.867 12.373zm-107.52 259.414H42.667a42.667 42.667 0 0 1 0-85.334h102.826a42.667 42.667 0 0 1 0 85.334zm34.134 331.946a42.667 42.667 0 0 1-29.44-72.106l72.96-73.387a42.667 42.667 0 0 1 59.733 59.733l-73.387 73.387a42.667 42.667 0 0 1-29.866 12.373zM512 1024a42.667 42.667 0 0 1-42.667-42.667V878.507a42.667 42.667 0 0 1 85.334 0v102.826A42.667 42.667 0 0 1 512 1024zm332.373-137.387a42.667 42.667 0 0 1-29.866-12.373l-73.387-73.387a42.667 42.667 0 0 1 0-59.733 42.667 42.667 0 0 1 59.733 0l72.96 73.387a42.667 42.667 0 0 1-29.44 72.106zm136.96-331.946H878.507a42.667 42.667 0 1 1 0-85.334h102.826a42.667 42.667 0 0 1 0 85.334zM770.987 295.253a42.667 42.667 0 0 1-29.867-12.373 42.667 42.667 0 0 1 0-59.733l73.387-72.96a42.667 42.667 0 1 1 59.306 59.306l-72.96 73.387a42.667 42.667 0 0 1-29.866 12.373z"></path>
+        </svg>
+    </div>
+</div>
+
+<script src='/lib/joe-theme/joe-theme.min.js?v=638464457706568671' type='text/javascript' ></script>
+
+
+        </section>
+    </main>
+
+    <div class="progress" style="opacity: 0; width: 0%;"></div>
+
+    <script src='/js/page/layout.min.js?v=638464457706568671' type='text/javascript' ></script>
+    <script src='/js/page/common.min.js?v=638464457706568671' type='text/javascript' ></script>
+
+    
+</body>
+</html>
