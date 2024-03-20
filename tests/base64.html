@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-   	<title> Base64 编码/解码 | 菜鸟工具</title>
+   	<title> Base64 编码/解码</title>
      	<meta name='robots' content='max-image-preview:large' />
 <link rel='stylesheet' id='wpProQuiz_front_style-css' href='https://www.jyshare.com/wp-content/plugins/Wp-Pro-Quiz/css/wpProQuiz_front.min.css?ver=0.37' type='text/css' media='all' />
 <link rel="canonical" href="https://www.jyshare.com/front-end/693/" />
 <meta name="keywords" content="Base64 编码/解码">
 <meta name="description" content="Base64 编码说明  Base64 是一种基于 64 个可打印字符来表示二进制数据的表示方法，由于 2^6=64，所以每 6 个比特为一个单元，对应某个可打印字符。  Base64 常用于在通常处理文本数据的场合，表示、传输、存储一些二进制数据，包括 MIME 的电子邮件及 XML 的一些复杂数据。 Base64 编码要求把 3 个 8 位字节（3*8=24）转化为 4 个 6 位的字节（4*6=24），之后在 6 位的前面补两个 ..">
-  <link rel="shortcut icon" href="https://static.jyshare.com/images/c-runoob-logo.ico">  
+ <link rel="shortcut icon" href="../favicon.ico">
 			<script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/codemirror/5.48.2/codemirror.min.js"></script>
 		<script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/codemirror/5.48.2/addon/mode/simple.min.js"></script>
 		<link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/codemirror/5.48.2/codemirror.min.css">
@@ -32,11 +32,6 @@
 
    <!-- Custom Fonts -->
    <link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" type="text/css">
-    <!--[if lt IE 9]> 
-        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/html5shiv/r29/html5.min.js"></script>
-        <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- PHP 代码 -->
     <link rel="stylesheet" href="https://www.jyshare.com/wp-content/themes/toolrunoob2/style.css?version=1.309">
 
     <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/2.2.4/jquery.min.js"></script>
@@ -45,93 +40,6 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark " style="background: #182737;"> 
-  <a class="navbar-brand mr-auto mr-lg-2" href="/">菜鸟工具</a>
-  <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-	  <a target="_blank" class="nav-link" href="https://www.jyshare.com/front-end/61">WEB 在线工具</a>
-      </li>
-    
-      <li class="nav-item">
-	  <a target="_blank" class="nav-link" href="https://www.jyshare.com/more/shapefly-diagram/">在线画图</a> 
-      </li>
-      <li class="nav-item">
-	  <a target="_blank" class="nav-link" href="https://www.jyshare.com/more/svgeditor/">SVG 在线工具</a>
-      </li>
-     <!-- <li class="nav-item">
-	  <a target="_blank" class="nav-link" href="https://www.jyshare.com/search-sites/">搜索引擎</a>
-      </li>-->
-      <li class="nav-item">
-	  <a target="_blank" class="nav-link" href="https://www.jyshare.com/imglibs/">图片&颜色</a>
-      </li>
-      <li class="nav-item">
-	  <a target="_blank" class="nav-link" href="https://www.jyshare.com/email/">邮箱导航</a>
-      </li>
-          
-      <li class="nav-item">
-	  <a target="_blank" class="nav-link" href="https://www.jyshare.com/time/">世界时间</a>
-      </li>
-	  <li class="nav-item">
-	  <a target="_blank" class="nav-link" href="https://www.runoob.com/">菜鸟教程</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-expanded="false">更多频道</a>
-        <style>
-        .multi-column-dropdown {
-            column-count: 2; /* 设置两列 */
-            column-gap: 1rem; /* 列之间的间隔 */
-        }
-        </style> 
-        <div class="dropdown-menu multi-column-dropdown" aria-labelledby="dropdown01">
-    
-        <div class="dropdown-column">
-		     <a href="https://www.jyshare.com/web-developer/" class="dropdown-item" target="_blank">前端开发</a>
-         <a href="https://www.jyshare.com/media-om/" class="dropdown-item" target="_blank">媒体运营</a>
-         <a href="https://www.jyshare.com/tech-sites/" class="dropdown-item" target="_blank">科技网站</a>
-         <a href="https://www.jyshare.com/cloud-server/" class="dropdown-item" target="_blank">云服务器</a>
-         <a href="https://www.jyshare.com/office/" class="dropdown-item" target="_blank">办公软件</a>
-         <a href="https://www.jyshare.com/scholar/" class="dropdown-item" target="_blank">学术搜索</a>
-    </div>
-    <div class="dropdown-column">
-         <a href="https://www.jyshare.com/ai/" class="dropdown-item" target="_blank">AI 应用</a>
-        
-         <a href="https://www.jyshare.com/quiz/" class="dropdown-item" target="_blank">在线测验</a>
-         <a href="https://www.jyshare.com/finance/" class="dropdown-item" target="_blank">财经频道</a>
-         <a href="https://www.jyshare.com/banks/" class="dropdown-item" target="_blank">银行机构</a>
-         <a href="https://www.jyshare.com/danwei/" class="dropdown-item" target="_blank">单位换算</a>
-         <a href="https://www.jyshare.com/sports/" class="dropdown-item" target="_blank">体育频道</a>
-    </div>
-        </div>
-      </li>
-      <!--
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-expanded="false">语言</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown01">
-		  <a href="https://enc.runoob.com" class="dropdown-item" target="_blank">English</a>
-        </div>
-      </li>
-      -->
-    </ul>
-    
-    <form class="form-inline my-2 my-lg-0" action="/index.php" method="get">
-	        <input class="form-control mr-sm-2" name="s" value="" type="text" placeholder="搜索..." aria-label="Search">
-      <button class="btn btn-warning my-2 my-sm-0" type="submit" >搜索</button>  
-    </form>
-      </div>
-</nav>
-<script>
-var is_home = false;
-</script>
-<style>
-.runoob-page-content {
-    margin: 0 20px;
-}
-</style>
 
 
 <div class="runoob-page-content">	
@@ -560,15 +468,7 @@ function clearAll() {
 
 </div>
 
-<!-- Footer -->
-<footer class="page-footer  pt-4">
-  <!-- Copyright -->
-  <div class="footer-copyright text-center py-3">Copyright &copy; 
-    <a href="https://www.runoob.com/"> 菜鸟教程</a> 2024 备案号：<a target="_blank" rel="nofollow" href="https://beian.miit.gov.cn/">闽ICP备12019840号-4</a>
-  </div>
-  <!-- Copyright -->
 
-</footer>
 
 
 
