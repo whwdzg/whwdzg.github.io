@@ -63,7 +63,7 @@ p{text-align: justify;}
     opacity: 0;}
 .nav_second>i{position: absolute;top: -18px;left: 50%;margin-left:-10px;z-index: 10;border-width: 10px;border-style: solid;border-top-color: transparent;border-bottom-color: #FFF;border-right-color: transparent;border-left-color: transparent;}
 .nav_second li{font-size: 14px;overflow: hidden;}
-.nav_second li a{display: block;padding:8px 20px;line-height: 30px;border-top: 1px #efefef solid;}
+.nav_second li a{display: block;padding:8px 20px;line-height: 25px;border-top: 1px #efefef solid;}
 .header_search{width: 5%;float: left;height: 100%;position: relative;}
 .header_search a{position: absolute;width: 100%;height: 100%;}
 
@@ -511,7 +511,7 @@ p{text-align: justify;}
 
 
 /*手机端*/
-@media (max-width: 1099px){
+@media (max-width: 900px){
     /*手机页面导航*/
     .head_box{width:100%;background: #1C2327;height: 50px;border: none;position: fixed;top: 0;}
     .head_box:before{display: none;}
