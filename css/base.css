@@ -3625,10 +3625,8 @@ footer,
         color: #333;
         box-shadow: 0 1px 3px #ddd;
         border: 1px #fff solid��������
-
-以下是您框选的 `base.css` 文件中的所有代码部分，经整理后的版本，已统一格式和缩进：
-
-```css
+    }
+    
 .footer_box {
     width: 100%;
     background: #414d55;
