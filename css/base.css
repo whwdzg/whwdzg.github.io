@@ -1347,15 +1347,12 @@ footer,
 
 /* 关于我界面 */
 .me_box {
-    width: 1100px;
-    margin: 30px auto;
+    max-width: 1100px; /* 修改为最大宽度以适应响应式设计 */
+    margin: 30px auto; 
     background: #f8f8fa;
     box-shadow: 0 1px 3px #ddd;
-    border: 1px #fff solid;
-    -webkit-box-shadow: 0 1px 3px #ddd;
+    border: 1px solid #fff; /* 修改为简化的写法 */
 }
-
-/*.me_box1{padding: 20px;}*/
 
 .me_box_title {
     height: 100px;
@@ -1366,13 +1363,12 @@ footer,
 
 .me_box_title > img {
     float: left;
-    display: inline-block;
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    overflow: hidden;
     margin-top: 10px;
     border: 3px solid rgba(255, 255, 255, .9);
+    display: block; /* 显式指定为块级元素，去掉了 overflow: hidden; */
 }
 
 .me_box_title > h3 {
@@ -1381,6 +1377,7 @@ footer,
     float: left;
     font-size: 22px;
 }
+
 
 .me_box_text {
     background: #d7d7d7;
