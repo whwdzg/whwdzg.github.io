@@ -1,5 +1,5 @@
 # Current Version
-1.3.6.2024.12.18
+1.3.7.2024.12.21-sw
 
 # Planning
 complete the bilivideo page
