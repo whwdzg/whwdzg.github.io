@@ -536,7 +536,7 @@ p{text-align: justify;}
     /*手机页面搜索按钮*/
     .header_search{width: 50px;float: left;height: 100%;position: relative;}
     .header_search a{position: absolute;width: 100%;height: 100%;}
-    .header_search i{width: 34px;height: 35px;display: block;margin: 12px 0 0 8px;background: url("../img/search_small.png");background-size: 100% 100%;}
+    .header_search i{width: 34px;height: 35px;display: block;margin: 12px 0 0 8px;background: url("../img/ic_fluent_search_48_regular-white.svg");background-size: 100% 100%;}
 
     /*手机页面的导航按钮 三横变一×*/
     .header_nav_small_btn{display: block;width: 35px;float: right;height: 38px;margin-top: 12px;}
@@ -612,7 +612,7 @@ p{text-align: justify;}
     .header_logo {width: 80%;float: left;height: 100%;text-align: left;}
     .header_search{width: 40px;float: left;height: 100%;position: relative;}
     .header_search a{position: absolute;width: 100%;height: 100%;}
-    .header_search_btn i{width: 30px;height: 30px;display: block;margin: 13px 0 0 5px;background: url("../img/search_small.png");background-size: 100% 100%;}
+    .header_search_btn i{width: 30px;height: 30px;display: block;margin: 13px 0 0 5px;background: url("../img/ic_fluent_search_48_regular-white.svg");background-size: 100% 100%;}
     .header_nav_small_btn{display: block;width: 28px;float: right;height: 36px;margin-top: 10px;}
     .small_btn:before{margin-top: -10px;}
     .small_btn:after{margin-top: 10px;}
