@@ -67,7 +67,7 @@ p{text-align: justify;}
 .header_search{width: 5%;float: left;height: 100%;position: relative;}
 .header_search a{position: absolute;width: 100%;height: 100%;}
 
-.header_search_btn i{width: 30px;height: 30px;display: block;margin: 25px 0 0 10px;background: url("../img/search.png");background-size: 100% 100%;}
+.header_search_btn i{width: 30px;height: 30px;display: block;margin: 25px 0 0 10px;background: url("../img/ic_fluent_search_48_regular.svg");background-size: 100% 100%;}
 
 .header_nav_small_btn{display: none;}
 
