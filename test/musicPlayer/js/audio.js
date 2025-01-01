@@ -129,7 +129,7 @@ function closeListBoard() {
 var musicId = 0;
 
 // 后台音乐列表
-let musicData = [['洛春赋', '云汐'], ['Yesterday', 'Alok/Sofi Tukker'], ['江南烟雨色', '杨树人'], ['Vision pt.II', 'Vicetone']];
+let musicData = [['江桥月影 ver1', '高一三班杨泓昱音乐小组成品'], ['江桥月影 ver2', '高一三班杨泓昱音乐小组成品']];
 
 // 初始化音乐
 function initMusic() {
