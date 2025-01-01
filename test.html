@@ -21,7 +21,7 @@
     <div class="head_box">
         <div class="header">
             <div class="header_logo">
-                <a href="index"><h2>滄海水魚</h2></a>
+                <a href="index"><h2>滄海水魚|</h2><h4>实验室</h4></a>
             </div> 
          <div class="header_nav">
                 <ul class="clearfix">
@@ -75,11 +75,11 @@
     <div class="search_box">
         <div class="search">
         <form name="searchform" class="search_form" method="post" action="[!--news.url--]e/search/index.php" target="_blank">
-            <input type="text" class="search_text" name="keyboard" placeholder="输入关键字点击搜索">
+            <input type="text" class="search_text" name="keyboard" placeholder="恭喜你发现了搜索，然而目前没有用呢！">
             <input type="hidden" name="tbname" value="news">
             <input type="hidden" name="show" value="title">
             <input type="hidden" name="tempid" value="1">
-            <input type="submit" class="search_btn" value="搜索一下">
+            <input type="submit" class="search_btn" value="确认搜索？">
         </form>
         </div>
     </div>
@@ -91,347 +91,43 @@
         <div class="me_box1">
               <div class="me_box_title">
                     <img src="img/head/shuiyu.avif">
-                    <h3>Base64 加解密</h3>
+                    <h3>实验室</h3>
                </div>
                 <div class="me_box_text">
                     <h3 class="me_box_title_title">
-                        <a style="font-size:13px; color:white">当前位置：</a><a href="index" style="font-size:13px; color:white">首页></a><a href="list" style="font-size:13px; color:white">专栏></a><a href="privacy" style="font-size:13px; color:white">关于本网站</a>
+                        <a style="font-size:13px; color:white">当前位置：</a><a href="index" style="font-size:13px; color:white">首页></a><a href="test" style="font-size:13px; color:white">实验室</a>
                     </div></h3>
-
-
-                    <div class="runoob-page-content">	
-
-                        <div class="row">
-                        
-                            <div class="col-md-12">
-                                <div class="card">
-                                            <div id="compiler" class="card-header">
-                                    <form class="form-inline" role="form">
-                                    <div class="col-md-8"> 
-                                      <button type="button" class="btn btn-outline-primary" id="submitBTN"><i class="fa fa-compress"></i> 编码</button>
-                                      <button type="button" class="btn btn-outline-dark" id="submitBTN2"><i class="fa fa-expand"></i> 解码</button>
-                                      <button type="button" class="btn btn-warning  mr-sm-1" id="copycode"><i class="fa fa-copy"></i> 复制</button>
-                                      <button type="button" class="btn btn-danger  mr-sm-1" onclick="javascript:clearAll()"><i class="fas fa-eraser"></i> 清空</button>
-                                      </div> 
-                                      <div class="col-md-4">
-                                       <label class="float-right"><strong style="font-size: 16px"><i class="fa fa-cogs"></i> Base64 编码/解码</strong></label>
-                                       </div> 
-                                    </form>
-                                    </div>
-                                    <div class="card-body">
-                                    <form role="form" id="compiler-form">
-                                      <div class="form-group">
-                                        <div class="row">
-                                          <div class="col-md-6">
-                                            <textarea class="form-control"  id="code" name="code" rows="10">runoob</textarea>
-                                          </div>
-                                          <div class="col-md-6">
-                                            <textarea placeholder="运行结果……" class="form-control" id="compiler-textarea-result" rows="10">cnVub29i</textarea>
-                                          </div>
-     
-                            
-                         
-                                    <div class="card-header"><h3>概述</h3></div>
-                                    <div class="card-body">
-                                    <h2>Base64 编码说明</h2>
-                        
-                        <p><strong>Base64</strong> 是一种基于 64 个可打印字符来表示二进制数据的表示方法，由于 2^6=64，所以每 6 个比特为一个单元，对应某个可打印字符。
-                        
-                        </p><p><strong>Base64</strong> 常用于在通常处理文本数据的场合，表示、传输、存储一些二进制数据，包括 MIME 的电子邮件及 XML 的一些复杂数据。</p>
-                        <p><strong>Base64</strong> 编码要求把 3 个 8 位字节（3*8=24）转化为 4 个 6 位的字节（4*6=24），之后在 6 位的前面补两个 0，形成 8 位一个字节的形式。 如果剩下的字符不足 3 个字节，则用 0 填充，输出字符使用 <strong>=</strong>，因此编码后输出的文本末尾可能会出现 1 或 2 个 =。</p><p>为了保证所输出的编码位可读字符，<strong>Base64</strong> 制定了一个编码表，以便进行统一转换。编码表的大小为 <strong>2^6=64</strong>，这也是 <strong>Base64</strong> 名称的由来。</p>
-                        <p>
-                        在 <strong>Base64</strong> 中的可打印字符包括字母 <strong>A-Z</strong>、<strong>a-z</strong>、数字<strong> 0-9</strong>，这样共有 62 个字符，此外两个可打印符号在不同的系统中而不同。</p>
-                        <p>
-                        以下是 Base64 编码的基本步骤：</p>
-                        
-                        <ul><li>将数据划分为 3 个字节一组（24位）。</li><li>将每个字节转换为 8 位二进制形式。</li><li>将 24 位数据按照 6 位一组进行划分，得到 4 个 6 位的组。</li><li>将每个 6 位的组转换为对应的 Base64 字符。</li><li>如果数据不足 3 字节，进行填充。</li><li>将所有转换后的 Base64 字符连接起来，形成最终的编码结果。</li></ul>
-                        <p>解码 Base64 编码的过程与编码相反，将每个 Base64 字符转换为对应的6位二进制值，然后将这些 6 位值组合成原始的二进制数据。</p>
-                        <p>
-                        Base64 编码具有以下特点：</p>
-                        
-                        <ul><li>编码后的数据长度总是比原始数据长约 1/3。</li><li>编码后的数据可以包含 A-Z、a-z、0-9 和两个额外字符的任意组合。</li><li>Base64 编码是一种可逆的编码方式，可以通过解码还原原始数据。</li></ul>
-                        <h3>
-                        Base64 编码表</h3>
-                        <table class="table font-weight-bold text-primary table-bordered table-striped">
-                        <tbody><tr>
-                        <th class="table-secondary">码值</th>
-                        <th class="table-secondary">字符</th>
-                        <td rowspan="18">&nbsp;</td>
-                        <th class="table-secondary" scope="col">码值</th>
-                        <th class="table-secondary" scope="col">字符</th>
-                        <td rowspan="18">&nbsp;</td>
-                        <th  class="table-secondary" scope="col">码值</th>
-                        <th class="table-secondary" scope="col">字符</th>
-                        <td rowspan="18">&nbsp;</td>
-                        <th class="table-secondary" scope="col">码值</th>
-                        <th class="table-secondary" scope="col">字符</th>
-                        </tr>
-                        <tr>
-                        <td>0</td>
-                        <td>A</td>
-                        <td>16</td>
-                        <td>Q</td>
-                        <td>32</td>
-                        <td>g</td>
-                        <td>48</td>
-                        <td>w</td>
-                        </tr>
-                        <tr>
-                        <td>1</td>
-                        <td>B</td>
-                        <td>17</td>
-                        <td>R</td>
-                        <td>33</td>
-                        <td>h</td>
-                        <td>49</td>
-                        <td>x</td>
-                        </tr>
-                        <tr>
-                        <td>2</td>
-                        <td>C</td>
-                        <td>18</td>
-                        <td>S</td>
-                        <td>34</td>
-                        <td>i</td>
-                        <td>50</td>
-                        <td>y</td>
-                        </tr>
-                        <tr>
-                        <td>3</td>
-                        <td>D</td>
-                        <td>19</td>
-                        <td>T</td>
-                        <td>35</td>
-                        <td>j</td>
-                        <td>51</td>
-                        <td>z</td>
-                        </tr>
-                        <tr>
-                        <td>4</td>
-                        <td>E</td>
-                        <td>20</td>
-                        <td>U</td>
-                        <td>36</td>
-                        <td>k</td>
-                        <td>52</td>
-                        <td>0</td>
-                        </tr>
-                        <tr>
-                        <td>5</td>
-                        <td>F</td>
-                        <td>21</td>
-                        <td>V</td>
-                        <td>37</td>
-                        <td>l</td>
-                        <td>53</td>
-                        <td>1</td>
-                        </tr>
-                        <tr>
-                        <td>6</td>
-                        <td>G</td>
-                        <td>22</td>
-                        <td>W</td>
-                        <td>38</td>
-                        <td>m</td>
-                        <td>54</td>
-                        <td>2</td>
-                        </tr>
-                        <tr>
-                        <td>7</td>
-                        <td>H</td>
-                        <td>23</td>
-                        <td>X</td>
-                        <td>39</td>
-                        <td>n</td>
-                        <td>55</td>
-                        <td>3</td>
-                        </tr>
-                        <tr>
-                        <td>8</td>
-                        <td>I</td>
-                        <td>24</td>
-                        <td>Y</td>
-                        <td>40</td>
-                        <td>o</td>
-                        <td>56</td>
-                        <td>4</td>
-                        </tr>
-                        <tr>
-                        <td>9</td>
-                        <td>J</td>
-                        <td>25</td>
-                        <td>Z</td>
-                        <td>41</td>
-                        <td>p</td>
-                        <td>57</td>
-                        <td>5</td>
-                        </tr>
-                        <tr>
-                        <td>10</td>
-                        <td>K</td>
-                        <td>26</td>
-                        <td>a</td>
-                        <td>42</td>
-                        <td>q</td>
-                        <td>58</td>
-                        <td>6</td>
-                        </tr>
-                        <tr>
-                        <td>11</td>
-                        <td>L</td>
-                        <td>27</td>
-                        <td>b</td>
-                        <td>43</td>
-                        <td>r</td>
-                        <td>59</td>
-                        <td>7</td>
-                        </tr>
-                        <tr>
-                        <td>12</td>
-                        <td>M</td>
-                        <td>28</td>
-                        <td>c</td>
-                        <td>44</td>
-                        <td>s</td>
-                        <td>60</td>
-                        <td>8</td>
-                        </tr>
-                        <tr>
-                        <td>13</td>
-                        <td>N</td>
-                        <td>29</td>
-                        <td>d</td>
-                        <td>45</td>
-                        <td>t</td>
-                        <td>61</td>
-                        <td>9</td>
-                        </tr>
-                        <tr>
-                        <td>14</td>
-                        <td>O</td>
-                        <td>30</td>
-                        <td>e</td>
-                        <td>46</td>
-                        <td>u</td>
-                        <td>62</td>
-                        <td>+</td>
-                        </tr>
-                        <tr>
-                        <td>15</td>
-                        <td>P</td>
-                        <td>31</td>
-                        <td>f</td>
-                        <td>47</td>
-                        <td>v</td>
-                        <td>63</td>
-                        <td>/</td>
-                        </tr>
-                        </tbody></table>
-                        
-                        <p>举例来说，一段引用自托马斯·霍布斯《利维坦》的文本：</p>
-                        
-                        
-                        <blockquote class="blockquote"><p>Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.</p></blockquote>
-                        
-                        <p>使用 Base64 编码之后变成：</p>
-                        
-                        <pre>TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=</pre>
-                        
-                        <p>编码 “Man” 的结果为 <strong>TWFu</strong>，转换过程如下：</p>
-                        
-                        <table class="table table table-bordered table-striped font-weight-bold">
-                        
-                        <tbody><tr>
-                        <th scope="row" class="table-secondary">文本
-                        </th>
-                        <td colspan="8" align="center"><b>M</b>
-                        </td>
-                        <td colspan="8" align="center"><b>a</b>
-                        </td>
-                        <td colspan="8" align="center"><b>n</b>
-                        </td></tr>
-                        <tr>
-                        <th class="table-secondary" scope="row">ASCII 编码
-                        </th>
-                        <td colspan="8" align="center">77
-                        </td>
-                        <td colspan="8" align="center">97
-                        </td>
-                        <td colspan="8" align="center">110
-                        </td></tr>
-                        <tr>
-                        <th scope="row" class="table-secondary">二进制位
-                        </th>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>0
-                        </td></tr>
-                        <tr>
-                        <th scope="row" class="table-secondary">索引
-                        </th>
-                        <td colspan="6" align="center">19
-                        </td>
-                        <td colspan="6" align="center">22
-                        </td>
-                        <td colspan="6" align="center">5
-                        </td>
-                        <td colspan="6" align="center">46
-                        </td></tr>
-                        <tr>
-                        <th scope="row" class="table-secondary">Base64 编码
-                        </th>
-                        <td colspan="6" align="center"><b>T</b>
-                        </td>
-                        <td colspan="6" align="center"><b>W</b>
-                        </td>
-                        <td colspan="6" align="center"><b>F</b>
-                        </td>
-                        <td colspan="6" align="center"><b>u</b>
-                        </td></tr></tbody></table>			</div>
-                                </div>
-                            </div>
-                            
-                            
-                        </div>
-
-
-
-
-
-        
-                <div class="article_prev_next_box">
-                    <a href="">上一篇：这是第一篇了哦~</a>
-                    <a href="psn-img">下一篇:个人图库</a>
+                    <div class="me_box_text_div">
+                        <p>欢迎来到滄海水魚实验室！</p>
+                        <p>这里是滄海水魚的实验室，这里有很多有趣的项目，欢迎来这里玩耍！</p>
+                        <p>进入方式：关于页面搜索框下链接</p>
+                        <br>
+                        <b>当前测试项目：</b>
+                        <p>base64加密解密</p>
+                        <p>音乐播放器</p>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
            
                 <div class="right_box tuijian_moban">
-                    <h3>目录</h3>
+                    <h3>实验项：</h3>
                     <div>
                         <ul>
-                            <li><a href="privacy">关于本网站</a></li>
-                            <li><a href="psn-img">个人图库</a></li>
-                            <li><a href="comments">评论发癫区</a></li>
+                            <li><a href="test/base64/base64.html">base64加密解密原网站（移除头栏）</a></li>
+                            <li><a href="test/base64/base64_.html">base64加解密框架测试</a></li>
+                            <li><a href="test/musicPlayer/index.html">音乐播放器</a></li>
         
                         </ul>
                     </div>
@@ -439,7 +135,7 @@
 
         <div class="pinglun_box">
             <div class="article_article_title">
-                <h3>文章评论</h3>
+                <h3>评论</h3>
                 <div class="article_author_count_box clearfix">
                     <i class="article_author_img" title="滄海水魚"><img src="img/head/shuiyu.avif"></i><a class="article_author" href="https://space.bilibili.com/588003657">滄海水魚</a>
                     <p style="color: black;">2024-02-10</p><br>
@@ -451,96 +147,18 @@
                     <p style="color: black;">2024-03-07</p><br>
                    <p style="color: black;">已阅</p>
                 </div>
-                </div>
+                
             </div>
         
         
 
 
+        </div>
 
 
         
 
 
-    </div>
-</div>
-
-<script>
-    //string encoding-decoding
-    var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(input){var output="";var chr1,chr2,chr3,enc1,enc2,enc3,enc4;var i=0;input=Base64._utf8_encode(input);while(i<input.length){chr1=input.charCodeAt(i++);chr2=input.charCodeAt(i++);chr3=input.charCodeAt(i++);enc1=chr1>>2;enc2=((chr1&3)<<4)|(chr2>>4);enc3=((chr2&15)<<2)|(chr3>>6);enc4=chr3&63;if(isNaN(chr2)){enc3=enc4=64;}else if(isNaN(chr3)){enc4=64;}
-    output=output+this._keyStr.charAt(enc1)+this._keyStr.charAt(enc2)+this._keyStr.charAt(enc3)+this._keyStr.charAt(enc4);}
-    return output;},decode:function(input){var output="";var chr1,chr2,chr3;var enc1,enc2,enc3,enc4;var i=0;input=input.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(i<input.length){enc1=this._keyStr.indexOf(input.charAt(i++));enc2=this._keyStr.indexOf(input.charAt(i++));enc3=this._keyStr.indexOf(input.charAt(i++));enc4=this._keyStr.indexOf(input.charAt(i++));chr1=(enc1<<2)|(enc2>>4);chr2=((enc2&15)<<4)|(enc3>>2);chr3=((enc3&3)<<6)|enc4;output=output+String.fromCharCode(chr1);if(enc3!=64){output=output+String.fromCharCode(chr2);}
-    if(enc4!=64){output=output+String.fromCharCode(chr3);}}
-    output=Base64._utf8_decode(output);return output;},_utf8_encode:function(string){string=string.replace(/\r\n/g,"\n");var utftext="";for(var n=0;n<string.length;n++){var c=string.charCodeAt(n);if(c<128){utftext+=String.fromCharCode(c);}
-    else if((c>127)&&(c<2048)){utftext+=String.fromCharCode((c>>6)|192);utftext+=String.fromCharCode((c&63)|128);}
-    else{utftext+=String.fromCharCode((c>>12)|224);utftext+=String.fromCharCode(((c>>6)&63)|128);utftext+=String.fromCharCode((c&63)|128);}}
-    return utftext;},_utf8_decode:function(utftext){var string="";var i=0;var c=c1=c2=0;while(i<utftext.length){c=utftext.charCodeAt(i);if(c<128){string+=String.fromCharCode(c);i++;}
-    else if((c>191)&&(c<224)){c2=utftext.charCodeAt(i+1);string+=String.fromCharCode(((c&31)<<6)|(c2&63));i+=2;}
-    else{c2=utftext.charCodeAt(i+1);c3=utftext.charCodeAt(i+2);string+=String.fromCharCode(((c&15)<<12)|((c2&63)<<6)|(c3&63));i+=3;}}
-    return string;}}
-    
-    
-    
-    
-    var editor1 = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true,
-        matchBrackets: true,
-        mode: "text/html",
-        indentUnit: 4,
-        indentWithTabs: true,
-    });
-    var editor2 = CodeMirror.fromTextArea(document.getElementById("compiler-textarea-result"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        matchBrackets: true,
-        mode: "text/html",
-        indentUnit: 4,
-        indentWithTabs: true,
-    });
-    
-    $("#submitBTN").click(function() {
-        var str  = editor1.getValue();
-        var data= Base64.encode(str)
-        editor2.getDoc().setValue(data);
-    });
-    
-    $("#submitBTN2").click(function() {
-        var str     = editor1.getValue();
-        var data= Base64.decode(str)
-        editor2.getDoc().setValue(data);
-    });
-    new ClipboardJS('#copycode', {
-        text: function(trigger) {
-            return editor2.getDoc().getValue();
-        }
-    }).on('success', function(e) {
-       $("#copycode").text('已复制');
-       selectAll();
-       setTimeout(function() { 
-          $("#copycode")('<i class="fa fa-copy"></i> 复制')
-       }, 2000);
-       e.clearSelection();
-    }).on('error', function(e) {
-        alert('Error!');
-    });
-    
-    function selectAll() {
-      if (editor2) {
-        editor2.execCommand('selectAll'); 
-      }
-    }
-    
-    function clearAll() {
-      if (editor1 && editor2) {
-        editor1.setValue('');
-        editor2.setValue('');
-        editor1.clearHistory();
-        editor2.clearHistory();
-      }
-      return false;
-    }
-    
-    </script>
 
 <div class="footer_box">
     <div class="footer clearfix">
