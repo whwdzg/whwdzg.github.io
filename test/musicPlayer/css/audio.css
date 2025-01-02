@@ -19,7 +19,7 @@ body {
 }
 
 /* 实现唱片效果 */
-.record-container {
+.cover-container {
     width: 50%;
     height: 100%;
     display: flex;
@@ -28,7 +28,7 @@ body {
     float: left;
 }
 
-.record-bg {
+.cover-bg {
     background-color: black;
     display: flex;
     align-items: center;
@@ -38,8 +38,8 @@ body {
     border-radius: 500px;
 }
 
-#record-img {
-    background-image: url("../img/record1.jpg");
+#cover-img {
+    background-image: url("../img/cover1.jpg");
     background-size: 100% 100%;
     display: flex;
     align-items: center;
@@ -49,7 +49,7 @@ body {
     border-radius: 275px;
 }
 
-.record-center {
+.cover-center {
     background-color: black;
     width: 20px;
     height: 20px;

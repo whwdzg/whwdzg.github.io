@@ -6,7 +6,7 @@ var audio = document.getElementById('audioTag');
 // 歌曲名
 var musicTitle = document.getElementById('music-title');
 // 歌曲海报
-var recordImg = document.getElementById('record-img');
+var coverImg = document.getElementById('cover-img');
 // 歌曲作者
 var author = document.getElementById('author-name');
 // 歌曲专辑
@@ -51,12 +51,12 @@ var musicList = document.getElementById('music-list');
 pause.onclick = function (e) {
     if (audio.paused) {
         audio.play();
-        rotateRecord();
+        rotateCover();
         pause.classList.remove('icon-play');
         pause.classList.add('icon-pause');
     } else {
         audio.pause();
-        rotateRecordStop();
+        rotateCoverStop();
         pause.classList.remove('icon-pause');
         pause.classList.add('icon-play');
     }
@@ -137,12 +137,12 @@ let musicData = [['江桥月影 ver1', '杨泓昱，Suno AI','高一三班杨泓
 function initMusic() {
     audio.src = "mp3/music" + musicId.toString() + ".mp3";
     audio.load();
-    recordImg.classList.remove('rotate-play');
+    coverImg.classList.remove('rotate-play');
     audio.ondurationchange = function () {
         musicTitle.innerText = musicData[musicId][0];
         author.innerText = musicData[musicId][1];
         album.innerText = musicData[musicId][2];
-        recordImg.style.backgroundImage = "url('img/record"+musicId.toString()+".jpg')";
+        coverImg.style.backgroundImage = "url('img/cover"+musicId.toString()+".jpg')";
         body.style.backgroundImage = "url('img/bg"+musicId.toString()+".png')";
         audioTime.innerText = transTime(audio.duration);
         // 重置进度条
@@ -159,7 +159,7 @@ function initAndPlay() {
     pause.classList.remove('icon-play');
     pause.classList.add('icon-pause');
     audio.play();
-    rotateRecord();
+    rotateCover();
 }
 
 // 播放模式设置
@@ -255,17 +255,17 @@ document.getElementById("music3").addEventListener('click', function (event) {
 
 // 刷新唱片旋转角度
 function refreshRotate() {
-    recordImg.classList.add('rotate-play');
+    coverImg.classList.add('rotate-play');
 }
 
 // 使唱片旋转
-function rotateRecord() {
-    recordImg.style.animationPlayState = "running"
+function rotateCover() {
+    coverImg.style.animationPlayState = "running"
 }
 
 // 停止唱片旋转
-function rotateRecordStop() {
-    recordImg.style.animationPlayState = "paused"
+function rotateCoverStop() {
+    coverImg.style.animationPlayState = "paused"
 }
 
 // 存储上一次的音量
