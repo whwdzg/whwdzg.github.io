@@ -44,9 +44,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 250px;
-    height: 250px;
-    border-radius: 250px;
+    width: 275px;
+    height: 275px;
+    border-radius: 275px;
 }
 
 .record-center {
