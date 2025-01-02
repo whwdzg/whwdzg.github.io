@@ -9,6 +9,8 @@ var musicTitle = document.getElementById('music-title');
 var recordImg = document.getElementById('record-img');
 // 歌曲作者
 var author = document.getElementById('author-name');
+// 歌曲专辑
+var album = document.getElementById('album-name');
 
 // 进度条
 var progress = document.getElementById('progress');
@@ -128,8 +130,8 @@ function closeListBoard() {
 // 存储当前播放的音乐序号
 var musicId = 0;
 
-// 后台音乐列表
-let musicData = [['江桥月影 ver1', '高一三班杨泓昱音乐小组成品'], ['江桥月影 ver2', '高一三班杨泓昱音乐小组成品']];
+// 后台音乐列表[标题, 作者, 专辑]
+let musicData = [['江桥月影 ver1', '杨泓昱，Suno AI','高一三班杨泓昱音乐小组成品'], ['江桥月影 ver2', '杨泓昱，Suno AI','高一三班杨泓昱音乐小组成品']];
 
 // 初始化音乐
 function initMusic() {
@@ -139,6 +141,7 @@ function initMusic() {
     audio.ondurationchange = function () {
         musicTitle.innerText = musicData[musicId][0];
         author.innerText = musicData[musicId][1];
+        album.innerText = musicData[musicId][2];
         recordImg.style.backgroundImage = "url('img/record"+musicId.toString()+".jpg')";
         body.style.backgroundImage = "url('img/bg"+musicId.toString()+".png')";
         audioTime.innerText = transTime(audio.duration);

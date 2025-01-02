@@ -81,6 +81,11 @@ body {
     font-size: medium;
 }
 
+.album-container {
+    color: rgb(171, 171, 171);
+    font-size: medium;
+}
+
 .audio {
     width: 100%;
 }
@@ -337,14 +342,14 @@ body {
 
 .list-card-show {
     animation: showAni;
-    animation-duration: 1s;
+    animation-duration: 0.75s;
     animation-fill-mode: forwards;
     -webkit-animation-fill-mode: forwards;
 }
 
 .list-card-hide {
     animation: hideAni;
-    animation-duration: 1s;
+    animation-duration: 0.75s;
     animation-fill-mode: forwards;
     -webkit-animation-fill-mode: forwards;
 }
