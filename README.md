@@ -12,7 +12,7 @@
     </br>
 </div>
 
-# whwdzg
+# whwdzgℹ️
 个人介绍博客与个人社交媒体导览
 whwdzg.github.io
 v2.0准备中！
