@@ -285,11 +285,11 @@ function setNoVolumn() {
             lastVolumn = 70;
         }
         volumeTogger.value = lastVolumn;
-        volume.style.backgroundImage = "url('img/音量.png')";
+        volume.style.backgroundImage = "url('img/volume.svg')";
     }
     else {
         lastVolumn = volumeTogger.value;
         volumeTogger.value = 0;
-        volume.style.backgroundImage = "url('img/静音.png')";
+        volume.style.backgroundImage = "url('img/mute.svg')";
     }
 }
