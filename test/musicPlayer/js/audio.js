@@ -131,7 +131,7 @@ function closeListBoard() {
 var musicId = 0;
 
 // 后台音乐列表[标题, 作者, 专辑]
-let musicData = [['江桥月影 ver1', '杨泓昱，Suno AI','高一三班杨泓昱音乐小组成品'], ['江桥月影 ver2', '杨泓昱，Suno AI','高一三班杨泓昱音乐小组成品']];
+let musicData = [['江桥月影 ver1', '，Suno AI','音乐小组成品'], ['江桥月影 ver2', '，Suno AI','音乐小组成品']];
 
 // 初始化音乐
 function initMusic() {
