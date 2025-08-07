@@ -1,5 +1,5 @@
 # Current Versionℹ
-1.3.10.2025.1.2-MusicPlayer
+1.3.11.2025.8.7-MusicPlayer_fix
 
 # Planning🎯
 complete the bilivideo page
