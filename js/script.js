@@ -1,5 +1,54 @@
 // 左侧导航折叠/展开逻辑
 document.addEventListener('DOMContentLoaded', function () {
+	// 将文档中的 aside 收集到右下角浮动栈容器，避免重叠纵向排列
+	(function setupAsideStack() {
+		const asides = Array.from(document.querySelectorAll('main aside, body > aside'));
+		if (!asides.length) return;
+		let stack = document.getElementById('aside-stack');
+		if (!stack) {
+			stack = document.createElement('div');
+			stack.id = 'aside-stack';
+			document.body.appendChild(stack);
+		}
+		// 将现有 aside 的内容按 section 拆分成多个卡片，避免在一个卡里堆叠
+		asides.forEach(a => {
+			const sections = Array.from(a.querySelectorAll(':scope > section'));
+			if (sections.length > 0) {
+				sections.forEach(sec => {
+					const card = document.createElement('aside');
+					// 迁移该 section 的内容到新卡片中
+					card.appendChild(sec);
+					stack.appendChild(card);
+				});
+				// 清空原 aside，避免重复展示
+				a.remove();
+			} else {
+				// 没有子 section，则直接作为一个卡片移入栈
+				stack.appendChild(a);
+			}
+		});
+	})();
+
+	// 为浮动栈卡片添加关闭按钮
+	(function addAsideCloseButtons() {
+		const stack = document.getElementById('aside-stack');
+		if (!stack) return;
+		stack.querySelectorAll('aside').forEach(card => {
+			if (card.querySelector('.aside-close')) return;
+			const btn = document.createElement('button');
+			btn.className = 'aside-close';
+			btn.setAttribute('aria-label', 'Close');
+			btn.innerHTML = '<i class="fluent-font" aria-hidden="true">&#xF369;</i>';
+			btn.addEventListener('click', () => {
+				card.classList.add('closing');
+				setTimeout(() => {
+					card.remove();
+				}, 240);
+			});
+			card.appendChild(btn);
+		});
+	})();
+
 	// 找到所有有子菜单的项
 	const parents = document.querySelectorAll('.sidebar .has-children');
 
@@ -70,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		// 在折叠/展开或窗口大小改变时，调整侧边栏位置以避免遮挡页眉
 		function adjustSidebarPosition() {
 			const header = document.querySelector('header');
+			const footer = document.querySelector('footer');
 			const sidebar = document.getElementById('sidebar');
 			if (!header || !sidebar) return;
 
@@ -91,11 +141,57 @@ document.addEventListener('DOMContentLoaded', function () {
 				return;
 			}
 
-			// 宽屏：侧边栏固定在 header 下面，并设置 body padding-top 避免内容被 header 遮挡
+			// 计算页尾高度（如有），用于让侧栏不盖住页尾
+			const footerRect = footer ? footer.getBoundingClientRect() : null;
+			const footerHeight = footerRect ? Math.ceil(footerRect.height) : 0;
+			// 精确计算页尾与视口的可见重叠高度：
+			// 不可见时（完全在视口上方或下方）应为 0；部分可见时按交集计算
+			let bottomGap = 0;
+			if (footerRect) {
+				const visibleTop = Math.max(0, footerRect.top);
+				const visibleBottom = Math.min(window.innerHeight, footerRect.bottom);
+				const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+				bottomGap = Math.min(visibleHeight, footerHeight);
+				// 当页尾完全显示时，增加一个微小安全间隙，避免侧栏盖住页尾边线
+				if (visibleHeight >= footerHeight) bottomGap = footerHeight + 4; // 4px 安全边距
+			}
+
+			// 宽屏：侧边栏固定在 header 下面；根据页尾当前可见高度动态留出底部间隙
 			sidebar.style.top = headerHeight + 'px';
-			sidebar.style.height = `calc(100vh - ${headerHeight}px)`;
+			sidebar.style.height = 'auto';
+			sidebar.style.bottom = `${bottomGap}px`;
 			document.body.style.paddingTop = headerHeight + 'px';
 		}
+
+		// 使用 IntersectionObserver 动态根据页尾可见性调整侧栏 bottom
+		(function observeFooter() {
+			const footer = document.querySelector('footer');
+			const sidebar = document.getElementById('sidebar');
+			if (!footer || !sidebar) return;
+			try {
+				const io = new IntersectionObserver((entries) => {
+					for (const entry of entries) {
+						if (window.innerWidth <= 760) return; // 仅桌面执行
+						const headerHeight = Math.ceil(document.querySelector('header').getBoundingClientRect().height);
+						const rect = footer.getBoundingClientRect();
+						const footerHeight = Math.ceil(rect.height);
+						const visibleTop = Math.max(0, rect.top);
+						const visibleBottom = Math.min(window.innerHeight, rect.bottom);
+						const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+						let bottomGap = Math.min(visibleHeight, footerHeight);
+						if (visibleHeight >= footerHeight) bottomGap = footerHeight + 4; // 4px 安全边距
+						sidebar.style.top = headerHeight + 'px';
+						sidebar.style.height = 'auto';
+						sidebar.style.bottom = `${bottomGap}px`;
+					}
+				}, { root: null, threshold: [0, 0.01, 0.1, 0.25, 0.5, 0.75, 1] });
+				io.observe(footer);
+			} catch (e) {
+				// 兼容性兜底：监听滚动与调整大小并调用 adjustSidebarPosition
+				window.addEventListener('scroll', adjustSidebarPosition, { passive: true });
+				window.addEventListener('resize', adjustSidebarPosition);
+			}
+		})();
 
 		// 初始与窗口调整时都运行
 		window.addEventListener('resize', adjustSidebarPosition);
