@@ -1,3 +1,338 @@
+// 主题切换逻辑
+document.addEventListener('DOMContentLoaded', function () {
+	const themeBtn = document.querySelector('.theme-toggle-btn');
+	const settingsBtn = document.querySelector('.theme-settings-btn');
+	const settingsMenu = document.querySelector('.theme-settings-menu');
+    const languageSelectorMenu = document.querySelector('.language-selector-menu');
+    const avatarMenu = document.getElementById('avatar-links-menu');
+	const followSystemRadios = document.querySelectorAll('input[name="theme-follow"]');
+	const THEME_KEY = 'theme';
+	const FOLLOW_SYSTEM_KEY = 'follow-system';
+	let followSystem = localStorage.getItem(FOLLOW_SYSTEM_KEY) !== 'false';
+
+	function setTheme(isDark) {
+		if (isDark) {
+			document.body.classList.add('dark-mode');
+		} else {
+			document.body.classList.remove('dark-mode');
+		}
+		localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+	}
+
+	function getSystemTheme() {
+		return window.matchMedia('(prefers-color-scheme: dark)').matches;
+	}
+
+	function updateRadioState() {
+		followSystemRadios.forEach(radio => {
+			if (followSystem && radio.value === 'follow') {
+				radio.checked = true;
+			} else if (!followSystem && radio.value === 'manual') {
+				radio.checked = true;
+			}
+		});
+	}
+
+	// 初始化主题：优先使用保存的偏好，否则检测系统主题
+	const savedTheme = localStorage.getItem(THEME_KEY);
+	if (followSystem) {
+		// 跟随系统模式
+		setTheme(getSystemTheme());
+	} else {
+		// 手动模式：使用保存的主题
+		if (savedTheme) {
+			setTheme(savedTheme === 'dark');
+		} else {
+			// 正常不会垫到这一步，但为了安全起见
+			setTheme(getSystemTheme());
+		}
+	}
+
+	// 更新按钮状态
+	updateRadioState();
+
+	function closeAllMenus(except) {
+		const menus = [settingsMenu, languageSelectorMenu, avatarMenu].filter(Boolean);
+		menus.forEach(m => { if (m && m !== except) m.classList.remove('active'); });
+	}
+
+	// 主题设置按钮开及关沉菜单
+	if (settingsBtn) {
+		settingsBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const willOpen = !settingsMenu.classList.contains('active');
+			closeAllMenus(willOpen ? settingsMenu : null);
+			settingsMenu.classList.toggle('active');
+		});
+	}
+
+	// 点击沉菜单外关沉菜单
+	document.addEventListener('click', (e) => {
+		if (!e.target.closest('.theme-settings-container') && !e.target.closest('.language-selector-container') && !e.target.closest('#avatar-btn') && !e.target.closest('#avatar-links-menu')) {
+			closeAllMenus();
+		}
+	});
+
+	// 沉菜单选项处理
+	followSystemRadios.forEach(radio => {
+		radio.addEventListener('change', () => {
+			if (radio.value === 'follow') {
+				followSystem = true;
+				localStorage.setItem(FOLLOW_SYSTEM_KEY, 'true');
+				// 立即应用系统主题
+				setTheme(getSystemTheme());
+			} else {
+				followSystem = false;
+				localStorage.setItem(FOLLOW_SYSTEM_KEY, 'false');
+				// 保持当前主题
+			}
+			settingsMenu.classList.remove('active');
+		});
+	});
+
+	// 监听系统主题变化（仅在跟随系统模式下）
+	const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	darkModeQuery.addListener((e) => {
+		if (followSystem) {
+			setTheme(e.matches);
+		}
+	});
+
+	// 月亮序列切换按钮
+	if (themeBtn) {
+		themeBtn.addEventListener('click', function () {
+			// 当用户手动一次月亮序列开关时，也转换为manual模式
+			if (followSystem) {
+				followSystem = false;
+				localStorage.setItem(FOLLOW_SYSTEM_KEY, 'false');
+				updateRadioState();
+			}
+			const isDark = !document.body.classList.contains('dark-mode');
+			setTheme(isDark);
+		});
+	}
+});
+
+// 语言切换逻辑
+document.addEventListener('DOMContentLoaded', function () {
+	const languageSelectorBtn = document.querySelector('.language-selector-btn');
+	const languageSelectorMenu = document.querySelector('.language-selector-menu');
+	const LANGUAGE_KEY = 'language';
+
+	function getLanguageRadios() {
+		return document.querySelectorAll('input[name="language"]');
+	}
+
+	function setLanguage(lang) {
+		document.documentElement.lang = lang;
+		localStorage.setItem(LANGUAGE_KEY, lang);
+		updateLanguageRadioState(lang);
+		applyTranslations(lang);
+	}
+
+	function applyTranslations(lang) {
+		// 从全局translations对象获取翻译数据（已在i18n.js中定义）
+		if (typeof translations === 'undefined') {
+			return;
+		}
+		
+		const langData = translations[lang];
+		if (!langData) {
+			return;
+		}
+		
+		updatePageWithTranslations(langData);
+	}
+
+	function updatePageWithTranslations(translations) {
+		// 更新页面标题
+		if (translations.page.title) {
+			document.title = translations.page.title;
+		}
+		
+		// 更新头部链接和按钮
+		const homeLink = document.querySelector('header a[href="index.html"]');
+		if (homeLink) homeLink.textContent = translations.header.homeLink;
+
+		// 更新侧边栏文本
+		const sidebarAbout = document.querySelector('nav a[href="#about"] .label');
+		if (sidebarAbout) sidebarAbout.textContent = translations.sidebar.about;
+
+		const legacyBtn = document.querySelector('nav button.toggle .toggle-label');
+		if (legacyBtn) legacyBtn.textContent = translations.sidebar.legacy;
+
+		const collapseBtn = document.querySelector('.sidebar-collapse-btn');
+		if (collapseBtn) collapseBtn.title = translations.sidebar.collapseBtn;
+
+		const home1_0 = document.querySelector('nav a[href="Legacy-1.0/index.html"] .label');
+		if (home1_0) home1_0.textContent = translations.sidebar.home1_0;
+
+		const about1_0 = document.querySelector('nav a[href="Legacy-1.0/about.html"] .label');
+		if (about1_0) about1_0.textContent = translations.sidebar.about1_0;
+
+		const readme1_0 = document.querySelector('nav a[href="Legacy-1.0/README.md"] .label');
+		if (readme1_0) readme1_0.textContent = translations.sidebar.readme1_0;
+
+		const readmeLink = document.querySelector('nav a[href="README.md"] .label');
+		if (readmeLink) readmeLink.textContent = translations.sidebar.readme;
+
+		// 更新主内容区
+		const aboutSection = document.querySelector('#about');
+		if (aboutSection) {
+			const aboutTitle = aboutSection.querySelector('h2');
+			const aboutContent = aboutSection.querySelector('p');
+			if (aboutTitle) aboutTitle.textContent = translations.main.aboutTitle;
+			if (aboutContent) aboutContent.innerHTML = translations.main.aboutContent;
+		}
+
+		const testSection = document.querySelector('#test');
+		if (testSection) {
+			const testTitle = testSection.querySelector('h2');
+			if (testTitle) testTitle.textContent = translations.main.testTitle;
+		}
+
+		// 更新 Aside 卡片内容
+		const asideSections = document.querySelectorAll('aside section');
+		asideSections.forEach((section, index) => {
+			if (index === 0) {
+				// 注意卡片
+				const noticeTitle = section.querySelector('h3');
+				const noticeContent = section.querySelector('p');
+				if (noticeTitle) {
+					noticeTitle.innerHTML = `<i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>${translations.aside.noticeTitle}`;
+				}
+				if (noticeContent) {
+					noticeContent.innerHTML = translations.aside.noticeContent;
+				}
+			} else if (index === 1) {
+				// 返回1.0主页卡片
+				const legacyCardTitle = section.querySelector('h3');
+				const legacyCardContent = section.querySelector('p');
+				if (legacyCardTitle) {
+					legacyCardTitle.innerHTML = `<i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>${translations.aside.legacyTitle}`;
+				}
+				if (legacyCardContent) {
+					// 重新构建内容（需要保持原有的HTML结构）
+					let content = `<abbr title="1.3.12.2025.8.7-New_MusicPlayer">${translations.aside.versionLabel}</abbr>`;
+					content += translations.aside.legacyStopped;
+					content += `<br><a href="Legacy-1.0/index.html" title="返回1.0版本主页">${translations.aside.legacyLink}</a>`;
+					legacyCardContent.innerHTML = content;
+				}
+			}
+		});
+
+		// 更新页脚
+		const footer = document.querySelector('footer');
+		if (footer) {
+			const copyrightP = footer.querySelector('p:first-child');
+			const versionP = footer.querySelector('p:last-child');
+			if (copyrightP) copyrightP.innerHTML = translations.footer.copyright;
+			if (versionP) versionP.innerHTML = translations.footer.version;
+		}
+
+		// 更新主题设置菜单
+		const themeSettingsMenu = document.querySelector('.theme-settings-menu');
+		if (themeSettingsMenu) {
+			const themeLabels = themeSettingsMenu.querySelectorAll('label.settings-option');
+			themeLabels.forEach(label => {
+				const radio = label.querySelector('input[type="radio"]');
+				const span = label.querySelector('span');
+				if (radio && span) {
+					if (radio.value === 'follow') {
+						span.textContent = translations.theme.followSystem;
+					} else if (radio.value === 'manual') {
+						span.textContent = translations.theme.manual;
+					}
+				}
+			});
+		}
+
+		// 更新语言选择菜单
+		const languageSelectorMenu = document.querySelector('.language-selector-menu');
+		if (languageSelectorMenu) {
+			const languageLabels = languageSelectorMenu.querySelectorAll('label.language-option');
+			languageLabels.forEach(label => {
+				const radio = label.querySelector('input[type="radio"]');
+				const span = label.querySelector('span');
+				if (radio && span) {
+					if (radio.value === 'zh-CN') {
+						span.textContent = translations.language.zhCN;
+					} else if (radio.value === 'en-US') {
+						span.textContent = translations.language.enUS;
+					}
+				}
+			});
+		}
+
+		// 更新按钮标题和ARIA标签
+		const themeToggleBtn = document.querySelector('.theme-toggle-btn');
+		if (themeToggleBtn) {
+			themeToggleBtn.title = translations.header.themeToggleBtn;
+			themeToggleBtn.setAttribute('aria-label', translations.header.themeToggleBtn);
+		}
+
+		const themeSettingsBtn = document.querySelector('.theme-settings-btn');
+		if (themeSettingsBtn) {
+			themeSettingsBtn.title = translations.header.themeSettingsBtn;
+			themeSettingsBtn.setAttribute('aria-label', translations.header.themeSettingsBtn);
+		}
+
+		const languageSelectorBtn = document.querySelector('.language-selector-btn');
+		if (languageSelectorBtn) {
+			languageSelectorBtn.title = translations.header.languageSelectorBtn;
+			languageSelectorBtn.setAttribute('aria-label', translations.header.languageSelectorBtn);
+		}
+	}
+
+	function updateLanguageRadioState(lang) {
+		const radios = getLanguageRadios();
+		radios.forEach(radio => {
+			radio.checked = (radio.value === lang);
+		});
+	}
+
+	// 初始化语言
+	const savedLanguage = localStorage.getItem(LANGUAGE_KEY) || 'zh-CN';
+	setLanguage(savedLanguage);
+
+	// 语言选择按钮开及关菜单
+	if (languageSelectorBtn) {
+		languageSelectorBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const willOpen = !languageSelectorMenu.classList.contains('active');
+			// 关闭其他菜单
+			const settingsMenu = document.querySelector('.theme-settings-menu');
+			const avatarMenu = document.getElementById('avatar-links-menu');
+			[settingsMenu, avatarMenu].forEach(m => m && m.classList.remove('active'));
+			languageSelectorMenu.classList.toggle('active');
+		});
+	}
+
+	// 点击菜单外关菜单
+	document.addEventListener('click', (e) => {
+		if (!e.target.closest('.language-selector-container') && !e.target.closest('.theme-settings-container') && !e.target.closest('#avatar-btn') && !e.target.closest('#avatar-links-menu')) {
+			languageSelectorMenu.classList.remove('active');
+		}
+	});
+
+	// 菜单选项处理 - 使用label的click事件
+	const languageLabels = document.querySelectorAll('label.language-option');
+	
+	languageLabels.forEach(label => {
+		label.addEventListener('click', function(e) {
+			const radio = this.querySelector('input[name="language"]');
+			if (radio) {
+				setLanguage(radio.value);
+				languageSelectorMenu.classList.remove('active');
+				// 选择后关闭其他菜单以避免重叠
+				const settingsMenu = document.querySelector('.theme-settings-menu');
+				const avatarMenu = document.getElementById('avatar-links-menu');
+				[settingsMenu, avatarMenu].forEach(m => m && m.classList.remove('active'));
+			}
+		});
+	});
+});
+
 // 左侧导航折叠/展开逻辑
 document.addEventListener('DOMContentLoaded', function () {
 	// 将文档中的 aside 收集到右下角浮动栈容器，避免重叠纵向排列
@@ -214,3 +549,162 @@ window.addEventListener('load', function () {
 	document.querySelectorAll('.sidebar .submenu').forEach(s => s.style.maxHeight = '0px');
 });
 
+
+// 图片放大预览与遮罩
+document.addEventListener('DOMContentLoaded', function () {
+	const candidates = Array.from(document.querySelectorAll('main img, #aside-stack img'));
+	if (!candidates.length) return;
+
+	let overlay = document.getElementById('image-lightbox');
+	if (!overlay) {
+		overlay = document.createElement('div');
+		overlay.id = 'image-lightbox';
+		overlay.setAttribute('aria-hidden', 'true');
+		overlay.innerHTML = `
+			<button class="lightbox-close" aria-label="Close image">×</button>
+			<div class="lightbox-content">
+				<div class="lightbox-controls" aria-hidden="true">
+					<button class="lightbox-zoom-in" aria-label="Zoom in">+</button>
+					<button class="lightbox-zoom-out" aria-label="Zoom out">−</button>
+				</div>
+				<img alt="" />
+			</div>
+		`;
+		document.body.appendChild(overlay);
+	}
+
+	let filmstrip = overlay.querySelector('.lightbox-filmstrip');
+	if (!filmstrip) {
+		filmstrip = document.createElement('div');
+		filmstrip.className = 'lightbox-filmstrip';
+		filmstrip.setAttribute('role', 'list');
+		overlay.appendChild(filmstrip);
+	}
+
+	const overlayImg = overlay.querySelector('img');
+	const closeBtn = overlay.querySelector('.lightbox-close');
+	const zoomInBtn = overlay.querySelector('.lightbox-zoom-in');
+	const zoomOutBtn = overlay.querySelector('.lightbox-zoom-out');
+	let currentIndex = 0;
+	let currentScale = 1;
+
+	const applyScale = () => {
+		overlayImg.style.transform = `scale(${currentScale})`;
+	};
+
+	const clampScale = (val) => Math.min(2.5, Math.max(0.6, val));
+
+	const setActiveThumb = () => {
+		const thumbs = filmstrip.querySelectorAll('.filmstrip-thumb');
+		thumbs.forEach((btn, idx) => {
+			btn.classList.toggle('active', idx === currentIndex);
+		});
+		// 确保当前缩略图可见
+		const active = thumbs[currentIndex];
+		if (active && active.scrollIntoView) {
+			active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+		}
+	};
+
+	const openOverlay = (index) => {
+		currentIndex = index;
+		currentScale = 1;
+		applyScale();
+		const target = candidates[currentIndex];
+		if (target) {
+			overlayImg.src = target.src;
+			overlayImg.alt = target.alt || '';
+		}
+		overlay.classList.add('active');
+		overlay.setAttribute('aria-hidden', 'false');
+		document.body.classList.add('no-scroll-lightbox');
+		setActiveThumb();
+	};
+
+	const closeOverlay = () => {
+		overlay.classList.remove('active');
+		overlay.setAttribute('aria-hidden', 'true');
+		document.body.classList.remove('no-scroll-lightbox');
+	};
+
+	candidates.forEach((img, index) => {
+		img.classList.add('zoomable-img');
+		img.addEventListener('click', () => {
+			openOverlay(index);
+		});
+	});
+
+	// 构建缩略图胶片条
+	filmstrip.innerHTML = '';
+	candidates.forEach((img, index) => {
+		const btn = document.createElement('button');
+		btn.className = 'filmstrip-thumb';
+		btn.setAttribute('role', 'listitem');
+		btn.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
+		btn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			openOverlay(index);
+		});
+		filmstrip.appendChild(btn);
+	});
+
+	overlay.addEventListener('click', (e) => {
+		if (e.target === overlay) closeOverlay();
+	});
+
+	if (closeBtn) {
+		closeBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			closeOverlay();
+		});
+	}
+
+	if (zoomInBtn) {
+		zoomInBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			currentScale = clampScale(currentScale + 0.15);
+			applyScale();
+		});
+	}
+
+	if (zoomOutBtn) {
+		zoomOutBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			currentScale = clampScale(currentScale - 0.15);
+			applyScale();
+		});
+	}
+
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape' && overlay.classList.contains('active')) {
+			closeOverlay();
+		}
+	});
+});
+
+
+// ͷ��˵�����¼�
+document.addEventListener('DOMContentLoaded', function () {
+const avatarBtn = document.getElementById('avatar-btn');
+const avatarMenu = document.getElementById('avatar-links-menu');
+
+// ���ͷ��/�ز˵�
+if (avatarBtn) {
+avatarBtn.addEventListener('click', (e) => {
+e.stopPropagation();
+	const willOpen = !avatarMenu.classList.contains('active');
+	// 关闭其他菜单
+	const settingsMenu = document.querySelector('.theme-settings-menu');
+	const languageSelectorMenu = document.querySelector('.language-selector-menu');
+	[settingsMenu, languageSelectorMenu].forEach(m => m && m.classList.remove('active'));
+	avatarMenu.classList.toggle('active');
+});
+}
+
+// ����˵���ز˵�
+document.addEventListener('click', (e) => {
+if (!e.target.closest('#avatar-btn') && !e.target.closest('#avatar-links-menu') && !e.target.closest('.theme-settings-container') && !e.target.closest('.language-selector-container')) {
+avatarMenu.classList.remove('active');
+}
+});
+});

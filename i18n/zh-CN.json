@@ -1,0 +1,47 @@
+{
+  "page": {
+    "title": "主页",
+    "description": "whwdzg's personal page"
+  },
+  "header": {
+    "homeLink": "主页",
+    "themeToggleBtn": "切换深色/浅色模式",
+    "themeSettingsBtn": "主题设置",
+    "languageSelectorBtn": "选择语言",
+    "avatarAlt": "头像"
+  },
+  "theme": {
+    "followSystem": "跟随系统",
+    "manual": "手动设置"
+  },
+  "language": {
+    "zhCN": "中文（简体）",
+    "enUS": "English (US)"
+  },
+  "sidebar": {
+    "about": "关于",
+    "legacy": "返回 1.0",
+    "home1_0": "主页（1.0）",
+    "about1_0": "关于（1.0）",
+    "readme1_0": "README（1.0）",
+    "readme": "README",
+    "collapseBtn": "折叠/展开侧边栏"
+  },
+  "main": {
+    "aboutTitle": "关于",
+    "aboutContent": "这里是2.0版本的主页，当前正在构建中，尚处于<strong>极早期阶段</strong>，供实验学习使用",
+    "testTitle": "test"
+  },
+  "aside": {
+    "noticeTitle": "注意",
+    "noticeContent": "<strong>当前为早期测试版本，可能出现bug</strong>",
+    "legacyTitle": "返回1.0主页",
+    "versionLabel": "1.0版本",
+    "legacyLink": "返回1.0主页",
+    "legacyStopped": "已终止更新"
+  },
+  "footer": {
+    "copyright": "&copy; 2022-2025 whwdzg. 保留所有权利。",
+    "version": "当前版本：<strong>2.0.0.1-20251214</strong>"
+  }
+}
