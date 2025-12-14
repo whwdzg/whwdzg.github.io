@@ -60,9 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	if (settingsBtn) {
 		settingsBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
-			const willOpen = !settingsMenu.classList.contains('active');
-			closeAllMenus(willOpen ? settingsMenu : null);
-			settingsMenu.classList.toggle('active');
+			const isOpen = settingsMenu.classList.contains('active');
+			closeAllMenus();
+			if (!isOpen) {
+				settingsMenu.classList.add('active');
+			}
 		});
 	}
 
