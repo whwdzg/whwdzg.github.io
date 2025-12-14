@@ -45,6 +45,18 @@ body {
 	flex-direction: column;
 	min-height: 100vh;
 	box-sizing: border-box;
+	/* 页面背景：底层图片 + 顶层半透明白色，提升正文可读性 */
+	background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../img/bg.jpg');
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+/* 所有图片统一圆角裁切 */
+img {
+	border-radius: 10px;
+	overflow: hidden;
 }
 
 /* 主内容占据剩余空间，推动 footer 到底部 */
@@ -54,12 +66,141 @@ main {
 	padding-left: 2rem;
 	padding-right: 2rem;
 	padding-bottom: 1rem;
+	transition: margin-left 240ms ease, padding-left 240ms ease;
 }
 
 /* 确保 footer 横向占满视口 */
 footer {
 	width: 100%;
 	box-sizing: border-box;
+}
+
+/* 主内容区域通用链接样式：未特别定义的链接采用与侧边栏按钮一致的圆角矩形风格 */
+/* 右下角浮动 aside 栈容器 */
+#aside-stack {
+	position: fixed;
+	right: 16px;
+	bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	z-index: 120;
+	max-width: min(380px, 40vw);
+}
+
+/* aside 卡片样式：与侧栏风格一致的圆角矩形 */
+#aside-stack aside {
+	background: rgba(255, 255, 255, 0.8);
+	border: 1px solid #dfe3eb;
+	border-radius: 10px;
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+	padding: 0.75rem 0.9rem;
+	color: #111111;
+	max-height: 40vh;
+	overflow: auto;
+	backdrop-filter: saturate(1.1) blur(2px);
+	position: relative;
+	transition: transform 200ms ease, opacity 180ms ease;
+}
+
+#aside-stack aside.closing {
+	opacity: 0;
+	transform: translateX(120%);
+}
+
+.aside-close {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	width: 28px;
+	height: 28px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #dfe3eb;
+	border-radius: 6px;
+	background: #f7f9fb;
+	color: inherit;
+	cursor: pointer;
+	font-size: 1rem;
+	padding: 0;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	transition: background 0.15s ease, border 0.15s ease, transform 0.15s ease;
+}
+
+.aside-close:hover {
+	background: #eef1f5;
+	border-color: #cfd4dc;
+}
+
+.aside-close:active {
+	transform: scale(0.97);
+	background: #e2e6ed;
+	border-color: #c1c7d2;
+}
+
+/* aside 内未定义样式的链接，采用与侧栏按钮一致的圆角矩形风格 */
+#aside-stack aside a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	background: #f7f9fb;
+	border: 1px solid #dfe3eb;
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	color: inherit;
+	text-decoration: none;
+	line-height: 1.25;
+	font-size: 1rem;
+}
+#aside-stack aside a:hover {
+	background: #eef1f5;
+	border-color: #cfd4dc;
+}
+#aside-stack aside a:active {
+	background: #e2e6ed;
+	border-color: #c1c7d2;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}
+
+/* 小屏幕下：浮动栈宽度更窄，避免遮挡主内容 */
+@media (max-width: 760px) {
+	#aside-stack {
+		max-width: min(320px, 70vw);
+		right: 12px;
+		bottom: 12px;
+	}
+	#aside-stack aside {
+		max-height: 50vh;
+	}
+}
+main a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	background: #f7f9fb;
+	border: 1px solid #dfe3eb;
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	color: inherit;
+	text-decoration: none;
+	line-height: 1.25;
+	font-size: 1rem;
+}
+
+main a:hover {
+	background: #eef1f5;
+	border-color: #cfd4dc;
+}
+
+main a:active {
+	background: #e2e6ed;
+	border-color: #c1c7d2;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
 }
 
 /* 侧边栏（左侧导航） */
@@ -98,12 +239,13 @@ footer {
 	left: 0;
 	height: 100vh;
 	width: var(--sidebar-width);
-	background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+	background: rgba(255, 255, 255, 0.8); /* 半透明背景 */
 	border-right: 1px solid #e6e7ea;
 	padding: calc(var(--sidebar-button-space)) 0.75rem 1rem 0.75rem;
 	box-sizing: border-box;
 	overflow-y: auto;
 	z-index: 50;
+	transition: bottom 160ms ease; /* 底部间隙变化时平滑过渡 */
 }
 
 /* 展开态：侧栏采用与按钮匹配的圆角与柔和阴影 */
@@ -172,12 +314,11 @@ body.sidebar-collapsed .sidebar {
 	border: 1px solid #dfe3eb;
 	border-radius: 10px;
 	box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
-	background: rgba(255, 255, 255, 0.9);
+	background: rgba(255, 255, 255, 0.8);
 }
 body.sidebar-collapsed main {
-		margin-left: calc(60px + 1rem);
-		margin-left: 4rem; /* Apply negative left margin on narrow screens when sidebar is collapsed */
-		padding-left: 0;
+	margin-left: 6rem; /* 宽屏折叠时略多留 2rem 空间，避免贴边 */
+	padding-left: 0;
 }
 
 /* 折叠时隐藏子菜单文本（通过缩放字体和文本裁剪实现） */
@@ -220,7 +361,7 @@ body.sidebar-collapsed .sidebar-collapse-btn {
 	text-decoration: none;
 	background: transparent;
 	border-radius: 8px;
-	transition: background 0.18s ease, box-shadow 0.18s ease;
+	transition: background 0.18s ease, box-shadow 0.18s ease, padding 0.2s ease;
 	border: none;
 	appearance: none;
 	padding: 0.5rem 0.5rem;
@@ -318,13 +459,13 @@ body.sidebar-collapsed .sidebar a,
 body.sidebar-collapsed .sidebar .toggle {
 	justify-content: center;
 	min-height: 44px;
-	padding: 0;
+	padding: 0.5rem 0.5rem; /* 保持与展开态一致的内边距，避免展开时跳动 */
 }
 body.sidebar-collapsed .sidebar a .item-icon,
 body.sidebar-collapsed .sidebar .toggle .item-icon,
 body.sidebar-collapsed i[class^="icon-"],
 body.sidebar-collapsed i[class*=" icon-"] {
-	margin-right: 0;
+	margin-right: 0.6rem; /* 与展开态保持一致，避免展开时水平跳动 */
 	width: 28px;
 	min-width: 28px;
 	height: 28px;
@@ -332,6 +473,15 @@ body.sidebar-collapsed i[class*=" icon-"] {
 	justify-content: center;
 	align-items: center;
 	display: flex;
+}
+
+/* 确保折叠后折叠/展开按钮内图标仍居中，不受上面规则影响 */
+body.sidebar-collapsed .sidebar-collapse-btn .item-icon,
+body.sidebar-collapsed .sidebar-collapse-btn i[class^="icon-"],
+body.sidebar-collapsed .sidebar-collapse-btn i[class*=" icon-"] {
+	margin: 0;
+	width: 24px;
+	height: 24px;
 }
 
 /* 折叠时隐藏子菜单的展开/收起箭头图标（避免在仅显示图标时出现多余的箭头） */
@@ -352,11 +502,12 @@ main {
 		position: relative;
 		width: 100%;
 		height: auto;
+		min-height: max-content; /* 以内容为基准，防止过小截断 */
 		border-right: none;
 		padding-top: 64px; /* 留出按钮高度 */
 	}
 	main { margin-left: 0; }
-	body.sidebar-collapsed main { padding-left: 0; }
+	body.sidebar-collapsed main { margin-left: 4rem; padding-left: 0; }
 	.inner-sidebar-collapse-btn {
 		position: absolute;
 		top: 8px;
@@ -372,7 +523,7 @@ main {
 
 	/* 折叠时侧栏不占位；按钮固定到页眉下方 */
 	body.sidebar-collapsed .sidebar {
-		padding-top: 0;
+		padding: 0;
 		height: 0;
 		position: fixed; /* 脱离文档流，避免挤占 main */
 		width: 0;
@@ -381,6 +532,8 @@ main {
 		overflow: hidden;
 		border: none;
 		margin: 0;
+		box-shadow: none;
+		background: transparent;
 	}
 	body.sidebar-collapsed .inner-sidebar-collapse-btn {
 		position: fixed;
@@ -455,6 +608,16 @@ header img.logo {
 	max-height: var(--icon-size);
 	object-fit: contain;
 	display: inline-block;
+}
+
+header .header-avatar {
+	width: 44px;
+	height: 44px;
+	border-radius: 10px;
+	object-fit: cover;
+	display: inline-block;
+	background: #f7f9fb;
+	margin-left: auto; /* 推到右侧 */
 }
 
 /* 页脚 / 地址 小图标（Footer / address small icons） */
