@@ -11,6 +11,7 @@
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
+    <script src="js/i18n.js" defer></script>
     <script src="js/script.js" defer></script>
 </head>
 <body>
@@ -18,7 +19,50 @@
         <h1>
             <img src="img/favicon.ico" alt="logo" class="logo">
             <a href="index.html" title="">主页</a>
-            <img src="img/shuiyu.avif" alt="shuiyu" class="header-avatar">
+            <button class="theme-toggle-btn" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
+                <i class="fluent-font" aria-hidden="true">&#xF87E;</i>
+            </button>
+            <div class="theme-settings-container">
+                <button class="theme-settings-btn" aria-label="主题设置" title="主题设置">
+                    <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
+                </button>
+                <div class="theme-settings-menu">
+                    <label class="settings-option">
+                        <input type="radio" name="theme-follow" value="follow" aria-label="跟随系统">
+                        <span>跟随系统</span>
+                    </label>
+                    <label class="settings-option">
+                        <input type="radio" name="theme-follow" value="manual" aria-label="u624bu52a8设置">
+                        <span>手动设置</span>
+                    </label>
+                </div>
+            </div>
+            <div class="language-selector-container">
+                <button class="language-selector-btn" aria-label="选择语言" title="选择语言">
+                    <i class="fluent-font" aria-hidden="true">&#xF45B;</i>
+                </button>
+                <div class="language-selector-menu">
+                    <label class="language-option">
+                        <input type="radio" name="language" value="zh-CN" aria-label="中文（简体）">
+                        <span>中文（简体）</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="en-US" aria-label="English (US)">
+                        <span>English (US)</span>
+                    </label>
+                </div>
+            </div>
+            <img src="img/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn">
+            <div id="avatar-links-menu" class="avatar-links-menu">
+                <a href="https://github.com/whwdzg" class="avatar-link">
+                    <i class="fluent-font" aria-hidden="true">&#xF106;</i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://space.bilibili.com/588003657" class="avatar-link">
+                    <i class="icon-ic_fluent_tv_24_regular" aria-hidden="true"></i>
+                    <span>bilibili</span>
+                </a>
+            </div>
         </h1>
     </header>
     <nav id="sidebar" class="sidebar" aria-label="主导航">
@@ -37,7 +81,7 @@
             <li class="has-children">
                 <button class="toggle" aria-expanded="false">
                     <i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>
-                    <span class="toggle-label">返回1.0</span>
+                    <span class="toggle-label">返回 1.0</span>
                     <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
                 </button>
                 <ul class="submenu">
@@ -114,6 +158,17 @@
                 1<br>
                 1<br>
                 <img src="img/shuiyu.avif">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
+                <img src="img/bg.jpg">
             </p>
         </section>
         <aside>
@@ -135,11 +190,7 @@
     </main>
     <footer>
         <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
-        <address>
-            <a href="https://github.com/whwdzg">GitHub</a>
-            <a href="https://space.bilibili.com/588003657">bilibili</a>
-        </address>
-        <p>当前版本：<strong>2.0.0.1-20251214</strong></p>
+        <p>当前版本：<strong>2.0.1.0-20251215</strong></p>
     </footer>
 </body>
 </html>
