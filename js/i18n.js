@@ -44,7 +44,7 @@ const translations = {
 		},
 		footer: {
 			copyright: "&copy; 2022-2025 whwdzg. 保留所有权利。",
-			version: "当前版本：<strong>2.0.0.1-20251214</strong>"
+			version: "当前版本：<strong>2.0.1.0-20251215</strong>"
 		},
 		lightbox: {
 			close: "关闭图片",
@@ -96,7 +96,7 @@ const translations = {
 		},
 		footer: {
 			copyright: "&copy; 2022-2025 whwdzg. All rights reserved.",
-			version: "Current version: <strong>2.0.0.1-20251214</strong>"
+			version: "Current version: <strong>2.0.1.0-20251215</strong>"
 		},
 		lightbox: {
 			close: "Close image",
