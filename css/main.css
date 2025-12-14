@@ -98,7 +98,7 @@ footer {
 	left: 0;
 	height: 100vh;
 	width: var(--sidebar-width);
-	background: #ffffff;
+	background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
 	border-right: 1px solid #e6e7ea;
 	padding: calc(var(--sidebar-button-space)) 0.75rem 1rem 0.75rem;
 	box-sizing: border-box;
@@ -169,6 +169,10 @@ body.sidebar-collapsed .sidebar-collapse-btn {
 /* 折叠状态：把侧边栏变窄并调整 main 的左边距 */
 body.sidebar-collapsed .sidebar {
 	width: 60px; /* 折叠后的侧边栏宽度 */
+	border: 1px solid #dfe3eb;
+	border-radius: 10px;
+	box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+	background: rgba(255, 255, 255, 0.9);
 }
 body.sidebar-collapsed main {
 		margin-left: calc(60px + 1rem);
