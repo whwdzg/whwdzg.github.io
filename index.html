@@ -1,356 +1,92 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-    <link rel="manifest" href="manifest.json">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <meta name="renderer" content="webkit" />
-    <title>滄海水魚</title>
-    <link rel="shortcut icon" href="favicon.ico">
-    <meta name="author" content="滄海水魚">
-    <meta name="keywords" content="滄海水魚">
-    <meta name="description" content="滄海水魚个人网站">
-    <link href="css/base.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
-    <script src="js/base.js" type="text/javascript"></script>
-    <script src="js/jquery.slides.min.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页</title>
+
+    <meta name="author" content="whwdzg">
+    <meta name="description" content="whwdzg's personal page">
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
+    <script src="js/script.js" defer></script>
 </head>
-<script> if (typeof navigator.serviceWorker !== 'undefined') { navigator.serviceWorker.register('sw.js') } </script>
 <body>
-    <div class="head_box">
-        <div class="header">
-            <div class="header_logo">
-                <a href="index"><h2>滄海水魚|</h2><h4>主页</h4></a>
-            </div>
-            <div class="header_nav">
-                <ul class="clearfix">
-                    <li class="have_second"><a>社交媒体</a>
-                        <ul class="nav_second">
-                            <i></i>
-                            <li><a href="https://space.bilibili.com/588003657">哔哩哔哩</a></li>
-                            <li><a href="https://www.youtube.com/@whwdzg">Youtube</a></li>
-                            <li><a href="https://twitter.com/whwdzg01">X(Twitter)</a></li>
-                        </ul>
-                    </li>
-                    <li class="have_second"><a>开发</a>
-                        <ul class="nav_second">
-                            <i></i>
-                            <li><a href="https://github.com/whwdzg">Github</a></li>
-                            <li><a href="https://modrinth.com/user/whwdzg">Modrinth</a></li>
-                            <li><a href="https://apps.microsoft.com/search/publisher?name=%E4%B8%8D%E6%99%AE%E9%80%9A%E7%9A%84%E6%B0%B4%E9%B1%BC">Microsoft Store</a></li>
-                            <li><a href="https://www.luogu.com.cn/user/509866">洛谷</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="header_search">
-                <a href="javascript:void(0);" class="header_search_btn">
-                    <!--<img src="img/ic_fluent_search_48_regular.svg">-->
-                    <i></i>
+    <header>
+        <h1><img src="img/favicon.ico" alt="logo" class="logo"><a href="index.html" title="">主页</a></h1>
+    </header>
+    <nav id="sidebar" class="sidebar" aria-label="主导航">
+        <!-- 左侧导航栏（侧边栏） -->
+        <!-- 侧栏内收起按钮（始终驻留在侧栏顶部） -->
+        <button class="sidebar-collapse-btn inner-sidebar-collapse-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
+            <i class="icon-ic_fluent_list_24_regular item-icon" aria-hidden="true"></i>
+        </button>
+        <ul>
+            <li>
+                <a href="#about">
+                    <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="label">关于</span>
                 </a>
-            </div>
-            <div class="header_nav_small_btn">
-                <span class="small_btn"></span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="nav_hidden_zhanwei"></div>
-    <div class="search_box">
-        <div class="search">
-            <form name="searchform" class="search_form" method="post" action="[!--news.url--]e/search/index.php" target="_blank">
-                <input type="text" class="search_text" name="keyboard" placeholder="恭喜你发现了搜索，然而目前没有用呢！">
-                <input type="hidden" name="tbname" value="news">
-                <input type="hidden" name="show" value="title">
-                <input type="hidden" name="tempid" value="1">
-                <input type="submit" class="search_btn" value="确认搜索？">
-            </form>
-        </div>
-    </div>
-
-    <div class="banner_box"></div>
-
-    <div class="article_box clearfix">
-        <div class="left">
-
-            <div class="article_box_one">
-                <div class="index_article_title clearfix">
-                    <h3>2025新年快乐！祝各位心想事成，事事顺心！😋</h3>
-                </div>
-            </div>
-
-            <div class="article_box_one">
-                <div class="index_article_title clearfix">
-                    <h3>音乐播放器更新！界面更加现代化，同时支持多端访问！🤩</h3>
-                    <a href="music-player/">打开></a>
-                </div>
-            </div>
-
-            <!--首页展示列表部分-->
-            <div class="article_box_two">
-                <div class="index_article_title clearfix">
-                    <h3>社交媒体</h3>
-                    <a href="list-bilivideo">全部视频></a>
-                </div>
-                <div class="article_btn">
-                    <div class="article_btn_nav">
-                        <ul>
-                            <li>哔哩哔哩</li>
-                            <li>网易云音乐</li>
-                        </ul>
-                    </div>
-                    <div class="article_btn_box">
-                        <div class="article_btn_box_item clearfix">
-                            <a href="#" class="article_btn_box_item_img">
-                                <img src="">
-                            </a>
-                            <ul>
-                                <li><i></i><a href="https://www.bilibili.com/video/BV1tWvKe5E8p" imgsrc="img/bili/video/【Minecraft官方短视频】是敌是友.avif">【Minecraft官方短视频】是敌是友?</a><p>BV1tWvKe5E8p</p></li>
-                                <li><i></i><a href="https://www.bilibili.com/video/BV1TsvKeyEJR" imgsrc="img/bili/video/【Minecraft官方短视频】你是怎么玩Minecraft的.avif">【Minecraft官方短视频】你是怎么玩Minecraft的</a><p>BV1dN4y1z76f</p></li>
-                            </ul>
-                        </div>
-                        <div class="article_btn_box_item clearfix">
-                            <a href="#" class="article_btn_box_item_img">
-                                <img src="">
-                            </a>
-                            <ul>
-                                <li><i></i><a href="https://music.163.com/#/playlist?id=7304474584" imgsrc="img/163m/163m4.jpg">Rotaeno旋转音律 原声v1.14（持续更新）</a><p>7304474584</p></li>
-                                <li><i></i><a href="https://music.163.com/#/playlist?id=4895475037" imgsrc="img/163m/163m3.jpg">《Rizline v1.0.6》相关曲目全收录</a><p>4895475037</p></li>
-                                <li><i></i><a href="https://music.163.com/#/playlist?id=2778408564" imgsrc="img/163m/163m2.jpg">【Phigros】游戏原声（详情见简介）</a><p>2778408564</p></li>
-                                <li><i></i><a href="https://music.163.com/#/playlist?id=741259453" imgsrc="img/163m/163m1.jpg">上海彩虹室内合唱团精选</a><p>741259453</p></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--首页博文推荐部分-->
-            <div class="article_box_one">
-                <div class="index_article_title clearfix">
-                    <h3>专栏</h3>
-                    <a href="list-column">全部专栏></a>
-                </div>
-                <ul class="index_article">
-
-                    <li class="clearfix article_list">
-                        <a href="about" class="article_list_img">
-                            <img src="img/head/shuiyu.avif">
-                        </a>
-                        <h3>关于此网站</h3>
-                        <p>https://whwdzg.github.io/about</p>
-                    </li>
-
-                    <li class="clearfix article_list">
-                        <a href="https://www.bilibili.com/opus/968748900391321609/" class="article_list_img">
-                            <img src="img/bili/column/海绵宝宝add-on现已到来！.webp">
-                        </a>
-                        <h3>海绵宝宝add-on现已到来！</h3>
-                        <p>https://www.bilibili.com/opus/968748900391321609/</p>
-                    </li>
-
-                    <li class="clearfix article_list">
-                        <a href="comments" class="article_list_img">
-                            <img src="img/head/shuiyu.avif">
-                        </a>
-                        <h3>评论发癫区</h3>
-                        <p>https://whwdzg.github.io/comments</p>
-                    </li>
-                    <li class="clearfix article_list">
-                        <a href="psn-img-leagacy" class="article_list_img">
-                            <img src="img/psn-img/hesy.jpg">
-                        </a>
-                        <h3>个人图库-过去的记忆</h3>
-                        <p>https://whwdzg.github.io/psn-img-leagacy</p>
-                    </li>
-
-                </ul>
-            </div>
-
-            <div class="article_box_one">
-                <div class="index_article_title clearfix">
-                    <h3>whwdzg's Recipe 现已登录MCMOD百科!😘</h3>
-                    <a href="https://www.mcmod.cn/class/17614.html">MCMOD></a>
-                </div>
-            </div>
-
-            <div class="article_box_one">
-                <div class="index_article_title clearfix">
-                    <h3>Modrinth 数据包/模组</h3>
-                    <a href="https://modrinth.com/user/whwdzg">Modrinth></a>
-                </div>
-                <ul class="index_article">
-                    <li class="clearfix article_list">
-                        <a href="https://modrinth.com/datapack/whwdzg-s-recipe" class="article_list_img">
-                            <img src="https://cdn.modrinth.com/data/aCXZzFav/809704f5f88483cba89c6095db3820c74c8aaf72.png">
-                        </a>
-                        <a href="https://modrinth.com/datapack/whwdzg-s-recipe"><h3>whwdzg's Recipe</h3></a>
-                        <p>Add some recipes to Minecraft</p>
-                    </li>
-
-                    <li class="clearfix article_list">
-                        <a href="https://modrinth.com/datapack/glowing_players" class="article_list_img">
-                            <img src="https://cdn.modrinth.com/data/z5l00wq2/14ba612ef2b9ee7281f4e59a5c406ac532be8602.png">
-                        </a>
-                        <a href="https://modrinth.com/datapack/glowing_players"><h3>Glowing Players</h3></a>
-                        <p>A mod/data pack which will provide glowing effect to players.</p>
-                    </li>
-
-                    <li class="clearfix article_list">
-                        <a href="https://modrinth.com/datapack/only-survival-mode" class="article_list_img">
-                            <img src="https://cdn.modrinth.com/data/wIJqstTL/4f7ea7687186ba659d7dac16b449f4bec7df0e36.png">
-                        </a>
-                        <a href="https://modrinth.com/datapack/only-survival-mode"><h3>Only Survival Mode</h3></a>
-                        <p>A very simple data pack that only allow survival mode</p>
-                    </li>
-
-                    <li class="clearfix article_list">
-                        <a href="https://modrinth.com/datapack/better_mob_drop" class="article_list_img">
-                            <img src="https://cdn.modrinth.com/data/DUx62rbS/a5c56d6bc3ca6b5a54e378dbd14895e065f68567.png">
-                        </a>
-                        <a href="https://modrinth.com/datapack/better_mob_drop"><h3>Better Mob Drop</h3></a>
-                        <p>A Minecraft mod/data pack which provide more reasonable mob drop</p>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="article_box_one">
-                <div class="index_article_title clearfix">
-                    <h3>base64 加解密小工具上线了😘</h3>
-                    <a href="tool/base64">点击前往></a>
-                </div>
-            </div>
-
-            <div class="article_box_one">
-                <div class="index_article_title clearfix">
-                    <h3>Github 仓库</h3>
-                    <a href="https://github.com/whwdzg">Github></a>
-                </div>
-                <ul class="index_article">
-                    <li class="clearfix article_list">
-                        <a href="https://github.com/whwdzg/whwdzg.github.io" class="article_list_img">
-                            <img src="img/head/whwdzg.jpg">
-                        </a>
-                        <a href="https://github.com/whwdzg/whwdzg.github.io"><h3>whwdzg.github.io</h3></a>
-                        <p> 🔴HTML      ⚖️GNU General Public License v3.0 </p>
-                    </li>
-                    <li class="clearfix article_list">
-                        <a href="https://github.com/whwdzg/ShuiyuBlog-PWA" class="article_list_img">
-                            <img src="img/head/whwdzg.jpg">
-                        </a>
-                        <a href="https://github.com/whwdzg/ShuiyuBlog-PWA"><h3>ShuiyuBlog-PWA</h3></a>
-                        <p> 🔵PowerShell      ⚖️GNU General Public License v3.0 </p>
-                    </li>
-                    <li class="clearfix article_list">
-                        <a href="https://github.com/whwdzg/whwdzg" class="article_list_img">
-                            <img src="img/head/whwdzg.jpg">
-                        </a>
-                        <a href="https://github.com/whwdzg/whwdzg"><h3>whwdzg</h3></a>
-                        <p> About Myself</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-            
-
-        <div class="right">
-            <!--个人介绍部分-->
-            <div class="self_info right_box">
-                <img src="img/head/shuiyu.avif">
-                <div class="self_info_text">
-                    <h3>滄海水魚</h3>
-                    <div>
-                        <p>愿在之后的日子里，多点努力，少点遗憾，多一份坚持，少一份放弃。</p>
-                        <p>加油了！</p>
-                    </div>
-                    <a href="https://space.bilibili.com/588003657/">Read More</a>
-                </div>
-            </div>
-            <!--个人介绍隐藏部分，只在右侧被翻到最上面显示-->
-            <div class="self_info_scroll_bottom right_box">
-                <img src="img/head/shuiyu.avif">
-                <div class="self_info_text">
-                    <h3>滄海水魚</h3>
-                    <div>
-                        <p>愿在之后的日子里，多点努力，少点遗憾，多一份坚持，少一份放弃。</p>
-                        <p>加油了！</p>
-                    </div>
-                    <a href="https://space.bilibili.com/588003657/">Read More</a>
-                </div>
-            </div>
-
-            <!--座右铭目的把div对齐最多只能2行字，多了就高了-->
-            <div class="self_zuoyoum right_box">
-                <h3>济沧海，遇苍穹</h3>
-            </div>
-
-            <!--专栏-->
-            <div class="right_box tuijian_moban">
-                <h3>专栏</h3>
-                <div>
-                    <ul>
-                        <li><a href="psn-img-leagacy">个人图库-过去的记忆</a></li>
-                        <li><a href="comments">评论发癫区</a></li>
-                        <li><a href="https://www.bilibili.com/opus/968748900391321609/">海绵宝宝add-on现已到来！</a></li>
-                        <li><a href="about">关于此网站</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="right_box youlian_list">
-                <h3>友情链接</h3>
-                <div>
-                    <ul>
-                        <li><a href="https://github.com">Github</a></li>
-                        <li><a href="https://www.bilibili.com">bilibili</a></li>
-                        <li><a href="https://www.afdian.com">爱发电</a></li>
-                        <li><a href="https://and-dev-team.github.io">AND Develop Team</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="self_erweima right_box">
-                <h3>获取水鱼Blog PWA</h3>
-                <div>
-                    <ul>
-                        <a href="https://apps.microsoft.com/detail/9P8NTKX62NXZ?mode=direct">
-                            <img src="https://get.microsoft.com/images/zh-cn%20dark.svg" width="200"/>
-                        </a>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="self_erweima right_box">
-                <h3>获取AND Devlop Center PWA</h3>
-                <div>
-                    <ul>
-                        <a href="https://apps.microsoft.com/detail/9mzn3spb8ns5?mode=direct">
-                            <img src="https://get.microsoft.com/images/zh-cn%20dark.svg" width="200"/>
-                        </a>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer_box">
-        <div class="footer clearfix">
-            <div class="footer_img">
-                <ul>
+            </li>
+            <li class="has-children">
+                <button class="toggle" aria-expanded="false">
+                    <i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="toggle-label">返回1.0</span>
+                    <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
+                </button>
+                <ul class="submenu">
                     <li>
-                        <img src="img/head/shuiyu.avif">
-                        <span>济沧海，遇苍穹</span>
+                        <a href="Legacy-1.0/index.html">
+                            <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">1.0 主页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Legacy-1.0/about.html">
+                            <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">关于（1.0）</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Legacy-1.0/README.md">
+                            <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">README</span>
+                        </a>
                     </li>
                 </ul>
-            </div>
-            <div class="footer_text">
-                <p><i>关于本网站</i></p>
-                <p>本站为滄海水魚个人网站，由滄海水魚运营。</p>
-                <p>本站由Github Page托管</p>
-                <p>本站如有任何侵权行为，请联系滄海水魚</p>
-                <p>©2022-2025 滄海水魚 版权所有</p>
-            </div>
-        </div>
-    </div>
+            </li>
+            <li>
+                <a href="README.md">
+                    <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="label">README</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <!--主体-->
+        <section id="about">
+            <h2>关于</h2>
+            <p>这里是2.0版本的主页，当前正在构建中，尚处于<strong>极早期阶段</strong>，供实验学习使用</p>
+        </section>
+        <section id="archives">
+            <h2>返回1.0主页</h2>
+            <p>
+                <abbr title="1.3.12.2025.8.7-New_MusicPlayer">1.0版本</abbr>已终止更新
+                <br>
+                <a href="Legacy-1.0/index.html" title="返回1.0版本主页">返回1.0主页</a> 
+            </p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
+        <address>
+            <a href="https://github.com/whwdzg">GitHub</a>
+            <a href="https://space.bilibili.com/588003657">bilibili</a>
+        </address>
+        <p>当前版本：<strong>2.0.0.0-20251214</strong></p>
+    </footer>
 </body>
-
 </html>
