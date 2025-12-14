@@ -282,6 +282,17 @@ document.addEventListener('DOMContentLoaded', function () {
 			languageSelectorBtn.title = translations.header.languageSelectorBtn;
 			languageSelectorBtn.setAttribute('aria-label', translations.header.languageSelectorBtn);
 		}
+
+		// 更新图片放大遮罩的辅助文本
+		const lightboxStrings = translations.lightbox;
+		if (lightboxStrings) {
+			const closeBtn = document.querySelector('#image-lightbox .lightbox-close');
+			const zoomInBtn = document.querySelector('#image-lightbox .lightbox-zoom-in');
+			const zoomOutBtn = document.querySelector('#image-lightbox .lightbox-zoom-out');
+			if (closeBtn) closeBtn.setAttribute('aria-label', lightboxStrings.close);
+			if (zoomInBtn) zoomInBtn.setAttribute('aria-label', lightboxStrings.zoomIn);
+			if (zoomOutBtn) zoomOutBtn.setAttribute('aria-label', lightboxStrings.zoomOut);
+		}
 	}
 
 	function updateLanguageRadioState(lang) {
@@ -587,6 +598,15 @@ document.addEventListener('DOMContentLoaded', function () {
 	const zoomOutBtn = overlay.querySelector('.lightbox-zoom-out');
 	let currentIndex = 0;
 	let currentScale = 1;
+	const getLang = () => document.documentElement.lang || localStorage.getItem('language') || 'zh-CN';
+	const applyLightboxLabels = () => {
+		if (typeof translations === 'undefined') return;
+		const strings = translations[getLang()] && translations[getLang()].lightbox;
+		if (!strings) return;
+		if (closeBtn) closeBtn.setAttribute('aria-label', strings.close);
+		if (zoomInBtn) zoomInBtn.setAttribute('aria-label', strings.zoomIn);
+		if (zoomOutBtn) zoomOutBtn.setAttribute('aria-label', strings.zoomOut);
+	};
 
 	const applyScale = () => {
 		overlayImg.style.transform = `scale(${currentScale})`;
@@ -674,6 +694,9 @@ document.addEventListener('DOMContentLoaded', function () {
 			applyScale();
 		});
 	}
+
+	// 初始化遮罩按钮的本地化标签
+	applyLightboxLabels();
 
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape' && overlay.classList.contains('active')) {

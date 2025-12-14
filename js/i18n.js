@@ -45,6 +45,11 @@ const translations = {
 		footer: {
 			copyright: "&copy; 2022-2025 whwdzg. 保留所有权利。",
 			version: "当前版本：<strong>2.0.0.1-20251214</strong>"
+		},
+		lightbox: {
+			close: "关闭图片",
+			zoomIn: "放大",
+			zoomOut: "缩小"
 		}
 	},
 	'en-US': {
@@ -92,6 +97,11 @@ const translations = {
 		footer: {
 			copyright: "&copy; 2022-2025 whwdzg. All rights reserved.",
 			version: "Current version: <strong>2.0.0.1-20251214</strong>"
+		},
+		lightbox: {
+			close: "Close image",
+			zoomIn: "Zoom in",
+			zoomOut: "Zoom out"
 		}
 	}
 };
