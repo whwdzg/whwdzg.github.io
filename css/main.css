@@ -106,6 +106,13 @@ footer {
 	z-index: 50;
 }
 
+/* 展开态：侧栏采用与按钮匹配的圆角与柔和阴影 */
+body:not(.sidebar-collapsed) .sidebar {
+	border: 1px solid #dfe3eb;
+	border-radius: 10px;
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
 /* 侧边栏折叠按钮样式（固定在侧栏外，避免遮挡内容） */
 .sidebar-collapse-btn {
 	display: flex;
