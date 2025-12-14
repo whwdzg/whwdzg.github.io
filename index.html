@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页</title>
+
+    <meta name="author" content="whwdzg">
+    <meta name="description" content="whwdzg's personal page">
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1><img src="img/favicon.ico" alt="logo" class="logo"><a href="index.html" title="">主页</a></h1>
+    </header>
+    <nav id="sidebar" class="sidebar" aria-label="主导航">
+        <!-- 左侧导航栏（侧边栏） -->
+        <!-- 侧栏内收起按钮（始终驻留在侧栏顶部） -->
+        <button class="sidebar-collapse-btn inner-sidebar-collapse-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
+            <i class="icon-ic_fluent_list_24_regular item-icon" aria-hidden="true"></i>
+        </button>
+        <ul>
+            <li>
+                <a href="#about">
+                    <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="label">关于</span>
+                </a>
+            </li>
+            <li class="has-children">
+                <button class="toggle" aria-expanded="false">
+                    <i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="toggle-label">返回1.0</span>
+                    <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
+                </button>
+                <ul class="submenu">
+                    <li>
+                        <a href="Legacy-1.0/index.html">
+                            <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">1.0 主页</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Legacy-1.0/about.html">
+                            <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">关于（1.0）</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Legacy-1.0/README.md">
+                            <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">README</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="README.md">
+                    <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="label">README</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <!--主体-->
+        <section id="about">
+            <h2>关于</h2>
+            <p>这里是2.0版本的主页，当前正在构建中，尚处于<strong>极早期阶段</strong>，供实验学习使用</p>
+        </section>
+        <section id="archives">
+            <h2>返回1.0主页</h2>
+            <p>
+                <abbr title="1.3.12.2025.8.7-New_MusicPlayer">1.0版本</abbr>已终止更新
+                <br>
+                <a href="Legacy-1.0/index.html" title="返回1.0版本主页">返回1.0主页</a> 
+            </p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
+        <address>
+            <a href="https://github.com/whwdzg">GitHub</a>
+            <a href="https://space.bilibili.com/588003657">bilibili</a>
+        </address>
+        <p>当前版本：<strong>2.0.0.0-20251214</strong></p>
+    </footer>
+</body>
+</html>
