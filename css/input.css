@@ -1,0 +1,36 @@
+/* 通用输入框样式 */
+.styled-input {
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	color: var(--text-color);
+	padding: 6px 8px;
+	font-size: 0.95rem;
+	text-align: center;
+	outline: none;
+	transition: border 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}
+
+.styled-input:focus {
+	background: var(--input-focus-bg);
+	color: var(--text-color);
+	border-color: var(--border-color);
+	box-shadow: 0 -2px 0 0 #3b82f6 inset, 0 0 0 1px var(--hover-bg);
+}
+
+.styled-input::placeholder {
+	color: var(--text-color);
+	opacity: 0.68;
+}
+
+/* 隐藏 number input 的 spinner 控件 */
+.styled-input::-webkit-outer-spin-button,
+.styled-input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.styled-input[type="number"] {
+	-moz-appearance: textfield;
+}

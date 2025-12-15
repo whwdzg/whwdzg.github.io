@@ -1,0 +1,315 @@
+/* 页脚样式 */
+footer {
+	background-color: var(--secondary-bg);
+	color: var(--text-color);
+	padding: 1rem 1.25rem;
+	text-align: center;
+	font-size: 0.95rem;
+	border-top: 1px solid var(--border-color);
+	transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+footer a {
+	color: #0366d6;
+	text-decoration: none;
+}
+
+footer a:hover,
+footer a:focus {
+	text-decoration: underline;
+}
+
+body.dark-mode footer a {
+	color: #4db8ff;
+}
+
+/* 页脚 / 地址 小图标 */
+footer img,
+address img,
+footer .icon,
+address .icon {
+	width: var(--icon-small);
+	height: var(--icon-small);
+	max-width: var(--icon-small);
+	max-height: var(--icon-small);
+	object-fit: contain;
+	vertical-align: middle;
+}
+
+/* 语言选择菜单 */
+.language-selector-menu {
+	display: block;
+	position: absolute;
+	top: calc(100% + 12px);
+	right: 0;
+	background: var(--card-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	box-shadow: 0 8px 16px var(--shadow-color);
+	min-width: 140px;
+	z-index: 200;
+	padding: 0.5rem 0;
+	opacity: 0;
+	transform: translateY(-8px) scale(0.98);
+	pointer-events: none;
+	transition: opacity 180ms cubic-bezier(.2,.8,.2,1), transform 200ms cubic-bezier(.2,.8,.2,1), visibility 200ms cubic-bezier(.2,.8,.2,1);
+	will-change: opacity, transform;
+	visibility: hidden;
+}
+
+.language-selector-menu.active {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	pointer-events: auto;
+	visibility: visible;
+}
+
+.language-option {
+	display: flex;
+	align-items: center;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	transition: background 0.15s ease, box-shadow 0.18s ease;
+	user-select: none;
+	margin: 0 0.5rem;
+	border-radius: 8px;
+}
+
+.language-option:hover {
+	background: var(--hover-bg);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.language-option input[type="radio"] {
+	margin-right: 0.5rem;
+	cursor: pointer;
+}
+
+.language-option span {
+	color: var(--text-color);
+	font-size: 0.95rem;
+}
+
+.language-selector-container {
+	position: relative;
+	display: inline-block;
+	margin: 0;
+}
+
+.language-selector-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	padding: 0;
+	margin: 0;
+	background: var(--secondary-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	cursor: pointer;
+	font-size: 1.2rem;
+	color: var(--text-color);
+	transition: background 0.18s, border 0.18s, transform 0.18s;
+}
+
+.language-selector-btn:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+
+.language-selector-btn:active {
+	transform: scale(0.95);
+	background: var(--active-bg);
+}
+
+/* 右下角浮动 aside 栈容器 */
+#aside-stack {
+	position: fixed;
+	right: 16px;
+	bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	z-index: 120;
+	max-width: min(380px, 40vw);
+}
+
+/* aside 卡片样式：与侧栏风格一致的圆角矩形 */
+#aside-stack aside {
+	background: var(--card-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 12px 30px var(--shadow-color);
+	padding: 0.75rem 0.9rem;
+	color: var(--text-color);
+	max-height: 40vh;
+	overflow: auto;
+	backdrop-filter: saturate(1.1) blur(2px);
+	position: relative;
+	transition: transform 200ms ease, opacity 180ms ease;
+}
+
+#aside-stack aside.closing {
+	opacity: 0;
+	transform: translateX(120%);
+}
+
+.aside-close {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	width: 28px;
+	height: 28px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	background: var(--secondary-bg);
+	color: inherit;
+	cursor: pointer;
+	font-size: 1rem;
+	padding: 0;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	transition: background 0.15s ease, border 0.15s ease, transform 0.15s ease;
+}
+
+.aside-close:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+
+.aside-close:active {
+	transform: scale(0.97);
+	background: var(--active-bg);
+	border-color: var(--border-color);
+}
+
+/* aside 内未定义样式的链接，采用与侧栏按钮一致的圆角矩形风格 */
+#aside-stack aside a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	background: var(--secondary-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	color: inherit;
+	text-decoration: none;
+	line-height: 1.25;
+	font-size: 1rem;
+	transition: background 0.18s ease, border 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+#aside-stack aside a:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+#aside-stack aside a:active {
+	transform: scale(0.98);
+	background: var(--active-bg);
+	border-color: var(--border-color);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}
+
+/* 小屏幕下：浮动栈宽度更窄，避免遮挡主内容 */
+@media (max-width: 760px) {
+	#aside-stack {
+		max-width: min(320px, 70vw);
+		right: 12px;
+		bottom: 12px;
+	}
+	#aside-stack aside {
+		max-height: 50vh;
+	}
+}
+
+/* 头部头像和菜单 */
+#avatar-btn {
+	cursor: pointer;
+	transition: transform 0.2s ease;
+	width: 40px;
+	height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    display: inline-block;
+    background: var(--secondary-bg);
+    margin: 0 0.5rem;
+}
+
+#avatar-btn:hover {
+	transform: scale(1.05);
+}
+#avatar-btn:active {
+	transform: scale(0.95);
+	background: var(--active-bg);
+}
+
+#avatar-links-menu {
+	display: block;
+	position: absolute;
+	top: calc(100% + 12px);
+	right: 0;
+	background: var(--card-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	box-shadow: 0 8px 16px var(--shadow-color);
+	min-width: 140px;
+	z-index: 200;
+	padding: 0.5rem 0;
+	opacity: 0;
+	transform: translateY(-8px) scale(0.98);
+	pointer-events: none;
+	transition: opacity 180ms cubic-bezier(.2,.8,.2,1), transform 200ms cubic-bezier(.2,.8,.2,1), visibility 200ms cubic-bezier(.2,.8,.2,1);
+	will-change: opacity, transform;
+	visibility: hidden;
+}
+
+#avatar-links-menu.active {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	pointer-events: auto;
+	visibility: visible;
+}
+
+.avatar-link {
+	display: flex;
+	align-items: center;
+	padding: 0.75rem 1rem;
+	cursor: pointer;
+	transition: background 0.15s ease, box-shadow 0.18s ease;
+	user-select: none;
+	margin: 0 0.5rem;
+	border-radius: 8px;
+	color: var(--text-color);
+	text-decoration: none;
+}
+
+.avatar-link:hover {
+	background: var(--hover-bg);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.avatar-link:active {
+	transform: scale(0.98);
+	background: var(--active-bg);
+}
+
+.avatar-link i {
+	width: 20px;
+	height: 20px;
+	min-width: 20px;
+	margin-right: 0.75rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.1rem;
+}
+
+.avatar-link span {
+	font-size: 0.95rem;
+}

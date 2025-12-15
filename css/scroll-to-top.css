@@ -1,0 +1,50 @@
+/* 返回顶部按钮 */
+.scroll-to-top {
+	position: fixed;
+	left: 0.75rem;
+	bottom: 1rem;
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	display: flex; /* 确保使用 flex 布局 */
+	align-items: center; /* 垂直居中 */
+	justify-content: center; /* 水平居中 */
+	border-radius: 10px;
+	border: 1px solid var(--border-color);
+	background: var(--secondary-bg);
+	color: var(--text-color);
+	font-size: 1.2rem;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+	transition: background 0.18s ease, border 0.18s ease, transform 0.18s ease, opacity 0.18s ease, visibility 0.18s ease, left 240ms ease, bottom 240ms ease;
+	z-index: 75;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(8px);
+	line-height: 1;
+	padding: 0;
+}
+
+.scroll-to-top.show {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+	background: var(--hover-bg);
+}
+
+.scroll-to-top:active {
+	transform: scale(0.95);
+	background: var(--active-bg);
+}
+
+.scroll-to-top i {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	margin: 0 !important; /* 覆盖 .item-icon 的 margin-right */
+}

@@ -1,0 +1,400 @@
+/* 页眉样式 */
+header {
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	padding: 0.5rem 1rem;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1100; /* 高于遮罩与弹窗，保持始终可见 */
+}
+
+header h1 {
+	margin: 0;
+	font-size: 1.25rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.header-title {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.header-actions {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin-left: auto; /* 将操作区推到右上角 */
+}
+
+header a {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* 页眉 / logo 图标 */
+header .logo {
+	width: var(--icon-size);
+	height: var(--icon-size);
+	max-width: var(--icon-size);
+	max-height: var(--icon-size);
+	object-fit: contain;
+	display: inline-block;
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
+}
+
+/* 页眉头像防拖拽保存 */
+header .header-avatar {
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
+	draggable: false;
+}
+
+/* 主题切换按钮 */
+.theme-toggle-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	padding: 0;
+	margin: 0;
+	background: var(--secondary-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	cursor: pointer;
+	font-size: 1.2rem;
+	color: var(--text-color);
+	transition: background 0.18s, border 0.18s, transform 0.18s;
+}
+
+/* 顶部搜索按钮，继承主题按钮风格 */
+.header-search-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	padding: 0;
+	margin: 0;
+	background: var(--secondary-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	cursor: pointer;
+	font-size: 1.1rem;
+	color: var(--text-color);
+	transition: background 0.18s, border 0.18s, transform 0.18s;
+}
+
+.header-search-btn i {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+
+.header-search-btn:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+
+.header-search-btn:active {
+	transform: scale(0.95);
+	background: var(--active-bg);
+}
+
+/* 搜索框浮层，样式对齐 lightbox 百分比输入 */
+#header-search-overlay {
+	position: fixed;
+	top: calc(var(--header-height, 64px) + 8px);
+	right: 24px;
+	z-index: 1300;
+	max-width: 480px;
+	width: calc(100vw - 48px); /* 窄视图下限制宽度 */
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(-8px);
+	transition: opacity 200ms cubic-bezier(.2,.8,.2,1), transform 220ms cubic-bezier(.2,.8,.2,1), visibility 200ms cubic-bezier(.2,.8,.2,1);
+	will-change: opacity, transform;
+}
+
+#header-search-overlay.show {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateY(0);
+}
+
+#header-search-overlay .search-box {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background: var(--card-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	padding: 8px 10px;
+	box-shadow: 0 10px 30px var(--shadow-color);
+	backdrop-filter: blur(6px);
+	min-width: 240px; /* 体积与 lightbox 侧边指标相仿 */
+	width: 100%;
+	box-sizing: border-box;
+}
+
+/* 搜索结果列表 */
+.search-results {
+	margin-top: 8px;
+	background: var(--card-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 10px 30px var(--shadow-color);
+	backdrop-filter: blur(6px);
+	max-height: 400px;
+	overflow-y: auto;
+	padding: 4px;
+	width: 100%;
+	box-sizing: border-box;
+	opacity: 0;
+	transform: translateY(-6px) scale(0.98);
+	transition: opacity 180ms cubic-bezier(.2,.8,.2,1), transform 200ms cubic-bezier(.2,.8,.2,1);
+	will-change: opacity, transform;
+}
+
+.search-results.visible {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+@media (max-width: 760px) {
+	#header-search-overlay {
+		right: 12px;
+		left: 12px;
+		width: auto;
+		max-width: none;
+	}
+	
+	.search-results {
+		max-height: 300px;
+	}
+}
+
+.search-result-item {
+	padding: 8px 12px;
+	margin: 4px 0;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 0.18s ease;
+	line-height: 1.5;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.search-result-item:hover {
+	background: var(--hover-bg);
+}
+
+.search-result-item:active {
+	background: var(--active-bg);
+}
+
+.result-tag {
+	display: inline-block;
+	padding: 2px 6px;
+	background: rgba(74, 144, 226, 0.15);
+	color: #4A90E2;
+	border-radius: 4px;
+	font-size: 0.85rem;
+	font-weight: 500;
+	margin-right: 6px;
+}
+
+.preview-context {
+	color: var(--text-muted, #6b7280);
+	font-size: 0.9rem;
+}
+
+.preview-match {
+	color: var(--text-color);
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.search-no-results {
+	padding: 16px;
+	text-align: center;
+	color: var(--text-muted, #6b7280);
+	font-size: 0.9rem;
+}
+
+#header-search-overlay .search-input {
+	flex: 1;
+	min-width: 0;
+}
+
+#header-search-overlay .search-submit {
+	min-width: 72px;
+	height: 36px;
+	padding: 0 12px;
+	border-radius: 8px;
+	border: 1px solid var(--border-color);
+	background: var(--secondary-bg);
+	color: var(--text-color);
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+	transition: background 0.18s ease, border 0.18s ease, transform 0.18s ease;
+}
+
+#header-search-overlay .search-submit:hover {
+	background: var(--hover-bg);
+}
+
+#header-search-overlay .search-submit:active {
+	transform: scale(0.97);
+	background: var(--active-bg);
+}
+
+/* 搜索高亮 */
+@keyframes search-highlight-blink {
+	0%, 100% {
+		box-shadow: 0 0 0 3px #4A90E2;
+	}
+	50% {
+		box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+	}
+}
+
+.search-highlight {
+	box-shadow: 0 0 0 3px #4A90E2;
+	border-radius: 8px;
+	animation: search-highlight-blink 0.6s ease-in-out 6 forwards; /* 闪烁 6 次 (3 秒) */
+	transition: box-shadow 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+.theme-toggle-btn:active {
+	transform: scale(0.95);
+	background: var(--active-bg);
+}
+
+/* 主题设置容器 */
+.theme-settings-container {
+	position: relative;
+	display: inline-block;
+	margin: 0;
+}
+
+.theme-settings-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	padding: 0;
+	margin: 0;
+	background: var(--secondary-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	cursor: pointer;
+	font-size: 1.2rem;
+	color: var(--text-color);
+	transition: background 0.18s, border 0.18s, transform 0.18s;
+}
+
+.theme-settings-btn:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+
+.theme-settings-btn:active {
+	transform: scale(0.95);
+	background: var(--active-bg);
+}
+
+.theme-settings-menu {
+	display: block;
+	position: absolute;
+	top: calc(100% + 12px);
+	right: 0;
+	background: var(--card-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	box-shadow: 0 8px 16px var(--shadow-color);
+	min-width: 140px;
+	z-index: 200;
+	padding: 0.5rem 0;
+	opacity: 0;
+	transform: translateY(-8px) scale(0.98);
+	pointer-events: none;
+	transition: opacity 180ms cubic-bezier(.2,.8,.2,1), transform 200ms cubic-bezier(.2,.8,.2,1), visibility 200ms cubic-bezier(.2,.8,.2,1);
+	will-change: opacity, transform;
+	visibility: hidden;
+}
+
+.theme-settings-menu.active {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	pointer-events: auto;
+	visibility: visible;
+}
+
+.settings-option {
+	display: flex;
+	align-items: center;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	transition: background 0.15s ease, box-shadow 0.18s ease;
+	user-select: none;
+	margin: 0 0.5rem;
+	border-radius: 8px;
+}
+
+.settings-option:hover {
+	background: var(--hover-bg);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.settings-option input[type="radio"] {
+	margin-right: 0.5rem;
+	cursor: pointer;
+}
+
+.settings-option span {
+	color: var(--text-color);
+	font-size: 0.95rem;
+}
+
+/* 可访问性：确保页眉/页脚内链接具有足够对比度 */
+header a:focus,
+footer a:focus {
+	outline: 3px solid rgba(3,102,214,0.18);
+	outline-offset: 2px;
+}
+
+/* 小屏幕：减少内边距 */
+@media (max-width: 480px) {
+	header, footer {
+		padding-left: 0.75rem;
+		padding-right: 0.75rem;
+	}
+}
