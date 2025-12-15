@@ -262,6 +262,43 @@ document.addEventListener('DOMContentLoaded', function () {
 		updateCursor();
 	};
 
+	// 鼠标滚轮缩放
+	const onWheel = (e) => {
+		if (!overlay.classList.contains('active')) return;
+		e.preventDefault();
+		const delta = Math.sign(e.deltaY);
+		const step = 0.08;
+		const prevScale = currentScale;
+		currentScale = clampScale(prevScale + (delta < 0 ? step : -step));
+		// 以光标为中心微调平移，增强缩放体验
+		const rect = imageWrapper.getBoundingClientRect();
+		const cx = e.clientX - rect.left - rect.width / 2;
+		const cy = e.clientY - rect.top - rect.height / 2;
+		const ratio = currentScale / prevScale;
+		panX = panX * ratio + cx * (1 - ratio);
+		panY = panY * ratio + cy * (1 - ratio);
+		applyTransform({ clamp: true });
+	};
+
+	// 键盘左右/上下切换图片
+	const onKeyDown = (e) => {
+		if (!overlay.classList.contains('active')) return;
+		const code = e.key;
+		if (code === 'ArrowRight' || code === 'ArrowDown') {
+			// 下一张
+			const next = Math.min(candidates.length - 1, currentIndex + 1);
+			if (next !== currentIndex) openOverlay(next);
+			e.preventDefault();
+		} else if (code === 'ArrowLeft' || code === 'ArrowUp') {
+			// 上一张
+			const prev = Math.max(0, currentIndex - 1);
+			if (prev !== currentIndex) openOverlay(prev);
+			e.preventDefault();
+		} else if (code === 'Escape') {
+			closeOverlay();
+		}
+	};
+
 	const setActiveThumb = () => {
 		const thumbs = filmstrip.querySelectorAll('.filmstrip-thumb');
 		thumbs.forEach((btn, idx) => {
@@ -372,6 +409,9 @@ document.addEventListener('DOMContentLoaded', function () {
 			overlay.classList.add('active');
 			overlay.setAttribute('aria-hidden', 'false');
 			document.body.classList.add('no-scroll-lightbox');
+			// 绑定滚轮与键盘事件
+			overlay.addEventListener('wheel', onWheel, { passive: false });
+			document.addEventListener('keydown', onKeyDown);
 			setActiveThumb();
 			updateZoomDisplay();
 			if (zoomInput) {
@@ -388,6 +428,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		overlay.classList.remove('active');
 		overlay.setAttribute('aria-hidden', 'true');
 		document.body.classList.remove('no-scroll-lightbox');
+		// 解绑滚轮与键盘事件
+		overlay.removeEventListener('wheel', onWheel);
+		document.removeEventListener('keydown', onKeyDown);
 	};
 
 	const locateInDocument = () => {

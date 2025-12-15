@@ -25,6 +25,30 @@ header h1 {
 	gap: 0.5rem;
 }
 
+.header-title a {
+	padding: 0.5rem 0.75rem;
+	border-radius: 8px;
+	transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+	outline: none;
+}
+
+.header-title a:hover {
+	color: var(--text-color);
+	background: var(--hover-bg);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.header-title a:focus {
+	outline: none;
+}
+
+.header-title a:active {
+	transform: scale(0.98);
+	background: var(--active-bg);
+	border-color: var(--border-color);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}
+
 .header-actions {
 	display: inline-flex;
 	align-items: center;

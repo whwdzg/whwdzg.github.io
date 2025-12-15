@@ -282,21 +282,28 @@ address .icon {
 	align-items: center;
 	padding: 0.75rem 1rem;
 	cursor: pointer;
-	transition: background 0.15s ease, box-shadow 0.18s ease;
+	transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 	user-select: none;
 	margin: 0 0.5rem;
 	border-radius: 8px;
 	color: var(--text-color);
 	text-decoration: none;
+	outline: none;
 }
 
 .avatar-link:hover {
+	color: var(--text-color);
 	background: var(--hover-bg);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.avatar-link:focus {
+	outline: none;
 }
 .avatar-link:active {
 	transform: scale(0.98);
 	background: var(--active-bg);
+	border-color: var(--border-color);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
 }
 
 .avatar-link i {
