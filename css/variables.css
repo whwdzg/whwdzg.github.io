@@ -1,0 +1,148 @@
+/* 主题颜色变量与全局设置 */
+:root {
+	--bg-color: #ffffff;
+	--text-color: #111111;
+	--text-muted: #6b7280;
+	--secondary-bg: #f7f9fb;
+	--border-color: #dfe3eb;
+	--shadow-color: rgba(15, 23, 42, 0.12);
+	--overlay-bg: rgba(255, 255, 255, 0.5);
+	--card-bg: rgba(255, 255, 255, 0.95);
+	--hover-bg: #eef1f5;
+	--active-bg: #e2e6ed;
+	--input-focus-bg: #ffffff;
+	--sidebar-width: 220px;
+	--sidebar-offset: 0px; /* 侧边栏偏移，由 JS 写入 */
+	--sidebar-button-space: 56px; /* 为侧栏顶部按钮预留的高度（按钮高度 + 间距），已从 56px 调小 */
+	--icon-size: 32px;     /* 默认：页眉/Logo 图标大小 */
+	--icon-small: 20px;    /* 页脚/地址等小图标的较小尺寸 */
+}
+
+body.dark-mode {
+	--bg-color: #1a1a1a;
+	--text-color: #e5e5e5;
+	--text-muted: #9ca3af;
+	--secondary-bg: #2a2a2a;
+	--border-color: #3a3a3a;
+	--shadow-color: rgba(0, 0, 0, 0.3);
+	--overlay-bg: rgba(0, 0, 0, 0.6);
+	--card-bg: rgba(42, 42, 42, 0.95);
+	--hover-bg: #333333;
+	--active-bg: #3d3d3d;
+	--input-focus-bg: rgba(255, 255, 255, 0.12);
+}
+
+/* Fluent System Icons font (from microsoft/fluentui-system-icons) */
+@font-face {
+	font-family: 'FluentSystemIcons';
+	src: url('../font/FluentSystemIcons-Regular.woff2') format('woff2'),
+		 url('../font/FluentSystemIcons-Regular.woff') format('woff'),
+		 url('../font/FluentSystemIcons-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Utility to show icon from font: use an inline element with class .fluent-font to display glyphs */
+.fluent-font {
+	font-family: 'FluentSystemIcons', 'Segoe Fluent Icons', 'Segoe MDL2 Assets', sans-serif;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* 全局布局：重置 body 默认 margin，使用 flex 列布局保证 footer 在视口底部
+   （当内容不足时 footer 贴底；当内容过多时 footer 跟随内容） */
+html, body {
+	height: 100%;
+}
+html {
+	/* 为锚点跳转添加顶部偏移，避免被固定页眉遮挡 */
+	scroll-padding-top: calc(var(--header-height, 60px) + 16px);
+}
+body {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	box-sizing: border-box;
+	color: var(--text-color);
+	/* 页面背景：底层图片 + 顶层半透明覆盖层，提升正文可读性 */
+	background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), url('../img/bg.jpg');
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 自定义滚动条，贴合浅/深色主题 */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--border-color) transparent;
+}
+
+*::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, var(--border-color), var(--hover-bg));
+	border-radius: 8px;
+	border: 2px solid transparent;
+	background-clip: padding-box;
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(180deg, var(--hover-bg), var(--active-bg));
+}
+
+*::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+/* 所有图片统一圆角裁切 */
+img {
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+/* 隐藏作为图片标题的段落 */
+.image-caption-hidden {
+	display: none !important;
+}
+
+/* 页面内图片自适应容器宽度，避免溢出主体布局 */
+main img,
+#aside-stack img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* 可点击图片的缩放与按压反馈 */
+.zoomable-img {
+	cursor: zoom-in;
+	transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.zoomable-img:hover {
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+}
+.zoomable-img:active {
+	transform: scale(0.97);
+}
+
+/* 小屏幕下微调图标变量 */
+@media (max-width: 480px) {
+	:root { --icon-size: 28px; --icon-small: 18px; }
+}

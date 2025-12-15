@@ -1,0 +1,342 @@
+/* 侧边栏样式 */
+.sidebar {
+	position: fixed;
+	top: 0; /* JS 会根据 header 高度调整此值 */
+	left: 0;
+	height: 100vh;
+	width: var(--sidebar-width);
+	background: var(--card-bg);
+	border-right: 1px solid var(--border-color);
+	padding: calc(var(--sidebar-button-space)) 0.75rem 1rem 0.75rem;
+	box-sizing: border-box;
+	overflow-y: auto;
+	z-index: 50;
+	transition: width 240ms ease, bottom 160ms ease;
+}
+
+/* 展开态：侧栏采用与按钮匹配的圆角与柔和阴影 */
+body:not(.sidebar-collapsed) .sidebar {
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 12px 30px var(--shadow-color);
+}
+
+/* 侧边栏折叠按钮样式（固定在侧栏外，避免遮挡内容） */
+.sidebar-collapse-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	padding: 0;
+	margin: 0;
+	background: var(--secondary-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	cursor: pointer;
+	font-size: 1.25rem;
+	box-sizing: border-box;
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	z-index: 80;
+	color: var(--text-color);
+	transition: background 0.18s, border 0.18s, color 0.18s, box-shadow 0.18s;
+}
+/* 确保折叠/展开按钮内图标始终居中，不受通用 .item-icon 的 margin 影响 */
+.sidebar-collapse-btn .item-icon,
+.sidebar-collapse-btn i[class^="icon-"],
+.sidebar-collapse-btn i[class*=" icon-"] {
+	margin: 0;
+	width: 24px;
+	height: 24px;
+	min-width: 24px;
+	min-height: 24px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+body.sidebar-collapsed .sidebar-collapse-btn {
+	background: var(--secondary-bg);
+	border-color: var(--border-color);
+	width: 40px;
+}
+
+.sidebar-collapse-btn:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+
+.sidebar-collapse-btn:active {
+	transform: scale(0.95);
+	background: var(--active-bg);
+	border-color: var(--border-color);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}
+
+/* 折叠状态：把侧边栏变窄并调整 main 的左边距 */
+body.sidebar-collapsed .sidebar {
+	width: 60px; /* 折叠后的侧边栏宽度 */
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 8px 20px var(--shadow-color);
+	background: var(--card-bg);
+}
+
+body.sidebar-collapsed main {
+	margin-left: 6rem; /* 宽屏折叠时略多留 2rem 空间，避免贴边 */
+	padding-left: 0;
+}
+
+/* 折叠时隐藏子菜单文本（通过缩放字体和文本裁剪实现） */
+body.sidebar-collapsed .sidebar a,
+body.sidebar-collapsed .sidebar .toggle {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+body.sidebar-collapsed .sidebar .submenu { 
+	display: none; 
+}
+
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar li { margin: 0 0 0.25rem 0; }
+.sidebar a,
+.sidebar .toggle {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	min-height: 44px;
+	box-sizing: border-box;
+	min-width: 28px;
+	min-height: 28px;
+	margin-right: 0.6rem;
+	font-size: 1rem;
+	line-height: 1.65;
+	box-sizing: border-box;
+	color: var(--text-color);
+	text-decoration: none;
+	background: transparent;
+	border-radius: 8px;
+	transition: background 0.18s ease, box-shadow 0.18s ease, padding 0.2s ease, transform 0.18s ease;
+	border: none;
+	appearance: none;
+	padding: 0.5rem 0.5rem;
+	text-align: left;
+	box-shadow: none;
+}
+.submenu li a {
+	padding: 0.5rem 0.5rem;
+	font-size: 1rem;
+	line-height: 1.45;
+	min-height: 40px;
+	padding-left: 1.75rem; /* 子项稍作缩进 */
+}
+
+.sidebar a:active,
+.sidebar .toggle:active {
+	transform: scale(0.98);
+	background: var(--active-bg);
+	border-color: var(--border-color);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}
+
+/* 统一图标尺寸与对齐 */
+.sidebar .item-icon {
+	width: 24px;
+	height: 24px;
+	min-width: 24px;
+	min-height: 24px;
+	margin-right: 0.6rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.1em;
+}
+
+.sidebar a:hover,
+.sidebar .toggle:hover {
+	color: var(--text-color);
+	background: var(--hover-bg);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* 子菜单默认隐藏，父级展开时显示 */
+.sidebar .submenu {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 220ms ease;
+}
+.sidebar .has-children.open > .submenu {
+	max-height: 800px; /* 足够容纳子项，JS 会用 scrollHeight 精确写入 */
+}
+
+/* 展开状态保持与默认一致（无常驻底色/阴影） */
+.sidebar .has-children.open > .toggle {
+	color: var(--text-color);
+	background: transparent;
+	box-shadow: none;
+}
+
+/* 展开状态下的母项在悬停时仍显示高光（避免被上面规则覆盖） */
+.sidebar .has-children.open > .toggle:hover {
+	background: var(--hover-bg);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* SVG 内联图标：只指定宽度，保持高度自动以保留纵横比 */
+.icon-svg {
+	display: inline-block;
+	width: 1.1em;
+	height: auto;
+	vertical-align: middle;
+	fill: none; /* 使用空心（描边）图标 */
+	stroke: currentColor;
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.collapse-icon { width: 1.05em; height: auto; }
+
+.toggle-icon { font-weight: 600; }
+
+/* 默认折叠（collapsed）时箭头朝上（向右箭头逆时针旋转到上方），并放在按钮右侧 */
+.sidebar .toggle { position: relative; }
+.sidebar .toggle .toggle-icon {
+	position: absolute;
+	right: 0.5rem;
+	top: 50%;
+	transform-origin: center center;
+	transform: translateY(-50%) rotate(-90deg);
+	transition: transform 220ms ease;
+}
+.has-children.open .toggle .toggle-icon {
+	transform: translateY(-50%) rotate(90deg);
+}
+body.sidebar-collapsed .sidebar .toggle .toggle-icon {
+	left: 50%;
+	right: auto;
+	transform: translate(-50%, -50%) rotate(-90deg);
+}
+body.sidebar-collapsed .has-children.open .toggle .toggle-icon {
+	transform: translate(-50%, -50%) rotate(90deg);
+}
+/* 折叠时只显示图标：隐藏文本标签，居中图标 */
+body.sidebar-collapsed .sidebar a .label,
+body.sidebar-collapsed .sidebar .toggle .toggle-label {
+	display: none;
+}
+body.sidebar-collapsed .sidebar a,
+body.sidebar-collapsed .sidebar .toggle {
+	justify-content: center;
+	min-height: 44px;
+	padding: 0.5rem 0.5rem; /* 保持与展开态一致的内边距，避免展开时跳动 */
+}
+body.sidebar-collapsed .sidebar a .item-icon,
+body.sidebar-collapsed .sidebar .toggle .item-icon,
+body.sidebar-collapsed i[class^="icon-"],
+body.sidebar-collapsed i[class*=" icon-"] {
+	margin-right: 0; /* 收起时移除右边距，使图标居中 */
+	width: 28px;
+	min-width: 28px;
+	height: 28px;
+	min-height: 28px;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+}
+
+/* 确保折叠后折叠/展开按钮内图标仍居中，不受上面规则影响 */
+body.sidebar-collapsed .sidebar-collapse-btn .item-icon,
+body.sidebar-collapsed .sidebar-collapse-btn i[class^="icon-"],
+body.sidebar-collapsed .sidebar-collapse-btn i[class*=" icon-"] {
+	margin: 0;
+	width: 24px;
+	height: 24px;
+}
+
+/* 折叠时隐藏子菜单的展开/收起箭头图标（避免在仅显示图标时出现多余的箭头） */
+body.sidebar-collapsed .sidebar .toggle .toggle-icon {
+    display: none !important;
+}
+
+/* 侧栏内收起按钮：固定在侧栏左上角（单按钮方案） */
+.inner-sidebar-collapse-btn {
+	display: flex;
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	margin: 0;
+	font-size: 1.2rem;
+	border-radius: 6px;
+	align-items: center;
+	justify-content: center;
+	z-index: 80;
+}
+
+/* 展开时侧栏内容顶部加 padding，避免被按钮遮挡 */
+body:not(.sidebar-collapsed) .sidebar > ul {
+	padding-top: 2px; /* 紧贴按钮下方排列，保留按钮高度 40px + 间距 */
+}
+
+/* 页面主要内容不要被侧栏遮挡 */
+main {
+	margin-left: calc(var(--sidebar-width) + 1rem);
+}
+
+/* 响应式：小屏幕时侧栏相对定位，按钮绝对定位在侧栏内，内容留出按钮空间 */
+@media (max-width: 760px) {
+	:root { --sidebar-width: 100%; }
+	.sidebar {
+		position: relative;
+		width: 100%;
+		height: auto;
+		min-height: max-content; /* 以内容为基准，防止过小截断 */
+		border-right: none;
+		padding-top: 64px; /* 留出按钮高度 */
+	}
+	main { margin-left: 0; }
+	body.sidebar-collapsed main { margin-left: 4rem; padding-left: 0; }
+	.inner-sidebar-collapse-btn {
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		width: 40px;
+		height: 40px;
+		min-width: 40px;
+		min-height: 40px;
+		margin: 0;
+		z-index: 80;
+	}
+	body.sidebar-collapsed .sidebar > ul { display: none; }
+
+	/* 折叠时侧栏不占位；按钮固定到页眉下方 */
+	body.sidebar-collapsed .sidebar {
+		padding: 0;
+		height: 0;
+		position: fixed; /* 脱离文档流，避免挤占 main */
+		width: 0;
+		left: 0;
+		top: calc(var(--header-height));
+		overflow: hidden;
+		border: none;
+		margin: 0;
+		box-shadow: none;
+		background: transparent;
+	}
+	body.sidebar-collapsed .inner-sidebar-collapse-btn {
+		position: fixed;
+		top: calc(var(--header-height) + 8px);
+		left: 8px;
+		z-index: 120;
+	}
+}
