@@ -3,7 +3,7 @@
 	position: fixed;
 	left: 0;
 	right: 0;
-	top: var(--header-height, 64px);
+	top: 0; /* 覆盖整个视口顶端，避免与页眉出现缝隙 */
 	bottom: 0;
 	background: rgba(0, 0, 0, 0.65);
 	display: flex;
@@ -13,7 +13,7 @@
 	transform: translateY(8px) scale(0.98);
 	transition: opacity 200ms ease, transform 200ms ease, visibility 200ms ease;
 	visibility: hidden;
-	z-index: 900;
+	z-index: 1610; /* 提高到高于 header 的层级，确保遮罩覆盖页眉 */
 	padding: 24px;
 	box-sizing: border-box;
 }
@@ -27,7 +27,7 @@
 #image-lightbox .lightbox-content {
 	position: relative;
 	max-width: 90vw;
-	max-height: calc(90vh - var(--header-height, 64px));
+	max-height: 90vh; /* 使用完整视口高度，因为遮罩已覆盖 header */
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -102,7 +102,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	z-index: 905;
+	z-index: 1625; /* 控件应高于遮罩和标题，确保可点击 */
 }
 
 #image-lightbox .lightbox-controls button {
@@ -258,15 +258,15 @@
 /* 图片高亮效果 */
 @keyframes highlight-blink {
 	0%, 100% {
-		box-shadow: 0 0 0 3px #4A90E2;
+		box-shadow: 0 0 0 3px var(--primary-color);
 	}
 	50% {
-		box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 30%, transparent);
 	}
 }
 
 img.highlighted {
-	box-shadow: 0 0 0 3px #4A90E2;
+	box-shadow: 0 0 0 3px var(--primary-color);
 	border-radius: 8px;
 	animation: highlight-blink 0.6s ease-in-out 6 forwards; /* 闪烁 6 次 (3 秒) */
 	transition: box-shadow 0.3s ease;

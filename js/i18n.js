@@ -61,7 +61,13 @@ const translations = {
 		},
 		footer: {
 			copyright: "&copy; 2022-2025 whwdzg. 保留所有权利。",
-			version: "当前版本：<strong>2.0.2.0-20251215</strong>"
+			version: "当前版本：<strong>2.0.2.1-20251216</strong>"
+		},
+		settings: {
+			title: "设置",
+			lightdark: { title: "浅色/深色模式切换", subtitle: "切换浅色模式/深色模式的行为", follow: "跟随系统", manual: "手动设置" },
+			color: { title: "切换主题色", subtitle: "选择主题色标" },
+			pageProgress: { title: "页面进度条", subtitle: "在页眉底部显示当前页面滚动进度", off: "关闭", on: "开启" }
 		},
 		buttons: {
 			scrollToTop: "返回顶部"
@@ -88,7 +94,13 @@ const translations = {
 		search: { placeholder: "搜尋內容", button: "搜尋", ariaLabel: "開始搜尋", noResults: "未找到相關內容", resultCount: "找到 {count} 個結果", imageTag: "[圖片]" },
 		main: { homeTitle: "主頁", homeContent: "這裡是 2.0 版本的主頁，當前正在構建中，尚處於<strong>極早期階段</strong>，供實驗學習使用", aboutTitle: "關於", aboutContent: "這裡是 2.0 版本的主頁，當前正在構建中，尚處於<strong>極早期階段</strong>", testTitle: "test" },
 		aside: { noticeTitle: "注意", noticeContent: "<strong>目前為早期測試版本，可能出現 bug</strong>", legacyTitle: "返回 1.0 主頁", versionLabel: "1.0 版本", legacyLink: "返回 1.0 主頁", legacyStopped: "已終止更新" },
-		footer: { copyright: "&copy; 2022-2025 whwdzg. 保留所有權利。", version: "當前版本：<strong>2.0.2.0-20251215</strong>" },
+		footer: { copyright: "&copy; 2022-2025 whwdzg. 保留所有權利。", version: "當前版本：<strong>2.0.2.1-20251216</strong>" },
+		settings: {
+			title: "設定",
+			lightdark: { title: "淺色/深色模式切換", subtitle: "切換淺色/深色模式的行為", follow: "跟隨系統", manual: "手動設定" },
+			color: { title: "切換主題色", subtitle: "選擇主題色標" },
+			pageProgress: { title: "頁面進度條", subtitle: "在頁眉底部顯示滾動進度", off: "關閉", on: "開啟" }
+		},
 		buttons: { scrollToTop: "返回頂部" },
 		lightbox: { close: "關閉圖片", zoomIn: "放大", zoomOut: "縮小", download: "下載圖片", locate: "定位到原文", zoomInputPlaceholder: "60-250%", zoomInputLabel: "縮放百分比" }
 	},
@@ -102,7 +114,13 @@ const translations = {
 		search: { placeholder: "Поисковый запрос", button: "Искать", ariaLabel: "Начать поиск", noResults: "Ничего не найдено", resultCount: "Найдено результатов: {count}", imageTag: "[Изображение]" },
 		main: { homeTitle: "Главная", homeContent: "Это главная страница версии 2.0, сейчас в разработке и на <strong>самой ранней стадии</strong>, для учебных целей", aboutTitle: "О сайте", aboutContent: "Это главная страница версии 2.0, сейчас в разработке и на <strong>самой ранней стадии</strong>", testTitle: "test" },
 		aside: { noticeTitle: "Примечание", noticeContent: "<strong>Ранняя тестовая версия, возможны ошибки</strong>", legacyTitle: "Вернуться на главную 1.0", versionLabel: "Версия 1.0", legacyLink: "К главной 1.0", legacyStopped: "Больше не обновляется" },
-		footer: { copyright: "&copy; 2022-2025 whwdzg. Все права защищены.", version: "Текущая версия: <strong>2.0.2.0-20251215</strong>" },
+		footer: { copyright: "&copy; 2022-2025 whwdzg. Все права защищены.", version: "Текущая версия: <strong>2.0.2.1-20251216</strong>" },
+		settings: {
+			title: "Настройки",
+			lightdark: { title: "Переключение светлой/тёмной темы", subtitle: "Как переключать светлую/тёмную тему", follow: "Следовать системе", manual: "Ручные настройки" },
+			color: { title: "Выбор цвета темы", subtitle: "Выберите основной цвет" },
+			pageProgress: { title: "Индикатор прогресса", subtitle: "Показывать прогресс прокрутки под шапкой", off: "Выкл", on: "Вкл" }
+		},
 		buttons: { scrollToTop: "Наверх" },
 		lightbox: { close: "Закрыть изображение", zoomIn: "Увеличить", zoomOut: "Уменьшить", download: "Скачать изображение", locate: "Найти в документе", zoomInputPlaceholder: "60-250%", zoomInputLabel: "Процент масштабирования" }
 	},
@@ -116,7 +134,13 @@ const translations = {
 		search: { placeholder: "Contenu de recherche", button: "Rechercher", ariaLabel: "Commencer la recherche", noResults: "Aucun résultat", resultCount: "{count} résultats trouvés", imageTag: "[Image]" },
 		main: { homeTitle: "Accueil", homeContent: "Ceci est la page d'accueil de la version 2.0, actuellement en construction et à un <strong>stade très précoce</strong>, pour l'apprentissage expérimental", aboutTitle: "À propos", aboutContent: "Ceci est la page d'accueil de la version 2.0, actuellement en construction et à un <strong>stade très précoce</strong>", testTitle: "test" },
 		aside: { noticeTitle: "Remarque", noticeContent: "<strong>Version de test précoce, des bugs peuvent survenir</strong>", legacyTitle: "Retour à l'accueil 1.0", versionLabel: "Version 1.0", legacyLink: "Retour à l'accueil 1.0", legacyStopped: "Plus de mises à jour" },
-		footer: { copyright: "&copy; 2022-2025 whwdzg. Tous droits réservés.", version: "Version actuelle : <strong>2.0.2.0-20251215</strong>" },
+		footer: { copyright: "&copy; 2022-2025 whwdzg. Tous droits réservés.", version: "Version actuelle : <strong>2.0.2.1-20251216</strong>" },
+		settings: {
+			title: "Paramètres",
+			lightdark: { title: "Mode clair/sombre", subtitle: "Choisir le comportement clair/sombre", follow: "Suivre le système", manual: "Réglage manuel" },
+			color: { title: "Couleur du thème", subtitle: "Choisir la couleur principale" },
+			pageProgress: { title: "Barre de progression", subtitle: "Afficher la progression de défilement sous l'en-tête", off: "Désactivé", on: "Activé" }
+		},
 		buttons: { scrollToTop: "Haut de page" },
 		lightbox: { close: "Fermer l'image", zoomIn: "Agrandir", zoomOut: "Réduire", download: "Télécharger l'image", locate: "Aller au texte", zoomInputPlaceholder: "60-250%", zoomInputLabel: "Pourcentage de zoom" }
 	},
@@ -130,7 +154,13 @@ const translations = {
 		search: { placeholder: "Suchinhalt", button: "Suchen", ariaLabel: "Suche starten", noResults: "Keine Ergebnisse", resultCount: "{count} Ergebnisse gefunden", imageTag: "[Bild]" },
 		main: { homeTitle: "Startseite", homeContent: "Dies ist die Startseite der Version 2.0, derzeit im Aufbau und in einer <strong>sehr frühen Phase</strong>, für Lernzwecke", aboutTitle: "Über", aboutContent: "Dies ist die Startseite der Version 2.0, derzeit im Aufbau und in einer <strong>sehr frühen Phase</strong>", testTitle: "test" },
 		aside: { noticeTitle: "Hinweis", noticeContent: "<strong>Frühe Testversion, Fehler möglich</strong>", legacyTitle: "Zur 1.0-Startseite", versionLabel: "Version 1.0", legacyLink: "Zur 1.0-Startseite", legacyStopped: "Nicht mehr aktualisiert" },
-		footer: { copyright: "&copy; 2022-2025 whwdzg. Alle Rechte vorbehalten.", version: "Aktuelle Version: <strong>2.0.2.0-20251215</strong>" },
+		footer: { copyright: "&copy; 2022-2025 whwdzg. Alle Rechte vorbehalten.", version: "Aktuelle Version: <strong>2.0.2.1-20251216</strong>" },
+		settings: {
+			title: "Einstellungen",
+			lightdark: { title: "Hell/Dunkel umschalten", subtitle: "Verhalten für hell/dunkel", follow: "System folgen", manual: "Manuell" },
+			color: { title: "Themenfarbe wechseln", subtitle: "Wähle die Akzentfarbe" },
+			pageProgress: { title: "Seitenfortschritt", subtitle: "Fortschritt unter der Kopfzeile anzeigen", off: "Aus", on: "An" }
+		},
 		buttons: { scrollToTop: "Nach oben" },
 		lightbox: { close: "Bild schließen", zoomIn: "Vergrößern", zoomOut: "Verkleinern", download: "Bild herunterladen", locate: "Zum Text", zoomInputPlaceholder: "60-250%", zoomInputLabel: "Zoom-Prozentsatz" }
 	},
@@ -144,7 +174,13 @@ const translations = {
 		search: { placeholder: "検索内容", button: "検索", ariaLabel: "検索開始", noResults: "該当なし", resultCount: "{count} 件の結果", imageTag: "[画像]" },
 		main: { homeTitle: "ホーム", homeContent: "これは 2.0 バージョンのホームページです。現在構築中で、<strong>非常に初期段階</strong>のため、学習用です", aboutTitle: "概要", aboutContent: "これは 2.0 バージョンのホームページです。現在構築中で、<strong>非常に初期段階</strong>", testTitle: "test" },
 		aside: { noticeTitle: "注意", noticeContent: "<strong>初期テスト版のため、不具合が発生する可能性があります</strong>", legacyTitle: "1.0 ホームへ戻る", versionLabel: "1.0 バージョン", legacyLink: "1.0 ホームへ戻る", legacyStopped: "更新停止" },
-		footer: { copyright: "&copy; 2022-2025 whwdzg. All rights reserved.", version: "現在のバージョン：<strong>2.0.2.0-20251215</strong>" },
+		footer: { copyright: "&copy; 2022-2025 whwdzg. All rights reserved.", version: "現在のバージョン：<strong>2.0.2.1-20251216</strong>" },
+		settings: {
+			title: "設定",
+			lightdark: { title: "ライト/ダーク切替", subtitle: "ライト/ダーク切替の挙動", follow: "システムに従う", manual: "手動設定" },
+			color: { title: "テーマカラー", subtitle: "アクセントカラーを選択" },
+			pageProgress: { title: "ページ進捗バー", subtitle: "ヘッダー下にスクロール進捗を表示", off: "オフ", on: "オン" }
+		},
 		buttons: { scrollToTop: "トップへ" },
 		lightbox: { close: "画像を閉じる", zoomIn: "拡大", zoomOut: "縮小", download: "画像をダウンロード", locate: "本文へ移動", zoomInputPlaceholder: "60-250%", zoomInputLabel: "拡大率" }
 	},
@@ -208,7 +244,13 @@ const translations = {
 		},
 		footer: {
 			copyright: "&copy; 2022-2025 whwdzg. All rights reserved.",
-			version: "Current version: <strong>2.0.2.0-20251215</strong>"
+			version: "Current version: <strong>2.0.2.1-20251216</strong>"
+		},
+		settings: {
+			title: "Settings",
+			lightdark: { title: "Light/Dark Mode", subtitle: "How to toggle light/dark", follow: "Follow system", manual: "Manual" },
+			color: { title: "Theme Color", subtitle: "Choose your accent color" },
+			pageProgress: { title: "Page Progress", subtitle: "Show scroll progress under header", off: "Off", on: "On" }
 		},
 		buttons: {
 			scrollToTop: "Back to Top"
