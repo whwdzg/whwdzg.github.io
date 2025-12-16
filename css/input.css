@@ -16,7 +16,7 @@
 	background: var(--input-focus-bg);
 	color: var(--text-color);
 	border-color: var(--border-color);
-	box-shadow: 0 -2px 0 0 #3b82f6 inset, 0 0 0 1px var(--hover-bg);
+	box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
 }
 
 .styled-input::placeholder {

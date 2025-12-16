@@ -1,6 +1,8 @@
 // 语言切换逻辑
 document.addEventListener('DOMContentLoaded', function () {
-	const languageSelectorBtn = document.querySelector('.language-selector-btn');
+	try {
+		console.debug('[language.js] init');
+		const languageSelectorBtn = document.querySelector('.language-selector-btn');
 	const languageSelectorMenu = document.querySelector('.language-selector-menu');
 	const LANGUAGE_KEY = 'language';
 
@@ -36,8 +38,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 		
 		// 更新头部链接和按钮
-		const homeLink = document.querySelector('header a[href="index.html"]');
-		if (homeLink) homeLink.textContent = translations.header.homeLink;
+		// 仅更新文字节点，避免覆盖链接内的图标结构
+		const homeLinkText = document.querySelector('.header-title a .title-text');
+		if (homeLinkText) {
+			homeLinkText.textContent = translations.header.homeLink;
+		} else {
+			const homeLink = document.querySelector('header a[href="index.html"]');
+			if (homeLink) homeLink.textContent = translations.header.homeLink;
+		}
 
 		// 更新按钮 title 属性
 		const searchBtn = document.querySelector('.header-search-btn');
@@ -264,6 +272,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	if (languageSelectorBtn) {
 		languageSelectorBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
+			if (!languageSelectorMenu) return; // defensive
+			console.debug('[language.js] language button clicked');
 			const willOpen = !languageSelectorMenu.classList.contains('active');
 			// 关闭其他菜单
 			const settingsMenu = document.querySelector('.theme-settings-menu');
@@ -276,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// 点击菜单外关菜单
 	document.addEventListener('click', (e) => {
 		if (!e.target.closest('.language-selector-container') && !e.target.closest('.theme-settings-container') && !e.target.closest('#avatar-btn') && !e.target.closest('#avatar-links-menu')) {
-			languageSelectorMenu.classList.remove('active');
+			if (languageSelectorMenu) languageSelectorMenu.classList.remove('active');
 		}
 	});
 
@@ -288,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			const radio = this.querySelector('input[name="language"]');
 			if (radio) {
 				setLanguage(radio.value);
-				languageSelectorMenu.classList.remove('active');
+				if (languageSelectorMenu) languageSelectorMenu.classList.remove('active');
 				// 选择后关闭其他菜单以避免重叠
 				const settingsMenu = document.querySelector('.theme-settings-menu');
 				const avatarMenu = document.getElementById('avatar-links-menu');
@@ -296,4 +306,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	});
+
+	} catch (err) {
+		console.error('[language.js] init error', err);
+	}
 });

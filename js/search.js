@@ -382,6 +382,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			
 			item.addEventListener('click', () => {
+				// 关闭设置弹窗（如果已打开）
+				document.dispatchEvent(new CustomEvent('close-settings-modal'));
 				if (result.page) {
 					// Navigate to other page
 					window.location.href = `${result.page}#search=${encodeURIComponent(query)}`;
