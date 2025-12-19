@@ -5,7 +5,8 @@
     <title>设置</title>
 </head>
 <body>
-    <section id="lightdarktoggle">
+<!-- 模块：设置弹窗模板 / Settings modal template. 供页面动态注入。 -->
+    <section id="lightdarktoggle" data-setting="follow-system">
         <h2>浅色/深色模式切换</h2>
         <h4>切换浅色模式/深色模式的行为</h4>
         <p>跟随系统</p>
@@ -17,12 +18,22 @@
         <p data-color="#007DC5">#007DC5</p>
         <p data-color="#33CC99">#33CC99</p>
         <p data-color="#D70040">#D70040</p>
+        <p data-color="自定义">自定义</p>
     </section>
     <section id="pageprogress" data-setting="page-progress">
         <h2>页面进度条</h2>
         <h4>在页眉底部显示当前页面滚动进度</h4>
         <p>关闭</p>
         <p>开启</p>
+    </section>
+        <section id="particleanimation" data-setting="particle-animation">
+        <h2>粒子动画</h2>
+        <h4>在页面上显示粒子动画</h4>
+        <p>关闭</p>
+        <p>樱花</p>
+        <p>落叶梧桐</p>
+        <p>落叶银杏</p>
+        <p>雪花</p>
     </section>
 </body>
 </html>

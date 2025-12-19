@@ -1,18 +1,38 @@
-// 主题切换逻辑
+// 模块：主题切换 / Theme detection, persistence, and toggle UI.
 document.addEventListener('DOMContentLoaded', function () {
 	try {
 		console.debug('[theme.js] init');
+
+		// 如果用户未访问过（关键键不存在），尝试从 confige/defaults.json 加载默认配置
+		(async function loadDefaultsIfMissing(){
+			try {
+				const hasThemeColor = localStorage.getItem('theme-color') !== null;
+				const hasFollow = localStorage.getItem('follow-system') !== null;
+				const hasPageProgress = localStorage.getItem('show-page-progress') !== null;
+				if (hasThemeColor && hasFollow && hasPageProgress) return;
+				const resp = await fetch('confige/defaults.json', { cache: 'no-store' });
+				if (!resp.ok) return;
+				const defs = await resp.json();
+				try { if (!hasFollow && typeof defs['follow-system'] !== 'undefined') localStorage.setItem('follow-system', defs['follow-system'] ? 'true' : 'false'); } catch(e){}
+				try { if (!hasThemeColor && typeof defs['theme-color'] !== 'undefined') localStorage.setItem('theme-color', defs['theme-color']); } catch(e){}
+				try { if (!hasPageProgress && typeof defs['show-page-progress'] !== 'undefined') localStorage.setItem('show-page-progress', defs['show-page-progress'] ? 'true' : 'false'); } catch(e){}
+				// particle animation default (index stored as number)
+				try { if (typeof defs['setting-particleanimation'] !== 'undefined') localStorage.setItem('setting-particleanimation', String(defs['setting-particleanimation'])); } catch(e){}
+			} catch (err) {
+				console.warn('[theme.js] load defaults failed', err);
+			}
+		})();
 		const themeBtn = document.querySelector('.theme-toggle-btn');
-	const settingsBtn = document.querySelector('.theme-settings-btn');
-	const settingsMenu = document.querySelector('.theme-settings-menu');
-    const languageSelectorMenu = document.querySelector('.language-selector-menu');
-    const avatarMenu = document.getElementById('avatar-links-menu');
-	const followSystemRadios = document.querySelectorAll('input[name="theme-follow"]');
-	const THEME_KEY = 'theme';
-	const FOLLOW_SYSTEM_KEY = 'follow-system';
-	const THEME_COLOR_KEY = 'theme-color';
-	const DEFAULT_THEME_COLOR = '#33CC99';
-	let followSystem = localStorage.getItem(FOLLOW_SYSTEM_KEY) !== 'false';
+		const settingsBtn = document.querySelector('.theme-settings-btn');
+		const settingsMenu = document.querySelector('.theme-settings-menu');
+		const languageSelectorMenu = document.querySelector('.language-selector-menu');
+		const avatarMenu = document.getElementById('avatar-links-menu');
+		const followSystemRadios = document.querySelectorAll('input[name="theme-follow"]');
+		const THEME_KEY = 'theme';
+		const FOLLOW_SYSTEM_KEY = 'follow-system';
+		const THEME_COLOR_KEY = 'theme-color';
+		const DEFAULT_THEME_COLOR = '#33CC99';
+		let followSystem = localStorage.getItem(FOLLOW_SYSTEM_KEY) !== 'false';
 
 	function applyThemeColor(color) {
 		document.documentElement.style.setProperty('--primary-color', color);

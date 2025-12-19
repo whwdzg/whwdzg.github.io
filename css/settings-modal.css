@@ -1,3 +1,4 @@
+/* 模块：设置模态框 / Settings modal layout, sliders, and custom color UI. */
 /* 设置弹窗与遮罩 */
 #settings-backdrop {
   position: fixed;
@@ -79,13 +80,16 @@
   border-color: var(--border-color);
 }
 
-/* ensure the icon inside the button is vertically centered */
+/* ensure the icon inside the button is vertically and horizontally centered using flex */
 #settings-modal .modal-close i {
-  display: inline-block;
-  line-height: 36px; /* match button height so the icon centers vertically */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
   font-size: 18px; /* icon size tuned to center visually */
-  vertical-align: middle;
   transform: none;
+  line-height: normal; /* avoid relying on line-height for centering */
 }
 #settings-modal .modal-body {
   padding: 12px 16px 16px;
@@ -161,16 +165,21 @@
   left: 23px; 
 }
 
+
+
+
 /* 颜色选择器 */
 .color-picker-row {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
+  position: relative;
 }
 .color-option {
   width: 22px;
   height: 22px;
-  border-radius: 50%;
+  border-radius: 6px;
   cursor: pointer;
   border: 0;
   transition: box-shadow 160ms ease, border-color 160ms ease;
@@ -184,14 +193,67 @@
   box-shadow: 0 0 0 2px var(--primary-color);
 }
 
+/* 统一：settings 模态中所有选中项使用圆角高光 */
+.settings-section .color-option.selected,
+.settings-section .dropdown-item.selected,
+.settings-section .settings-toggle-row .selected {
+  background: var(--hover-bg);
+  border-radius: 8px;
+}
+
 .color-core {
   width: 18px;
   height: 18px;
-  border-radius: 50%;
+  border-radius: 4px;
   transition: transform 160ms ease;
   transform-origin: center;
   will-change: transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2f2f2f;
+  font-size: 12px;
+  font-weight: 600;
 }
+
+/* 使输入框与顶部搜索浮层的搜索框样式一致 */
+.color-hex-input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+  backdrop-filter: blur(6px);
+  font-size: 1rem;
+  line-height: 1.4;
+  transition: background 0.18s ease, border 0.18s ease, box-shadow 0.2s ease;
+}
+
+/* 将 swatch 显示为圆形按钮（统一样式） */
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  margin: 2px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.color-option .fluent-icon {
+  font-family: 'FluentSystemIcons-regular', 'Segoe MDL2 Assets', sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  color: #ffffff; /* 白色图标 */
+  display: inline-block;
+}
+
+/* （已合并）hex 输入框样式现在与搜索框一致，移除旧的精简样式 */
 .color-option:hover .color-core {
   transform: scale(1.10);
 }
@@ -206,4 +268,351 @@
   0% { transform: scale(0.90); }
   50% { transform: scale(1.12); }
   100% { transform: scale(1.0); }
+}
+
+.color-option.custom .color-core {
+  background: #b6b6b6;
+}
+
+.color-floating-panel {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  width: min(360px, calc(100vw - 120px));
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+  padding: 12px;
+  z-index: 20;
+  display: grid;
+  gap: 10px;
+}
+
+.color-panel-header {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.color-preview {
+  width: 100%;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+.color-slider-row {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.color-slider {
+  width: 100%;
+  accent-color: var(--primary-color);
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red);
+  appearance: none;
+}
+
+.color-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+.color-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+.color-custom-panel {
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  display: grid;
+  gap: 10px;
+}
+.color-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+  gap: 8px;
+}
+.color-swatch:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
+.color-swatch:active { transform: translateY(0); box-shadow: none; }
+
+.color-custom-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.color-hex-input:focus {
+  outline: none;
+  border-color: var(--border-color);
+  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
+  background: var(--input-focus-bg, var(--hover-bg));
+}
+.color-apply-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--secondary-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+.color-apply-btn:hover { box-shadow: 0 6px 14px rgba(0,0,0,0.08); background: var(--hover-bg); }
+.color-apply-btn:active { transform: scale(0.98); background: var(--active-bg); }
+
+/* 设置项下拉菜单（复用侧栏折叠箭头样式） */
+.settings-dropdown-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+.settings-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 10px;
+  /* 使图标不改变父元素的边界：为图标预留右侧空间并将父容器设为相对定位 */
+  position: relative;
+  padding-right: 40px;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.settings-dropdown-toggle,
+.settings-dropdown-toggle .toggle-label,
+.settings-dropdown-toggle .toggle-icon {
+  color: var(--text-color);
+}
+.settings-dropdown-toggle:hover { background: var(--hover-bg); border-color: var(--border-color); }
+.settings-dropdown-toggle .toggle-label { flex: 1; text-align: left; }
+.settings-dropdown-toggle .toggle-label {
+  line-height: 20px; /* match icon height for vertical alignment */
+  padding-right: 6px; /* small gap before reserved icon area */
+}
+.settings-dropdown-toggle .toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  /* 使用 translateY 保持垂直居中，旋转只由 CSS 变量控制，避免 JS 覆盖 translateY 导致 Y 轴偏移 */
+  /* --toggle-nudge 允许微调图标在 Y 轴上的位置（正值向下，负值向上） */
+  transform: translateY(calc(-50% + var(--toggle-nudge, -1px))) rotate(var(--toggle-rotate, -90deg));
+  transition: transform 220ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 14px; /* 控制 glyph 尺寸，避免字体内联基线偏移 */
+  text-align: center;
+  /* 使用图标中心作为旋转原点，避免视觉上偏向一侧 */
+  transform-origin: center center;
+  will-change: transform;
+}
+.settings-dropdown-toggle .toggle-icon { color: var(--text-muted); }
+
+/* Ensure toggle uses readable colors in dark mode when body has dark-mode */
+body.dark-mode .settings-dropdown-toggle,
+body.dark-mode .settings-dropdown-toggle .toggle-label,
+body.dark-mode .settings-dropdown-toggle .toggle-icon {
+  color: var(--text-color);
+}
+body.dark-mode .settings-dropdown-toggle .toggle-icon { color: var(--text-muted); }
+.settings-dropdown.open .settings-dropdown-toggle .toggle-icon {
+  /* 打开时旋转到 90deg（用户请求） */
+  --toggle-rotate: 90deg;
+}
+.settings-dropdown-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease;
+  margin-top: 8px;
+  /* 列表由 portal 提供圆角与边框，内部项不应再重复圆角 */
+  border-radius: 0;
+  border: none;
+  background: transparent;
+}
+.settings-dropdown-list.open {
+  max-height: 420px; /* JS 将使用 scrollHeight 覆盖以获得精确高度 */
+}
+.settings-dropdown-list .dropdown-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+.settings-dropdown-list .dropdown-item:last-child { border-bottom: none; }
+.settings-dropdown-list .dropdown-item {
+  border-radius: 8px;
+  margin: 4px 0;
+  padding: 8px 12px;
+  transition: background 160ms ease, transform 120ms ease;
+  /* 允许文本换行并在单词/符号过长时断行，避免撑开浮层 */
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.settings-dropdown-list .dropdown-item:hover {
+  background: rgba(0,0,0,0.02); /* subtle rounded highlight for hover */
+}
+/* 选中状态更明显，使用卡片内高亮（同时保留左侧主题色条） */
+.settings-dropdown-list .dropdown-item.selected {
+  background: linear-gradient(180deg, rgba(0,0,0,0.01), rgba(0,0,0,0.00));
+}
+
+/* Portal 浮层样式：当下拉需要悬浮在模态之上时使用 */
+.settings-dropdown-portal {
+  position: fixed;
+  z-index: 2000; /* 高于模态 (1620) 和遮罩 (1600) */
+  min-width: 180px;
+  max-width: 420px; /* 允许在需要时更宽，同时 JS 会再做视口限制 */
+  background: var(--card-bg); /* 与页眉链接使用相同卡片背景 */
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.14); /* 更轻的阴影，接近页眉链接 */
+  overflow: hidden;
+  transition: transform 160ms ease, opacity 140ms ease;
+  opacity: 1;
+  padding: 6px 6px; /* 内边距让项看起来像链接弹窗 */
+}
+
+.settings-dropdown-portal.hidden { opacity: 0; pointer-events: none; transform: translateY(-6px) scale(0.995); }
+
+/* 选中项左侧的主题色竖线（两端圆角） */
+.settings-dropdown-list .dropdown-item.selected {
+  position: relative;
+  padding-left: 14px; /* 给accent bar留出空间 */
+  background: transparent;
+}
+.settings-dropdown-list .dropdown-item.selected::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  border-radius: 4px; /* 两端圆角 */
+  background: var(--primary-color);
+}
+/* Rounded highlight background for selected item */
+.settings-dropdown-list .dropdown-item.selected {
+  background: var(--hover-bg);
+  border-radius: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 6px 0; /* create space so rounded corners are visible */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+/* Click animation for dropdown items (applied via JS by adding .click-anim) */
+@keyframes dropdownClick {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+.settings-dropdown-list .dropdown-item.click-anim {
+  animation: dropdownClick 180ms ease;
+}
+
+/* 使 dropdown-item 更像页眉链接（更细的行高与内边距） */
+.settings-dropdown-list .dropdown-item {
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* 当 list 高度受限时使其可滚动 */
+.settings-dropdown-list.scrollable {
+  overflow-y: auto;
+}
+
+/* 深色模式适配：下拉选择框 */
+.dark-mode .settings-dropdown-list .dropdown-item {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.dark-mode .settings-dropdown-list .dropdown-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+.dark-mode .settings-dropdown-list .dropdown-item.selected {
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+}
+.dark-mode .settings-dropdown-list .dropdown-item.selected {
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.dark-mode .settings-dropdown-portal {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Ensure portal uses dark-mode variables when body has .dark-mode
+   (portal is appended to body, so selector should target body.dark-mode .settings-dropdown-portal) */
+body.dark-mode .settings-dropdown-portal {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+/* Dropdown items and selected visuals in dark mode should use subtle light overlays */
+body.dark-mode .settings-dropdown-list .dropdown-item {
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--text-color);
+}
+body.dark-mode .settings-dropdown-list .dropdown-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+body.dark-mode .settings-dropdown-list .dropdown-item.selected {
+  background: var(--hover-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+/* Dark mode: make the left accent bar use a lighter alpha of primary color for contrast */
+body.dark-mode .settings-dropdown-list .dropdown-item.selected::before {
+  /* use primary color in dark mode for clear accent */
+  background: rgba(var(--primary-color-rgb, 51,204,153), 0.95);
+}
+
+/* Use primary color as outline for selected color-option in dark mode */
+body.dark-mode .color-option.selected {
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb, 51,204,153), 0.18);
+  border-color: rgba(var(--primary-color-rgb, 51,204,153), 0.2);
+}
+
+body.dark-mode .color-option {
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Color picker: ensure .color-option background / selected outline adapt in dark mode */
+body.dark-mode .color-option {
+  border: 1px solid rgba(255,255,255,0.03);
+}
+body.dark-mode .color-option.selected {
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.06);
+}
+body.dark-mode .color-core {
+  color: var(--text-color);
 }

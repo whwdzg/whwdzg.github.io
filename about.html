@@ -1,308 +1,309 @@
 <!DOCTYPE html>
+<!-- 模块：关于页面 / About page. 展示个人信息，沿用全站布局与动画。 -->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>主页</title>
+    <!DOCTYPE html>
+    <!-- 模块：关于页面 / About page. 展示个人信息，沿用全站布局与动画。 -->
+    <html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>关于</title>
 
-    <meta name="author" content="whwdzg">
-    <meta name="description" content="whwdzg's personal page">
+        <meta name="author" content="whwdzg">
+        <meta name="description" content="whwdzg's personal page - about">
 
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    
-    <!-- 预加载关键资源：优先级从高到低 -->
-    <!-- 1. 页眉图片（最高优先级） -->
-    <link rel="preload" href="img/favicon.ico" as="image" type="image/x-icon">
-    <link rel="preload" href="img/shuiyu.avif" as="image" type="image/avif">
-    <!-- 2. 背景图片 -->
-    <link rel="preload" href="img/bg.jpg" as="image" type="image/jpeg">
-    <!-- 3. 关键CSS -->
-    <link rel="preload" href="css/variables.css" as="style">
-    <link rel="preload" href="font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    
-    <!-- CSS 模块 -->
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/input.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/sidebar.css">
-    <link rel="stylesheet" href="css/main-content.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/lightbox.css">
-    <link rel="stylesheet" href="css/settings-modal.css">
-    <link rel="stylesheet" href="css/scroll-to-top.css">
-    <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
-    <!-- JavaScript 模块 -->
-    <script src="js/i18n.js" defer></script>
-    <script src="js/theme.js" defer></script>
-    <script src="js/language.js" defer></script>
-    <script src="js/sidebar.js" defer></script>
-    <script src="js/lightbox.js" defer></script>
-    <script src="js/avatar.js" defer></script>
-    <script src="js/scroll-to-top.js" defer></script>
-    <script src="js/search.js" defer></script>
-    <script src="js/spa-router.js" defer></script>
+        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+        <link rel="preload" href="img/favicon.ico" as="image" type="image/x-icon">
+        <link rel="preload" href="img/shuiyu.avif" as="image" type="image/avif">
+        <link rel="preload" href="img/bg.jpg" as="image" type="image/jpeg">
+        <link rel="preload" href="css/variables.css" as="style">
+        <link rel="preload" href="font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/input.css">
+        <link rel="stylesheet" href="css/header.css">
+        <link rel="stylesheet" href="css/sidebar.css">
+        <link rel="stylesheet" href="css/main-content.css">
+        <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="css/lightbox.css">
+        <link rel="stylesheet" href="css/settings-modal.css">
+        <link rel="stylesheet" href="css/scroll-to-top.css">
+        <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
+
+        <script src="js/i18n.js" defer></script>
+        <script src="js/theme.js" defer></script>
+        <script src="js/language.js" defer></script>
+        <script src="js/sidebar.js" defer></script>
+        <script src="js/lightbox.js" defer></script>
+        <script src="js/avatar.js" defer></script>
+        <script src="js/scroll-to-top.js" defer></script>
+        <script src="js/search.js" defer></script>
+        <script src="js/spa-router.js" defer></script>
         <script src="js/settings-modal.js" defer></script>
-</head>
-<body>
-    <!-- shell placeholder: will be populated from includes/shell.html -->
-    <div id="shell-root"></div>
-    <!-- inline fallback shell for file:// access -->
-    <template id="shell-inline">
-<header>
-    <h1>
-        <span class="header-title">
-            <a href="index.html" title="">
-                <img src="img/favicon.ico" alt="logo" class="logo" fetchpriority="high">
-                <span class="title-text">主页</span>
-            </a>
-        </span>
-        <div class="header-actions">
-            <button class="header-search-btn" id="header-search-btn" aria-label="搜索" title="搜索">
-                <i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>
-            </button>
-            <button class="theme-toggle-btn" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
-                <i class="fluent-font" aria-hidden="true">&#xF87E;</i>
-            </button>
-            <div class="theme-settings-container">
-                <button class="theme-settings-btn" aria-label="主题设置" title="主题设置">
-                    <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
-                </button>
-                <div class="theme-settings-menu">
-                    <label class="settings-option">
-                        <input type="radio" name="theme-follow" value="follow" aria-label="跟随系统">
-                        <span>跟随系统</span>
-                    </label>
-                    <label class="settings-option">
-                        <input type="radio" name="theme-follow" value="manual" aria-label="手动设置">
-                        <span>手动设置</span>
-                    </label>
-                </div>
-            </div>
-            <div class="language-selector-container">
-                <button class="language-selector-btn" aria-label="选择语言" title="选择语言">
-                    <i class="fluent-font" aria-hidden="true">&#xF45B;</i>
-                </button>
-                <div class="language-selector-menu">
-                    <label class="language-option">
-                        <input type="radio" name="language" value="zh-CN" aria-label="中文（简体）">
-                        <span>中文（简体）</span>
-                    </label>
-                    <label class="language-option">
-                        <input type="radio" name="language" value="zh-TW" aria-label="中文（繁體）">
-                        <span>中文（繁體）</span>
-                    </label>
-                    <label class="language-option">
-                        <input type="radio" name="language" value="en-US" aria-label="English (US)">
-                        <span>English (US)</span>
-                    </label>
-                    <label class="language-option">
-                        <input type="radio" name="language" value="ru-RU" aria-label="Русский">
-                        <span>Русский</span>
-                    </label>
-                    <label class="language-option">
-                        <input type="radio" name="language" value="fr-FR" aria-label="Français">
-                        <span>Français</span>
-                    </label>
-                    <label class="language-option">
-                        <input type="radio" name="language" value="de-DE" aria-label="Deutsch">
-                        <span>Deutsch</span>
-                    </label>
-                    <label class="language-option">
-                        <input type="radio" name="language" value="ja-JP" aria-label="日本語">
-                        <span>日本語</span>
-                    </label>
-                </div>
-            </div>
-            <img src="img/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
-            <div id="avatar-links-menu" class="avatar-links-menu">
-                <a href="https://github.com/whwdzg" class="avatar-link" target="_blank" rel="noopener noreferrer">
-                    <i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>
-                    <span>GitHub</span>
+    </head>
+    <body>
+        <div id="shell-root"></div>
+        <script>
+            (function(){
+                var container = document.getElementById('shell-root');
+                var inlineShell = `<!-- Shared shell: header, sidebar, aside, footer -->
+    <!-- 模块：全站壳层 / Shared shell (header, sidebar, footer). 保留导航与动画。 -->
+    <header>
+        <h1>
+            <span class="header-title">
+                <a href="index.html" title="">
+                    <img src="img/favicon.ico" alt="logo" class="logo" fetchpriority="high">
+                    <span class="title-text">主页</span>
                 </a>
-                <a href="https://space.bilibili.com/588003657" class="avatar-link" target="_blank" rel="noopener noreferrer">
-                    <i class="icon-ic_fluent_tv_24_regular" aria-hidden="true"></i>
-                    <span>bilibili</span>
-                </a>
-            </div>
-        </div>
-    </h1>
-</header>
-<nav id="sidebar" class="sidebar" aria-label="主导航">
-    <button class="sidebar-collapse-btn inner-sidebar-collapse-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
-        <i class="icon-ic_fluent_list_24_regular item-icon" aria-hidden="true"></i>
-    </button>
-    <ul>
-        <li>
-            <a href="index.html">
-                <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
-                <span class="label">主页</span>
-            </a>
-        </li>
-        <li class="has-children">
-            <button class="toggle" aria-expanded="false">
-                <i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>
-                <span class="toggle-label">返回 1.0</span>
-                <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
-            </button>
-            <ul class="submenu">
-                <li>
-                    <a href="Legacy-1.0/index.html">
-                        <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
-                        <span class="label">主页（1.0）</span>
+            </span>
+            <div class="header-actions">
+                <button class="header-search-btn" id="header-search-btn" aria-label="搜索" title="搜索">
+                    <i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="theme-toggle-btn" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
+                    <i class="fluent-font" aria-hidden="true">&#xF87E;</i>
+                </button>
+                <div class="theme-settings-container">
+                    <button class="theme-settings-btn" aria-label="设置" title="设置">
+                        <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
+                    </button>
+                    <div class="theme-settings-menu">
+                        <label class="settings-option">
+                            <input type="radio" name="theme-follow" value="follow" aria-label="跟随系统">
+                            <span>跟随系统</span>
+                        </label>
+                        <label class="settings-option">
+                            <input type="radio" name="theme-follow" value="manual" aria-label="u624bu52a8设置">
+                            <span>手动设置</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="language-selector-container">
+                    <button class="language-selector-btn" aria-label="选择语言" title="选择语言">
+                        <i class="fluent-font" aria-hidden="true">&#xF45B;</i>
+                    </button>
+                    <div class="language-selector-menu">
+                        <label class="language-option">
+                            <input type="radio" name="language" value="zh-CN" aria-label="中文（简体）">
+                            <span>中文（简体）</span>
+                        </label>
+                        <label class="language-option">
+                            <input type="radio" name="language" value="zh-TW" aria-label="中文（繁體）">
+                            <span>中文（繁體）</span>
+                        </label>
+                        <label class="language-option">
+                            <input type="radio" name="language" value="en-US" aria-label="English (US)">
+                            <span>English (US)</span>
+                        </label>
+                        <label class="language-option">
+                            <input type="radio" name="language" value="ru-RU" aria-label="Русский">
+                            <span>Русский</span>
+                        </label>
+                        <label class="language-option">
+                            <input type="radio" name="language" value="fr-FR" aria-label="Français">
+                            <span>Français</span>
+                        </label>
+                        <label class="language-option">
+                            <input type="radio" name="language" value="de-DE" aria-label="Deutsch">
+                            <span>Deutsch</span>
+                        </label>
+                        <label class="language-option">
+                            <input type="radio" name="language" value="ja-JP" aria-label="日本語">
+                            <span>日本語</span>
+                        </label>
+                    </div>
+                </div>
+                <img src="img/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
+                <div id="avatar-links-menu" class="avatar-links-menu">
+                    <a href="https://github.com/whwdzg" class="avatar-link" target="_blank" rel="noopener noreferrer">
+                        <i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>
+                        <span>GitHub</span>
                     </a>
-                </li>
-                <li>
-                    <a href="Legacy-1.0/about.html">
+                    <a href="https://space.bilibili.com/588003657" class="avatar-link" target="_blank" rel="noopener noreferrer">
+                        <i class="icon-ic_fluent_tv_24_regular" aria-hidden="true"></i>
+                        <span>bilibili</span>
+                    </a>
+                </div>
+            </div>
+        </h1>
+    </header>
+    <nav id="sidebar" class="sidebar" aria-label="主导航">
+        <button class="sidebar-collapse-btn inner-sidebar-collapse-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
+            <i class="icon-ic_fluent_list_24_regular item-icon" aria-hidden="true"></i>
+        </button>
+        <ul>
+            <li>
+                <a href="index.html">
+                    <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="label">主页</span>
+                </a>
+            </li>
+            <li class="has-children">
+                <button class="toggle" aria-expanded="false">
+                    <i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="toggle-label">返回 1.0</span>
+                    <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
+                </button>
+                <ul class="submenu">
+                    <li>
+                        <a href="Legacy-1.0/index.html">
+                            <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">主页（1.0）</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Legacy-1.0/about.html">
+                            <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">关于（1.0）</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Legacy-1.0/README.md">
+                            <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+                            <span class="label">README（1.0）</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="about.html">
                         <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
-                        <span class="label">关于（1.0）</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="Legacy-1.0/README.md">
-                        <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
-                        <span class="label">README（1.0）</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="about.html">
-                    <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
-                    <span class="label">关于</span>
-            </a>
-        </li>
-        <li>
-            <a href="README.md">
-                <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
-                <span class="label">README</span>
-            </a>
-        </li>
-    </ul>
-</nav>
-<button id="scroll-to-top" class="scroll-to-top" aria-label="返回顶部" title="返回顶部">
-    <i class="icon-ic_fluent_arrow_up_24_regular item-icon" aria-hidden="true"></i>
-</button>
-<aside>
-    <section id="archives">
-        <h3><i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>注意</h3>
-        <p>
-            <strong>当前为早期测试版本，可能出现bug</strong>
-        </p>
-    </section>
-    <section id="archives">
-        <h3><i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>返回1.0主页</h3>
-        <p>
-            <abbr title="1.3.12.2025.8.7-New_MusicPlayer">1.0版本</abbr>已终止更新
-            <br>
-            <a href="Legacy-1.0/index.html" title="返回1.0版本主页">返回1.0主页</a>
-        </p>
-    </section>
-</aside>
-<footer>
-    <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
-    <p>当前版本：<strong>2.0.2.1-20251216</strong></p>
-</footer>
-    </template>
-    <script>
-        (function(){
-            var container = document.getElementById('shell-root');
-            function attachShell(html) {
-                if (!container) return;
-                container.innerHTML = html;
-                var move = function() {
-                    var main = document.querySelector('main');
-                    if (!main) return;
-                    var aside = container.querySelector('aside');
-                    var footer = container.querySelector('footer');
-                    if (aside && !main.contains(aside)) main.appendChild(aside);
-                    if (footer && footer.parentNode !== main.parentNode) main.insertAdjacentElement('afterend', footer);
-                };
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', move, { once: true });
-                } else {
-                    move();
-                }
-            }
-            try {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET','includes/shell.html', false); // 同步请求以避免闪烁
-                xhr.send(null);
-                if (xhr.status === 200 || xhr.status === 0) {
-                    attachShell(xhr.responseText);
-                    return;
-                }
-            } catch (e) {
-                console.warn('Failed to load shared shell synchronously, fallback to fetch', e);
-            }
-            // 异步回退，兼容某些浏览器对 file:// 的限制
-            fetch('includes/shell.html').then(function(resp){ return resp.text(); }).then(attachShell).catch(function(err){
-                console.error('Failed to load shared shell', err);
-                var tmpl = document.getElementById('shell-inline');
-                if (tmpl) {
-                    attachShell(tmpl.innerHTML);
-                }
-            });
-        })();
-    </script>
-    <main>
-        <!--主体-->
-        <section id="about">
-            <h2 data-i18n="main.aboutTitle">关于</h2>
-            <p data-i18n="main.aboutContent">这里是2.0版本的主页，当前正在构建中，尚处于<strong>极早期阶段</strong></p>
-        </section>
-        <section id="test">
-            <h2>test</h2>
+                        <span class="label">关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="readme.html">
+                    <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="label">README</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <button id="scroll-to-top" class="scroll-to-top" aria-label="返回顶部" title="返回顶部">
+        <i class="icon-ic_fluent_arrow_up_24_regular item-icon" aria-hidden="true"></i>
+    </button>
+    <aside>
+        <section id="archives">
+            <h3><i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>注意</h3>
             <p>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
+                <strong>当前为早期测试版本，可能出现bug</strong>
             </p>
-            <!--img插入图片后，不添加<br>换行时，直接加<p>视作图片标题，正文不显示，只在查看大图时显示-->
-            <img src="img/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low">
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
         </section>
-    </main>
-</body>
-</html>
+        <section id="archives">
+            <h3><i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>返回1.0主页</h3>
+            <p>
+                <abbr title="1.3.12.2025.8.7-New_MusicPlayer">1.0版本</abbr>已终止更新
+                <br>
+                <a href="Legacy-1.0/index.html" title="返回1.0版本主页">返回1.0主页</a>
+            </p>
+        </section>
+    </aside>
+    <footer>
+        <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
+        <p>当前版本：<strong>2.0.2.2-20251220</strong></p>
+    </footer>`;
+                function attachShell(html) {
+                    if (!container || !html) return;
+                    container.innerHTML = html;
+                    var move = function() {
+                        var main = document.querySelector('main');
+                        if (!main) return;
+                        var aside = container.querySelector('aside');
+                        var footer = container.querySelector('footer');
+                        if (aside && !main.contains(aside)) main.appendChild(aside);
+                        if (footer && footer.parentNode !== main.parentNode) main.insertAdjacentElement('afterend', footer);
+                    };
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', move, { once: true });
+                    } else {
+                        move();
+                    }
+                }
+
+                function bust(url){
+                    if (location.protocol === 'file:') return url;
+                    var sep = url.indexOf('?') === -1 ? '?' : '&';
+                    return url + sep + 'ts=' + Date.now();
+                }
+
+                try {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', bust('includes/shell.html'), false);
+                    xhr.send(null);
+                    if (xhr.status === 200 || xhr.status === 0) {
+                        attachShell(xhr.responseText);
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('Failed to load shared shell synchronously, fallback to fetch', e);
+                }
+
+                fetch(bust('includes/shell.html'), { cache: 'no-store' })
+                    .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
+                    .then(function(html){ attachShell(html); })
+                    .catch(function(err){
+    					console.error('Failed to load shared shell', err);
+    					attachShell(inlineShell);
+    				});
+            })();
+        </script>
+        <main>
+            <section id="about">
+                <h2 data-i18n="main.aboutTitle">关于</h2>
+                <p data-i18n="main.aboutContent">这里是2.0版本的主页，当前正在构建中，尚处于<strong>极早期阶段</strong></p>
+            </section>
+            <section id="test">
+                <h2>test</h2>
+                <p>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                    1<br>
+                </p>
+                <img src="img/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low">
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+            </section>
+        </main>
+    </body>
+    </html>

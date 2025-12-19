@@ -1,4 +1,4 @@
-/* 主题颜色变量与全局设置 */
+/* 模块：主题变量与全局设置 / Theme variables and global resets. */
 :root {
 	--bg-color: #ffffff;
 	--text-color: #111111;

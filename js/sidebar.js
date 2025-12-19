@@ -1,6 +1,7 @@
 // 左侧导航折叠/展开逻辑
 document.addEventListener('DOMContentLoaded', function () {
 	// 将文档中的 aside 收集到右下角浮动栈容器，避免重叠纵向排列
+// 模块：侧边栏控制 / Sidebar toggle, submenu, and responsive behavior.
 	(function setupAsideStack() {
 		const asides = Array.from(document.querySelectorAll('main aside, body > aside'));
 		if (!asides.length) return;
@@ -233,6 +234,81 @@ document.addEventListener('DOMContentLoaded', function () {
 		window.addEventListener('resize', adjustSidebarPosition);
 		window.addEventListener('load', adjustSidebarPosition);
 
+		// markCurrentSidebarItem: 标记当前侧栏项（先移除旧的 current）
+		function markCurrentSidebarItem() {
+			try {
+				const path = location.pathname.replace(/\/index\.html$/i, '/');
+				const links = Array.from(document.querySelectorAll('.sidebar a'));
+				// remove previous (包括 a/.toggle 等所有带 current/selected 的元素)
+				document.querySelectorAll('.sidebar .current, .sidebar .selected').forEach(el => el.classList.remove('current', 'selected'));
+				// 构建候选集合，解析每个链接的绝对路径
+				const candidates = links.map(a => {
+					const href = a.getAttribute('href') || '';
+					let p = '';
+					try {
+						p = new URL(href, location.href).pathname.replace(/\/index\.html$/i, '/');
+					} catch (e) {
+						// 如果无法解析为 URL，就用原始 href 保持兼容
+						p = href;
+					}
+					return { el: a, path: p };
+				});
+				// 优先尝试精确匹配
+				let matched = candidates.find(c => c.path === path);
+				if (!matched) {
+					// 使用最长前缀匹配（但忽略根 '/' 的前缀匹配，以免把根页面匹配到所有项）
+					const prefixMatches = candidates.filter(c => c.path && c.path !== '/' && path.indexOf(c.path) === 0);
+					if (prefixMatches.length) {
+						// 选最长的那个路径（最具体的匹配）
+						matched = prefixMatches.sort((a,b)=>b.path.length - a.path.length)[0];
+					}
+				}
+				if (matched && matched.el) {
+					matched.el.classList.add('current');
+					// 如果在 submenu 内，展开父菜单并确保 maxHeight
+					const parentLi = matched.el.closest('.has-children');
+					if (parentLi) {
+						parentLi.classList.add('open');
+						const sm = parentLi.querySelector('.submenu');
+						if (sm) sm.style.maxHeight = sm.scrollHeight + 'px';
+					}
+				}
+			} catch (err) { console.error('[sidebar] mark current failed', err); }
+		}
+
+		// 初始化调用
+		markCurrentSidebarItem();
+
+		// 当侧栏链接被点击（SPA 导航），或 history 状态变化时，重新标记。
+		// 为了兼容各种 SPA，包装 pushState/replaceState 并发出 'locationchange' 事件。
+		(function watchLocationChanges(){
+			const origPush = history.pushState;
+			const origReplace = history.replaceState;
+			history.pushState = function () {
+				const ret = origPush.apply(this, arguments);
+				window.dispatchEvent(new Event('locationchange'));
+				return ret;
+			};
+			history.replaceState = function () {
+				const ret = origReplace.apply(this, arguments);
+				window.dispatchEvent(new Event('locationchange'));
+				return ret;
+			};
+			window.addEventListener('popstate', () => window.dispatchEvent(new Event('locationchange')));
+			// listen for locationchange to update marking
+			window.addEventListener('locationchange', () => setTimeout(markCurrentSidebarItem, 20));
+			// click on sidebar links should also trigger check (after SPA handles navigation)
+			const sidebarEl = document.getElementById('sidebar');
+			if (sidebarEl) {
+				sidebarEl.addEventListener('click', (e) => {
+					const a = e.target.closest('a');
+					if (!a) return;
+					// schedule update shortly after click so SPA route handlers can run
+					setTimeout(markCurrentSidebarItem, 80);
+				});
+			}
+		})();
+
 		// 在窄屏或者 unload 时移除 body padding-top，以防止影响页面外观
 		window.addEventListener('unload', function () { document.body.style.paddingTop = ''; });
 
@@ -248,4 +324,34 @@ document.addEventListener('DOMContentLoaded', function () {
 // 可选：在页面载入后把所有 submenu 的内联 maxHeight 归零（确保一致）
 window.addEventListener('load', function () {
 	document.querySelectorAll('.sidebar .submenu').forEach(s => s.style.maxHeight = '0px');
+});
+
+	// SPA routing handled by js/spa-router.js; sidebar keeps only navigation/highlight logic
+/* SPA 页面重初始化: 注册在 spa:page:loaded 事件时的默认回调，防守式调用项目中常见模块 */
+window.addEventListener('spa:page:loaded', () => {
+	try {
+		// 粒子：如果 window.Particles 存在并页面有 stored index，则确保状态同步
+		try {
+			const idx = Number(localStorage.getItem('setting-particleanimation')) || 0;
+			if (window.Particles) {
+				if (idx && idx > 0) window.Particles.enable(idx);
+				else window.Particles.disable();
+			}
+		} catch (e) {}
+
+		// 设置模态：若存在函数或模块，重新绑定事件或刷新模板
+		try {
+			if (typeof window.markSettingsModal === 'function') window.markSettingsModal();
+		} catch (e) {}
+
+		// Lightbox / 图片放大：尝试调用常见初始化函数
+		try { if (typeof window.initLightbox === 'function') window.initLightbox(); } catch (e) {}
+
+		// 代码高亮（例如 highlight.js 的重新渲染）
+		try { if (typeof window.hljs !== 'undefined' && window.hljs.highlightAll) window.hljs.highlightAll(); } catch (e) {}
+
+		// 其他可能的模块可以在此加入
+	} catch (err) {
+		console.warn('[spa] reinit handlers failed', err);
+	}
 });

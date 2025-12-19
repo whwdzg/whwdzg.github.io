@@ -1,4 +1,4 @@
-<div style="text-align:center">
+<div style="display:flex;flex-direction:column;align-items:center;text-align:center">
     <img style="text-align:center" src="https://avatars.githubusercontent.com/u/91038761?v=4" alt="logo" width="200">
     <h1 style="text-align:center">滄海水魚</h1>
     <p style="text-align:center">个人向导览</p>
@@ -12,6 +12,7 @@
     </br>
 </div>
 
+---
 # whwdzg
 
 建设中……

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- 模块：站点首页 / Home page entry. 保留主导航、路由与动画效果。 -->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -46,8 +47,11 @@
 <body>
     <!-- shell placeholder: will be populated from includes/shell.html -->
     <div id="shell-root"></div>
-    <!-- inline fallback shell for file:// access -->
-    <template id="shell-inline">
+    <script>
+        (function(){
+            var container = document.getElementById('shell-root');
+            var inlineShell = `<!-- Shared shell: header, sidebar, aside, footer -->
+<!-- 模块：全站壳层 / Shared shell (header, sidebar, footer). 保留导航与动画。 -->
 <header>
     <h1>
         <span class="header-title">
@@ -64,7 +68,7 @@
                 <i class="fluent-font" aria-hidden="true">&#xF87E;</i>
             </button>
             <div class="theme-settings-container">
-                <button class="theme-settings-btn" aria-label="主题设置" title="主题设置">
+                <button class="theme-settings-btn" aria-label="设置" title="设置">
                     <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
                 </button>
                 <div class="theme-settings-menu">
@@ -73,7 +77,7 @@
                         <span>跟随系统</span>
                     </label>
                     <label class="settings-option">
-                        <input type="radio" name="theme-follow" value="manual" aria-label="手动设置">
+                        <input type="radio" name="theme-follow" value="manual" aria-label="u624bu52a8设置">
                         <span>手动设置</span>
                     </label>
                 </div>
@@ -172,7 +176,7 @@
             </a>
         </li>
         <li>
-            <a href="README.md">
+            <a href="readme.html">
                 <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
                 <span class="label">README</span>
             </a>
@@ -200,22 +204,25 @@
 </aside>
 <footer>
     <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
-    <p>当前版本：<strong>2.0.2.1-20251216</strong></p>
-</footer>
-    </template>
-    <script>
-        (function(){
-            var container = document.getElementById('shell-root');
+    <p>当前版本：<strong>2.0.2.2-20251220</strong></p>
+</footer>`;
             function attachShell(html) {
-                if (!container) return;
+                if (!container || !html) return;
                 container.innerHTML = html;
                 var move = function() {
                     var main = document.querySelector('main');
                     if (!main) return;
                     var aside = container.querySelector('aside');
                     var footer = container.querySelector('footer');
-                    if (aside && !main.contains(aside)) main.appendChild(aside);
-                    if (footer && footer.parentNode !== main.parentNode) main.insertAdjacentElement('afterend', footer);
+                    if (aside && !main.contains(aside)) {
+                        // mark moved shell nodes so SPA router can preserve/restore them
+                        aside.setAttribute('data-shell-moved', '1');
+                        main.appendChild(aside);
+                    }
+                    if (footer && footer.parentNode !== main.parentNode) {
+                        footer.setAttribute('data-shell-moved', '1');
+                        main.insertAdjacentElement('afterend', footer);
+                    }
                 };
                 if (document.readyState === 'loading') {
                     document.addEventListener('DOMContentLoaded', move, { once: true });
@@ -223,9 +230,17 @@
                     move();
                 }
             }
+
+            function bust(url){
+                if (location.protocol === 'file:') return url;
+                var sep = url.indexOf('?') === -1 ? '?' : '&';
+                return url + sep + 'ts=' + Date.now();
+            }
+
+            // try sync XHR first (file:// friendly) with cache-bust
             try {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET','includes/shell.html', false); // 同步请求以避免闪烁
+                xhr.open('GET', bust('includes/shell.html'), false);
                 xhr.send(null);
                 if (xhr.status === 200 || xhr.status === 0) {
                     attachShell(xhr.responseText);
@@ -234,14 +249,15 @@
             } catch (e) {
                 console.warn('Failed to load shared shell synchronously, fallback to fetch', e);
             }
-            // 异步回退，兼容某些浏览器对 file:// 的限制
-            fetch('includes/shell.html').then(function(resp){ return resp.text(); }).then(attachShell).catch(function(err){
-                console.error('Failed to load shared shell', err);
-                var tmpl = document.getElementById('shell-inline');
-                if (tmpl) {
-                    attachShell(tmpl.innerHTML);
-                }
-            });
+
+            // async fallback with no-store and cache-bust
+            fetch(bust('includes/shell.html'), { cache: 'no-store' })
+                .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
+                                .then(function(html){ attachShell(html); })
+                                .catch(function(err){
+					console.error('Failed to load shared shell', err);
+					attachShell(inlineShell);
+				});
         })();
     </script>
     <main>
