@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<!-- 模块：在线 README 渲染页 / Live README renderer with shared shell and lightbox. -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>README</title>
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/input.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/main-content.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/lightbox.css">
+  <link rel="stylesheet" href="css/settings-modal.css">
+  <link rel="stylesheet" href="css/scroll-to-top.css">
+  <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
+
+  <script src="js/i18n.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="js/language.js" defer></script>
+  <script src="js/sidebar.js" defer></script>
+  <script src="js/lightbox.js" defer></script>
+  <script src="js/avatar.js" defer></script>
+  <script src="js/scroll-to-top.js" defer></script>
+  <script src="js/search.js" defer></script>
+  <script src="js/spa-router.js" defer></script>
+  <script src="js/settings-modal.js" defer></script>
+  <!-- Markdown rendering libs -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+  <style>
+    /* README page: use single-column main so README content fills width and aside moves below */
+    main.readme-single {
+      grid-template-columns: 1fr !important;
+    }
+    /* Match site-wide main padding on all sides for README page */
+    main.readme-single {
+      padding: 1rem !important;
+    }
+    main.readme-single aside {
+      grid-column: 1 !important;
+      grid-row: auto !important;
+      order: 2 !important;
+      width: auto !important;
+    }
+    main.readme-single > :not(aside) {
+      grid-column: 1 !important;
+    }
+    /* Ensure the injected top README heading is left-aligned (not centered) */
+    .readme-top-title {
+      text-align: left !important;
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    /* README uses the site-wide lightbox overlay; no fallback overlay here */
+  </style>
+</head>
+<body>
+  <div id="shell-root"></div>
+  <script>
+    (function(){
+      var container = document.getElementById('shell-root');
+    var inlineShell = `<!-- Shared shell: header, sidebar, aside, footer -->
+<!-- 模块：全站壳层 / Shared shell (header, sidebar, footer). 保留导航与动画。 -->
+<header>
+  <h1>
+    <span class="header-title">
+      <a href="index.html" title="">
+        <img src="img/favicon.ico" alt="logo" class="logo" fetchpriority="high">
+        <span class="title-text">主页</span>
+      </a>
+    </span>
+    <div class="header-actions">
+      <button class="header-search-btn" id="header-search-btn" aria-label="搜索" title="搜索">
+        <i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>
+      </button>
+      <button class="theme-toggle-btn" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
+        <i class="fluent-font" aria-hidden="true">&#xF87E;</i>
+      </button>
+      <div class="theme-settings-container">
+        <button class="theme-settings-btn" aria-label="设置" title="设置">
+          <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
+        </button>
+        <div class="theme-settings-menu">
+          <label class="settings-option">
+            <input type="radio" name="theme-follow" value="follow" aria-label="跟随系统">
+            <span>跟随系统</span>
+          </label>
+          <label class="settings-option">
+            <input type="radio" name="theme-follow" value="manual" aria-label="u624bu52a8设置">
+            <span>手动设置</span>
+          </label>
+        </div>
+      </div>
+      <div class="language-selector-container">
+        <button class="language-selector-btn" aria-label="选择语言" title="选择语言">
+          <i class="fluent-font" aria-hidden="true">&#xF45B;</i>
+        </button>
+        <div class="language-selector-menu">
+          <label class="language-option">
+            <input type="radio" name="language" value="zh-CN" aria-label="中文（简体）">
+            <span>中文（简体）</span>
+          </label>
+          <label class="language-option">
+            <input type="radio" name="language" value="zh-TW" aria-label="中文（繁體）">
+            <span>中文（繁體）</span>
+          </label>
+          <label class="language-option">
+            <input type="radio" name="language" value="en-US" aria-label="English (US)">
+            <span>English (US)</span>
+          </label>
+          <label class="language-option">
+            <input type="radio" name="language" value="ru-RU" aria-label="Русский">
+            <span>Русский</span>
+          </label>
+          <label class="language-option">
+            <input type="radio" name="language" value="fr-FR" aria-label="Français">
+            <span>Français</span>
+          </label>
+          <label class="language-option">
+            <input type="radio" name="language" value="de-DE" aria-label="Deutsch">
+            <span>Deutsch</span>
+          </label>
+          <label class="language-option">
+            <input type="radio" name="language" value="ja-JP" aria-label="日本語">
+            <span>日本語</span>
+          </label>
+        </div>
+      </div>
+      <img src="img/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
+      <div id="avatar-links-menu" class="avatar-links-menu">
+        <a href="https://github.com/whwdzg" class="avatar-link" target="_blank" rel="noopener noreferrer">
+          <i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>
+          <span>GitHub</span>
+        </a>
+        <a href="https://space.bilibili.com/588003657" class="avatar-link" target="_blank" rel="noopener noreferrer">
+          <i class="icon-ic_fluent_tv_24_regular" aria-hidden="true"></i>
+          <span>bilibili</span>
+        </a>
+      </div>
+    </div>
+  </h1>
+</header>
+<nav id="sidebar" class="sidebar" aria-label="主导航">
+  <button class="sidebar-collapse-btn inner-sidebar-collapse-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
+    <i class="icon-ic_fluent_list_24_regular item-icon" aria-hidden="true"></i>
+  </button>
+  <ul>
+    <li>
+      <a href="index.html">
+        <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
+        <span class="label">主页</span>
+      </a>
+    </li>
+    <li class="has-children">
+      <button class="toggle" aria-expanded="false">
+        <i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>
+        <span class="toggle-label">返回 1.0</span>
+        <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
+      </button>
+      <ul class="submenu">
+        <li>
+          <a href="Legacy-1.0/index.html">
+            <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
+            <span class="label">主页（1.0）</span>
+          </a>
+        </li>
+        <li>
+          <a href="Legacy-1.0/about.html">
+            <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+            <span class="label">关于（1.0）</span>
+          </a>
+        </li>
+        <li>
+          <a href="Legacy-1.0/README.md">
+            <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+            <span class="label">README（1.0）</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="about.html">
+          <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+          <span class="label">关于</span>
+      </a>
+    </li>
+    <li>
+      <a href="readme.html">
+        <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+        <span class="label">README</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button id="scroll-to-top" class="scroll-to-top" aria-label="返回顶部" title="返回顶部">
+  <i class="icon-ic_fluent_arrow_up_24_regular item-icon" aria-hidden="true"></i>
+</button>
+<aside>
+  <section id="archives">
+    <h3><i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>注意</h3>
+    <p>
+      <strong>当前为早期测试版本，可能出现bug</strong>
+    </p>
+  </section>
+  <section id="archives">
+    <h3><i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>返回1.0主页</h3>
+    <p>
+      <abbr title="1.3.12.2025.8.7-New_MusicPlayer">1.0版本</abbr>已终止更新
+      <br>
+      <a href="Legacy-1.0/index.html" title="返回1.0版本主页">返回1.0主页</a>
+    </p>
+  </section>
+</aside>
+<footer>
+  <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
+  <p>当前版本：<strong>2.0.2.2-20251220</strong></p>
+</footer>`;
+      function attachShell(html) {
+        if (!container || !html) return;
+        container.innerHTML = html;
+        var move = function() {
+          var main = document.querySelector('main');
+          if (!main) return;
+          var aside = container.querySelector('aside');
+          var footer = container.querySelector('footer');
+          if (aside && !main.contains(aside)) {
+            aside.setAttribute('data-shell-moved','1');
+            main.appendChild(aside);
+          }
+          if (footer && footer.parentNode !== main.parentNode) {
+            footer.setAttribute('data-shell-moved','1');
+            main.insertAdjacentElement('afterend', footer);
+          }
+        };
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', move, { once: true });
+        } else {
+          move();
+        }
+      }
+
+      function bust(url){
+        if (location.protocol === 'file:') return url;
+        var sep = url.indexOf('?') === -1 ? '?' : '&';
+        return url + sep + 'ts=' + Date.now();
+      }
+
+      // Try multiple candidate locations for includes/shell.html to support different nesting
+      (function tryLoadShell(){
+        var candidates = ['includes/shell.html', './includes/shell.html', '../includes/shell.html', '../../includes/shell.html'];
+        var tried = 0;
+        function tryNext(){
+          if (tried >= candidates.length) {
+            console.warn('[shell] all shell candidates failed');
+            attachShell(inlineShell);
+            return;
+          }
+          var url = candidates[tried++];
+          var target = bust(url);
+          try {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', target, false);
+            xhr.send(null);
+            if (xhr.status === 200 || xhr.status === 0) {
+              attachShell(xhr.responseText);
+              return;
+            }
+          } catch (err) {
+            // continue to fetch fallback
+          }
+          // async fetch fallback for this candidate
+          fetch(target, { cache: 'no-store' }).then(function(resp){
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            return resp.text();
+          }).then(function(html){
+            attachShell(html);
+          }).catch(function(err){
+            // try next candidate
+            tryNext();
+          });
+        }
+        tryNext();
+      })();
+    })();
+  </script>
+
+  <main>
+    <section id="readme-content" class="markdown-content">
+      <div class="loading">正在加载 README...</div>
+    </section>
+  </main>
+
+  <script>
+    // Force single-column layout for README page to avoid right-side empty column
+    (function(){
+      function setReadmeLayout(){
+        var m = document.querySelector('main');
+        if (m) m.classList.add('readme-single');
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setReadmeLayout, { once: true });
+      } else { setReadmeLayout(); }
+    })();
+
+    // Use marked + DOMPurify for robust, safe Markdown rendering
+    if (window.marked) {
+      marked.setOptions({ gfm: true, breaks: true });
+    }
+
+    async function tryFetchAny(urls){
+      let lastErr = null;
+      for (const u of urls){
+        try {
+          const r = await fetch(u, { cache: 'no-cache' });
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return await r.text();
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error('no urls');
+    }
+
+    async function loadReadme(){
+      console.log('[readme] loadReadme called, protocol=' + location.protocol);
+      // If opened via file://, most browsers block fetch for local files — show instructions
+      if (location.protocol === 'file:') {
+        const container = document.getElementById('readme-content');
+        container.innerHTML = '<div class="error">当前通过 <code>file://</code> 打开页面，浏览器可能禁止读取本地文件。请在项目根目录运行：<br><pre>python -m http.server 8000</pre>然后访问 <a href="http://127.0.0.1:8000/readme.html">http://127.0.0.1:8000/readme.html</a> 以查看 README。</div>';
+        return;
+      }
+
+      const candidates = ['README.md','./README.md','../README.md','/README.md'];
+      try{
+        const md = await tryFetchAny(candidates);
+        let html;
+        if (window.marked) {
+          html = marked.parse(md);
+        } else {
+          // fallback: minimal escaping
+          html = '<pre>' + md.replace(/</g, '&lt;') + '</pre>';
+        }
+        if (window.DOMPurify && typeof DOMPurify.sanitize === 'function') {
+          html = DOMPurify.sanitize(html);
+        }
+        const container = document.getElementById('readme-content');
+        // Insert a non-centered H2 at the top of the README content
+        var heading = document.createElement('h2');
+        heading.className = 'readme-top-title';
+        heading.textContent = 'README';
+        // Use a wrapper so we don't disturb existing styles; heading must not be centered
+        var wrapper = document.createElement('div');
+        wrapper.appendChild(heading);
+        var contentWrapper = document.createElement('div');
+        contentWrapper.innerHTML = html;
+        wrapper.appendChild(contentWrapper);
+        container.innerHTML = '';
+        container.appendChild(wrapper);
+        // Enable readme lightbox wiring (will prefer site lightbox when available)
+        enableReadmeLightbox(container);
+        // Notify global lightbox to refresh its candidates (if present)
+        document.dispatchEvent(new CustomEvent('lightbox:refresh'));
+        // If the global API is present, call its refresh method as well
+        if (window.siteLightbox && typeof window.siteLightbox.refresh === 'function') {
+          try { window.siteLightbox.refresh(); } catch (e) { /* ignore */ }
+        }
+      } catch (e) {
+        const container = document.getElementById('readme-content');
+        container.innerHTML = '<div class="error">加载 README 失败：' + (e && e.message ? e.message : e) + '</div>';
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadReadme, { once: true });
+    } else {
+      // DOM already ready
+      loadReadme();
+    }
+
+    // Also re-run when SPA swaps pages
+    document.addEventListener('spa:page:loaded', () => {
+      console.log('[readme] spa:page:loaded received');
+      // only run when this page's readme container exists
+      if (document.getElementById('readme-content')) {
+        try { loadReadme(); } catch (e) { /* ignore */ }
+      }
+    });
+    
+    // README lightbox helper — defer lookup so site overlay initialized later can be reused
+    function enableReadmeLightbox(container){
+      if (!container) return;
+
+      // delegate click for images inside container — try to use the site-wide overlay and gallery
+      container.addEventListener('click', function(e){
+        console.log('[readme] container click', e.target && e.target.tagName);
+        var t = e.target && e.target.closest('img');
+        if (!t) return;
+        e.preventDefault();
+        var src = t.getAttribute('data-original') || t.src;
+
+        // Prefer the global API if available
+        if (window.siteLightbox && typeof window.siteLightbox.open === 'function') {
+          // find index among candidates by matching src
+          var imgs = Array.from(document.querySelectorAll('main img'));
+          var idx = imgs.findIndex(function(i){ return (i.getAttribute('data-original') || i.src) === src; });
+          if (idx >= 0) {
+            try { window.siteLightbox.open(idx); return; } catch (err) { /* ignore and fallback */ }
+          }
+        }
+        // export functions to window for SPA router to call directly
+        try {
+        window.loadReadme = loadReadme;
+        window.enableReadmeLightbox = enableReadmeLightbox;
+        console.log('[readme] exported loadReadme and enableReadmeLightbox to window');
+      } catch (e) { /* ignore */ }
+
+        // Fallback: ask the site API to open/refresh the lightbox
+        try {
+          if (window.siteLightbox && typeof window.siteLightbox.open === 'function') {
+            // attempt to find index again among main images
+            var imgs = Array.from(document.querySelectorAll('main img'));
+            var idx = imgs.findIndex(function(i){ return (i.getAttribute('data-original') || i.src) === src; });
+            if (idx >= 0) { window.siteLightbox.open(idx); return; }
+          }
+          // As a last resort, trigger refresh so init can pick up overlay
+          if (window.siteLightbox && typeof window.siteLightbox.refresh === 'function') window.siteLightbox.refresh();
+        } catch (e) { /* ignore */ }
+      });
+    }
+  </script>
+</body>
+</html>

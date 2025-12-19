@@ -1,4 +1,4 @@
-// 返回顶部按钮逻辑
+// 模块：返回顶部按钮 / Scroll-to-top interactions.
 document.addEventListener('DOMContentLoaded', function () {
 	const scrollToTopBtn = document.getElementById('scroll-to-top');
 	if (!scrollToTopBtn) return;

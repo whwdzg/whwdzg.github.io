@@ -1,87 +1,155 @@
-// 图片放大预览与遮罩
+// 模块：图片放大预览 / Lightbox overlay with zoom, captions, and filmstrip.
 document.addEventListener('DOMContentLoaded', function () {
-	const candidates = Array.from(document.querySelectorAll('main img, #aside-stack img'));
-	if (!candidates.length) return;
+	let candidates = [];
+
+	// create/init lightbox so it can be called after SPA swaps
+	function initLightbox() {
+		console.log('[lightbox] initLightbox: scanning candidates');
+		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img'));
+		// rebuild captions for the new candidates
+		buildCaptions();
+		// if overlay was removed by SPA cleanup, re-create by re-running the init block
+		const existingOverlay = document.getElementById('image-lightbox');
+		if (!existingOverlay) {
+			// re-run minimal init by recreating the overlay element and re-applying labels
+			// (the rest of initialization flow will re-bind handlers via refreshAll)
+			const evt = new Event('lightbox:recreate');
+			document.dispatchEvent(evt);
+		}
+	}
 
 	// 检测并处理图片标题：img 后面紧跟的 p 标签（中间没有 br）视为标题
-	const imageCaptions = new Map();
-	candidates.forEach((img, index) => {
-		// 获取下一个元素节点
-		let nextElement = img.nextElementSibling;
-		
-		// 如果下一个元素是 P 标签
-		if (nextElement && nextElement.tagName === 'P') {
-			// 检查中间是否有 BR 标签
-			let hasBrBetween = false;
-			let node = img.nextSibling;
-			
-			while (node && node !== nextElement) {
-				// 检查是否是 BR 元素
-				if (node.nodeType === 1 && node.tagName === 'BR') {
-					hasBrBetween = true;
-					break;
-				}
-				node = node.nextSibling;
-			}
-			
-			// 如果中间没有 BR，则视为图片标题
-			if (!hasBrBetween) {
-				const captionText = nextElement.textContent.trim();
-				if (captionText) {
-					imageCaptions.set(index, captionText);
-					// 隐藏这个段落
-					nextElement.classList.add('image-caption-hidden');
-				}
-			}
-		}
-	});
+	let imageCaptions = new Map();
+	function buildCaptions(){
+		imageCaptions = new Map();
+		candidates.forEach((img, index) => {
+			// 获取下一个元素节点
+			let nextElement = img.nextElementSibling;
 
-	let overlay = document.getElementById('image-lightbox');
-	if (!overlay) {
-		overlay = document.createElement('div');
-		overlay.id = 'image-lightbox';
-		overlay.setAttribute('aria-hidden', 'true');
-		overlay.innerHTML = `
-			<button class="lightbox-close" aria-label="Close image">×</button>
+			// 如果下一个元素是 P 标签
+			if (nextElement && nextElement.tagName === 'P') {
+				// 检查中间是否有 BR 标签
+				let hasBrBetween = false;
+				let node = img.nextSibling;
+
+				while (node && node !== nextElement) {
+					// 检查是否是 BR 元素
+					if (node.nodeType === 1 && node.tagName === 'BR') {
+						hasBrBetween = true;
+						break;
+					}
+					node = node.nextSibling;
+				}
+
+				// 如果中间没有 BR，则视为图片标题
+				if (!hasBrBetween) {
+					const captionText = nextElement.textContent.trim();
+					if (captionText) {
+						imageCaptions.set(index, captionText);
+						// 隐藏这个段落
+						nextElement.classList.add('image-caption-hidden');
+					}
+				}
+			}
+		});
+	}
+
+	let overlay = null;
+	let filmstrip = null;
+
+	function ensureOverlay() {
+		overlay = document.getElementById('image-lightbox');
+		if (!overlay) {
+			overlay = document.createElement('div');
+			overlay.id = 'image-lightbox';
+			overlay.setAttribute('aria-hidden', 'true');
+			overlay.innerHTML = `
+			<button class="lightbox-fullscreen" aria-label="Fullscreen" title="全屏"><i class="icon-ic_fluent_full_screen_maximize_24_regular" aria-hidden="true"></i></button>
+			<button class="lightbox-close" aria-label="Close image"><i class="icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i></button>
+			<button class="lightbox-prev lightbox-nav" aria-label="上一张图片" title="上一张">
+				<i class="icon-ic_fluent_chevron_left_24_regular" aria-hidden="true"></i>
+			</button>
+			<button class="lightbox-next lightbox-nav" aria-label="下一张图片" title="下一张">
+				<i class="icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
+			</button>
 			<button class="lightbox-download-btn" aria-label="Download image" title="Download image"><i class="icon-ic_fluent_arrow_download_24_regular" aria-hidden="true"></i></button>
 			<button class="lightbox-locate-btn" aria-label="Locate in document" title="Locate in document"><i class="icon-ic_fluent_location_24_regular" aria-hidden="true"></i></button>
 			<div class="lightbox-title" style="display: none;"></div>
 			<div class="lightbox-content">
 				<div class="lightbox-controls" aria-hidden="true">
-					<button class="lightbox-zoom-in" aria-label="Zoom in">+</button>
-					<button class="lightbox-zoom-out" aria-label="Zoom out">−</button>
+                    
 				</div>
 				<div class="lightbox-image-wrapper">
 					<img alt="" />
 				</div>
 			</div>
 		`;
-		document.body.appendChild(overlay);
+			document.body.appendChild(overlay);
+		}
+
+		filmstrip = overlay.querySelector('.lightbox-filmstrip');
+		if (!filmstrip) {
+			filmstrip = document.createElement('div');
+			filmstrip.className = 'lightbox-filmstrip';
+			filmstrip.setAttribute('role', 'list');
+			overlay.appendChild(filmstrip);
+		}
+		return overlay;
 	}
 
-	let filmstrip = overlay.querySelector('.lightbox-filmstrip');
-	if (!filmstrip) {
-		filmstrip = document.createElement('div');
-		filmstrip.className = 'lightbox-filmstrip';
-		filmstrip.setAttribute('role', 'list');
-		overlay.appendChild(filmstrip);
-	}
+	// overlay element references (mutable so they can be refreshed after SPA swaps)
+	let overlayImg = null;
+	let imageWrapper = null;
+	let closeBtn = null;
+	let downloadBtn = null;
+	let locateBtn = null;
+	let fullscreenBtn = null;
+	let zoomBox = null;
+	let zoomInBtn = null;
+	let zoomOutBtn = null;
+	let zoomInput = null;
 
-	const overlayImg = overlay.querySelector('img');
-	const imageWrapper = overlay.querySelector('.lightbox-image-wrapper');
-	const closeBtn = overlay.querySelector('.lightbox-close');
-	const downloadBtn = overlay.querySelector('.lightbox-download-btn');
-	const locateBtn = overlay.querySelector('.lightbox-locate-btn');
-	const zoomInBtn = overlay.querySelector('.lightbox-zoom-in');
-	const zoomOutBtn = overlay.querySelector('.lightbox-zoom-out');
-	let zoomBox = overlay.querySelector('.lightbox-zoom-indicator');
+	// ensure overlay exists and refresh references
+	ensureOverlay();
+	overlayImg = overlay.querySelector('img');
+	imageWrapper = overlay.querySelector('.lightbox-image-wrapper');
+	closeBtn = overlay.querySelector('.lightbox-close');
+	function refreshOverlayRefs() {
+		// ensure overlay exists
+		ensureOverlay();
+		// refresh commonly used inner references
+		overlayImg = overlay.querySelector('img');
+		imageWrapper = overlay.querySelector('.lightbox-image-wrapper');
+		closeBtn = overlay.querySelector('.lightbox-close');
+		downloadBtn = overlay.querySelector('.lightbox-download-btn');
+		locateBtn = overlay.querySelector('.lightbox-locate-btn');
+		fullscreenBtn = overlay.querySelector('.lightbox-fullscreen');
+		zoomBox = overlay.querySelector('.lightbox-zoom-indicator');
+		zoomInBtn = overlay.querySelector('.lightbox-zoom-in');
+		zoomOutBtn = overlay.querySelector('.lightbox-zoom-out');
+		zoomInput = overlay.querySelector('.zoom-input');
+		filmstrip = overlay.querySelector('.lightbox-filmstrip') || filmstrip;
+	}
+	downloadBtn = overlay.querySelector('.lightbox-download-btn');
+	locateBtn = overlay.querySelector('.lightbox-locate-btn');
+	fullscreenBtn = overlay.querySelector('.lightbox-fullscreen');
+	zoomBox = overlay.querySelector('.lightbox-zoom-indicator');
+	zoomInBtn = overlay.querySelector('.lightbox-zoom-in');
+	zoomOutBtn = overlay.querySelector('.lightbox-zoom-out');
 	if (!zoomBox) {
 		zoomBox = document.createElement('div');
 		zoomBox.className = 'lightbox-zoom-indicator';
-		zoomBox.innerHTML = `<input class="zoom-input styled-input" type="text" inputmode="numeric" placeholder="100%" aria-label="Zoom percentage">`;
+		zoomBox.innerHTML = `
+			<button class="lightbox-zoom-out" aria-label="Zoom out"><i class="icon-ic_fluent_zoom_out_24_regular" aria-hidden="true"></i></button>
+			<input class="zoom-input styled-input" type="text" inputmode="numeric" placeholder="100%" aria-label="Zoom percentage">
+			<button class="lightbox-zoom-in" aria-label="Zoom in"><i class="icon-ic_fluent_zoom_in_24_regular" aria-hidden="true"></i></button>
+		`;
 		overlay.appendChild(zoomBox);
+		// re-query buttons now they exist inside zoomBox
+		zoomInBtn = zoomBox.querySelector('.lightbox-zoom-in');
+		zoomOutBtn = zoomBox.querySelector('.lightbox-zoom-out');
 	}
-	const zoomInput = zoomBox.querySelector('.zoom-input');
+	zoomInput = zoomBox.querySelector('.zoom-input');
 	let currentIndex = 0;
 	let currentScale = 1;
 	let panX = 0;
@@ -121,7 +189,19 @@ document.addEventListener('DOMContentLoaded', function () {
 				zoomInput.placeholder = strings.zoomInputPlaceholder;
 			}
 		}
+		// prev/next/fullscreen labels
+		const prevBtn = overlay.querySelector('.lightbox-prev');
+		const nextBtn = overlay.querySelector('.lightbox-next');
+		if (prevBtn && strings.prev) { prevBtn.setAttribute('aria-label', strings.prev); prevBtn.setAttribute('title', strings.prev); }
+		if (nextBtn && strings.next) { nextBtn.setAttribute('aria-label', strings.next); nextBtn.setAttribute('title', strings.next); }
+		if (fullscreenBtn && strings.fullscreen) { fullscreenBtn.setAttribute('aria-label', strings.fullscreen); fullscreenBtn.setAttribute('title', strings.fullscreen); }
+		// ensure close has title as well
+		if (closeBtn && strings.close) closeBtn.setAttribute('title', strings.close);
 	};
+
+	// apply labels now and when language changes
+	applyLightboxLabels();
+	document.addEventListener('languagechange', applyLightboxLabels);
 
 	const updateCursor = () => {
 		const dragging = isPanning || isPinching;
@@ -161,7 +241,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		updateCursor();
 	};
 
-	const clampScale = (val) => Math.min(2.5, Math.max(0.6, val));
+	// Allow zoom range from 40% to 400%
+	const clampScale = (val) => Math.min(4.0, Math.max(0.4, val));
 
 	const updateZoomDisplay = () => {
 		const pct = Math.round(currentScale * 100);
@@ -183,17 +264,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	const onPointerDown = (e) => {
 		activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-		try {
-			overlayImg.setPointerCapture(e.pointerId);
-		} catch (_) {
-			/* ignore */
+		// only capture pointer on the image element to avoid stealing clicks from controls
+		if (e.target === overlayImg) {
+			try {
+				overlayImg.setPointerCapture(e.pointerId);
+			} catch (_) {
+				/* ignore */
+			}
 		}
 		updateCursor();
+
+		// start potential swipe when not zoomed
+		if (activePointers.size === 1 && currentScale <= 1) {
+			startPointerX = e.clientX;
+			startPointerY = e.clientY;
+		}
+
+
 	};
 
 	const onPointerMove = (e) => {
 		if (!activePointers.has(e.pointerId)) return;
 		activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+
 
 		// 两个指针或以上：捏合缩放
 		if (activePointers.size >= 2) {
@@ -241,6 +335,24 @@ document.addEventListener('DOMContentLoaded', function () {
 			panY = startPanY + dy;
 			applyTransform({ clamp: false });
 		}
+
+		// 单指且未放大：检测水平滑动以切换图片（防止在垂直滚动时误触）
+		if (activePointers.size === 1 && currentScale <= 1 && !isPanning && !isPinching) {
+			const ptr = Array.from(activePointers.values())[0];
+			const dx = ptr.x - startPointerX;
+			const dy = ptr.y - startPointerY;
+			// 判定为水平滑动且水平位移明显大于垂直位移
+			if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+				// trigger swipe
+				if (dx < 0) {
+					const next = Math.min(candidates.length - 1, currentIndex + 1);
+					if (next !== currentIndex) openOverlay(next);
+				} else {
+					const prev = Math.max(0, currentIndex - 1);
+					if (prev !== currentIndex) openOverlay(prev);
+				}
+			}
+		}
 	};
 
 	const onPointerUp = (e) => {
@@ -255,11 +367,21 @@ document.addEventListener('DOMContentLoaded', function () {
 			applyTransform();
 		}
 		try {
-			overlayImg.releasePointerCapture(e.pointerId);
+			if (overlayImg && overlayImg.hasPointerCapture && overlayImg.hasPointerCapture(e.pointerId)) {
+				overlayImg.releasePointerCapture(e.pointerId);
+			}
 		} catch (_) {
 			/* ignore */
 		}
 		updateCursor();
+
+		// clear swipe start coords when all pointers up
+		if (activePointers.size === 0) {
+			startPointerX = 0;
+			startPointerY = 0;
+		}
+
+
 	};
 
 	// 鼠标滚轮缩放
@@ -312,6 +434,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	};
 
 	const openOverlay = (index) => {
+		if (!candidates.length) return;
+		if (typeof index !== 'number' || index < 0 || index >= candidates.length) return;
 		const isAlreadyOpen = overlay.classList.contains('active');
 		const titleEl = overlay.querySelector('.lightbox-title');
 		
@@ -452,6 +576,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	};
 
 	const downloadImage = () => {
+		if (!candidates.length) return;
 		const img = candidates[currentIndex];
 		if (!img) return;
 
@@ -472,67 +597,178 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.body.removeChild(link);
 	};
 
-	candidates.forEach((img, index) => {
-		img.classList.add('zoomable-img');
-		img.addEventListener('click', () => {
-			openOverlay(index);
+	// Attach click handlers to candidates and mark as zoomable
+	function attachCandidates(){
+		candidates.forEach((img, index) => {
+			// prevent attaching twice
+			if (img.dataset.lightboxAttached) return;
+			img.dataset.lightboxAttached = '1';
+			img.classList.add('zoomable-img');
+			img.addEventListener('click', () => {
+				openOverlay(index);
+			});
 		});
+	}
+
+	// Build filmstrip thumbnails
+	function buildFilmstrip(){
+		filmstrip.innerHTML = '';
+		candidates.forEach((img, index) => {
+			const btn = document.createElement('button');
+			btn.className = 'filmstrip-thumb';
+			btn.setAttribute('role', 'listitem');
+			btn.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
+			btn.dataset.index = index;
+			btn.addEventListener('click', (e) => {
+				e.stopPropagation();
+				openOverlay(Number(btn.dataset.index));
+			});
+			filmstrip.appendChild(btn);
+		});
+		console.log('[lightbox] buildFilmstrip done, thumbs=', filmstrip.children.length);
+	}
+
+	function refreshAll(){
+		console.log('[lightbox] refreshAll called');
+		console.log('[lightbox] candidates before refresh: ' + document.querySelectorAll('main img, #aside-stack img').length);
+		ensureOverlay();
+		refreshOverlayRefs();
+		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img'));
+		// clear previous attachment markers so we rebind cleanly after SPA swaps
+		document.querySelectorAll('img[data-lightbox-attached]').forEach(i => delete i.dataset.lightboxAttached);
+		console.log('[lightbox] candidates after query: ' + candidates.length);
+		buildCaptions();
+		attachCandidates();
+		buildFilmstrip();
+		// rebind controls in case overlay was recreated
+		bindOverlayControls();
+		console.log('[lightbox] refreshAll finished, filmstrip children: ' + (filmstrip ? filmstrip.children.length : 0));
+	}
+
+	function bindOverlayControls() {
+		if (!overlay) return;
+		// query controls fresh
+		const closeBtn = overlay.querySelector('.lightbox-close');
+		const downloadBtn = overlay.querySelector('.lightbox-download-btn');
+		const locateBtn = overlay.querySelector('.lightbox-locate-btn');
+		const fullscreenBtn = overlay.querySelector('.lightbox-fullscreen');
+		const prevBtn = overlay.querySelector('.lightbox-prev');
+		const nextBtn = overlay.querySelector('.lightbox-next');
+		const zoomBoxLocal = overlay.querySelector('.lightbox-zoom-indicator');
+		const zoomInBtnLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.lightbox-zoom-in');
+		const zoomOutBtnLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.lightbox-zoom-out');
+		const zoomInputLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.zoom-input');
+		const overlayImgLocal = overlay.querySelector('img');
+
+		if (closeBtn) {
+			closeBtn.removeEventListener('click', closeOverlay);
+			closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeOverlay(); });
+		}
+		if (downloadBtn) {
+			downloadBtn.removeEventListener('click', downloadImage);
+			downloadBtn.addEventListener('click', (e) => { e.stopPropagation(); downloadImage(); });
+		}
+		if (locateBtn) {
+			locateBtn.removeEventListener('click', locateInDocument);
+			locateBtn.addEventListener('click', (e) => { e.stopPropagation(); locateInDocument(); });
+		}
+		if (prevBtn) {
+			prevBtn.removeEventListener('click', prevClickHandler);
+			prevBtn.addEventListener('click', prevClickHandler);
+		}
+		if (nextBtn) {
+			nextBtn.removeEventListener('click', nextClickHandler);
+			nextBtn.addEventListener('click', nextClickHandler);
+		}
+		if (zoomInBtnLocal) {
+			zoomInBtnLocal.removeEventListener('click', zoomInHandler);
+			zoomInBtnLocal.addEventListener('click', zoomInHandler);
+		}
+		if (zoomOutBtnLocal) {
+			zoomOutBtnLocal.removeEventListener('click', zoomOutHandler);
+			zoomOutBtnLocal.addEventListener('click', zoomOutHandler);
+		}
+		if (zoomInputLocal) {
+			zoomInputLocal.removeEventListener('keydown', zoomInputKeyHandler);
+			zoomInputLocal.addEventListener('keydown', zoomInputKeyHandler);
+			zoomInputLocal.removeEventListener('change', zoomInputChangeHandler);
+			zoomInputLocal.addEventListener('change', zoomInputChangeHandler);
+			zoomInputLocal.removeEventListener('blur', applyZoomFromInput);
+			zoomInputLocal.addEventListener('blur', applyZoomFromInput);
+		}
+		if (overlayImgLocal) {
+			overlayImgLocal.style.touchAction = 'none';
+			overlayImgLocal.draggable = false;
+			overlayImgLocal.removeEventListener('pointerdown', onPointerDown);
+			overlayImgLocal.addEventListener('pointerdown', onPointerDown);
+			overlayImgLocal.removeEventListener('pointermove', onPointerMove);
+			overlayImgLocal.addEventListener('pointermove', onPointerMove);
+			overlayImgLocal.removeEventListener('pointerup', onPointerUp);
+			overlayImgLocal.addEventListener('pointerup', onPointerUp);
+			overlayImgLocal.removeEventListener('pointercancel', onPointerUp);
+			overlayImgLocal.addEventListener('pointercancel', onPointerUp);
+			overlayImgLocal.removeEventListener('pointerleave', onPointerUp);
+			overlayImgLocal.addEventListener('pointerleave', onPointerUp);
+			// dragstart/contextmenu
+			overlayImgLocal.removeEventListener('dragstart', preventDefaultFalse);
+			overlayImgLocal.addEventListener('dragstart', preventDefaultFalse);
+			overlayImgLocal.removeEventListener('contextmenu', preventDefaultFalse);
+			overlayImgLocal.addEventListener('contextmenu', preventDefaultFalse);
+		}
+
+		// overlay click behavior (closing when clicking background, exit fullscreen on non-control click)
+		const overlayClickHandler = (e) => {
+			if (e.target === overlay) {
+				closeOverlay();
+				return;
+			}
+			if (document.fullscreenElement) {
+				const isControl = e.target.closest && e.target.closest('button, .lightbox-controls, .lightbox-nav');
+				if (!isControl) {
+					if (document.exitFullscreen) document.exitFullscreen();
+					else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+				}
+			}
+		};
+		overlay.removeEventListener('click', overlayClickHandler);
+		overlay.addEventListener('click', overlayClickHandler);
+	}
+
+	function preventDefaultFalse(e){ e.preventDefault(); return false; }
+
+	function prevClickHandler(e){ e.stopPropagation(); const prev = Math.max(0, currentIndex - 1); if (prev !== currentIndex) openOverlay(prev); }
+	function nextClickHandler(e){ e.stopPropagation(); const next = Math.min(candidates.length - 1, currentIndex + 1); if (next !== currentIndex) openOverlay(next); }
+	function zoomInHandler(e){ e.stopPropagation(); currentScale = clampScale(currentScale + 0.15); applyTransform(); }
+	function zoomOutHandler(e){ e.stopPropagation(); currentScale = clampScale(currentScale - 0.15); applyTransform(); }
+	function zoomInputKeyHandler(e){ if (e.key === 'Enter') { e.preventDefault(); applyZoomFromInput(); } if (e.key === 'Escape') { e.preventDefault(); updateZoomDisplay(); e.target.blur(); } }
+	function zoomInputChangeHandler(e){ let val = e.target.value.trim(); if (val && /^\d+(\.\d+)?$/.test(val)) { e.target.value = `${val}%`; applyZoomFromInput(); } }
+
+	// initial attach via refreshAll to ensure overlay and controls are bound
+	refreshAll();
+
+	// Controls are bound in bindOverlayControls() to support recreation after SPA swaps
+
+	// track fullscreenchange to toggle a class on overlay for styling and swap icon (dynamic)
+	document.addEventListener('fullscreenchange', () => {
+		const ov = document.getElementById('image-lightbox');
+		if (!ov) return;
+		ov.classList.toggle('fullscreen-mode', !!document.fullscreenElement);
+		const fb = ov.querySelector('.lightbox-fullscreen');
+		if (fb) {
+			const ic = fb.querySelector('i');
+			if (ic) {
+				if (document.fullscreenElement) {
+					ic.className = 'icon-ic_fluent_full_screen_minimize_24_regular';
+					fb.setAttribute('title', '退出全屏');
+				} else {
+					ic.className = 'icon-ic_fluent_full_screen_maximize_24_regular';
+					fb.setAttribute('title', '全屏');
+				}
+			}
+		}
 	});
 
-	// 构建缩略图胶片条
-	filmstrip.innerHTML = '';
-	candidates.forEach((img, index) => {
-		const btn = document.createElement('button');
-		btn.className = 'filmstrip-thumb';
-		btn.setAttribute('role', 'listitem');
-		btn.innerHTML = `<img src="${img.src}" alt="${img.alt || ''}">`;
-		btn.addEventListener('click', (e) => {
-			e.stopPropagation();
-			openOverlay(index);
-		});
-		filmstrip.appendChild(btn);
-	});
-
-	overlay.addEventListener('click', (e) => {
-		if (e.target === overlay) closeOverlay();
-	});
-
-	if (locateBtn) {
-		locateBtn.addEventListener('click', (e) => {
-			e.stopPropagation();
-			locateInDocument();
-		});
-	}
-
-	if (downloadBtn) {
-		downloadBtn.addEventListener('click', (e) => {
-			e.stopPropagation();
-			downloadImage();
-		});
-	}
-
-	if (closeBtn) {
-		closeBtn.addEventListener('click', (e) => {
-			e.stopPropagation();
-			closeOverlay();
-		});
-	}
-
-	if (zoomInBtn) {
-		zoomInBtn.addEventListener('click', (e) => {
-			e.stopPropagation();
-			currentScale = clampScale(currentScale + 0.15);
-			applyTransform();
-		});
-	}
-
-	if (zoomOutBtn) {
-		zoomOutBtn.addEventListener('click', (e) => {
-			e.stopPropagation();
-			currentScale = clampScale(currentScale - 0.15);
-			applyTransform();
-		});
-	}
+    
 
 	const applyZoomFromInput = () => {
 		if (!zoomInput) return;
@@ -551,23 +787,25 @@ document.addEventListener('DOMContentLoaded', function () {
 		updateZoomDisplay();
 	};
 
-	if (overlayImg) {
-		overlayImg.style.touchAction = 'none';
-		overlayImg.draggable = false;
-		overlayImg.addEventListener('pointerdown', onPointerDown);
-		overlayImg.addEventListener('pointermove', onPointerMove);
-		overlayImg.addEventListener('pointerup', onPointerUp);
-		overlayImg.addEventListener('pointercancel', onPointerUp);
-		overlayImg.addEventListener('pointerleave', onPointerUp);
-		// 禁用图片拖拽保存
-		overlayImg.addEventListener('dragstart', (e) => {
-			e.preventDefault();
-			return false;
-		});
-		// 禁用右键菜单以防通过菜单保存
-		overlayImg.addEventListener('contextmenu', (e) => {
-			e.preventDefault();
-			return false;
+    
+
+	// Note: avoid binding overlay pointer handlers (they can interfere with button clicks).
+	// We'll use overlay click to handle exiting fullscreen when appropriate.
+	if (overlay) {
+		overlay.addEventListener('click', (e) => {
+			// existing close-on-empty-area behavior
+			if (e.target === overlay) {
+				closeOverlay();
+				return;
+			}
+			// If in fullscreen and user clicked non-control area, exit fullscreen
+			if (document.fullscreenElement) {
+				const isControl = e.target.closest && e.target.closest('button, .lightbox-controls, .lightbox-nav');
+				if (!isControl) {
+					if (document.exitFullscreen) document.exitFullscreen();
+					else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+				}
+			}
 		});
 	}
 
@@ -596,6 +834,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// 初始化遮罩按钮的本地化标签
 	applyLightboxLabels();
+
+	// 监听外部刷新事件（例如 README 渲染完成后）
+	document.addEventListener('lightbox:refresh', () => {
+		try { refreshAll(); applyLightboxLabels(); } catch (e) { /* ignore */ }
+	});
+
+	// SPA 页面切换或侧边栏触发的 locationchange 时也需要刷新候选图片
+	const refreshOnSpa = () => { try { initLightbox(); refreshAll(); applyLightboxLabels(); } catch (e) { /* ignore */ } };
+	document.addEventListener('spa:page:loaded', refreshOnSpa);
+	window.addEventListener('locationchange', refreshOnSpa);
+
+	// If SPA router cleaned up overlay before swap, recreate on demand
+	document.addEventListener('lightbox:recreate', () => {
+		// recreate overlay node by reinjecting HTML and re-binding basic references
+		if (!document.getElementById('image-lightbox')) {
+			const el = document.createElement('div');
+			el.id = 'image-lightbox';
+			el.setAttribute('aria-hidden', 'true');
+			// minimal structure: buttons and img wrapper; full markup will be rebuilt by this file's logic
+			el.innerHTML = overlay.innerHTML || '';
+			document.body.appendChild(el);
+			// allow rest of script to refresh references
+		}
+	});
+
+	// Expose a small API so other scripts (like readme.html) can control/open/refresh the lightbox
+	window.siteLightbox = {
+		open: function(index){
+			if (typeof index === 'number' && index >= 0 && index < candidates.length) {
+				openOverlay(index);
+			}
+		},
+		refresh: function(){
+			refreshAll();
+		}
+	};
+
+	// expose init so SPA router or other modules can reinitialize after DOM swaps
+	window.initLightbox = function(){
+		try {
+			ensureOverlay();
+			refreshOverlayRefs();
+			initLightbox();
+			refreshAll();
+			applyLightboxLabels();
+			bindOverlayControls();
+		} catch (e) { console.warn('[lightbox] initLightbox failed', e); }
+	};
+
+	// call once to initialize candidates and labels
+	try { window.initLightbox(); } catch (e) { /* ignore */ }
 
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape' && overlay.classList.contains('active')) {

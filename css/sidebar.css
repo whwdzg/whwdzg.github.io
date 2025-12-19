@@ -1,4 +1,4 @@
-/* 侧边栏样式 */
+/* 模块：侧边栏 / Sidebar layout with collapse behavior and animations. */
 .sidebar {
 	position: fixed;
 	top: 0; /* JS 会根据 header 高度调整此值 */
@@ -164,6 +164,40 @@ body.sidebar-collapsed .sidebar .submenu {
 	color: var(--text-color);
 	background: var(--hover-bg);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* 当前页/选中项：在左侧显示主题色竖条（展开时） */
+.sidebar a.current,
+.sidebar a.selected,
+.sidebar .toggle.current,
+.sidebar .toggle.selected {
+	position: relative;
+	/* make current item visually match hover state */
+	background: var(--hover-bg);
+	color: var(--text-color);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.sidebar a.current::before,
+.sidebar a.selected::before,
+.sidebar .toggle.current::before,
+.sidebar .toggle.selected::before {
+	content: '';
+	position: absolute;
+	/* move further left, make thicker and shorter */
+	left: -2px;
+	top: 12px;
+	bottom: 12px;
+	width: 5px;
+	border-radius: 3px;
+	background: rgba(var(--primary-color-rgb, 51,204,153), 0.95);
+}
+
+/* 当侧栏折叠时隐藏竖条（避免视觉拥挤） */
+body.sidebar-collapsed .sidebar a.current::before,
+body.sidebar-collapsed .sidebar a.selected::before,
+body.sidebar-collapsed .sidebar .toggle.current::before,
+body.sidebar-collapsed .sidebar .toggle.selected::before {
+	display: none;
 }
 
 /* 子菜单默认隐藏，父级展开时显示 */

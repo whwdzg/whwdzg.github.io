@@ -1,4 +1,5 @@
 <!-- Shared shell: header, sidebar, aside, footer -->
+<!-- 模块：全站壳层 / Shared shell (header, sidebar, footer). 保留导航与动画。 -->
 <header>
     <h1>
         <span class="header-title">
@@ -11,23 +12,10 @@
             <button class="header-search-btn" id="header-search-btn" aria-label="搜索" title="搜索">
                 <i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>
             </button>
-            <button class="theme-toggle-btn" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
-                <i class="fluent-font" aria-hidden="true">&#xF87E;</i>
-            </button>
             <div class="theme-settings-container">
-                <button class="theme-settings-btn" aria-label="主题设置" title="主题设置">
+                <button class="theme-settings-btn" aria-label="设置" title="设置">
                     <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
                 </button>
-                <div class="theme-settings-menu">
-                    <label class="settings-option">
-                        <input type="radio" name="theme-follow" value="follow" aria-label="跟随系统">
-                        <span>跟随系统</span>
-                    </label>
-                    <label class="settings-option">
-                        <input type="radio" name="theme-follow" value="manual" aria-label="u624bu52a8设置">
-                        <span>手动设置</span>
-                    </label>
-                </div>
             </div>
             <div class="language-selector-container">
                 <button class="language-selector-btn" aria-label="选择语言" title="选择语言">
@@ -122,12 +110,12 @@
                     <span class="label">关于</span>
             </a>
         </li>
-        <li>
-            <a href="README.md">
-                <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
-                <span class="label">README</span>
-            </a>
-        </li>
+                <li>
+                    <a href="readme.html">
+                        <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">README</span>
+                    </a>
+                </li>
     </ul>
 </nav>
 <button id="scroll-to-top" class="scroll-to-top" aria-label="返回顶部" title="返回顶部">
@@ -151,5 +139,5 @@
 </aside>
 <footer>
     <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
-    <p>当前版本：<strong>2.0.2.1-20251216</strong></p>
+    <p>当前版本：<strong>2.0.2.2-20251220</strong></p>
 </footer>

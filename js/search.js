@@ -1,4 +1,4 @@
-// Header search: quick page search across main contents (index/about/future pages)
+// 模块：站内搜索 / Header search overlay and highlighting across pages.
 document.addEventListener('DOMContentLoaded', () => {
 	const searchBtn = document.getElementById('header-search-btn');
 	if (!searchBtn) return;

@@ -1,4 +1,4 @@
-// 语言切换逻辑
+// 模块：语言切换 / Language switching and translation sync.
 document.addEventListener('DOMContentLoaded', function () {
 	try {
 		console.debug('[language.js] init');
@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		localStorage.setItem(LANGUAGE_KEY, lang);
 		updateLanguageRadioState(lang);
 		applyTranslations(lang);
+		// notify other modules (e.g., lightbox) to re-apply labels
+		document.dispatchEvent(new Event('languagechange'));
 	}
 
 	function applyTranslations(lang) {
@@ -90,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const readme1_0 = document.querySelector('nav a[href="Legacy-1.0/README.md"] .label');
 		if (readme1_0) readme1_0.textContent = translations.sidebar.readme1_0;
 
-		const readmeLink = document.querySelector('nav a[href="README.md"] .label');
+		const readmeLink = document.querySelector('nav a[href="readme.html"] .label') || document.querySelector('nav a[href="README.md"] .label');
 		if (readmeLink) readmeLink.textContent = translations.sidebar.readme;
 
 		// 更新返回顶部按钮
@@ -146,9 +148,10 @@ document.addEventListener('DOMContentLoaded', function () {
 				}
 				if (legacyCardContent) {
 					// 重新构建内容（需要保持原有的HTML结构）
+					const legacyLinkText = translations.aside.legacyLink || translations.aside.legacyTitle || translations.sidebar.home1_0 || '返回1.0主页';
 					let content = `<abbr title="1.3.12.2025.8.7-New_MusicPlayer">${translations.aside.versionLabel}</abbr>`;
-					content += translations.aside.legacyStopped;
-					content += `<br><a href="Legacy-1.0/index.html" title="返回1.0版本主页">${translations.aside.legacyLink}</a>`;
+					content += translations.aside.legacyStopped || '';
+					content += `<br><a href="Legacy-1.0/index.html" title="返回1.0版本主页">${legacyLinkText}</a>`;
 					legacyCardContent.innerHTML = content;
 				}
 			}
@@ -251,9 +254,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			const closeBtn = document.querySelector('#image-lightbox .lightbox-close');
 			const zoomInBtn = document.querySelector('#image-lightbox .lightbox-zoom-in');
 			const zoomOutBtn = document.querySelector('#image-lightbox .lightbox-zoom-out');
-			if (closeBtn) closeBtn.setAttribute('aria-label', lightboxStrings.close);
+			const prevBtn = document.querySelector('#image-lightbox .lightbox-prev');
+			const nextBtn = document.querySelector('#image-lightbox .lightbox-next');
+			const fullscreenBtn = document.querySelector('#image-lightbox .lightbox-fullscreen');
+			if (closeBtn) { closeBtn.setAttribute('aria-label', lightboxStrings.close); closeBtn.setAttribute('title', lightboxStrings.close); }
 			if (zoomInBtn) zoomInBtn.setAttribute('aria-label', lightboxStrings.zoomIn);
 			if (zoomOutBtn) zoomOutBtn.setAttribute('aria-label', lightboxStrings.zoomOut);
+			if (prevBtn && lightboxStrings.prev) { prevBtn.setAttribute('aria-label', lightboxStrings.prev); prevBtn.setAttribute('title', lightboxStrings.prev); }
+			if (nextBtn && lightboxStrings.next) { nextBtn.setAttribute('aria-label', lightboxStrings.next); nextBtn.setAttribute('title', lightboxStrings.next); }
+			if (fullscreenBtn && lightboxStrings.fullscreen) { fullscreenBtn.setAttribute('aria-label', lightboxStrings.fullscreen); fullscreenBtn.setAttribute('title', lightboxStrings.fullscreen); }
 		}
 	}
 

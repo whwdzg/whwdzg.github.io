@@ -1,4 +1,4 @@
-/* 主内容区域样式 */
+/* 模块：主内容区域 / Main content grid and aside layout. */
 /* 主内容占据剩余空间，推动 footer 到底部 */
 main {
 	flex: 1 0 auto;

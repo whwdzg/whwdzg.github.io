@@ -1,4 +1,4 @@
-// 头部头像菜单事件
+// 模块：头像下拉菜单 / Avatar dropdown toggle and links.
 document.addEventListener('DOMContentLoaded', function () {
 	try {
 		console.debug('[avatar.js] init');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			console.debug('[avatar.js] avatar button clicked');
 			const willOpen = !avatarMenu.classList.contains('active');
 			// 关闭其他菜单
-			const settingsMenu = document.querySelector('.theme-settings-menu');
+		// 模块：头像下拉菜单 / Avatar dropdown links and toggle behavior.
 			const languageSelectorMenu = document.querySelector('.language-selector-menu');
 			[settingsMenu, languageSelectorMenu].forEach(m => m && m.classList.remove('active'));
 			avatarMenu.classList.toggle('active');
