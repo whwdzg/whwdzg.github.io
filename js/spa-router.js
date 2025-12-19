@@ -163,9 +163,38 @@ if (window.location.protocol === 'file:') {
 			updateTitle(doc);
 			// execute scripts found within new main (external and inline), skip duplicates
 			await executeScriptsInMain(doc);
-			// notify modules that the new page has been loaded and scripts executed
+			// Optionally force reload important external scripts to ensure their
+			// initialization runs after SPA swap. This helps when browser cached
+			// copies are not re-executed and global init functions are missing.
+			if (typeof reloadExternalScripts === 'function') {
+				// list of common scripts that need re-initialization
+				const toReload = [
+					'/js/lightbox.js',
+					'/js/language.js',
+					'/js/i18n.js',
+					'/js/settings.js',
+				];
+				try {
+					await reloadExternalScripts(toReload);
+				} catch (e) {
+					console.warn('[spa-router] reloadExternalScripts failed', e);
+				}
+			}
+
+			// dispatch event that page is loaded
 			console.log('[spa-router] dispatching spa:page:loaded');
-			window.dispatchEvent(new Event('spa:page:loaded'));
+			window.dispatchEvent(new CustomEvent('spa:page:loaded', { detail: { url: href } }));
+
+			// call common initializers; retry once shortly after in case they
+			// were not yet available when spa:page:loaded dispatched
+			try { if (window.loadReadme) window.loadReadme(); } catch(e){}
+			try { if (window.initLightbox) window.initLightbox(); } catch(e){}
+			try { if (window.siteLightbox && typeof window.siteLightbox.refresh === 'function') window.siteLightbox.refresh(); } catch(e){}
+			setTimeout(() => {
+				try { if (window.loadReadme) window.loadReadme(); } catch(e){}
+				try { if (window.initLightbox) window.initLightbox(); } catch(e){}
+				try { if (window.siteLightbox && typeof window.siteLightbox.refresh === 'function') window.siteLightbox.refresh(); } catch(e){}
+			}, 50);
 			try {
 				document.documentElement.dataset.lastSpa = Date.now().toString();
 				if (typeof window.loadReadme === 'function') {
