@@ -75,8 +75,12 @@
     ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
     // spawn rate
     // limit spawn and overall particle count to keep effect light
-    const spawn = Math.max(0, Math.min(3, Math.floor((window.innerWidth/1000) * (enabled === 4 ? 3 : 2))));
-    const maxParticles = Math.max(20, Math.floor(window.innerWidth / 40));
+    // adjusted for narrow viewports: base rate + width-scaled rate
+    const w = window.innerWidth;
+    const baseSpawn = (w < 768) ? 1 : 0.5;  // more base spawn for narrow screens
+    const spawn = Math.max(0, Math.min(3, Math.floor(baseSpawn + (w/1000) * (enabled === 4 ? 3 : 2))));
+    const baseMax = (w < 768) ? 30 : 20;     // higher base max for narrow screens
+    const maxParticles = Math.max(baseMax, Math.floor(w / 35));
     for (let i=0;i<spawn;i++){
       if (particles.length >= maxParticles) break;
       if (Math.random() < 0.08) particles.push(createParticle(effects[enabled].name));
@@ -142,8 +146,11 @@
     enabled = idx;
     ensureCanvas();
     // warm up some particles
-    for (let i=0;i<Math.floor((window.innerWidth/1000)*3);i++) {
-      if (particles.length > Math.max(10, Math.floor(window.innerWidth/60))) break;
+    const w = window.innerWidth;
+    const warmupBase = (w < 768) ? 15 : 5;    // more initial particles for narrow screens
+    const warmupMax = (w < 768) ? 25 : Math.max(10, Math.floor(w/60));
+    for (let i=0; i < Math.floor(warmupBase + (w/1000)*3); i++) {
+      if (particles.length > warmupMax) break;
       particles.push(createParticle(eff.name));
     }
     if (!raf) raf = requestAnimationFrame(step);

@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
 	try {
 		console.debug('[theme.js] init');
 
-		// 如果用户未访问过（关键键不存在），尝试从 confige/defaults.json 加载默认配置
+		// 如果用户未访问过（关键键不存在），尝试从 config/defaults.json 加载默认配置
 		(async function loadDefaultsIfMissing(){
 			try {
 				const hasThemeColor = localStorage.getItem('theme-color') !== null;
 				const hasFollow = localStorage.getItem('follow-system') !== null;
 				const hasPageProgress = localStorage.getItem('show-page-progress') !== null;
 				if (hasThemeColor && hasFollow && hasPageProgress) return;
-				const resp = await fetch('confige/defaults.json', { cache: 'no-store' });
+				const resp = await fetch('config/defaults.json', { cache: 'no-store' });
 				if (!resp.ok) return;
 				const defs = await resp.json();
 				try { if (!hasFollow && typeof defs['follow-system'] !== 'undefined') localStorage.setItem('follow-system', defs['follow-system'] ? 'true' : 'false'); } catch(e){}
