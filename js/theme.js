@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const settingsMenu = document.querySelector('.theme-settings-menu');
 		const languageSelectorMenu = document.querySelector('.language-selector-menu');
 		const avatarMenu = document.getElementById('avatar-links-menu');
+		const avatarBtn = document.getElementById('avatar-btn');
 		const followSystemRadios = document.querySelectorAll('input[name="theme-follow"]');
 		const THEME_KEY = 'theme';
 		const FOLLOW_SYSTEM_KEY = 'follow-system';
@@ -118,6 +119,17 @@ document.addEventListener('DOMContentLoaded', function () {
 			} else {
 				document.dispatchEvent(new CustomEvent('open-settings-modal'));
 			}
+		});
+	}
+
+	// 头像按钮：切换头像链接菜单
+	if (avatarBtn && avatarMenu) {
+		avatarBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			// 先关闭其他菜单，只保留 avatarMenu
+			closeAllMenus(avatarMenu);
+			const willOpen = !avatarMenu.classList.contains('active');
+			avatarMenu.classList.toggle('active', willOpen);
 		});
 	}
 

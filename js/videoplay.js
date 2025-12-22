@@ -294,6 +294,91 @@ document.addEventListener('DOMContentLoaded', function(){
   video.addEventListener('pause', updatePlayButton);
   video.addEventListener('timeupdate', updateProgress);
 
+  // --- Initialize inline videos: generate first-frame poster and apply image-like rounded corners
+  try {
+    // helper to apply same rounded corner style as images
+    function styleVideoAsImage(v){
+      try { v.classList.add('video-as-image'); } catch(e){
+        try { v.style.borderRadius = '10px'; v.style.overflow = 'hidden'; } catch(_){}
+      }
+      try { v.classList.add('zoomable-img'); } catch(_){}
+    }
+
+    function createPlaceholderPoster(v, w, h){
+      try {
+        const c = document.createElement('canvas');
+        c.width = w || Math.max(160, v.clientWidth || 320);
+        c.height = h || Math.max(90, v.clientHeight || 180);
+        const ctx = c.getContext('2d');
+        // background neutral
+        ctx.fillStyle = '#efefef';
+        ctx.fillRect(0,0,c.width,c.height);
+        // subtle vignette
+        try {
+          ctx.fillStyle = 'rgba(0,0,0,0.04)';
+          ctx.fillRect(0,0,c.width,c.height);
+        } catch(_){}
+        // draw play triangle
+        const cx = c.width/2, cy = c.height/2;
+        const size = Math.min(c.width, c.height) * 0.18;
+        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        ctx.beginPath();
+        ctx.moveTo(cx - size*0.6, cy - size);
+        ctx.lineTo(cx - size*0.6, cy + size);
+        ctx.lineTo(cx + size, cy);
+        ctx.closePath();
+        ctx.fill();
+        try { v.setAttribute('poster', c.toDataURL('image/png')); } catch(e){ /* ignore */ }
+      } catch(e) { /* ignore */ }
+    }
+
+    // capture first frame as poster for videos without poster attribute
+    const inlineVideos = Array.from(document.querySelectorAll('main video, article video, .post-content video, #aside-stack video, video'));
+    inlineVideos.forEach(v => {
+      try {
+        // skip if poster already present or no src
+        if (v.getAttribute('poster')) { styleVideoAsImage(v); return; }
+        const src = v.currentSrc || v.src;
+        if (!src) { styleVideoAsImage(v); return; }
+        // create offscreen video to avoid affecting original element playback state
+        const off = document.createElement('video');
+        off.muted = true; off.preload = 'metadata'; off.crossOrigin = 'anonymous';
+        off.src = src;
+        // try to grab first frame once metadata and a small buffer are available
+        const grab = () => {
+          try {
+            const c = document.createElement('canvas');
+            const w = off.videoWidth || v.videoWidth || v.clientWidth || 320;
+            const h = off.videoHeight || v.videoHeight || v.clientHeight || 180;
+            c.width = w; c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(off, 0, 0, w, h);
+            try {
+              const data = c.toDataURL('image/png');
+              v.setAttribute('poster', data);
+            } catch(e){
+              // Likely CORS or tainted canvas — fallback to neutral placeholder
+              console.debug && console.debug('videoplay: poster toDataURL failed, using placeholder', e);
+              createPlaceholderPoster(v, w, h);
+            }
+            styleVideoAsImage(v);
+            // clean up
+            off.pause(); off.removeAttribute('src'); try{ off.load(); }catch(e){}
+          } catch(e){
+            console.debug && console.debug('videoplay: grab frame failed, using placeholder', e);
+            createPlaceholderPoster(v);
+            styleVideoAsImage(v);
+          }
+        };
+        off.addEventListener('loadeddata', function onld(){ try { grab(); } catch(e){} }, { once: true });
+        // fallback: if loadedmetadata but not loadeddata, try to seek to 0 and grab after small delay
+        off.addEventListener('loadedmetadata', function(){ try { off.currentTime = 0; setTimeout(grab, 80); } catch(e){} }, { once: true });
+        // start loading
+        try { off.load(); } catch(e){}
+      } catch(e){ styleVideoAsImage(v); }
+    });
+  } catch(e){}
+
   // progress seek handling: support click and drag. On drag, update fill live and set time on pointerup.
   let seekingPct = 0;
   function pctFromEvent(e){

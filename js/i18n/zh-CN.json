@@ -1,0 +1,89 @@
+{
+  "page": {
+    "title": "主页",
+    "description": "whwdzg's personal page"
+  },
+  "header": {
+    "homeLink": "主页",
+    "searchBtn": "搜索",
+    "themeToggleBtn": "切换深色/浅色模式",
+    "themeSettingsBtn": "设置",
+    "languageSelectorBtn": "选择语言",
+    "avatarAlt": "头像"
+  },
+  "avatar": {
+    "github": "GitHub",
+    "bilibili": "bilibili"
+  },
+  "theme": {
+    "followSystem": "跟随系统",
+    "manual": "手动设置"
+  },
+  "language": {
+    "zhCN": "中文（简体）",
+    "zhTW": "中文（繁体）",
+    "enUS": "English (US)",
+    "ruRU": "Русский",
+    "frFR": "Français",
+    "deDE": "Deutsch",
+    "jaJP": "日本語"
+  },
+  "sidebar": {
+    "home": "主页",
+    "about": "关于",
+    "legacy": "返回 1.0",
+    "home1_0": "主页（1.0）",
+    "about1_0": "关于（1.0）",
+    "readme1_0": "README（1.0）",
+    "readme": "README",
+    "collapseBtn": "折叠/展开侧边栏"
+  },
+  "search": {
+    "placeholder": "搜索内容",
+    "button": "搜索",
+    "ariaLabel": "开始搜索",
+    "noResults": "未找到相关内容",
+    "resultCount": "找到 {count} 个结果",
+    "imageTag": "[图片]"
+  },
+  "main": {
+    "homeTitle": "主页",
+    "homeContent": "这里是2.0版本的主页，当前正在构建中，尚处于<strong>极早期阶段</strong>，供实验学习使用",
+    "aboutTitle": "关于",
+    "aboutContent": "这里是2.0版本的主页，当前正在构建中，尚处于<strong>极早期阶段</strong>",
+    "testTitle": "test"
+  },
+  "aside": {
+    "noticeTitle": "注意",
+    "noticeContent": "<strong>当前为早期测试版本，可能出现bug</strong>",
+    "legacyTitle": "返回1.0主页",
+    "versionLabel": "1.0版本",
+    "legacyLink": "返回1.0主页",
+    "legacyStopped": "已终止更新"
+  },
+  "footer": {
+    "copyright": "&copy; 2022-2025 whwdzg. 保留所有权利。",
+    "version": "当前版本：<strong>2.0.2.3-20251221</strong>"
+  },
+  "settings": {
+    "title": "设置",
+    "lightdark": { "title": "浅色/深色模式切换", "subtitle": "切换浅色模式/深色模式的行为", "follow": "跟随系统", "manual": "手动设置" },
+    "color": { "title": "切换主题色", "subtitle": "选择主题色标" },
+    "pageProgress": { "title": "页面进度条", "subtitle": "在页眉底部显示当前页面滚动进度", "off": "关闭", "on": "开启" },
+    "particleAnimation": { "title": "粒子动画", "subtitle": "在页面上显示粒子动画", "options": ["关闭","樱花","落叶梧桐","落叶银杏","雪花"] }
+  },
+  "buttons": { "scrollToTop": "返回顶部" },
+  "lightbox": {
+    "close": "关闭图片",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "download": "下载图片",
+    "locate": "定位到原文",
+    "prev": "上一张",
+    "next": "下一张",
+    "fullscreen": "全屏",
+    "exitFullscreen": "退出全屏",
+    "zoomInputPlaceholder": "40-400%",
+    "zoomInputLabel": "缩放百分比"
+  }
+}

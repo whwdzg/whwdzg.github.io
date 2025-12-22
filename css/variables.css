@@ -18,6 +18,27 @@
 	--icon-small: 20px;    /* 页脚/地址等小图标的较小尺寸 */
 }
 
+/* particle image overlay: makes per-image overlay canvas align and ignore pointer events */
+.particle-image-overlay {
+	image-rendering: auto;
+	pointer-events: none;
+	/* original blend for particle overlays */
+	mix-blend-mode: screen;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+	z-index: 1401;
+}
+
+.particle-image-wrapper {
+	display: inline-block;
+	position: relative;
+	overflow: hidden; /* ensure overlay clipped to image bounds */
+}
+
 body.dark-mode {
 	--bg-color: #1a1a1a;
 	--text-color: #e5e5e5;
@@ -115,6 +136,15 @@ body {
 img {
 	border-radius: 10px;
 	overflow: hidden;
+}
+
+/* Make videos look like images when shown inline: rounded corners and clipped content */
+.video-as-image {
+	border-radius: 10px;
+	overflow: hidden;
+	display: block;
+	max-width: 100%;
+	height: auto;
 }
 
 /* 隐藏作为图片标题的段落 */
