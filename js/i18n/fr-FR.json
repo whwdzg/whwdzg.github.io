@@ -1,0 +1,15 @@
+{
+  "page": { "title": "Accueil", "description": "whwdzg's personal page" },
+  "header": { "homeLink": "Accueil", "searchBtn": "Recherche", "themeToggleBtn": "Basculer sombre/clair", "themeSettingsBtn": "Paramètres du thème", "languageSelectorBtn": "Choisir la langue", "avatarAlt": "Avatar" },
+  "avatar": { "github": "GitHub", "bilibili": "bilibili" },
+  "theme": { "followSystem": "Suivre le système", "manual": "Réglages manuels" },
+  "language": { "zhCN": "中文（简体）", "zhTW": "中文（繁体）", "enUS": "English (US)", "ruRU": "Русский", "frFR": "Français", "deDE": "Deutsch", "jaJP": "日本語" },
+  "sidebar": { "home": "Accueil", "about": "À propos", "legacy": "Retour à 1.0", "home1_0": "Accueil (1.0)", "about1_0": "À propos (1.0)", "readme1_0": "README (1.0)", "readme": "README", "collapseBtn": "Réduire/Agrandir la barre latérale" },
+  "search": { "placeholder": "Contenu de recherche", "button": "Rechercher", "ariaLabel": "Commencer la recherche", "noResults": "Aucun résultat", "resultCount": "{count} résultats trouvés", "imageTag": "[Image]" },
+  "main": { "homeTitle": "Accueil", "homeContent": "Ceci est la page d'accueil de la version 2.0, actuellement en construction et à un <strong>stade très précoce</strong>, pour l'apprentissage expérimental", "aboutTitle": "À propos", "aboutContent": "Ceci est la page d'accueil de la version 2.0, actuellement en construction et à un <strong>stade très précoce</strong>", "testTitle": "test" },
+  "aside": { "noticeTitle": "Remarque", "noticeContent": "<strong>Version de test précoce, des bugs peuvent survenir</strong>", "legacyTitle": "Retour à l'accueil 1.0", "versionLabel": "Version 1.0", "legacyLink": "Retour à l'accueil 1.0", "legacyStopped": "Plus de mises à jour" },
+  "footer": { "copyright": "&copy; 2022-2025 whwdzg. Tous droits réservés.", "version": "Version actuelle : <strong>2.0.2.3-20251221</strong>" },
+  "settings": { "title": "Paramètres", "lightdark": { "title": "Mode clair/sombre", "subtitle": "Choisir le comportement clair/sombre", "follow": "Suivre le système", "manual": "Réglage manuel" }, "color": { "title": "Couleur du thème", "subtitle": "Choisir la couleur principale" }, "pageProgress": { "title": "Barre de progression", "subtitle": "Afficher la progression de défilement sous l'en-tête", "off": "Désactivé", "on": "Activé" }, "particleAnimation": { "title": "Animation de particules", "subtitle": "Afficher une animation de particules sur la page", "options": ["Désactivé","Sakura","Feuilles de platane","Feuilles de ginkgo","Neige"] } },
+  "buttons": { "scrollToTop": "Haut de page" },
+  "lightbox": { "close": "Fermer l'image", "zoomIn": "Agrandir", "zoomOut": "Réduire", "download": "Télécharger l'image", "locate": "Aller au texte", "prev": "Précédent", "next": "Suivant", "fullscreen": "Plein écran", "exitFullscreen": "Quitter le plein écran", "zoomInputPlaceholder": "40-400%", "zoomInputLabel": "Pourcentage de zoom" }
+}

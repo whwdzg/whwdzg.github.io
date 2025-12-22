@@ -1,0 +1,25 @@
+{
+  "page": {
+    "title": "Home",
+    "description": "whwdzg's personal page"
+  },
+  "header": {
+    "homeLink": "Home",
+    "searchBtn": "Search",
+    "themeToggleBtn": "Toggle dark/light mode",
+    "themeSettingsBtn": "Theme Settings",
+    "languageSelectorBtn": "Select Language",
+    "avatarAlt": "Avatar"
+  },
+  "avatar": { "github": "GitHub", "bilibili": "bilibili" },
+  "theme": { "followSystem": "Follow System", "manual": "Manual Settings" },
+  "language": { "zhCN": "中文（简体）", "zhTW": "中文（繁体）", "enUS": "English (US)", "ruRU": "Русский", "frFR": "Français", "deDE": "Deutsch", "jaJP": "日本語" },
+  "sidebar": { "home": "Home", "about": "About", "legacy": "Back to 1.0", "home1_0": "Home (1.0)", "about1_0": "About (1.0)", "readme1_0": "README (1.0)", "readme": "README", "collapseBtn": "Collapse/Expand Sidebar" },
+  "search": { "placeholder": "Search content", "button": "Search", "ariaLabel": "Start search", "noResults": "No results found", "resultCount": "Found {count} results", "imageTag": "[Image]" },
+  "main": { "homeTitle": "Home", "homeContent": "This is the home page of version 2.0, currently under construction and in <strong>very early stages</strong>, for experimental learning purposes", "aboutTitle": "About", "aboutContent": "This is the home page of version 2.0, currently under construction and in <strong>very early stages</strong>", "testTitle": "test" },
+  "aside": { "noticeTitle": "Notice", "noticeContent": "<strong>Current version is in early beta testing, bugs may occur</strong>", "legacyTitle": "Back to 1.0 Home", "versionLabel": "Version 1.0", "legacyLink": "Back to 1.0 Home" },
+  "footer": { "copyright": "&copy; 2022-2025 whwdzg. All rights reserved.", "version": "Current version: <strong>2.0.2.3-20251221</strong>" },
+  "settings": { "title": "Settings", "lightdark": { "title": "Light/Dark Mode", "subtitle": "How to toggle light/dark", "follow": "Follow system", "manual": "Manual" }, "color": { "title": "Theme Color", "subtitle": "Choose your accent color" }, "pageProgress": { "title": "Page Progress", "subtitle": "Show scroll progress under header", "off": "Off", "on": "On" }, "particleAnimation": { "title": "Particle animation", "subtitle": "Show particle animation on the page", "options": ["Off","Sakura","Plane tree leaves","Ginkgo leaves","Snow"] } },
+  "buttons": { "scrollToTop": "Back to Top" },
+  "lightbox": { "close": "Close image", "zoomIn": "Zoom in", "zoomOut": "Zoom out", "download": "Download image", "locate": "Locate in document", "prev": "Previous", "next": "Next", "fullscreen": "Fullscreen", "exitFullscreen": "Exit fullscreen", "zoomInputPlaceholder": "40-400%", "zoomInputLabel": "Zoom percentage" }
+}

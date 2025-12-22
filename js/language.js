@@ -14,23 +14,27 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.documentElement.lang = lang;
 		localStorage.setItem(LANGUAGE_KEY, lang);
 		updateLanguageRadioState(lang);
-		applyTranslations(lang);
+		// 异步加载并应用翻译
+		(async () => {
+			try {
+				const langData = await loadLocale(lang);
+				if (langData) updatePageWithTranslations(langData);
+			} catch (e) {
+				console.warn('Failed to load locale', lang, e);
+			}
+		})();
 		// notify other modules (e.g., lightbox) to re-apply labels
 		document.dispatchEvent(new Event('languagechange'));
 	}
 
-	function applyTranslations(lang) {
-		// 从全局translations对象获取翻译数据（已在i18n.js中定义）
-		if (typeof translations === 'undefined') {
-			return;
+	async function applyTranslations(lang) {
+		// 使用新的按需加载器
+		try {
+			const langData = await loadLocale(lang);
+			if (langData) updatePageWithTranslations(langData);
+		} catch (e) {
+			console.warn('applyTranslations failed', e);
 		}
-		
-		const langData = translations[lang];
-		if (!langData) {
-			return;
-		}
-		
-		updatePageWithTranslations(langData);
 	}
 
 	function updatePageWithTranslations(translations) {
@@ -183,28 +187,39 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 		}
 
-		// 更新语言选择菜单
+		// 更新语言选择菜单（使用通用映射：radio.value -> translations.language.<key>）
 		const languageSelectorMenu = document.querySelector('.language-selector-menu');
 		if (languageSelectorMenu) {
 			const languageLabels = languageSelectorMenu.querySelectorAll('label.language-option');
+			function mapRadioValueToLangKey(value) {
+				// 简单规则：'xx-yy' -> 'xxYY'，'xx' -> 'xx'
+				if (!value) return null;
+				const parts = value.split('-');
+				if (parts.length === 1) return parts[0];
+				const prefix = parts[0].toLowerCase();
+				const suffix = parts.slice(1).join('-');
+				// 将后段首字母大写，其余保持原状（例如 en-GB -> enGB, zh-CN -> zhCN）
+				const camel = suffix.split(/[-_]/).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+				return prefix + camel;
+			}
+			const defaultLabelMap = {
+				'zh-CN': '中文（简体）',
+				'zh-TW': '中文（繁体）',
+				'en-US': 'English (US)',
+				'ru-RU': 'Русский',
+				'fr-FR': 'Français',
+				'de-DE': 'Deutsch',
+				'ja-JP': '日本語'
+			};
 			languageLabels.forEach(label => {
 				const radio = label.querySelector('input[type="radio"]');
 				const span = label.querySelector('span');
 				if (radio && span) {
-					if (radio.value === 'zh-CN') {
-						span.textContent = translations.language.zhCN || '中文（简体）';
-					} else if (radio.value === 'zh-TW') {
-						span.textContent = translations.language.zhTW || '中文（繁體）';
-					} else if (radio.value === 'en-US') {
-						span.textContent = translations.language.enUS || 'English (US)';
-					} else if (radio.value === 'ru-RU') {
-						span.textContent = translations.language.ruRU || 'Русский';
-					} else if (radio.value === 'fr-FR') {
-						span.textContent = translations.language.frFR || 'Français';
-					} else if (radio.value === 'de-DE') {
-						span.textContent = translations.language.deDE || 'Deutsch';
-					} else if (radio.value === 'ja-JP') {
-						span.textContent = translations.language.jaJP || '日本語';
+					const key = mapRadioValueToLangKey(radio.value);
+					if (key && translations.language && translations.language[key]) {
+						span.textContent = translations.language[key];
+					} else {
+						span.textContent = defaultLabelMap[radio.value] || radio.value || '';
 					}
 				}
 			});

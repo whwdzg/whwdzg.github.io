@@ -17,6 +17,8 @@
 	z-index: 1610; /* 提高到高于 header 的层级，确保遮罩覆盖页眉 */
 	padding: 24px;
 	box-sizing: border-box;
+	/* Ensure Pointer Events are delivered consistently (for drag/swipe/pinch) */
+	touch-action: none;
 }
 
 #image-lightbox.active {
@@ -35,6 +37,8 @@
 	flex-direction: column;
 	gap: 16px;
 	overflow: visible; /* 允许放大后的图片不被裁剪 */
+	/* prevent browser panning/zooming gestures from stealing events */
+	touch-action: none;
 }
 
 #image-lightbox .lightbox-image-wrapper {
@@ -46,6 +50,8 @@
 	justify-content: center;
 	transition: transform 300ms ease, opacity 300ms ease;
 	overflow: visible; /* 放大时允许超出容器显示 */
+	/* critical for pointer-based pinch/drag */
+	touch-action: none;
 }
 
 #image-lightbox .lightbox-image-wrapper.slide-out-left {
@@ -240,6 +246,87 @@
 
 #image-lightbox.fullscreen-mode .lightbox-fullscreen {
 	background: var(--active-bg);
+}
+
+/* When in fullscreen, hide controls that would otherwise overlay the image
+   to provide an immersive view. Still allow keyboard navigation. */
+#image-lightbox.fullscreen-mode .lightbox-controls,
+#image-lightbox.fullscreen-mode .lightbox-filmstrip,
+#image-lightbox.fullscreen-mode .lightbox-close,
+#image-lightbox.fullscreen-mode .lightbox-download-btn,
+#image-lightbox.fullscreen-mode .lightbox-locate-btn,
+#image-lightbox.fullscreen-mode .lightbox-nav {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(-6px);
+	transition: opacity 180ms ease, transform 180ms ease;
+}
+
+#image-lightbox.fullscreen-mode .lightbox-fullscreen,
+#image-lightbox.fullscreen-mode .lightbox-zoom-indicator,
+#image-lightbox.fullscreen-mode .lightbox-title {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(-6px);
+}
+
+/* Ensure the image can receive pointer/touch gestures in fullscreen */
+#image-lightbox.fullscreen-mode .lightbox-content img {
+	touch-action: none;
+	pointer-events: auto;
+}
+
+/* Fallback: some browsers use the :fullscreen pseudo-class instead of preserving
+   custom classes when an element enters fullscreen. Ensure controls are hidden
+   in those cases as well. */
+#image-lightbox:fullscreen .lightbox-controls,
+#image-lightbox:-webkit-full-screen .lightbox-controls,
+#image-lightbox:fullscreen .lightbox-filmstrip,
+#image-lightbox:-webkit-full-screen .lightbox-filmstrip,
+#image-lightbox:fullscreen .lightbox-close,
+#image-lightbox:-webkit-full-screen .lightbox-close,
+#image-lightbox:fullscreen .lightbox-download-btn,
+#image-lightbox:-webkit-full-screen .lightbox-download-btn,
+#image-lightbox:fullscreen .lightbox-locate-btn,
+#image-lightbox:-webkit-full-screen .lightbox-locate-btn,
+#image-lightbox:fullscreen .lightbox-nav,
+#image-lightbox:-webkit-full-screen .lightbox-nav {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(-6px);
+}
+
+#image-lightbox:fullscreen .lightbox-content img,
+#image-lightbox:-webkit-full-screen .lightbox-content img {
+	touch-action: none;
+	pointer-events: auto;
+}
+
+#image-lightbox:fullscreen .lightbox-fullscreen,
+#image-lightbox:-webkit-full-screen .lightbox-fullscreen,
+#image-lightbox:fullscreen .lightbox-zoom-indicator,
+#image-lightbox:-webkit-full-screen .lightbox-zoom-indicator,
+#image-lightbox:fullscreen .lightbox-title,
+#image-lightbox:-webkit-full-screen .lightbox-title {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(-6px);
+}
+
+/* Force hide with higher specificity and !important to cover cases where
+   inline styles or other rules prevent hiding in certain browsers. */
+#image-lightbox.force-hide-controls .lightbox-controls,
+#image-lightbox.force-hide-controls .lightbox-filmstrip,
+#image-lightbox.force-hide-controls .lightbox-close,
+#image-lightbox.force-hide-controls .lightbox-download-btn,
+#image-lightbox.force-hide-controls .lightbox-locate-btn,
+#image-lightbox.force-hide-controls .lightbox-nav,
+#image-lightbox.force-hide-controls .lightbox-fullscreen,
+#image-lightbox.force-hide-controls .lightbox-zoom-indicator,
+#image-lightbox.force-hide-controls .lightbox-title {
+	display: none !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
 }
 
 #image-lightbox .lightbox-close:hover {

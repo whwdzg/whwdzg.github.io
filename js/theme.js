@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
 	try {
 		console.debug('[theme.js] init');
 
-		// 如果用户未访问过（关键键不存在），尝试从 confige/defaults.json 加载默认配置
+		// 如果用户未访问过（关键键不存在），尝试从 config/defaults.json 加载默认配置
 		(async function loadDefaultsIfMissing(){
 			try {
 				const hasThemeColor = localStorage.getItem('theme-color') !== null;
 				const hasFollow = localStorage.getItem('follow-system') !== null;
 				const hasPageProgress = localStorage.getItem('show-page-progress') !== null;
 				if (hasThemeColor && hasFollow && hasPageProgress) return;
-				const resp = await fetch('confige/defaults.json', { cache: 'no-store' });
+				const resp = await fetch('config/defaults.json', { cache: 'no-store' });
 				if (!resp.ok) return;
 				const defs = await resp.json();
 				try { if (!hasFollow && typeof defs['follow-system'] !== 'undefined') localStorage.setItem('follow-system', defs['follow-system'] ? 'true' : 'false'); } catch(e){}
@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const settingsMenu = document.querySelector('.theme-settings-menu');
 		const languageSelectorMenu = document.querySelector('.language-selector-menu');
 		const avatarMenu = document.getElementById('avatar-links-menu');
+		const avatarBtn = document.getElementById('avatar-btn');
 		const followSystemRadios = document.querySelectorAll('input[name="theme-follow"]');
 		const THEME_KEY = 'theme';
 		const FOLLOW_SYSTEM_KEY = 'follow-system';
@@ -118,6 +119,17 @@ document.addEventListener('DOMContentLoaded', function () {
 			} else {
 				document.dispatchEvent(new CustomEvent('open-settings-modal'));
 			}
+		});
+	}
+
+	// 头像按钮：切换头像链接菜单
+	if (avatarBtn && avatarMenu) {
+		avatarBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			// 先关闭其他菜单，只保留 avatarMenu
+			closeAllMenus(avatarMenu);
+			const willOpen = !avatarMenu.classList.contains('active');
+			avatarMenu.classList.toggle('active', willOpen);
 		});
 	}
 

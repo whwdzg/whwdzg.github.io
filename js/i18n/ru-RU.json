@@ -1,0 +1,15 @@
+{
+  "page": { "title": "Главная", "description": "whwdzg's personal page" },
+  "header": { "homeLink": "Главная", "searchBtn": "Поиск", "themeToggleBtn": "Переключить тёмную/светлую тему", "themeSettingsBtn": "Настройки темы", "languageSelectorBtn": "Выбор языка", "avatarAlt": "Аватар" },
+  "avatar": { "github": "GitHub", "bilibili": "bilibili" },
+  "theme": { "followSystem": "Следовать системе", "manual": "Ручные настройки" },
+  "language": { "zhCN": "中文（简体）", "zhTW": "中文（繁体）", "enUS": "English (US)", "ruRU": "Русский", "frFR": "Français", "deDE": "Deutsch", "jaJP": "日本語" },
+  "sidebar": { "home": "Главная", "about": "О сайте", "legacy": "Назад к 1.0", "home1_0": "Главная (1.0)", "about1_0": "О сайте (1.0)", "readme1_0": "README (1.0)", "readme": "README", "collapseBtn": "Свернуть/развернуть боковую панель" },
+  "search": { "placeholder": "Поисковый запрос", "button": "Искать", "ariaLabel": "Начать поиск", "noResults": "Ничего не найдено", "resultCount": "Найдено результатов: {count}", "imageTag": "[Изображение]" },
+  "main": { "homeTitle": "Главная", "homeContent": "Это главная страница версии 2.0, сейчас в разработке и на <strong>самой ранней стадии</strong>, для учебных целей", "aboutTitle": "О сайте", "aboutContent": "Это главная страница версии 2.0, сейчас в разработке и на <strong>самой ранней стадии</strong>", "testTitle": "test" },
+  "aside": { "noticeTitle": "Примечание", "noticeContent": "<strong>Ранняя тестовая версия, возможны ошибки</strong>", "legacyTitle": "Вернуться на главную 1.0", "versionLabel": "Версия 1.0", "legacyLink": "К главной 1.0", "legacyStopped": "Больше не обновляется" },
+  "footer": { "copyright": "&copy; 2022-2025 whwdzg. Все права защищены.", "version": "Текущая версия: <strong>2.0.2.3-20251221</strong>" },
+  "settings": { "title": "Настройки", "lightdark": { "title": "Переключение светлой/тёмной темы", "subtitle": "Как переключать светлую/тёмную тему", "follow": "Следовать системе", "manual": "Ручные настройки" }, "color": { "title": "Выбор цвета темы", "subtitle": "Выберите основной цвет" }, "pageProgress": { "title": "Индикатор прогресса", "subtitle": "Показывать прогресс прокрутки под шапкой", "off": "Выкл", "on": "Вкл" }, "particleAnimation": { "title": "Анимация частиц", "subtitle": "Отображать анимацию частиц на странице", "options": ["Отключено","Сакура","Листья платана","Листья гинкго","Снег"] } },
+  "buttons": { "scrollToTop": "Наверх" },
+  "lightbox": { "close": "Закрыть изображение", "zoomIn": "Увеличить", "zoomOut": "Уменьшить", "download": "Скачать изображение", "locate": "Найти в документе", "prev": "Предыдущее", "next": "Следующее", "fullscreen": "На весь экран", "exitFullscreen": "Выйти из полноэкранного", "zoomInputPlaceholder": "40-400%", "zoomInputLabel": "Процент масштабирования" }
+}

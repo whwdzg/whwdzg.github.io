@@ -56,6 +56,59 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	let overlay = null;
 	let filmstrip = null;
+	let debugPanel = null;
+	let debugCounters = { down: 0, move: 0, up: 0 };
+	const isLbDebug = () => {
+		try { return /(^|[?&])lbdebug=1($|&)/.test(location.search) || localStorage.getItem('debug-lightbox') === '1'; } catch(e) { return false; }
+	};
+	function ensureDebugPanel(){
+		if (!isLbDebug()) return;
+		ensureOverlay();
+		overlay.classList.add('debug');
+		debugPanel = overlay.querySelector('.lightbox-debug');
+		if (!debugPanel) {
+			debugPanel = document.createElement('div');
+			debugPanel.className = 'lightbox-debug';
+			debugPanel.style.position = 'fixed';
+			debugPanel.style.left = '8px';
+			debugPanel.style.top = '8px';
+			debugPanel.style.zIndex = '2000';
+			debugPanel.style.maxWidth = 'calc(100vw - 16px)';
+			debugPanel.style.font = '12px/1.35 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
+			debugPanel.style.padding = '8px 10px';
+			debugPanel.style.borderRadius = '10px';
+			debugPanel.style.background = 'rgba(0,0,0,0.60)';
+			debugPanel.style.color = '#fff';
+			debugPanel.style.pointerEvents = 'none';
+			overlay.appendChild(debugPanel);
+		}
+		updateDebugPanel('init');
+	}
+
+	// Global pointer event snooper for debug mode to verify event delivery
+	function enableGlobalPointerDebug(){
+		if (!isLbDebug()) return;
+		const dbg = (ev) => {
+			try {
+				const img = document.querySelector('#image-lightbox img');
+				const wrap = document.querySelector('#image-lightbox .lightbox-image-wrapper');
+				console.log('[lightbox-debug] evt', ev.type, 'target=', ev.target && ev.target.tagName, 'coords=', ev.clientX + ',' + ev.clientY,
+					' hitsImg=', img && (img === ev.target || img.contains(ev.target)), ' hitsWrap=', wrap && (wrap === ev.target || wrap.contains(ev.target)));
+			} catch (e) { console.warn('[lightbox-debug] snooper error', e); }
+		};
+		document.addEventListener('pointerdown', dbg, true);
+		document.addEventListener('pointermove', dbg, true);
+		document.addEventListener('pointerup', dbg, true);
+	}
+	function updateDebugPanel(reason){
+		if (!debugPanel || !isLbDebug()) return;
+		const inFs = !!document.fullscreenElement || !!document.webkitFullscreenElement;
+		debugPanel.textContent =
+			`lbdebug (${reason})\n` +
+			`active=${overlay && overlay.classList.contains('active')} fs=${inFs}\n` +
+			`scale=${currentScale.toFixed(2)} pan=(${Math.round(panX)},${Math.round(panY)})\n` +
+			`pointers=${activePointers.size} down/move/up=${debugCounters.down}/${debugCounters.move}/${debugCounters.up}`;
+	}
 
 	function ensureOverlay() {
 		overlay = document.getElementById('image-lightbox');
@@ -108,6 +161,22 @@ document.addEventListener('DOMContentLoaded', function () {
 	let zoomInBtn = null;
 	let zoomOutBtn = null;
 	let zoomInput = null;
+	let gestureSurfaceBound = null;
+	const onOverlayClickCapture = (e) => {
+		if (!overlay) return;
+		const inFullscreen = !!document.fullscreenElement || !!document.webkitFullscreenElement;
+		const isControl = e.target.closest && e.target.closest('button, .lightbox-controls, .lightbox-nav');
+		if (inFullscreen && !isControl) {
+			e.stopPropagation();
+			if (document.exitFullscreen) document.exitFullscreen();
+			else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+			return;
+		}
+		// outside fullscreen: click background closes
+		if (!inFullscreen && e.target === overlay) {
+			closeOverlay();
+		}
+	};
 
 	// ensure overlay exists and refresh references
 	ensureOverlay();
@@ -129,6 +198,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		zoomOutBtn = overlay.querySelector('.lightbox-zoom-out');
 		zoomInput = overlay.querySelector('.zoom-input');
 		filmstrip = overlay.querySelector('.lightbox-filmstrip') || filmstrip;
+		// keep overlay interactive
+		overlay.style.pointerEvents = 'auto';
+		if (overlayImg) {
+			overlayImg.style.touchAction = 'none';
+			overlayImg.style.pointerEvents = 'auto';
+		}
 	}
 	downloadBtn = overlay.querySelector('.lightbox-download-btn');
 	locateBtn = overlay.querySelector('.lightbox-locate-btn');
@@ -166,6 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	let pinchStartPanY = 0;
 	let pinchStartMidX = 0;
 	let pinchStartMidY = 0;
+	let swipeStartX = 0, swipeStartY = 0, swipeEndX = 0, swipeEndY = 0, isSwipePossible = false;
 	const activePointers = new Map();
 	const getLang = () => document.documentElement.lang || localStorage.getItem('language') || 'zh-CN';
 	const applyLightboxLabels = () => {
@@ -262,88 +338,100 @@ document.addEventListener('DOMContentLoaded', function () {
 		return { distance, midX, midY };
 	};
 
+	// Gestures: pan / pinch + swipe fallback (restore swipe detection)
 	const onPointerDown = (e) => {
-		activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-		// only capture pointer on the image element to avoid stealing clicks from controls
-		if (e.target === overlayImg) {
-			try {
-				overlayImg.setPointerCapture(e.pointerId);
-			} catch (_) {
-				/* ignore */
-			}
-		}
-		updateCursor();
-
-		// start potential swipe when not zoomed
+	    debugCounters.down++; ensureDebugPanel();
+	    activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+	    try { if (overlayImg && overlayImg.setPointerCapture) overlayImg.setPointerCapture(e.pointerId); } catch (_) { }
+	    updateCursor();
+		// swipe start for single-pointer when not zoomed
 		if (activePointers.size === 1 && currentScale <= 1) {
-			startPointerX = e.clientX;
-			startPointerY = e.clientY;
+			swipeStartX = e.clientX; swipeStartY = e.clientY; swipeEndX = e.clientX; swipeEndY = e.clientY; isSwipePossible = true;
 		}
-
-
+		markPointerEventSeen();
 	};
 
 	const onPointerMove = (e) => {
-		if (!activePointers.has(e.pointerId)) return;
-		activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+	    debugCounters.move++; ensureDebugPanel();
+	    if (!activePointers.has(e.pointerId)) return;
+	    activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
+	    // Pinch handling when two pointers active
+	    if (activePointers.size >= 2) {
+	        if (!isPinching) {
+	            isPinching = true;
+	            isPanning = false;
+	            const metrics = getPinchMetrics();
+	            if (!metrics) return;
+	            pinchStartDistance = metrics.distance || 1;
+	            pinchStartScale = currentScale;
+	            pinchStartPanX = panX;
+	            pinchStartPanY = panY;
+	            pinchStartMidX = metrics.midX;
+	            pinchStartMidY = metrics.midY;
+	        }
+	        e.preventDefault();
+	        const metrics = getPinchMetrics();
+	        if (!metrics || !metrics.distance) return;
+	        const scaleRatio = metrics.distance / pinchStartDistance;
+	        currentScale = clampScale(pinchStartScale * scaleRatio);
+	        const appliedRatio = currentScale / pinchStartScale;
+	        const dx = metrics.midX - pinchStartMidX;
+	        const dy = metrics.midY - pinchStartMidY;
+	        panX = pinchStartPanX * appliedRatio + dx;
+	        panY = pinchStartPanY * appliedRatio + dy;
+	        applyTransform({ clamp: false });
+	        return;
+	    }
 
-
-		// 两个指针或以上：捏合缩放
-		if (activePointers.size >= 2) {
-			if (!isPinching) {
-				isPinching = true;
-				isPanning = false;
-				const metrics = getPinchMetrics();
-				if (!metrics) return;
-				pinchStartDistance = metrics.distance || 1;
-				pinchStartScale = currentScale;
-				pinchStartPanX = panX;
-				pinchStartPanY = panY;
-				pinchStartMidX = metrics.midX;
-				pinchStartMidY = metrics.midY;
+	    // Single-pointer pan when zoomed
+	    if (activePointers.size === 1 && currentScale > 1) {
+	        if (!isPanning) {
+	            isPanning = true;
+	            isPinching = false;
+	            const ptr = Array.from(activePointers.values())[0];
+	            startPointerX = ptr.x;
+	            startPointerY = ptr.y;
+	            startPanX = panX;
+	            startPanY = panY;
+	        }
+	        e.preventDefault();
+	        const dx = e.clientX - startPointerX;
+	        const dy = e.clientY - startPointerY;
+	        panX = startPanX + dx;
+	        panY = startPanY + dy;
+	        applyTransform({ clamp: false });
+	    }
+		// track swipe while not zoomed (decide on pointerup)
+		if (activePointers.size === 1 && currentScale <= 1 && isSwipePossible) {
+			swipeEndX = e.clientX; swipeEndY = e.clientY;
+			const dx = swipeEndX - swipeStartX;
+			const dy = swipeEndY - swipeStartY;
+			if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+				e.preventDefault();
 			}
-			e.preventDefault();
-			const metrics = getPinchMetrics();
-			if (!metrics || !metrics.distance) return;
-			const scaleRatio = metrics.distance / pinchStartDistance;
-			currentScale = clampScale(pinchStartScale * scaleRatio);
-			const appliedRatio = currentScale / pinchStartScale;
-			const dx = metrics.midX - pinchStartMidX;
-			const dy = metrics.midY - pinchStartMidY;
-			panX = pinchStartPanX * appliedRatio + dx;
-			panY = pinchStartPanY * appliedRatio + dy;
-			applyTransform({ clamp: false });
-			return;
 		}
+	};
 
-		// 单个指针且图片已放大：拖拽平移
-		if (activePointers.size === 1 && currentScale > 1) {
-			if (!isPanning) {
-				isPanning = true;
-				isPinching = false;
-				const ptr = Array.from(activePointers.values())[0];
-				startPointerX = ptr.x;
-				startPointerY = ptr.y;
-				startPanX = panX;
-				startPanY = panY;
-			}
-			e.preventDefault();
-			const dx = e.clientX - startPointerX;
-			const dy = e.clientY - startPointerY;
-			panX = startPanX + dx;
-			panY = startPanY + dy;
-			applyTransform({ clamp: false });
-		}
-
-		// 单指且未放大：检测水平滑动以切换图片（防止在垂直滚动时误触）
-		if (activePointers.size === 1 && currentScale <= 1 && !isPanning && !isPinching) {
-			const ptr = Array.from(activePointers.values())[0];
-			const dx = ptr.x - startPointerX;
-			const dy = ptr.y - startPointerY;
-			// 判定为水平滑动且水平位移明显大于垂直位移
-			if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-				// trigger swipe
+	const onPointerUp = (e) => {
+	    debugCounters.up++; ensureDebugPanel();
+	    activePointers.delete(e.pointerId);
+	    if (isPinching && activePointers.size < 2) {
+	        isPinching = false;
+	    }
+	    if (activePointers.size === 0) {
+	        isPanning = false;
+	        applyTransform();
+	    } else if (!isPinching) {
+	        applyTransform();
+	    }
+	    try { if (overlayImg && overlayImg.releasePointerCapture) overlayImg.releasePointerCapture(e.pointerId); } catch (_) { }
+	    updateCursor();
+		// swipe decision on last pointer up (only when not zoomed)
+		if (isSwipePossible && activePointers.size === 0 && currentScale <= 1) {
+			const dx = swipeEndX - swipeStartX;
+			const dy = swipeEndY - swipeStartY;
+			if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
 				if (dx < 0) {
 					const next = Math.min(candidates.length - 1, currentIndex + 1);
 					if (next !== currentIndex) openOverlay(next);
@@ -353,35 +441,57 @@ document.addEventListener('DOMContentLoaded', function () {
 				}
 			}
 		}
+		isSwipePossible = false;
 	};
 
-	const onPointerUp = (e) => {
-		activePointers.delete(e.pointerId);
-		if (isPinching && activePointers.size < 2) {
+	// Fallback: mouse drag handlers (older-style) — emulate pointer-based pan/pinch for mouse
+	let lastPointerWasPointer = false;
+	function markPointerEventSeen(){
+		lastPointerWasPointer = true;
+		setTimeout(() => { lastPointerWasPointer = false; }, 200);
+	}
+
+	const onMouseDown = (e) => {
+		if (lastPointerWasPointer) return;
+		debugCounters.down++; ensureDebugPanel();
+		activePointers.set('mouse', { x: e.clientX, y: e.clientY });
+		// start pan if zoomed
+		if (currentScale > 1) {
+			isPanning = true;
 			isPinching = false;
+			startPointerX = e.clientX;
+			startPointerY = e.clientY;
+			startPanX = panX;
+			startPanY = panY;
 		}
-		if (activePointers.size === 0) {
-			isPanning = false;
-			applyTransform();
-		} else if (!isPinching) {
-			applyTransform();
+		document.addEventListener('mousemove', onMouseMove);
+		document.addEventListener('mouseup', onMouseUp);
+		e.preventDefault();
+	};
+
+	const onMouseMove = (e) => {
+		if (!activePointers.has('mouse')) return;
+		debugCounters.move++; ensureDebugPanel();
+		activePointers.set('mouse', { x: e.clientX, y: e.clientY });
+		// pan when zoomed
+		if (currentScale > 1 && isPanning) {
+			const dx = e.clientX - startPointerX;
+			const dy = e.clientY - startPointerY;
+			panX = startPanX + dx;
+			panY = startPanY + dy;
+			applyTransform({ clamp: false });
 		}
-		try {
-			if (overlayImg && overlayImg.hasPointerCapture && overlayImg.hasPointerCapture(e.pointerId)) {
-				overlayImg.releasePointerCapture(e.pointerId);
-			}
-		} catch (_) {
-			/* ignore */
-		}
+	};
+
+	const onMouseUp = (e) => {
+		if (!activePointers.has('mouse')) return;
+		debugCounters.up++; ensureDebugPanel();
+		activePointers.delete('mouse');
+		isPanning = false;
+		applyTransform();
+		document.removeEventListener('mousemove', onMouseMove);
+		document.removeEventListener('mouseup', onMouseUp);
 		updateCursor();
-
-		// clear swipe start coords when all pointers up
-		if (activePointers.size === 0) {
-			startPointerX = 0;
-			startPointerY = 0;
-		}
-
-
 	};
 
 	// 鼠标滚轮缩放
@@ -632,6 +742,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		console.log('[lightbox] refreshAll called');
 		console.log('[lightbox] candidates before refresh: ' + document.querySelectorAll('main img, #aside-stack img').length);
 		ensureOverlay();
+		// show debug panel ASAP when enabled (even if pointer events never fire)
+		try { ensureDebugPanel(); } catch (e) { /* ignore */ }
 		refreshOverlayRefs();
 		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img'));
 		// clear previous attachment markers so we rebind cleanly after SPA swaps
@@ -659,6 +771,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		const zoomOutBtnLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.lightbox-zoom-out');
 		const zoomInputLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.zoom-input');
 		const overlayImgLocal = overlay.querySelector('img');
+		const imageWrapperLocal = overlay.querySelector('.lightbox-image-wrapper');
+
+		// keep module-level refs in sync (transform math uses these)
+		if (overlayImgLocal) overlayImg = overlayImgLocal;
+		if (imageWrapperLocal) imageWrapper = imageWrapperLocal;
 
 		if (closeBtn) {
 			closeBtn.removeEventListener('click', closeOverlay);
@@ -680,6 +797,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			nextBtn.removeEventListener('click', nextClickHandler);
 			nextBtn.addEventListener('click', nextClickHandler);
 		}
+		if (fullscreenBtn) {
+			fullscreenBtn.removeEventListener('click', fullscreenToggleHandler);
+			fullscreenBtn.addEventListener('click', fullscreenToggleHandler);
+		}
 		if (zoomInBtnLocal) {
 			zoomInBtnLocal.removeEventListener('click', zoomInHandler);
 			zoomInBtnLocal.addEventListener('click', zoomInHandler);
@@ -699,16 +820,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (overlayImgLocal) {
 			overlayImgLocal.style.touchAction = 'none';
 			overlayImgLocal.draggable = false;
-			overlayImgLocal.removeEventListener('pointerdown', onPointerDown);
-			overlayImgLocal.addEventListener('pointerdown', onPointerDown);
-			overlayImgLocal.removeEventListener('pointermove', onPointerMove);
-			overlayImgLocal.addEventListener('pointermove', onPointerMove);
-			overlayImgLocal.removeEventListener('pointerup', onPointerUp);
-			overlayImgLocal.addEventListener('pointerup', onPointerUp);
-			overlayImgLocal.removeEventListener('pointercancel', onPointerUp);
-			overlayImgLocal.addEventListener('pointercancel', onPointerUp);
-			overlayImgLocal.removeEventListener('pointerleave', onPointerUp);
-			overlayImgLocal.addEventListener('pointerleave', onPointerUp);
 			// dragstart/contextmenu
 			overlayImgLocal.removeEventListener('dragstart', preventDefaultFalse);
 			overlayImgLocal.addEventListener('dragstart', preventDefaultFalse);
@@ -716,22 +827,39 @@ document.addEventListener('DOMContentLoaded', function () {
 			overlayImgLocal.addEventListener('contextmenu', preventDefaultFalse);
 		}
 
-		// overlay click behavior (closing when clicking background, exit fullscreen on non-control click)
-		const overlayClickHandler = (e) => {
-			if (e.target === overlay) {
-				closeOverlay();
-				return;
+		// Bind gestures to the CURRENT wrapper as primary surface (avoid stale refs)
+		const gestureSurface = imageWrapperLocal || overlayImgLocal;
+		if (gestureSurface && gestureSurfaceBound !== gestureSurface) {
+			// unbind from previous surface (if any)
+			if (gestureSurfaceBound) {
+				gestureSurfaceBound.removeEventListener('pointerdown', onPointerDown);
+				gestureSurfaceBound.removeEventListener('pointermove', onPointerMove);
+				gestureSurfaceBound.removeEventListener('pointerup', onPointerUp);
+				gestureSurfaceBound.removeEventListener('pointercancel', onPointerUp);
+				gestureSurfaceBound.removeEventListener('pointerleave', onPointerUp);
+	            // remove mouse fallbacks
+	            gestureSurfaceBound.removeEventListener('mousedown', onMouseDown);
 			}
-			if (document.fullscreenElement) {
-				const isControl = e.target.closest && e.target.closest('button, .lightbox-controls, .lightbox-nav');
-				if (!isControl) {
-					if (document.exitFullscreen) document.exitFullscreen();
-					else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-				}
-			}
-		};
-		overlay.removeEventListener('click', overlayClickHandler);
-		overlay.addEventListener('click', overlayClickHandler);
+			gestureSurfaceBound = gestureSurface;
+			gestureSurfaceBound.style.touchAction = 'none';
+			gestureSurfaceBound.style.pointerEvents = 'auto';
+			// Use non-passive listeners so preventDefault() in handlers works
+			gestureSurfaceBound.addEventListener('pointerdown', onPointerDown, { passive: false });
+			gestureSurfaceBound.addEventListener('pointermove', onPointerMove, { passive: false });
+			gestureSurfaceBound.addEventListener('pointerup', onPointerUp, { passive: false });
+			gestureSurfaceBound.addEventListener('pointercancel', onPointerUp, { passive: false });
+			gestureSurfaceBound.addEventListener('pointerleave', onPointerUp, { passive: false });
+
+			// mouse fallback for environments where pointer events aren't used
+			gestureSurfaceBound.addEventListener('mousedown', onMouseDown);
+
+			// mark when a pointer event occurs so mouse fallback is ignored immediately after
+			gestureSurfaceBound.addEventListener('pointerdown', function _mark(){ markPointerEventSeen(); }, { once: true });
+		}
+
+		// stable overlay click handler (capture phase)
+		overlay.removeEventListener('click', onOverlayClickCapture, true);
+		overlay.addEventListener('click', onOverlayClickCapture, true);
 	}
 
 	function preventDefaultFalse(e){ e.preventDefault(); return false; }
@@ -743,21 +871,36 @@ document.addEventListener('DOMContentLoaded', function () {
 	function zoomInputKeyHandler(e){ if (e.key === 'Enter') { e.preventDefault(); applyZoomFromInput(); } if (e.key === 'Escape') { e.preventDefault(); updateZoomDisplay(); e.target.blur(); } }
 	function zoomInputChangeHandler(e){ let val = e.target.value.trim(); if (val && /^\d+(\.\d+)?$/.test(val)) { e.target.value = `${val}%`; applyZoomFromInput(); } }
 
+	// fullscreen toggle handler (support standard and webkit prefixed API)
+	function fullscreenToggleHandler(e){
+		e.stopPropagation();
+		try {
+			if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+				if (overlay && overlay.requestFullscreen) overlay.requestFullscreen();
+				else if (overlay && overlay.webkitRequestFullscreen) overlay.webkitRequestFullscreen();
+			} else {
+				if (document.exitFullscreen) document.exitFullscreen();
+				else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+			}
+		} catch (err) { console.warn('[lightbox] fullscreen toggle failed', err); }
+	}
+
 	// initial attach via refreshAll to ensure overlay and controls are bound
 	refreshAll();
 
 	// Controls are bound in bindOverlayControls() to support recreation after SPA swaps
 
-	// track fullscreenchange to toggle a class on overlay for styling and swap icon (dynamic)
-	document.addEventListener('fullscreenchange', () => {
+	// handle fullscreen change in both standard and webkit-prefixed events
+	function handleFullscreenChange() {
 		const ov = document.getElementById('image-lightbox');
 		if (!ov) return;
-		ov.classList.toggle('fullscreen-mode', !!document.fullscreenElement);
+		const inFs = !!document.fullscreenElement || !!document.webkitFullscreenElement;
+		ov.classList.toggle('fullscreen-mode', inFs);
 		const fb = ov.querySelector('.lightbox-fullscreen');
 		if (fb) {
 			const ic = fb.querySelector('i');
 			if (ic) {
-				if (document.fullscreenElement) {
+				if (inFs) {
 					ic.className = 'icon-ic_fluent_full_screen_minimize_24_regular';
 					fb.setAttribute('title', '退出全屏');
 				} else {
@@ -766,11 +909,29 @@ document.addEventListener('DOMContentLoaded', function () {
 				}
 			}
 		}
-	});
+		// Ensure pointer/touch bindings are active for the overlay image in fullscreen
+		try {
+			refreshOverlayRefs();
+			if (overlayImg) {
+				overlayImg.style.touchAction = 'none';
+				overlayImg.style.pointerEvents = 'auto';
+			}
+			// ensure overlay itself allows pointer events while full-screen
+			if (overlay) overlay.style.pointerEvents = 'auto';
+			// add a force-hide class to cover stubborn browser styles
+			if (inFs) overlay.classList.add('force-hide-controls'); else overlay.classList.remove('force-hide-controls');
+			// rebind controls so pointer handlers are attached to the current img element
+			bindOverlayControls();
+		} catch (e) {
+			console.warn('[lightbox] fullscreenchange rebind failed', e);
+		}
+	}
+	document.addEventListener('fullscreenchange', handleFullscreenChange);
+	document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 
     
 
-	const applyZoomFromInput = () => {
+	function applyZoomFromInput() {
 		if (!zoomInput) return;
 		const raw = zoomInput.value.trim();
 		if (!raw) {
@@ -785,29 +946,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			applyTransform();
 		}
 		updateZoomDisplay();
-	};
+	}
 
     
 
-	// Note: avoid binding overlay pointer handlers (they can interfere with button clicks).
-	// We'll use overlay click to handle exiting fullscreen when appropriate.
-	if (overlay) {
-		overlay.addEventListener('click', (e) => {
-			// existing close-on-empty-area behavior
-			if (e.target === overlay) {
-				closeOverlay();
-				return;
-			}
-			// If in fullscreen and user clicked non-control area, exit fullscreen
-			if (document.fullscreenElement) {
-				const isControl = e.target.closest && e.target.closest('button, .lightbox-controls, .lightbox-nav');
-				if (!isControl) {
-					if (document.exitFullscreen) document.exitFullscreen();
-					else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-				}
-			}
-		});
-	}
+	// overlay click behavior is handled inside bindOverlayControls() to ensure
+	// the handler identity is stable and can be added/removed when overlay is
+	// recreated. (See bindOverlayControls for implementation.)
 
 	if (zoomInput) {
 		zoomInput.addEventListener('keydown', (e) => {

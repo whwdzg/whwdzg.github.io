@@ -32,8 +32,9 @@
     <link rel="stylesheet" href="css/settings-modal.css">
     <link rel="stylesheet" href="css/scroll-to-top.css">
     <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
+    <link rel="stylesheet" href="css/videoplay.css">
     <!-- JavaScript 模块 -->
-    <script src="js/i18n.js" defer></script>
+    <script src="js/i18n-loader.js" defer></script>
     <script src="js/theme.js" defer></script>
     <script src="js/language.js" defer></script>
     <script src="js/sidebar.js" defer></script>
@@ -204,7 +205,7 @@
 </aside>
 <footer>
     <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
-    <p>当前版本：<strong>2.0.2.2-20251220</strong></p>
+    <p>当前版本：<strong>2.0.2.3-20251221</strong></p>
 </footer>`;
             function attachShell(html) {
                 if (!container || !html) return;
@@ -306,19 +307,22 @@
                 1<br>
             </p>
             <!--img插入图片后，不添加<br>换行时，直接加<p>视作图片标题，正文不显示，只在查看大图时显示-->
-            <img src="img/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low">
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+            <img src="img/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <video src="vid/[P01]1 羊皮伪装.mp4" controls loading="lazy" fetchpriority="low"></video><p>sample video</p><br>
+            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <p>结束</p>
         </section>
     </main>
 </body>
+<script src="js/videoplay.js" defer></script>
 </html>
