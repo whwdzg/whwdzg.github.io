@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	// 将文档中的 aside 收集到右下角浮动栈容器，避免重叠纵向排列
 // 模块：侧边栏控制 / Sidebar toggle, submenu, and responsive behavior.
 	(function setupAsideStack() {
-		const asides = Array.from(document.querySelectorAll('main aside, body > aside'));
+		const asides = Array.from(document.querySelectorAll('main aside, body > aside'))
+			.filter(a => a.id !== 'site-aside');
 		if (!asides.length) return;
 		let stack = document.getElementById('aside-stack');
 		if (!stack) {

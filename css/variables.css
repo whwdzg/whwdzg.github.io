@@ -39,6 +39,108 @@
 	overflow: hidden; /* ensure overlay clipped to image bounds */
 }
 
+/* 右下角浮动 aside 栈容器（全局浮层，与页眉按钮相关） */
+#aside-stack {
+	position: fixed;
+	right: 16px;
+	bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	z-index: 120;
+	max-width: min(380px, 40vw);
+}
+
+#aside-stack aside {
+	background: var(--card-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 12px 30px var(--shadow-color);
+	padding: 0.75rem 0.9rem;
+	color: var(--text-color);
+	max-height: 40vh;
+	overflow: auto;
+	backdrop-filter: saturate(1.1) blur(2px);
+	position: relative;
+	transition: transform 200ms ease, opacity 180ms ease;
+}
+
+#aside-stack aside.closing {
+	opacity: 0;
+	transform: translateX(120%);
+}
+
+.aside-close {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	width: 28px;
+	height: 28px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--border-color);
+	border-radius: 6px;
+	background: var(--secondary-bg);
+	color: inherit;
+	cursor: pointer;
+	font-size: 1rem;
+	padding: 0;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	transition: background 0.15s ease, border 0.15s ease, transform 0.15s ease;
+}
+
+.aside-close:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+
+.aside-close:active {
+	transform: scale(0.97);
+	background: var(--active-bg);
+	border-color: var(--border-color);
+}
+
+#aside-stack aside a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	background: var(--secondary-bg);
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	color: inherit;
+	text-decoration: none;
+	line-height: 1.25;
+	font-size: 1rem;
+	transition: background 0.18s ease, border 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+#aside-stack aside a:hover {
+	background: var(--hover-bg);
+	border-color: var(--border-color);
+}
+
+#aside-stack aside a:active {
+	transform: scale(0.98);
+	background: var(--active-bg);
+	border-color: var(--border-color);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}
+
+@media (max-width: 760px) {
+	#aside-stack {
+		max-width: min(320px, 70vw);
+		right: 12px;
+		bottom: 12px;
+	}
+	#aside-stack aside {
+		max-height: 50vh;
+	}
+}
+
 body.dark-mode {
 	--bg-color: #1a1a1a;
 	--text-color: #e5e5e5;
@@ -138,6 +240,20 @@ img {
 	overflow: hidden;
 }
 
+/* 限制图片与视频的最大宽度，防止超出容器或屏幕 */
+img, picture, figure, main img, #aside-stack img, .post-content img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* 视频也应限制宽度以避免横向溢出 */
+video, .video-as-image {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
 /* Make videos look like images when shown inline: rounded corners and clipped content */
 .video-as-image {
 	border-radius: 10px;
@@ -152,13 +268,6 @@ img {
 	display: none !important;
 }
 
-/* 页面内图片自适应容器宽度，避免溢出主体布局 */
-main img,
-#aside-stack img {
-	max-width: 100%;
-	height: auto;
-	display: block;
-}
 
 /* 可点击图片的缩放与按压反馈 */
 .zoomable-img {

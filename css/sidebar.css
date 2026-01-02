@@ -163,6 +163,14 @@ body.sidebar-collapsed .sidebar .submenu {
 .sidebar .toggle:hover {
 	color: var(--text-color);
 	background: var(--hover-bg);
+	transform: translateY(-0.6px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* When sidebar is collapsed, avoid translate to prevent icon shift */
+body.sidebar-collapsed .sidebar a:hover,
+body.sidebar-collapsed .sidebar .toggle:hover {
+	transform: none;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 

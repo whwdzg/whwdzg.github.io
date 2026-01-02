@@ -289,6 +289,13 @@ function buildSection(sec){
           const s = document.createElement('div');
           s.className = 'color-swatch';
           s.style.backgroundColor = c;
+          // mark selected if matches current theme color
+          if (currentThemeColor && c.toLowerCase() === currentThemeColor.toLowerCase()) {
+            s.classList.add('selected');
+          }
+          // make keyboard-focusable
+          s.setAttribute('tabindex', '0');
+          s.setAttribute('role', 'button');
           s.addEventListener('click', ()=>{
             if (hexInput) hexInput.value = c;
             const pickedHsl = hexToHsl(c);
@@ -298,9 +305,33 @@ function buildSection(sec){
               lightSlider.value = pickedHsl.l;
               syncFromHslFn();
             }
+            // update selected class for swatch grid
+            grid.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('selected'));
+            s.classList.add('selected');
+            // also update main preset color-options if present
+            try {
+              row.querySelectorAll('.color-option').forEach(o => {
+                if (o.getAttribute('data-color') && o.getAttribute('data-color').toLowerCase() === c.toLowerCase()) {
+                  row.querySelectorAll('.color-option').forEach(x => x.classList.remove('selected'));
+                  o.classList.add('selected');
+                }
+              });
+            } catch (err) {}
             applyColor(c, true);
             closeCustomPanel();
           });
+          s.addEventListener('keydown', (e)=>{
+            if (e.key === 'Enter' || e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar'){
+              e.preventDefault();
+              s.click();
+            }
+          });
+          // focus handling mirrors other controls: add .focus only if keyboard interaction
+          s.addEventListener('focus', ()=>{ if (window.__lastInteractionWasKeyboard) s.classList.add('focus'); });
+          s.addEventListener('blur', ()=> s.classList.remove('focus'));
+          // pointer fallback to ensure hover ring disappears on leave
+          s.addEventListener('pointerenter', ()=> s.classList.add('focus'));
+          s.addEventListener('pointerleave', ()=> s.classList.remove('focus'));
           grid.appendChild(s);
         });
 
@@ -377,6 +408,9 @@ function buildSection(sec){
           markSelected(colorOption);
         }
 
+        // make color swatch keyboard focusable and clickable
+        colorOption.setAttribute('tabindex', '0');
+        colorOption.setAttribute('role', 'button');
         colorOption.addEventListener('click', () => {
           if (isCustom) {
             markSelected(colorOption);
@@ -404,6 +438,20 @@ function buildSection(sec){
           closeCustomPanel();
           applyColor(color, false);
         });
+
+        // keyboard activation (Enter / Space)
+        colorOption.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar') {
+            e.preventDefault();
+            colorOption.click();
+          }
+        });
+
+        // focus handling: only add .focus when last interaction was keyboard
+        colorOption.addEventListener('focus', ()=>{
+          if (window.__lastInteractionWasKeyboard) colorOption.classList.add('focus');
+        });
+        colorOption.addEventListener('blur', ()=> colorOption.classList.remove('focus'));
 
         row.appendChild(colorOption);
       });
@@ -791,18 +839,59 @@ function buildToggle(onChange, initialState){
     el.classList.add('active');
   }
   
+  // accessibility: make it focusable and expose role/aria
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('role', 'switch');
+  el.setAttribute('aria-checked', active ? 'true' : 'false');
+
   const update = ()=>{
     el.classList.toggle('active', active);
+    el.setAttribute('aria-checked', active ? 'true' : 'false');
     onChange && onChange(active);
   };
 
   update();
-  
-  el.addEventListener('click', ()=>{ 
+
+  // pointer interaction
+  el.addEventListener('click', (e)=>{ 
+    // prevent double-activation when keyboard triggers
+    e.preventDefault();
     active = !active; 
     update(); 
   });
-  
+
+  // keyboard support
+  el.addEventListener('keydown', (e)=>{
+    if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar'){
+      e.preventDefault();
+      active = !active;
+      update();
+    } else if (e.code === 'Enter' || e.key === 'Enter'){
+      e.preventDefault();
+      active = !active;
+      update();
+    }
+  });
+
+  // ensure we track whether last interaction was keyboard or pointer
+  if (typeof window.__lastInteractionWasKeyboard === 'undefined'){
+    window.__lastInteractionWasKeyboard = false;
+    // keyboard navigation (Tab, Arrow keys, etc.)
+    document.addEventListener('keydown', (ev)=>{
+      try { window.__lastInteractionWasKeyboard = true; } catch(e){}
+    }, true);
+    // pointer interaction
+    document.addEventListener('pointerdown', (ev)=>{
+      try { window.__lastInteractionWasKeyboard = false; } catch(e){}
+    }, true);
+  }
+
+  // visual focus styling when using keyboard only
+  el.addEventListener('focus', ()=>{
+    if (window.__lastInteractionWasKeyboard) el.classList.add('focus');
+  });
+  el.addEventListener('blur', ()=> el.classList.remove('focus'));
+
   return el;
 }
 
