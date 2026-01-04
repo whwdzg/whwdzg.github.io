@@ -8,6 +8,11 @@ export function initAvatarLoader(){
         var src = img.getAttribute('data-src') || img.getAttribute('src');
         if(!src) return;
 
+        // 已经加载完成则无需额外处理
+        if (img.complete && img.naturalWidth) {
+            return;
+        }
+
         // 创建覆盖节点
         var wrap = document.createElement('div');
         wrap.className = 'avatar-loader-wrap';

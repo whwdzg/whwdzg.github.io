@@ -2,9 +2,26 @@
 document.addEventListener('DOMContentLoaded', function () {
 	// 将文档中的 aside 收集到右下角浮动栈容器，避免重叠纵向排列
 // 模块：侧边栏控制 / Sidebar toggle, submenu, and responsive behavior.
-	(function setupAsideStack() {
+
+	function addAsideCloseButtons(stack){
+		if (!stack) return;
+		stack.querySelectorAll('aside').forEach(card => {
+			if (card.querySelector('.aside-close')) return;
+			const btn = document.createElement('button');
+			btn.className = 'aside-close';
+			btn.setAttribute('aria-label', 'Close');
+			btn.innerHTML = '<i class="fluent-font" aria-hidden="true">&#xF369;</i>';
+			btn.addEventListener('click', () => {
+				card.classList.add('closing');
+				setTimeout(() => { card.remove(); }, 240);
+			});
+			card.appendChild(btn);
+		});
+	}
+
+	function setupAsideStack() {
 		const asides = Array.from(document.querySelectorAll('main aside, body > aside'))
-			.filter(a => a.id !== 'site-aside');
+			.filter(a => a.id !== 'site-aside' && a.closest('#aside-stack') === null);
 		if (!asides.length) return;
 		let stack = document.getElementById('aside-stack');
 		if (!stack) {
@@ -18,18 +35,20 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (sections.length > 0) {
 				sections.forEach(sec => {
 					const card = document.createElement('aside');
-					// 迁移该 section 的内容到新卡片中
 					card.appendChild(sec);
 					stack.appendChild(card);
 				});
-				// 清空原 aside，避免重复展示
 				a.remove();
 			} else {
-				// 没有子 section，则直接作为一个卡片移入栈
 				stack.appendChild(a);
 			}
 		});
-	})();
+		addAsideCloseButtons(stack);
+	}
+
+	window.refreshAsideStack = setupAsideStack;
+	setupAsideStack();
+	window.addEventListener('spa:page:loaded', setupAsideStack);
 
 	// 为浮动栈卡片添加关闭按钮
 	(function addAsideCloseButtons() {

@@ -1,263 +1,320 @@
-// PJAX-style router: swap only <main> for index.html/about.html
-// 模块：简易 SPA 路由 / PJAX-style loader with shell preservation.
+// SPA router: load shell once, keep shared assets, swap only <main>.
+// Flow: render shell, inject shared CSS/JS once, preload setting.html, then PJAX fetch for page mains.
 
-// Disable PJAX when opened via file:// to avoid fetch CORS/denied issues
-if (window.location.protocol === 'file:') {
-	console.warn('[PJAX] Disabled on file:// protocol');
-} else (function () {
-	// When true, external scripts found in the fetched <main> will be reloaded
-	// on every SPA swap. This removes any existing <script src=...> tags with
-	// the same URL and inserts a cache-busted copy so modules and init code
-	// run fresh on each navigation.
-	const FORCE_RELOAD_SCRIPTS_ON_SWAP = true;
-	let isLoading = false;
+(function(){
+  if (window.location.protocol === 'file:') {
+    console.warn('[spa-router] Disabled on file:// to avoid fetch/CORS issues');
+    return;
+  }
 
-	const normalizeForFetch = (href) => {
-		try {
-			const url = new URL(href, window.location.href);
-			// Only same-origin HTML/MD or directory
-			if (url.origin !== location.origin) return null;
-			if (url.hash && url.pathname === location.pathname) return null; // anchor
-			return url.pathname + (url.search || '');
-		} catch (_) { return null; }
-	};
+  const SCRIPT_ROOT = (() => {
+    const src = (document.currentScript && document.currentScript.src) || window.location.href;
+    // use full href (with origin) so URL() base is always valid
+    return new URL('..', src);
+  })();
 
-	const cleanupBeforeReinit = () => {
-		const overlay = document.getElementById('image-lightbox');
-		if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-		const asideStack = document.getElementById('aside-stack');
-		if (asideStack && asideStack.parentNode) asideStack.parentNode.removeChild(asideStack);
-	};
+  const resolve = (p) => new URL(p, SCRIPT_ROOT).href;
 
-	const executeScriptsInMain = async (doc) => {
-		const newMain = doc.querySelector('main');
-		if (!newMain) return;
-		// Collect scripts inside <main>
-		let scripts = Array.from(newMain.querySelectorAll('script'));
-		// Also collect scripts that appear after <main> in the fetched document body
-		const body = doc.querySelector('body');
-		if (body) {
-			let afterMain = false;
-			for (const node of Array.from(body.children)) {
-				if (node === newMain) { afterMain = true; continue; }
-				if (!afterMain) continue;
-				if (node.tagName && node.tagName.toLowerCase() === 'script') scripts.push(node);
-			}
-		}
-		// remove collected scripts from the fragment to avoid double execution when inserted
-		scripts.forEach(s => s.parentNode && s.parentNode.removeChild(s));
-		for (const s of scripts) {
-			try {
-				if (s.src) {
-					const absolute = new URL(s.src, location.href).href;
-					const exists = Array.from(document.querySelectorAll('script[src]')).some(ss => {
-						try { return new URL(ss.src).href === absolute; } catch(e){ return false; }
-					});
-					// If configured to force-reload, remove existing tags for this src
-					if (FORCE_RELOAD_SCRIPTS_ON_SWAP) {
-						Array.from(document.querySelectorAll('script[src]')).forEach(ss => {
-							try {
-								if (new URL(ss.src).href === absolute) ss.parentNode && ss.parentNode.removeChild(ss);
-							} catch (e) {}
-						});
-					} else {
-						const exists = Array.from(document.querySelectorAll('script[src]')).some(ss => {
-							try { return new URL(ss.src).href === absolute; } catch(e){ return false; }
-						});
-						if (exists) { await new Promise(r=>setTimeout(r,8)); continue; }
-					}
+  const SHELL_URL = resolve('includes/shell.html');
+  const SETTINGS_URL = resolve('includes/setting.html');
+  const ROOT_CONTAINER_ID = 'app-root';
+  const CONTENT_CONTAINER_ID = 'page-root';
+  const CACHE_BUST = () => Date.now().toString();
 
-					await new Promise((resolve) => {
-						const el = document.createElement('script');
-						// append cache-buster when forcing reload to avoid cached copy
-						const srcToUse = FORCE_RELOAD_SCRIPTS_ON_SWAP ? (absolute + (absolute.includes('?') ? '&' : '?') + '_=' + Date.now()) : absolute;
-						el.src = srcToUse;
-						el.async = false;
-						el.onload = resolve;
-						el.onerror = () => { console.warn('[spa-router] script load failed', absolute); resolve(); };
-						document.body.appendChild(el);
-					});
-				} else if (s.textContent && s.textContent.trim()) {
-					// inline script: append to body so it executes in the same context
-					const el = document.createElement('script');
-					el.textContent = s.textContent;
-					document.body.appendChild(el);
-				}
-			} catch (e) { console.warn('[spa-router] exec script failed', e); }
-		}
-	};
+  const sharedCss = [
+    resolve('css/variables.css'),
+    resolve('css/input.css'),
+    resolve('css/header.css'),
+    resolve('css/sidebar.css'),
+    resolve('css/main-content.css'),
+    resolve('css/footer.css'),
+    resolve('css/lightbox.css'),
+    resolve('css/settings-modal.css'),
+    resolve('css/scroll-to-top.css'),
+    resolve('css/videoplay.css'),
+    resolve('font/FluentSystemIcons-Regular.css')
+  ];
 
-	// Force-reload a list of external scripts by removing existing tags and
-	// inserting cache-busted copies. Returns a promise that resolves when all loaded.
-	const reloadExternalScripts = async (paths) => {
-		for (const p of paths) {
-			try {
-				const absolute = new URL(p, location.href).href;
-				// remove existing tags
-				Array.from(document.querySelectorAll('script[src]')).forEach(ss => {
-					try { if (new URL(ss.src).href === absolute) ss.parentNode && ss.parentNode.removeChild(ss); } catch(e){}
-				});
-				await new Promise((resolve) => {
-					const el = document.createElement('script');
-					el.src = absolute + (absolute.includes('?') ? '&' : '?') + '_=' + Date.now();
-					el.async = false;
-					el.onload = resolve;
-					el.onerror = () => { console.warn('[spa-router] reload script failed', absolute); resolve(); };
-					document.body.appendChild(el);
-				});
-			} catch (e) { console.warn('[spa-router] reloadExternalScripts error', e); }
-		}
-	};
+  const sharedJs = [
+    resolve('js/i18n-loader.js'),
+    resolve('js/theme.js'),
+    resolve('js/language.js'),
+    resolve('js/sidebar.js'),
+    resolve('js/lightbox.js'),
+    resolve('js/avatar.js'),
+    resolve('js/scroll-to-top.js'),
+    resolve('js/search.js'),
+    resolve('js/settings-modal.js')
+  ];
 
-	const swapMain = (doc) => {
-		const newMain = doc.querySelector('main');
-		const main = document.querySelector('main');
-		if (!newMain || !main) return false;
-		const movedShellNodes = [];
-		document.querySelectorAll('[data-shell-moved]').forEach(n => {
-			movedShellNodes.push({ parent: n.parentNode, node: n });
-			if (n.parentNode) n.parentNode.removeChild(n);
-		});
-		main.innerHTML = newMain.innerHTML;
-		movedShellNodes.forEach(item => {
-			try {
-				if (item.node.tagName.toLowerCase() === 'aside') {
-					const existingAside = document.querySelector('main aside');
-					if (!existingAside) document.querySelector('main').appendChild(item.node);
-				} else if (item.node.tagName.toLowerCase() === 'footer') {
-					const mainEl = document.querySelector('main');
-					if (mainEl && (!mainEl.nextElementSibling || mainEl.nextElementSibling.tagName.toLowerCase() !== 'footer')) {
-						mainEl.insertAdjacentElement('afterend', item.node);
-					}
-				} else {
-					(item.parent || document.body).appendChild(item.node);
-				}
-			} catch (e) {}
-		});
-		return true;
-	};
+  let shellLoaded = false;
+  let isNavigating = false;
+  const pageCache = new Map();
 
-	const updateTitle = (doc) => {
-		const t = doc.querySelector('title'); if (t) document.title = t.textContent;
-	};
+  async function loadDocument(url){
+    let html = pageCache.get(url);
+    if (!html) {
+      html = await fetchText(url, true);
+      pageCache.set(url, html);
+    }
+    const { doc } = extractMain(html);
+    return doc;
+  }
 
-	const spaCache = new Map();
+  function ensureRootContainers(){
+    let root = document.getElementById(ROOT_CONTAINER_ID) || document.body;
+    if (root === document.body && !document.body.id) {
+      document.body.id = ROOT_CONTAINER_ID;
+    }
 
-	const fetchAndSwap = async (targetHref, push = true) => {
-		if (isLoading) return;
-		const target = normalizeForFetch(targetHref);
-		if (!target) return false;
-		isLoading = true;
-		try {
-			let html = null;
-			if (spaCache.has(target)) html = spaCache.get(target);
-			else {
-				const resp = await fetch(target, { credentials: 'same-origin', cache: 'no-cache' });
-				if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-				html = await resp.text();
-			}
-			const doc = new DOMParser().parseFromString(html, 'text/html');
-			// cleanup artifacts from the previous page before inserting new content
-			cleanupBeforeReinit();
-			if (!swapMain(doc)) throw new Error('No <main> to swap');
-			updateTitle(doc);
-			// execute scripts found within new main (external and inline), skip duplicates
-			await executeScriptsInMain(doc);
-			// Optionally force reload important external scripts to ensure their
-			// initialization runs after SPA swap. This helps when browser cached
-			// copies are not re-executed and global init functions are missing.
-			if (typeof reloadExternalScripts === 'function') {
-				// list of common scripts that need re-initialization
-				const toReload = [
-					'/js/lightbox.js',
-					'/js/language.js',
-					'/js/i18n.js',
-					'/js/settings.js',
-				];
-				try {
-					await reloadExternalScripts(toReload);
-				} catch (e) {
-					console.warn('[spa-router] reloadExternalScripts failed', e);
-				}
-			}
+    let contentHost = document.getElementById(CONTENT_CONTAINER_ID);
+    if (!contentHost) {
+      const existingMain = document.querySelector('main');
+      if (existingMain) {
+        contentHost = existingMain;
+        contentHost.id = CONTENT_CONTAINER_ID;
+      } else {
+        contentHost = document.createElement('main');
+        contentHost.id = CONTENT_CONTAINER_ID;
+        root.appendChild(contentHost);
+      }
+    }
+  }
 
-			// dispatch event that page is loaded
-			console.log('[spa-router] dispatching spa:page:loaded');
-			window.dispatchEvent(new CustomEvent('spa:page:loaded', { detail: { url: href } }));
+  function appendOnce(tagName, url, parent){
+    const attr = tagName === 'link' ? 'href' : 'src';
+    const existing = Array.from(document.querySelectorAll(tagName)).find(el => {
+      const val = el.getAttribute(attr);
+      if (!val) return false;
+      try {
+        return new URL(val, window.location.href).href === new URL(url, window.location.href).href;
+      } catch (_) {
+        return false;
+      }
+    });
+    if (existing) return existing;
+    const el = document.createElement(tagName);
+    el.setAttribute('data-spa-shared', '1');
+    if (tagName === 'link') {
+      el.rel = 'stylesheet';
+      el.href = url;
+    } else {
+      el.src = url;
+      el.defer = true;
+    }
+    (parent || document.head).appendChild(el);
+    return el;
+  }
 
-			// call common initializers; retry once shortly after in case they
-			// were not yet available when spa:page:loaded dispatched
-			try { if (window.loadReadme) window.loadReadme(); } catch(e){}
-			try { if (window.initLightbox) window.initLightbox(); } catch(e){}
-			try { if (window.siteLightbox && typeof window.siteLightbox.refresh === 'function') window.siteLightbox.refresh(); } catch(e){}
-			setTimeout(() => {
-				try { if (window.loadReadme) window.loadReadme(); } catch(e){}
-				try { if (window.initLightbox) window.initLightbox(); } catch(e){}
-				try { if (window.siteLightbox && typeof window.siteLightbox.refresh === 'function') window.siteLightbox.refresh(); } catch(e){}
-			}, 50);
-			try {
-				document.documentElement.dataset.lastSpa = Date.now().toString();
-				if (typeof window.loadReadme === 'function') {
-					console.log('[spa-router] calling loadReadme() automatically');
-					try { window.loadReadme(); } catch (e) { console.warn('[spa-router] loadReadme failed', e); }
-				}
-				if (typeof window.initLightbox === 'function') {
-					console.log('[spa-router] calling initLightbox() automatically');
-					try { window.initLightbox(); } catch (e) { console.warn('[spa-router] initLightbox failed', e); }
-				}
+  function loadSharedAssets(){
+    sharedCss.forEach(href => appendOnce('link', href, document.head));
+    sharedJs.forEach(src => appendOnce('script', src, document.body));
+  }
 
-				// retry shortly to avoid timing issues when scripts execute slightly later
-				setTimeout(() => {
-					try {
-						if (typeof window.loadReadme === 'function') window.loadReadme();
-						if (typeof window.initLightbox === 'function') window.initLightbox();
-						if (window.siteLightbox && typeof window.siteLightbox.refresh === 'function') window.siteLightbox.refresh();
-					} catch (e) { /* ignore */ }
-				}, 50);
-				if (window.siteLightbox && typeof window.siteLightbox.refresh === 'function') {
-					console.log('[spa-router] calling siteLightbox.refresh() automatically');
-					try { window.siteLightbox.refresh(); } catch (e) { console.warn('[spa-router] siteLightbox.refresh failed', e); }
-				}
-			} catch (e) { /* ignore */ }
-			if (push) window.history.pushState({ page: target }, '', target);
-			window.scrollTo(0, 0);
-			console.log('[spa-router] swapped main for', target);
-			return true;
-		} catch (err) {
-			console.error('[spa-router] navigation failed, fallback to full load:', err);
-			window.location.href = targetHref;
-			return false;
-		} finally {
-			isLoading = false;
-		}
-	};
+  async function fetchText(url, bust=false){
+    const target = bust ? `${url}${url.includes('?') ? '&' : '?'}v=${CACHE_BUST()}` : url;
+    const resp = await fetch(target, { credentials: 'same-origin', cache: 'no-cache' });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    return resp.text();
+  }
 
-	// click handler for same-origin HTML links
-	document.addEventListener('click', (e) => {
-		if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-		const link = e.target.closest('a[href]'); if (!link) return;
-		const href = link.getAttribute('href'); const target = normalizeForFetch(href); if (!target) return;
-		e.preventDefault(); fetchAndSwap(target, true);
-	}, true);
+  function ensurePageAssets(doc, baseUrl){
+    const base = new URL(baseUrl, window.location.origin);
+    const links = Array.from(doc.querySelectorAll('link[rel~="stylesheet"][href]'));
+    const scripts = Array.from(doc.querySelectorAll('script[src]'));
+    links.forEach(l => {
+      const href = new URL(l.getAttribute('href'), base).href;
+      appendOnce('link', href, document.head);
+    });
+    scripts.forEach(s => {
+      const src = new URL(s.getAttribute('src'), base).href;
+      appendOnce('script', src, document.body);
+    });
+  }
 
-	// popstate handling
-	window.addEventListener('popstate', (e) => {
-		const page = e.state?.page || normalizeForFetch(window.location.href) || window.location.pathname;
-		fetchAndSwap(page, false);
-	});
+  function extractMain(html){
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    let main = doc.querySelector('main');
+    if (!main) {
+      // fallback: wrap entire body into a synthetic <main> so SPA swap still works
+      main = document.createElement('main');
+      if (doc.body) {
+        Array.from(doc.body.childNodes).forEach(n => main.appendChild(n.cloneNode(true)));
+      }
+      doc.body.innerHTML = '';
+      doc.body.appendChild(main);
+    }
+    return { doc, main };
+  }
 
-	// initial history state
-	window.history.replaceState({ page: window.location.pathname + window.location.search }, '', window.location.pathname + window.location.search);
+  function swapContent(fragmentDoc){
+    const contentHost = document.getElementById(CONTENT_CONTAINER_ID);
+    const main = fragmentDoc.querySelector('main');
+    if (!contentHost || !main) return false;
+    const preserved = Array.from(contentHost.querySelectorAll('[data-shell-preserve="1"]'));
+    preserved.forEach(node => node.remove());
 
-	// prefetch on hover for sidebar links
-	document.addEventListener('mouseover', (e) => {
-		const a = e.target.closest('.sidebar a'); if (!a) return;
-		const href = a.getAttribute('href'); const target = normalizeForFetch(href); if (!target) return;
-		if (spaCache.has(target)) return;
-		fetch(target, { cache: 'no-store' }).then(r => r.ok ? r.text() : null).then(t => { if (t) spaCache.set(target, t); }).catch(()=>{});
-	});
+    contentHost.innerHTML = '';
+    Array.from(main.childNodes).forEach(node => contentHost.appendChild(node));
+    preserved.forEach(node => contentHost.appendChild(node));
+    reorderShellLayout();
+    if (window.refreshAsideStack) {
+      try { window.refreshAsideStack(); } catch (_) {}
+    }
+    return true;
+  }
 
-	// expose cache for debugging
-	window.__spaCache = spaCache;
+  function reorderShellLayout(){
+    const main = document.getElementById(CONTENT_CONTAINER_ID);
+    if (!main) return;
+    const header = document.querySelector('header');
+    const sidebar = document.querySelector('nav.sidebar');
+    const aside = document.querySelector('aside');
+    const footer = document.querySelector('footer');
+
+    // Ensure header then sidebar appear before main for layout CSS expectations
+    if (header && header.parentNode && header.parentNode !== main.parentNode) {
+      main.parentNode.insertBefore(header, main);
+    }
+    if (sidebar && sidebar.parentNode && sidebar.parentNode !== main.parentNode) {
+      main.parentNode.insertBefore(sidebar, main);
+    }
+
+    // Place aside inside main so grid rules apply
+    if (aside) {
+      aside.setAttribute('data-shell-preserve', '1');
+      if (aside.parentNode !== main) {
+        aside.remove();
+        main.appendChild(aside);
+      }
+    }
+
+    // Keep footer after aside/main
+    if (footer && footer.parentNode) {
+      const target = aside || main;
+      if (target && footer.previousElementSibling !== target) {
+        target.insertAdjacentElement('afterend', footer);
+      }
+    }
+  }
+
+  async function runInlineScripts(fragmentDoc){
+    const scripts = Array.from(fragmentDoc.querySelectorAll('main script'));
+    for (const s of scripts) {
+      if (s.src) continue;
+      const code = s.textContent;
+      if (!code || !code.trim()) continue;
+      const exec = document.createElement('script');
+      exec.textContent = code;
+      document.body.appendChild(exec);
+      exec.remove();
+    }
+  }
+
+  async function renderShell(){
+    if (shellLoaded) return;
+    ensureRootContainers();
+    loadSharedAssets();
+    // If shell already exists (header/nav) skip re-insert
+    if (document.querySelector('header') && document.querySelector('nav.sidebar')) {
+      reorderShellLayout();
+      if (window.refreshAsideStack) { try { window.refreshAsideStack(); } catch (_) {} }
+      shellLoaded = true;
+      return;
+    }
+    const root = document.getElementById(ROOT_CONTAINER_ID);
+    const shellHtml = await fetchText(SHELL_URL, true);
+    const shellFrag = document.createElement('div');
+    shellFrag.innerHTML = shellHtml;
+    root.insertBefore(shellFrag, document.getElementById(CONTENT_CONTAINER_ID));
+    reorderShellLayout();
+    if (window.refreshAsideStack) { try { window.refreshAsideStack(); } catch (_) {} }
+    shellLoaded = true;
+  }
+
+  async function preloadSettingsTemplate(){
+    try { await fetchText(SETTINGS_URL, true); }
+    catch (err) { console.warn('[spa-router] preload setting.html failed', err); }
+  }
+
+  function updateTitle(fragmentDoc){
+    const t = fragmentDoc.querySelector('title');
+    if (t) document.title = t.textContent;
+  }
+
+  function buildUrl(target){
+    try {
+      const url = new URL(target, window.location.href);
+      return url.pathname + url.search;
+    } catch (_) { return null; }
+  }
+
+  async function navigate(target, push=true){
+    if (isNavigating) return;
+    const url = buildUrl(target);
+    if (!url) return;
+    isNavigating = true;
+    try {
+      const doc = await loadDocument(url);
+      ensurePageAssets(doc, url);
+      if (!swapContent(doc)) throw new Error('No <main> in target');
+      if (window.lazySizes && window.lazySizes.loader && window.lazySizes.loader.checkElems) {
+        // kick lazySizes to observe newly injected images
+        try { window.lazySizes.loader.checkElems(); } catch (_) {}
+      }
+      updateTitle(doc);
+      try {
+        await runInlineScripts(doc);
+      } catch (scriptErr) {
+        console.warn('[spa-router] inline script error (page stays SPA)', scriptErr);
+      }
+      if (push) window.history.pushState({ page: url }, '', url);
+      window.scrollTo(0, 0);
+      window.dispatchEvent(new CustomEvent('spa:page:loaded', { detail: { url } }));
+    } catch (err) {
+      console.error('[spa-router] navigation failed, full load fallback', err);
+      window.location.assign(target);
+    } finally {
+      isNavigating = false;
+    }
+  }
+
+  function attachLinkHandler(){
+    document.addEventListener('click', (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const link = e.target.closest('a[href]');
+      if (!link) return;
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#')) return;
+      if (link.target && link.target !== '_self') return;
+      if (link.hasAttribute('download')) return;
+      if (/^(mailto:|tel:|javascript:)/i.test(href)) return;
+      const url = buildUrl(href);
+      if (!url) return;
+      const sameOrigin = new URL(href, window.location.href).origin === window.location.origin;
+      if (!sameOrigin) return;
+      e.preventDefault();
+      navigate(url, true);
+    }, true);
+  }
+
+  function attachPopstate(){
+    window.addEventListener('popstate', (e) => {
+      const page = e.state?.page || window.location.pathname;
+      navigate(page, false);
+    });
+    window.history.replaceState({ page: window.location.pathname }, '', window.location.pathname);
+  }
+
+  async function boot(){
+    await renderShell();
+    await preloadSettingsTemplate();
+    attachLinkHandler();
+    attachPopstate();
+    const current = window.location.pathname + window.location.search;
+    await navigate(current, false);
+  }
+
+  document.addEventListener('DOMContentLoaded', boot);
 })();
 

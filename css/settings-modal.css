@@ -137,6 +137,41 @@
   gap: 12px;
 }
 
+.settings-action-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+.settings-action-status {
+  font-size: 0.9rem;
+  color: var(--text-muted, #6b7280);
+  min-height: 1em;
+}
+.settings-action-status.ok { color: var(--primary-color); }
+.settings-action-status.error { color: #d14343; }
+.settings-action-status.muted { color: var(--text-muted, #6b7280); }
+
+.settings-action-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--secondary-bg);
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 78px;
+  transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease, opacity 120ms ease;
+}
+.settings-action-btn:hover { background: var(--hover-bg); box-shadow: 0 8px 18px rgba(0,0,0,0.08); }
+.settings-action-btn:active { transform: scale(0.98); background: var(--active-bg); }
+.settings-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.settings-action-btn.loading { cursor: progress; }
+
 /* right-side control container slight elevation */
 .settings-toggle-row > .settings-dropdown-toggle {
   transition: transform 160ms ease, box-shadow 160ms ease;
