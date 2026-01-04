@@ -8,15 +8,18 @@
 
     <meta name="author" content="whwdzg">
     <meta name="description" content="whwdzg's personal page">
+    <meta name="theme-color" content="#ffffff">
 
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="/manifest.json">
+
+    <link rel="icon" href="img/shell/favicon.ico" type="image/x-icon">
     
     <!-- 预加载关键资源：优先级从高到低 -->
     <!-- 1. 页眉图片（最高优先级） -->
-    <link rel="preload" href="img/favicon.ico" as="image" type="image/x-icon">
-    <link rel="preload" href="img/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="img/shell/shuiyu.avif" as="image" type="image/avif">
     <!-- 2. 背景图片 -->
-    <link rel="preload" href="img/bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="img/shell/bg.jpg" as="image" type="image/jpeg">
     <!-- 3. 关键CSS -->
     <link rel="preload" href="css/variables.css" as="style">
     <link rel="preload" href="font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -34,6 +37,7 @@
     <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
     <link rel="stylesheet" href="css/videoplay.css">
     <!-- JavaScript 模块 -->
+    <script src="/js/pwa/register-sw.js" defer></script>
     <script src="js/i18n-loader.js" defer></script>
     <script src="js/theme.js" defer></script>
     <script src="js/language.js" defer></script>
@@ -57,7 +61,7 @@
     <h1>
         <span class="header-title">
             <a href="index.html" title="">
-                <img src="img/favicon.ico" alt="logo" class="logo" fetchpriority="high">
+                <img src="img/shell/favicon.ico" alt="logo" class="logo" fetchpriority="high">
                 <span class="title-text">主页</span>
             </a>
         </span>
@@ -118,7 +122,7 @@
                     </label>
                 </div>
             </div>
-            <img src="img/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
+            <img src="img/shell/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
             <div id="avatar-links-menu" class="avatar-links-menu">
                 <a href="https://github.com/whwdzg" class="avatar-link" target="_blank" rel="noopener noreferrer">
                     <i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>
@@ -204,8 +208,8 @@
     </section>
 </aside>
 <footer>
-    <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
-    <p>当前版本：<strong>2.0.2.3-20251221</strong></p>
+    <p>&copy; 2022-2026 滄海水魚. 保留所有权利。</p>
+    <p>当前版本：<strong>2.0.2.4-20260104</strong></p>
 </footer>`;
             function attachShell(html) {
                 if (!container || !html) return;
@@ -307,19 +311,19 @@
                 1<br>
             </p>
             <!--img插入图片后，不添加<br>换行时，直接加<p>视作图片标题，正文不显示，只在查看大图时显示-->
-            <img src="img/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
             <video src="vid/[P01]1 羊皮伪装.mp4" controls loading="lazy" fetchpriority="low"></video><p>sample video</p><br>
-            <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
+            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
             <p>结束</p>
         </section>
     </main>

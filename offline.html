@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>离线模式</title>
+  <link rel="icon" href="/img/shell/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg-color: #ffffff;
+      --text-color: #111111;
+      --secondary-bg: #f7f9fb;
+      --border-color: #dfe3eb;
+      --hover-bg: #eef1f5;
+      --active-bg: #e2e6ed;
+      --card-bg: rgba(255, 255, 255, 0.95);
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(circle at 20% 20%, #e9f7f2, #f6f7fb 50%);
+      color: #1f2933;
+    }
+    .header-title a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .offline-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--header-height, 64px) + 16px) 24px 24px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    .card {
+      max-width: 520px;
+      padding: 32px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(4px);
+    }
+    .card h1 {
+      margin: 0 0 12px;
+      font-size: 28px;
+      letter-spacing: 0.5px;
+    }
+    p {
+      margin: 0 0 16px;
+      line-height: 1.6;
+    }
+    ul {
+      margin: 0 0 20px 18px;
+      padding: 0;
+      line-height: 1.6;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    a.btn,
+    button.btn {
+      appearance: none;
+      border: none;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(120deg, #3ecf8e, #2dbf9c);
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(45, 191, 156, 0.35);
+      transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+    }
+    a.btn:hover,
+    button.btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(45, 191, 156, 0.4);
+      filter: brightness(1.03);
+    }
+    a.btn:active,
+    button.btn:active {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(45, 191, 156, 0.3);
+    }
+    a.secondary,
+    button.secondary {
+      background: #eef2f7;
+      color: #1f2933;
+      box-shadow: none;
+    }
+    a.secondary:hover,
+    button.secondary:hover {
+      box-shadow: none;
+      filter: brightness(1.02);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #1a1a1a;
+        --text-color: #e5e5e5;
+        --secondary-bg: #2a2a2a;
+        --border-color: #3a3a3a;
+        --hover-bg: #333333;
+        --active-bg: #3d3d3d;
+        --card-bg: rgba(42, 42, 42, 0.95);
+      }
+      body {
+        background: radial-gradient(circle at 20% 20%, #1c2724, #0f151c 55%);
+        color: #e7ecf0;
+      }
+      .card {
+        background: rgba(22, 30, 35, 0.9);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      }
+      a.secondary,
+      button.secondary {
+        background: #1f2b33;
+        color: #e7ecf0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      <span class="header-title">
+        <a href="/index.html" title="">
+          <img src="/img/shell/favicon.ico" alt="logo" class="logo" fetchpriority="high">
+          <span class="title-text">主页</span>
+        </a>
+      </span>
+    </h1>
+  </header>
+  <div class="offline-container">
+    <main class="card" role="main">
+      <h1>你处于离线状态</h1>
+      <p>未能连接网络。部分内容可能无法加载，但已缓存的页面仍可使用。</p>
+      <ul>
+        <li>检查网络连接后再试一次。</li>
+        <li>返回首页以查看已缓存的内容。</li>
+      </ul>
+      <div class="actions">
+        <a class="btn" href="/">返回首页</a>
+        <button class="btn secondary" id="reload-btn" type="button">重试加载</button>
+      </div>
+    </main>
+  </div>
+  <script>
+    (function(){
+      var btn = document.getElementById('reload-btn');
+      if (btn) {
+        btn.addEventListener('click', function(){
+          window.location.reload();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -29,15 +29,20 @@ async function loadLocale(lang) {
 		if (!res.ok) throw new Error(`Failed to load ${path}`);
 		const json = await res.json();
 		localeCache.set(lang, json);
+		// keep a global translations map for consumers that rely on window.__translations
+		window.__translations = window.__translations || {};
+		window.__translations[lang] = json;
 		return json;
 	} catch (e) {
 		console.warn('i18n load failed for', lang, e);
 		if (lang !== 'zh-CN') return loadLocale('zh-CN');
 		const fallback = {
-			page: { title: '主页', description: "whwdzg's personal page" },
-			footer: { version: '当前版本：<strong>2.0.2.3-20251221</strong>' }
+			page: { title: '主页', aboutTitle: '关于', description: "whwdzg's personal page" },
+			footer: { version: '当前版本：<strong>2.0.2.4-20260104</strong>' }
 		};
 		localeCache.set('zh-CN', fallback);
+		window.__translations = window.__translations || {};
+		window.__translations['zh-CN'] = fallback;
 		return fallback;
 	}
 }

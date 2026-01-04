@@ -4,7 +4,7 @@
     <h1>
         <span class="header-title">
             <a href="index.html" title="">
-                <img src="img/favicon.ico" alt="logo" class="logo" fetchpriority="high">
+                <img src="img/shell/favicon.ico" alt="logo" class="logo" fetchpriority="high">
                 <span class="title-text">主页</span>
             </a>
         </span>
@@ -56,7 +56,7 @@
                     </label>
                 </div>
             </div>
-            <img src="img/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
+            <img src="img/shell/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
             <div id="avatar-links-menu" class="avatar-links-menu">
                 <a href="https://github.com/whwdzg" class="avatar-link" target="_blank" rel="noopener noreferrer">
                     <i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>
@@ -126,7 +126,7 @@
     <i class="icon-ic_fluent_arrow_up_24_regular item-icon" aria-hidden="true"></i>
 </button>
 <aside>
-    <section id="archives">
+    <section id="beta">
         <h3><i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>注意</h3>
         <p>
             <strong>当前为早期测试版本，可能出现bug</strong>
@@ -142,6 +142,50 @@
     </section>
 </aside>
 <footer>
-    <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
-    <p>当前版本：<strong>2.0.2.3-20251221</strong></p>
+    <p>&copy; 2022-2026 滄海水魚. 保留所有权利。</p>
+    <p>当前版本：<strong>2.0.2.4-20260104</strong></p>
 </footer>
+<!-- 分步加载 & 轻量懒加载库 -->
+<script>
+// 首先加载 lazysizes（用于图片/iframe 等懒加载），然后按需动态导入交互脚本
+(function(){
+    // 插入 lazysizes 脚本（CDN 小脚本，未阻塞渲染）
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
+    s.async = true;
+    document.head.appendChild(s);
+
+    // 当主交互首次需要时再加载模块（通过事件触发）
+    function loadInteractionModules(){
+        if(window._interactionLoaded) return;
+        window._interactionLoaded = true;
+        // 使用动态 import 分步加载局部脚本（如果浏览器支持）
+        if('noModule' in HTMLScriptElement.prototype){
+            // 先加载 avatar-loader（模块），并调用初始化
+            import('js/avatar-loader.js').then(function(m){ try{ m.initAvatarLoader && m.initAvatarLoader(); }catch(e){} }).catch(()=>{});
+            import('js/avatar.js').catch(()=>{});
+            import('js/theme.js').catch(()=>{});
+            import('js/sidebar.js').catch(()=>{});
+            import('js/scroll-to-top.js').catch(()=>{});
+            import('js/settings-modal.js').catch(()=>{});
+        } else {
+            // 回退：按需创建 script 标签
+            var toLoad = ['js/image-loader.nomodule.js','js/avatar.js','js/theme.js','js/sidebar.js','js/scroll-to-top.js','js/settings-modal.js'];
+            toLoad.forEach(function(p){
+                var sc = document.createElement('script');
+                sc.src = p;
+                sc.async = true;
+                document.body.appendChild(sc);
+            });
+        }
+    }
+
+    // 在用户交互（移动鼠标、按键、触屏）时加载交互脚本
+    var events = ['mousemove','touchstart','keydown','click'];
+    var evHandler = function(){ loadInteractionModules(); events.forEach(function(e){ window.removeEventListener(e, evHandler); }); };
+    events.forEach(function(e){ window.addEventListener(e, evHandler, {passive:true}); });
+
+    // 2 秒后作为降级加载（用户可能未交互）
+    setTimeout(loadInteractionModules, 2000);
+})();
+</script>

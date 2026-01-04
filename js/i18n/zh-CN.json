@@ -1,6 +1,7 @@
 {
   "page": {
     "title": "主页",
+    "aboutTitle": "关于",
     "description": "whwdzg's personal page"
   },
   "header": {
@@ -62,8 +63,8 @@
     "legacyStopped": "已终止更新"
   },
   "footer": {
-    "copyright": "&copy; 2022-2025 whwdzg. 保留所有权利。",
-    "version": "当前版本：<strong>2.0.2.3-20251221</strong>"
+  "copyright": "&copy; 2022-2026 滄海水魚. 保留所有权利。",
+  "version": "当前版本：<strong>2.0.2.4-20260104</strong>"
   },
   "settings": {
     "title": "设置",

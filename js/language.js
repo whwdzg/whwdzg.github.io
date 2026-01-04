@@ -5,6 +5,23 @@ document.addEventListener('DOMContentLoaded', function () {
 		const languageSelectorBtn = document.querySelector('.language-selector-btn');
 	const languageSelectorMenu = document.querySelector('.language-selector-menu');
 	const LANGUAGE_KEY = 'language';
+		const FALLBACK_LOCALE = { page: { title: '主页', aboutTitle: '关于' }, header: {}, avatar: {}, sidebar: {}, buttons: {}, main: {}, aside: {}, footer: { version: '当前版本：<strong>2.0.2.4-20260104</strong>' }, theme: {}, language: {} };
+
+		async function ensureI18nReady() {
+			if (typeof loadLocale === 'function' && typeof getCachedLocale === 'function') return;
+			if (window.__i18nReadyPromise) return window.__i18nReadyPromise;
+			window.__i18nReadyPromise = import('./i18n.js')
+				.then(mod => {
+					window.loadLocale = mod.loadLocale;
+					window.getCachedLocale = mod.getCachedLocale;
+				})
+				.catch(err => {
+					console.warn('[language.js] init i18n fallback', err);
+					window.loadLocale = async () => FALLBACK_LOCALE;
+					window.getCachedLocale = () => null;
+				});
+			return window.__i18nReadyPromise;
+		}
 
 	function getLanguageRadios() {
 		return document.querySelectorAll('input[name="language"]');
@@ -17,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		// 异步加载并应用翻译
 		(async () => {
 			try {
+				await ensureI18nReady();
 				const langData = await loadLocale(lang);
 				if (langData) updatePageWithTranslations(langData);
 			} catch (e) {
@@ -30,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	async function applyTranslations(lang) {
 		// 使用新的按需加载器
 		try {
+			await ensureI18nReady();
 			const langData = await loadLocale(lang);
 			if (langData) updatePageWithTranslations(langData);
 		} catch (e) {
@@ -38,9 +57,13 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function updatePageWithTranslations(translations) {
-		// 更新页面标题
-		if (translations.page.title) {
-			document.title = translations.page.title;
+		// 更新页面标题，根据当前页面选择对应标题
+		if (translations.page) {
+			const isAboutPage = document.querySelector('#about') && !document.querySelector('#home');
+			const targetTitle = isAboutPage && translations.page.aboutTitle ? translations.page.aboutTitle : translations.page.title;
+			if (targetTitle) {
+				document.title = targetTitle;
+			}
 		}
 		
 		// 更新头部链接和按钮
@@ -329,6 +352,12 @@ document.addEventListener('DOMContentLoaded', function () {
 				[settingsMenu, avatarMenu].forEach(m => m && m.classList.remove('active'));
 			}
 		});
+	});
+
+	// 当 SPA 完成页面切换后，重新对新注入的内容应用当前语言
+	window.addEventListener('spa:page:loaded', () => {
+		const current = localStorage.getItem(LANGUAGE_KEY) || document.documentElement.lang || 'zh-CN';
+		applyTranslations(current);
 	});
 
 	} catch (err) {

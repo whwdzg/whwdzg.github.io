@@ -1,9 +1,9 @@
 /* 模块：侧边栏 / Sidebar layout with collapse behavior and animations. */
 .sidebar {
 	position: fixed;
-	top: 0; /* JS 会根据 header 高度调整此值 */
+	top: var(--header-height, 64px); /* 与页眉错开 */
 	left: 0;
-	height: 100vh;
+	height: calc(100vh - var(--header-height, 64px));
 	width: var(--sidebar-width);
 	background: var(--card-bg);
 	border-right: 1px solid var(--border-color);
@@ -163,6 +163,14 @@ body.sidebar-collapsed .sidebar .submenu {
 .sidebar .toggle:hover {
 	color: var(--text-color);
 	background: var(--hover-bg);
+	transform: translateY(-0.6px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* When sidebar is collapsed, avoid translate to prevent icon shift */
+body.sidebar-collapsed .sidebar a:hover,
+body.sidebar-collapsed .sidebar .toggle:hover {
+	transform: none;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -220,6 +228,11 @@ body.sidebar-collapsed .sidebar .toggle.selected::before {
 /* 展开状态下的母项在悬停时仍显示高光（避免被上面规则覆盖） */
 .sidebar .has-children.open > .toggle:hover {
 	background: var(--hover-bg);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 折叠时维持较小阴影以避免突出过度 */
+body.sidebar-collapsed .sidebar .has-children.open > .toggle:hover {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -325,6 +338,7 @@ body:not(.sidebar-collapsed) .sidebar > ul {
 /* 页面主要内容不要被侧栏遮挡 */
 main {
 	margin-left: calc(var(--sidebar-width) + 1rem);
+	transition: margin-left 240ms ease, padding-left 240ms ease;
 }
 
 /* 响应式：小屏幕时侧栏相对定位，按钮绝对定位在侧栏内，内容留出按钮空间 */
@@ -338,8 +352,8 @@ main {
 		border-right: none;
 		padding-top: 64px; /* 留出按钮高度 */
 	}
-	main { margin-left: 0; }
-	body.sidebar-collapsed main { margin-left: 4rem; padding-left: 0; }
+	main { margin-left: 0; padding-left: 1rem; padding-right: 1rem; }
+	body.sidebar-collapsed main { margin-left: 0; padding-left: 1rem; }
 	.inner-sidebar-collapse-btn {
 		position: absolute;
 		top: 8px;

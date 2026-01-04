@@ -1,6 +1,7 @@
-/* 模块：主内容区域 / Main content grid and aside layout. */
+/* 模块：主内容区域 / Main content grid layout. */
 /* 主内容占据剩余空间，推动 footer 到底部 */
 main {
+	margin-top: calc(var(--header-height, 64px) + 12px);
 	flex: 1 0 auto;
 	/* 页边距仅作用于主体内容，不影响页眉/页尾/侧边栏 */
 	padding-left: 1rem;
@@ -15,6 +16,11 @@ main {
 	grid-auto-flow: row;
 }
 
+body > footer {
+	margin-top: 0;
+}
+
+/* Aside (right column card) — ensure visible, elevated and responsive */
 main aside {
 	background: var(--card-bg);
 	border: 1px solid var(--border-color);
@@ -47,6 +53,8 @@ main > :not(aside) {
 		grid-row: auto;
 	}
 }
+
+
 
 /* 给主内容区域的图片增加行间距，避免紧贴堆叠 */
 main img {

@@ -56,26 +56,40 @@ function hexToHsl(hex) {
 
 // ���ն��ף�����޷����� includes/setting.html����ʹ�ô�����ģ��
 const SETTINGS_FALLBACK_HTML = `
-  <title>����</title>
-  <section id="lightdarktoggle">
-    <h2>ǳɫ/��ɫģʽ�л�</h2>
-    <h4>�л�ǳɫģʽ/��ɫģʽ����Ϊ</h4>
-    <p>����ϵͳ</p>
-    <p>�ֶ�����</p>
+  <title>设置</title>
+  <section id="lightdarktoggle" data-setting="follow-system">
+    <h2>浅色/深色模式切换</h2>
+    <h4>切换浅色模式/深色模式的行为</h4>
+    <p>跟随系统</p>
+    <p>手动设置</p>
   </section>
   <section id="maincolorpicker">
-    <h2>�л�����ɫ</h2>
-    <h4>ѡ������ɫ��</h4>
+    <h2>切换主题色</h2>
+    <h4>选择主题色标</h4>
     <p data-color="#007DC5">#007DC5</p>
     <p data-color="#33CC99">#33CC99</p>
     <p data-color="#D70040">#D70040</p>
     <p data-color="自定义">自定义</p>
   </section>
   <section id="pageprogress" data-setting="page-progress">
-    <h2>ҳ�������</h2>
-    <h4>��ҳü�ײ���ʾ��ǰҳ���������</h4>
-    <p>�ر�</p>
-    <p>����</p>
+    <h2>页面进度条</h2>
+    <h4>在页眉底部显示当前页面滚动进度</h4>
+    <p>关闭</p>
+    <p>开启</p>
+  </section>
+  <section id="particleanimation" data-setting="particle-animation">
+    <h2>粒子动画</h2>
+    <h4>在页面上显示粒子动画</h4>
+    <p>关闭</p>
+    <p>樱花</p>
+    <p>落叶梧桐</p>
+    <p>落叶银杏</p>
+    <p>雪花</p>
+  </section>
+  <section id="clear-page-cache">
+    <h2>清除页面缓存</h2>
+    <h4>清除本地页面缓存，以确保页面为最新，一般情况不建议使用</h4>
+    <button type="button">清除</button>
   </section>
 `;
 
@@ -289,6 +303,13 @@ function buildSection(sec){
           const s = document.createElement('div');
           s.className = 'color-swatch';
           s.style.backgroundColor = c;
+          // mark selected if matches current theme color
+          if (currentThemeColor && c.toLowerCase() === currentThemeColor.toLowerCase()) {
+            s.classList.add('selected');
+          }
+          // make keyboard-focusable
+          s.setAttribute('tabindex', '0');
+          s.setAttribute('role', 'button');
           s.addEventListener('click', ()=>{
             if (hexInput) hexInput.value = c;
             const pickedHsl = hexToHsl(c);
@@ -298,9 +319,33 @@ function buildSection(sec){
               lightSlider.value = pickedHsl.l;
               syncFromHslFn();
             }
+            // update selected class for swatch grid
+            grid.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('selected'));
+            s.classList.add('selected');
+            // also update main preset color-options if present
+            try {
+              row.querySelectorAll('.color-option').forEach(o => {
+                if (o.getAttribute('data-color') && o.getAttribute('data-color').toLowerCase() === c.toLowerCase()) {
+                  row.querySelectorAll('.color-option').forEach(x => x.classList.remove('selected'));
+                  o.classList.add('selected');
+                }
+              });
+            } catch (err) {}
             applyColor(c, true);
             closeCustomPanel();
           });
+          s.addEventListener('keydown', (e)=>{
+            if (e.key === 'Enter' || e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar'){
+              e.preventDefault();
+              s.click();
+            }
+          });
+          // focus handling mirrors other controls: add .focus only if keyboard interaction
+          s.addEventListener('focus', ()=>{ if (window.__lastInteractionWasKeyboard) s.classList.add('focus'); });
+          s.addEventListener('blur', ()=> s.classList.remove('focus'));
+          // pointer fallback to ensure hover ring disappears on leave
+          s.addEventListener('pointerenter', ()=> s.classList.add('focus'));
+          s.addEventListener('pointerleave', ()=> s.classList.remove('focus'));
           grid.appendChild(s);
         });
 
@@ -377,6 +422,9 @@ function buildSection(sec){
           markSelected(colorOption);
         }
 
+        // make color swatch keyboard focusable and clickable
+        colorOption.setAttribute('tabindex', '0');
+        colorOption.setAttribute('role', 'button');
         colorOption.addEventListener('click', () => {
           if (isCustom) {
             markSelected(colorOption);
@@ -404,6 +452,20 @@ function buildSection(sec){
           closeCustomPanel();
           applyColor(color, false);
         });
+
+        // keyboard activation (Enter / Space)
+        colorOption.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ' || e.code === 'Space' || e.key === 'Spacebar') {
+            e.preventDefault();
+            colorOption.click();
+          }
+        });
+
+        // focus handling: only add .focus when last interaction was keyboard
+        colorOption.addEventListener('focus', ()=>{
+          if (window.__lastInteractionWasKeyboard) colorOption.classList.add('focus');
+        });
+        colorOption.addEventListener('blur', ()=> colorOption.classList.remove('focus'));
 
         row.appendChild(colorOption);
       });
@@ -469,6 +531,24 @@ function buildSection(sec){
 
     row.appendChild(pContainer);
     row.appendChild(toggle);
+    wrapper.appendChild(row);
+  } else if (sec.id === 'clear-page-cache') {
+    const row = document.createElement('div');
+    row.className = 'settings-action-row';
+
+    const status = document.createElement('span');
+    status.className = 'settings-action-status';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'settings-action-btn';
+    const sourceBtn = sec.querySelector('button');
+    btn.textContent = (sourceBtn && sourceBtn.textContent ? sourceBtn.textContent.trim() : '清除') || '清除';
+
+    btn.addEventListener('click', () => handleClearPageCache(btn, status));
+
+    row.appendChild(status);
+    row.appendChild(btn);
     wrapper.appendChild(row);
   } else if (ps.length === 1) {
     const row = document.createElement('div');
@@ -791,19 +871,121 @@ function buildToggle(onChange, initialState){
     el.classList.add('active');
   }
   
+  // accessibility: make it focusable and expose role/aria
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('role', 'switch');
+  el.setAttribute('aria-checked', active ? 'true' : 'false');
+
   const update = ()=>{
     el.classList.toggle('active', active);
+    el.setAttribute('aria-checked', active ? 'true' : 'false');
     onChange && onChange(active);
   };
 
   update();
-  
-  el.addEventListener('click', ()=>{ 
+
+  // pointer interaction
+  el.addEventListener('click', (e)=>{ 
+    // prevent double-activation when keyboard triggers
+    e.preventDefault();
     active = !active; 
     update(); 
   });
-  
+
+  // keyboard support
+  el.addEventListener('keydown', (e)=>{
+    if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar'){
+      e.preventDefault();
+      active = !active;
+      update();
+    } else if (e.code === 'Enter' || e.key === 'Enter'){
+      e.preventDefault();
+      active = !active;
+      update();
+    }
+  });
+
+  // ensure we track whether last interaction was keyboard or pointer
+  if (typeof window.__lastInteractionWasKeyboard === 'undefined'){
+    window.__lastInteractionWasKeyboard = false;
+    // keyboard navigation (Tab, Arrow keys, etc.)
+    document.addEventListener('keydown', (ev)=>{
+      try { window.__lastInteractionWasKeyboard = true; } catch(e){}
+    }, true);
+    // pointer interaction
+    document.addEventListener('pointerdown', (ev)=>{
+      try { window.__lastInteractionWasKeyboard = false; } catch(e){}
+    }, true);
+  }
+
+  // visual focus styling when using keyboard only
+  el.addEventListener('focus', ()=>{
+    if (window.__lastInteractionWasKeyboard) el.classList.add('focus');
+  });
+  el.addEventListener('blur', ()=> el.classList.remove('focus'));
+
   return el;
+}
+
+async function handleClearPageCache(btn, statusEl){
+  if (!btn) return;
+  const originalText = btn.textContent;
+  const setStatus = (text, tone) => {
+    if (!statusEl) return;
+    statusEl.textContent = text || '';
+    statusEl.classList.remove('ok', 'error', 'muted');
+    if (tone) statusEl.classList.add(tone);
+  };
+
+  const start = () => {
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btn.textContent = '清除中...';
+  };
+
+  const reset = () => {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btn.textContent = originalText;
+  };
+
+  const hasAnyCapability = () => {
+    const hasCache = typeof caches !== 'undefined';
+    const hasSw = typeof navigator !== 'undefined' && !!navigator.serviceWorker && typeof navigator.serviceWorker.getRegistrations === 'function';
+    return hasCache || hasSw;
+  };
+
+  if (!hasAnyCapability()) {
+    setStatus('当前浏览器不支持清除缓存', 'error');
+    return;
+  }
+
+  start();
+  setStatus('正在清除缓存...', 'muted');
+
+  try {
+    const cacheTask = (async () => {
+      if (typeof caches === 'undefined' || !caches.keys) return;
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    })();
+
+    const swTask = (async () => {
+      if (!navigator || !navigator.serviceWorker || typeof navigator.serviceWorker.getRegistrations !== 'function') return;
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((reg) => reg.unregister()));
+    })();
+
+    await Promise.all([cacheTask, swTask]);
+    setStatus('已清除缓存，正在刷新', 'ok');
+    setTimeout(() => {
+      try { location.reload(); } catch (e) { reset(); }
+    }, 220);
+  } catch (err) {
+    console.error('[Settings Modal] 清除缓存失败', err);
+    setStatus('清除失败，请重试', 'error');
+    reset();
+  }
 }
 
 function applyThemeColor(color) {
@@ -930,16 +1112,17 @@ async function openModal(){
     return SETTINGS_FALLBACK_HTML;
   };
 
-  const resolveLang = () => {
+  const resolveLang = (map) => {
     const saved = localStorage.getItem(SETTINGS_LANG_KEY) || document.documentElement.lang || 'zh-CN';
-    if (typeof translations !== 'undefined' && translations[saved]) return saved;
+    if (map && map[saved]) return saved;
     return 'zh-CN';
   };
 
   const applySettingsTranslations = (container) => {
-    if (typeof translations === 'undefined') return;
-    const lang = resolveLang();
-    const t = translations[lang] && translations[lang].settings;
+    const map = (typeof window !== 'undefined' && window.__translations) || (typeof translations !== 'undefined' ? translations : null);
+    if (!map) return;
+    const lang = resolveLang(map);
+    const t = map[lang] && map[lang].settings;
     if (!t) return;
 
     const titleEl = container.querySelector('title');
@@ -987,6 +1170,16 @@ async function openModal(){
           ps[i].textContent = t.particleAnimation.options[i];
         }
       }
+    }
+
+    const clearCache = container.querySelector('#clear-page-cache');
+    if (clearCache && t.clearCache) {
+      const h2 = clearCache.querySelector('h2');
+      const h4 = clearCache.querySelector('h4');
+      const btn = clearCache.querySelector('button');
+      if (h2 && t.clearCache.title) h2.textContent = t.clearCache.title;
+      if (h4 && t.clearCache.subtitle) h4.textContent = t.clearCache.subtitle;
+      if (btn && t.clearCache.button) btn.textContent = t.clearCache.button;
     }
   };
 

@@ -13,11 +13,14 @@
 
         <meta name="author" content="whwdzg">
         <meta name="description" content="whwdzg's personal page - about">
+        <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-        <link rel="preload" href="img/favicon.ico" as="image" type="image/x-icon">
-        <link rel="preload" href="img/shuiyu.avif" as="image" type="image/avif">
-        <link rel="preload" href="img/bg.jpg" as="image" type="image/jpeg">
+        <link rel="manifest" href="/manifest.json">
+
+        <link rel="icon" href="img/shell/favicon.ico" type="image/x-icon">
+        <link rel="preload" href="img/shell/favicon.ico" as="image" type="image/x-icon">
+        <link rel="preload" href="img/shell/shuiyu.avif" as="image" type="image/avif">
+        <link rel="preload" href="img/shell/bg.jpg" as="image" type="image/jpeg">
         <link rel="preload" href="css/variables.css" as="style">
         <link rel="preload" href="font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
@@ -32,6 +35,7 @@
         <link rel="stylesheet" href="css/scroll-to-top.css">
         <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
 
+        <script src="/js/pwa/register-sw.js" defer></script>
         <script src="js/i18n-loader.js" defer></script>
         <script src="js/theme.js" defer></script>
         <script src="js/language.js" defer></script>
@@ -54,7 +58,7 @@
         <h1>
             <span class="header-title">
                 <a href="index.html" title="">
-                    <img src="img/favicon.ico" alt="logo" class="logo" fetchpriority="high">
+                    <img src="img/shell/favicon.ico" alt="logo" class="logo" fetchpriority="high">
                     <span class="title-text">主页</span>
                 </a>
             </span>
@@ -115,7 +119,7 @@
                         </label>
                     </div>
                 </div>
-                <img src="img/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
+                <img src="img/shell/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
                 <div id="avatar-links-menu" class="avatar-links-menu">
                     <a href="https://github.com/whwdzg" class="avatar-link" target="_blank" rel="noopener noreferrer">
                         <i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>
@@ -201,8 +205,8 @@
         </section>
     </aside>
     <footer>
-        <p>&copy; 2022-2025 whwdzg. 保留所有权利。</p>
-        <p>当前版本：<strong>2.0.2.3-20251221</strong></p>
+        <p>&copy; 2022-2026 滄海水魚. 保留所有权利。</p>
+        <p>当前版本：<strong>2.0.2.4-20260104</strong></p>
     </footer>`;
                 function attachShell(html) {
                     if (!container || !html) return;
@@ -291,18 +295,18 @@
                     1<br>
                     1<br>
                 </p>
-                <img src="img/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low">
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
-                <img src="img/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low">
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
+                <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p>
             </section>
         </main>
     </body>
