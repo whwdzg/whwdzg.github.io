@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	// 将文档中的 aside 收集到右下角浮动栈容器，避免重叠纵向排列
 // 模块：侧边栏控制 / Sidebar toggle, submenu, and responsive behavior.
 
+	const NARROW_BREAKPOINT = 960;
+
 	function addAsideCloseButtons(stack){
 		if (!stack) return;
 		stack.querySelectorAll('aside').forEach(card => {
@@ -19,11 +21,29 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 
+	function sortAsideStack(stack){
+		if (!stack) return;
+		const orderMap = { beta: 1, archives: 2, 'cache-notice': 99 };
+		const cards = Array.from(stack.querySelectorAll(':scope > aside'));
+		if (cards.length <= 1) return;
+		const ranked = cards.map((card, idx) => {
+			const section = card.querySelector(':scope > section');
+			const dataOrder = (card.dataset && card.dataset.order) || (section && section.dataset ? section.dataset.order : undefined);
+			const parsed = dataOrder !== undefined && dataOrder !== null && dataOrder !== '' ? Number(dataOrder) : NaN;
+			const hasExplicitOrder = Number.isFinite(parsed);
+			const id = (card.id || (section && section.id) || '').toLowerCase();
+			const order = hasExplicitOrder ? parsed : (orderMap[id] !== undefined ? orderMap[id] : 50);
+			return { card, order, idx };
+		});
+		ranked.sort((a, b) => a.order === b.order ? a.idx - b.idx : a.order - b.order);
+		ranked.forEach(({ card }) => stack.appendChild(card));
+	}
+
 	function setupAsideStack() {
+		let stack = document.getElementById('aside-stack');
 		const asides = Array.from(document.querySelectorAll('main aside, body > aside'))
 			.filter(a => a.id !== 'site-aside' && a.closest('#aside-stack') === null);
-		if (!asides.length) return;
-		let stack = document.getElementById('aside-stack');
+		if (!stack && !asides.length) return;
 		if (!stack) {
 			stack = document.createElement('div');
 			stack.id = 'aside-stack';
@@ -44,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 		addAsideCloseButtons(stack);
+		sortAsideStack(stack);
 	}
 
 	window.refreshAsideStack = setupAsideStack;
@@ -51,23 +72,156 @@ document.addEventListener('DOMContentLoaded', function () {
 	window.addEventListener('spa:page:loaded', setupAsideStack);
 
 	// 为浮动栈卡片添加关闭按钮
-	(function addAsideCloseButtons() {
+	(function initAsideStackButtons() {
 		const stack = document.getElementById('aside-stack');
 		if (!stack) return;
-		stack.querySelectorAll('aside').forEach(card => {
-			if (card.querySelector('.aside-close')) return;
-			const btn = document.createElement('button');
-			btn.className = 'aside-close';
-			btn.setAttribute('aria-label', 'Close');
-			btn.innerHTML = '<i class="fluent-font" aria-hidden="true">&#xF369;</i>';
+		addAsideCloseButtons(stack);
+		sortAsideStack(stack);
+	})();
+
+	// 全局：侧边栏与返回顶部位置调整
+	function adjustSidebarPosition() {
+		const header = document.querySelector('header');
+		const footer = document.querySelector('footer');
+		const sidebar = document.getElementById('sidebar');
+		const scrollToTopBtn = document.getElementById('scroll-to-top');
+		if (!header || !sidebar) return;
+
+		// 先计算 header 高度（无论窄屏或宽屏都需要），用于调整 body padding-top
+		const headerHeight = Math.ceil(header.getBoundingClientRect().height);
+
+		// 把 header 高度同步到 CSS 变量，便于 CSS 使用
+		document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+
+		// 把侧边栏当前宽度写入 CSS 变量 --sidebar-offset，供 collapse button 用来定位
+		const sidebarWidth = sidebar.getBoundingClientRect().width;
+		document.documentElement.style.setProperty('--sidebar-offset', sidebarWidth + 'px');
+
+		// 小屏幕下侧边栏为静态，但仍需为固定 header 留出空间：设置 body padding-top
+		if (window.innerWidth <= NARROW_BREAKPOINT) {
+			sidebar.style.top = '';
+			sidebar.style.height = '';
+			document.body.style.paddingTop = headerHeight + 'px';
+			// 窄屏保持默认位置，不随页尾上移
+			if (scrollToTopBtn) scrollToTopBtn.style.bottom = '';
+			return;
+		}
+
+		// 计算页尾高度（如有），用于让侧栏不盖住页尾
+		const footerRect = footer ? footer.getBoundingClientRect() : null;
+		const footerHeight = footerRect ? Math.ceil(footerRect.height) : 0;
+		// 精确计算页尾与视口的可见重叠高度：
+		// 不可见时（完全在视口上方或下方）应为 0；部分可见时按交集计算
+		let bottomGap = 0;
+		if (footerRect) {
+			const visibleTop = Math.max(0, footerRect.top);
+			const visibleBottom = Math.min(window.innerHeight, footerRect.bottom);
+			const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+			bottomGap = Math.min(visibleHeight, footerHeight);
+			// 当页尾完全显示时，增加一个微小安全间隙，避免侧栏盖住页尾边线
+			if (visibleHeight >= footerHeight) bottomGap = footerHeight + 4; // 4px 安全边距
+		}
+
+		// 宽屏：侧边栏固定在 header 下面；根据页尾当前可见高度动态留出底部间隙
+		sidebar.style.top = headerHeight + 'px';
+		sidebar.style.height = 'auto';
+		sidebar.style.bottom = `${bottomGap}px`;
+		document.body.style.paddingTop = headerHeight + 'px';
+
+		// 同时调整返回顶部按钮的位置
+		if (scrollToTopBtn && bottomGap > 0) {
+			scrollToTopBtn.style.bottom = `${bottomGap + 16}px`; // 16px = 1rem 基准底部间距
+		} else if (scrollToTopBtn) {
+			scrollToTopBtn.style.bottom = '';
+		}
+	}
+
+	// 侧边栏整体折叠/展开逻辑（独立于菜单项，避免失效）
+	(function setupSidebarCollapse() {
+		const collapseBtns = document.querySelectorAll('.sidebar-collapse-btn');
+		const body = document.body;
+		const SIDEBAR_KEY = 'sidebarCollapsed';
+
+		function setCollapsed(collapsed, save = true) {
+			body.classList.toggle('sidebar-collapsed', collapsed);
+			collapseBtns.forEach(btn => btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true'));
+			if (collapsed) {
+				// 关闭所有打开的子菜单，避免折叠后显示溢出
+				document.querySelectorAll('.sidebar .has-children.open').forEach(p => {
+					p.classList.remove('open');
+					const sm = p.querySelector('.submenu');
+					if (sm) sm.style.maxHeight = '0px';
+				});
+			}
+			if (save) localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0');
+			adjustSidebarPosition();
+		}
+
+		// 恢复上次状态
+		const saved = localStorage.getItem(SIDEBAR_KEY);
+		if (saved === '1') setCollapsed(true, false);
+
+		collapseBtns.forEach(btn => {
 			btn.addEventListener('click', () => {
-				card.classList.add('closing');
-				setTimeout(() => {
-					card.remove();
-				}, 240);
+				setCollapsed(!body.classList.contains('sidebar-collapsed'));
 			});
-			card.appendChild(btn);
 		});
+
+		// 在折叠状态变化时也重算位置（延迟以配合过渡）
+		const observer = new MutationObserver(() => { setTimeout(adjustSidebarPosition, 220); });
+		observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+		// 初始调整一次
+		adjustSidebarPosition();
+	})();
+
+	// 窄/宽屏切换时重算位置
+	window.addEventListener('resize', adjustSidebarPosition);
+	window.addEventListener('load', adjustSidebarPosition);
+
+	// 使用 IntersectionObserver 动态根据页尾可见性调整侧栏和按钮 bottom
+	(function observeFooter() {
+		const footer = document.querySelector('footer');
+		const sidebar = document.getElementById('sidebar');
+		const scrollToTopBtn = document.getElementById('scroll-to-top');
+		if (!footer || !sidebar) return;
+		try {
+			const io = new IntersectionObserver((entries) => {
+				for (const entry of entries) {
+					const rect = footer.getBoundingClientRect();
+					const footerHeight = Math.ceil(rect.height);
+					const visibleTop = Math.max(0, rect.top);
+					const visibleBottom = Math.min(window.innerHeight, rect.bottom);
+					const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+					let bottomGap = Math.min(visibleHeight, footerHeight);
+					if (visibleHeight >= footerHeight) bottomGap = footerHeight + 4; // 4px 安全边距
+					
+					// 宽屏时调整侧边栏
+					if (window.innerWidth > NARROW_BREAKPOINT) {
+						const headerHeight = Math.ceil(document.querySelector('header').getBoundingClientRect().height);
+						sidebar.style.top = headerHeight + 'px';
+						sidebar.style.height = 'auto';
+						sidebar.style.bottom = `${bottomGap}px`;
+					}
+					
+					// 宽屏继续避让页尾；窄屏保持默认位置
+					if (window.innerWidth > NARROW_BREAKPOINT) {
+						if (scrollToTopBtn && bottomGap > 0) {
+							scrollToTopBtn.style.bottom = `${bottomGap + 16}px`;
+						} else if (scrollToTopBtn) {
+							scrollToTopBtn.style.bottom = '';
+						}
+					} else if (scrollToTopBtn) {
+						scrollToTopBtn.style.bottom = '';
+					}
+				}
+			}, { root: null, threshold: [0, 0.01, 0.1, 0.25, 0.5, 0.75, 1] });
+			io.observe(footer);
+		} catch (e) {
+			// 兼容性兜底：监听滚动与调整大小并调用 adjustSidebarPosition
+			window.addEventListener('scroll', adjustSidebarPosition, { passive: true });
+			window.addEventListener('resize', adjustSidebarPosition);
+		}
 	})();
 
 	// 找到所有有子菜单的项
@@ -102,157 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				submenu.style.maxHeight = submenu.scrollHeight + 'px';
 			}
 		});
-    
-		// 侧边栏整体折叠/展开逻辑
-		const collapseBtns = document.querySelectorAll('.sidebar-collapse-btn');
-		const body = document.body;
-		const SIDEBAR_KEY = 'sidebarCollapsed';
-
-		function setCollapsed(collapsed, save = true) {
-			if (collapsed) {
-				body.classList.add('sidebar-collapsed');
-				collapseBtns.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
-				// 关闭所有打开的子菜单，避免折叠后显示溢出
-				document.querySelectorAll('.sidebar .has-children.open').forEach(p => {
-					p.classList.remove('open');
-					const sm = p.querySelector('.submenu');
-					if (sm) sm.style.maxHeight = '0px';
-				});
-			} else {
-				body.classList.remove('sidebar-collapsed');
-				collapseBtns.forEach(btn => btn.setAttribute('aria-expanded', 'true'));
-			}
-			if (save) localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0');
-			// After collapsing state change, update sidebar offset variable so button repositions
-			adjustSidebarPosition();
-		}
-
-		// 恢复上次状态
-		const saved = localStorage.getItem(SIDEBAR_KEY);
-		if (saved === '1') setCollapsed(true, false);
-
-		collapseBtns.forEach(btn => {
-			btn.addEventListener('click', function () {
-				const isCollapsed = body.classList.toggle('sidebar-collapsed');
-				setCollapsed(isCollapsed);
-			});
-		});
-		// 在折叠/展开或窗口大小改变时，调整侧边栏位置以避免遮挡页眉
-		function adjustSidebarPosition() {
-			const header = document.querySelector('header');
-			const footer = document.querySelector('footer');
-			const sidebar = document.getElementById('sidebar');
-			const scrollToTopBtn = document.getElementById('scroll-to-top');
-			if (!header || !sidebar) return;
-
-			// 先计算 header 高度（无论窄屏或宽屏都需要），用于调整 body padding-top
-			const headerHeight = Math.ceil(header.getBoundingClientRect().height);
-
-			// 把 header 高度同步到 CSS 变量，便于 CSS 使用
-			document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
-
-			// 把侧边栏当前宽度写入 CSS 变量 --sidebar-offset，供 collapse button 用来定位
-			const sidebarWidth = sidebar.getBoundingClientRect().width;
-			document.documentElement.style.setProperty('--sidebar-offset', sidebarWidth + 'px');
-
-			// 小屏幕下侧边栏为静态，但仍需为固定 header 留出空间：设置 body padding-top
-			if (window.innerWidth <= 760) {
-				sidebar.style.top = '';
-				sidebar.style.height = '';
-				document.body.style.paddingTop = headerHeight + 'px';
-				// 窄屏下也需要让按钮避让页尾
-				const footerRect = footer ? footer.getBoundingClientRect() : null;
-				if (scrollToTopBtn && footerRect) {
-					const footerHeight = Math.ceil(footerRect.height);
-					const visibleTop = Math.max(0, footerRect.top);
-					const visibleBottom = Math.min(window.innerHeight, footerRect.bottom);
-					const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-					let bottomGap = Math.min(visibleHeight, footerHeight);
-					if (visibleHeight >= footerHeight) bottomGap = footerHeight + 4;
-					if (bottomGap > 0) {
-						scrollToTopBtn.style.bottom = `${bottomGap + 16}px`;
-					} else {
-						scrollToTopBtn.style.bottom = '';
-					}
-				} else if (scrollToTopBtn) {
-					scrollToTopBtn.style.bottom = '';
-				}
-				return;
-			}
-
-			// 计算页尾高度（如有），用于让侧栏不盖住页尾
-			const footerRect = footer ? footer.getBoundingClientRect() : null;
-			const footerHeight = footerRect ? Math.ceil(footerRect.height) : 0;
-			// 精确计算页尾与视口的可见重叠高度：
-			// 不可见时（完全在视口上方或下方）应为 0；部分可见时按交集计算
-			let bottomGap = 0;
-			if (footerRect) {
-				const visibleTop = Math.max(0, footerRect.top);
-				const visibleBottom = Math.min(window.innerHeight, footerRect.bottom);
-				const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-				bottomGap = Math.min(visibleHeight, footerHeight);
-				// 当页尾完全显示时，增加一个微小安全间隙，避免侧栏盖住页尾边线
-				if (visibleHeight >= footerHeight) bottomGap = footerHeight + 4; // 4px 安全边距
-			}
-
-			// 宽屏：侧边栏固定在 header 下面；根据页尾当前可见高度动态留出底部间隙
-			sidebar.style.top = headerHeight + 'px';
-			sidebar.style.height = 'auto';
-			sidebar.style.bottom = `${bottomGap}px`;
-			document.body.style.paddingTop = headerHeight + 'px';
-
-			// 同时调整返回顶部按钮的位置
-			if (scrollToTopBtn && bottomGap > 0) {
-				scrollToTopBtn.style.bottom = `${bottomGap + 16}px`; // 16px = 1rem 基准底部间距
-			} else if (scrollToTopBtn) {
-				scrollToTopBtn.style.bottom = '';
-			}
-		}
-
-		// 使用 IntersectionObserver 动态根据页尾可见性调整侧栏和按钮 bottom
-		(function observeFooter() {
-			const footer = document.querySelector('footer');
-			const sidebar = document.getElementById('sidebar');
-			const scrollToTopBtn = document.getElementById('scroll-to-top');
-			if (!footer || !sidebar) return;
-			try {
-				const io = new IntersectionObserver((entries) => {
-					for (const entry of entries) {
-						const rect = footer.getBoundingClientRect();
-						const footerHeight = Math.ceil(rect.height);
-						const visibleTop = Math.max(0, rect.top);
-						const visibleBottom = Math.min(window.innerHeight, rect.bottom);
-						const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-						let bottomGap = Math.min(visibleHeight, footerHeight);
-						if (visibleHeight >= footerHeight) bottomGap = footerHeight + 4; // 4px 安全边距
-						
-						// 宽屏时调整侧边栏
-						if (window.innerWidth > 760) {
-							const headerHeight = Math.ceil(document.querySelector('header').getBoundingClientRect().height);
-							sidebar.style.top = headerHeight + 'px';
-							sidebar.style.height = 'auto';
-							sidebar.style.bottom = `${bottomGap}px`;
-						}
-						
-						// 所有屏幕尺寸都调整返回顶部按钮
-						if (scrollToTopBtn && bottomGap > 0) {
-							scrollToTopBtn.style.bottom = `${bottomGap + 16}px`;
-						} else if (scrollToTopBtn) {
-							scrollToTopBtn.style.bottom = '';
-						}
-					}
-				}, { root: null, threshold: [0, 0.01, 0.1, 0.25, 0.5, 0.75, 1] });
-				io.observe(footer);
-			} catch (e) {
-				// 兼容性兜底：监听滚动与调整大小并调用 adjustSidebarPosition
-				window.addEventListener('scroll', adjustSidebarPosition, { passive: true });
-				window.addEventListener('resize', adjustSidebarPosition);
-			}
-		})();
-
-		// 初始与窗口调整时都运行
-		window.addEventListener('resize', adjustSidebarPosition);
-		window.addEventListener('load', adjustSidebarPosition);
 
 		// markCurrentSidebarItem: 标记当前侧栏项（先移除旧的 current）
 		function markCurrentSidebarItem() {
@@ -260,7 +263,10 @@ document.addEventListener('DOMContentLoaded', function () {
 				const path = location.pathname.replace(/\/index\.html$/i, '/');
 				const links = Array.from(document.querySelectorAll('.sidebar a'));
 				// remove previous (包括 a/.toggle 等所有带 current/selected 的元素)
-				document.querySelectorAll('.sidebar .current, .sidebar .selected').forEach(el => el.classList.remove('current', 'selected'));
+				document.querySelectorAll('.sidebar .current, .sidebar .selected').forEach(el => {
+					el.classList.remove('current', 'selected');
+					if (el.tagName === 'A') el.removeAttribute('aria-current');
+				});
 				// 构建候选集合，解析每个链接的绝对路径
 				const candidates = links.map(a => {
 					const href = a.getAttribute('href') || '';
@@ -285,12 +291,15 @@ document.addEventListener('DOMContentLoaded', function () {
 				}
 				if (matched && matched.el) {
 					matched.el.classList.add('current');
+					matched.el.setAttribute('aria-current', 'page');
 					// 如果在 submenu 内，展开父菜单并确保 maxHeight
 					const parentLi = matched.el.closest('.has-children');
 					if (parentLi) {
 						parentLi.classList.add('open');
 						const sm = parentLi.querySelector('.submenu');
 						if (sm) sm.style.maxHeight = sm.scrollHeight + 'px';
+						const toggle = parentLi.querySelector('.toggle');
+						if (toggle) toggle.classList.add('current');
 					}
 				}
 			} catch (err) { console.error('[sidebar] mark current failed', err); }
@@ -331,13 +340,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		// 在窄屏或者 unload 时移除 body padding-top，以防止影响页面外观
 		window.addEventListener('unload', function () { document.body.style.paddingTop = ''; });
-
-		// 在折叠状态变化时也重算位置（延迟以配合过渡）
-		const observer = new MutationObserver(() => { setTimeout(adjustSidebarPosition, 220); });
-		observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-
-		// 立即调整一次
-		adjustSidebarPosition();
 	});
 });
 

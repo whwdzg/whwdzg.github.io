@@ -2,10 +2,20 @@
 document.addEventListener('DOMContentLoaded', function () {
 	let candidates = [];
 
+	// Determine whether an image should be included in the lightbox (skip avatars/comment heads)
+	const isEligibleForLightbox = (img) => {
+		if (!img) return false;
+		const lbAttr = (img.getAttribute('data-lightbox') || '').toLowerCase();
+		if (lbAttr === 'false' || lbAttr === 'off') return false;
+		if (img.classList.contains('no-lightbox')) return false;
+		if (img.closest('.comment-card') || img.closest('.comment-list')) return false;
+		return true;
+	};
+
 	// create/init lightbox so it can be called after SPA swaps
 	function initLightbox() {
 		console.log('[lightbox] initLightbox: scanning candidates');
-		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img'));
+		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img')).filter(isEligibleForLightbox);
 		// rebuild captions for the new candidates
 		buildCaptions();
 		// if overlay was removed by SPA cleanup, re-create by re-running the init block
@@ -317,8 +327,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		updateCursor();
 	};
 
-	// Allow zoom range from 40% to 400%
-	const clampScale = (val) => Math.min(4.0, Math.max(0.4, val));
+	// Allow zoom range from 10% to 500%
+	const clampScale = (val) => Math.min(5.0, Math.max(0.1, val));
 
 	const updateZoomDisplay = () => {
 		const pct = Math.round(currentScale * 100);
@@ -745,7 +755,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		// show debug panel ASAP when enabled (even if pointer events never fire)
 		try { ensureDebugPanel(); } catch (e) { /* ignore */ }
 		refreshOverlayRefs();
-		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img'));
+		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img')).filter(isEligibleForLightbox);
 		// clear previous attachment markers so we rebind cleanly after SPA swaps
 		document.querySelectorAll('img[data-lightbox-attached]').forEach(i => delete i.dataset.lightboxAttached);
 		console.log('[lightbox] candidates after query: ' + candidates.length);

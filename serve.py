@@ -47,7 +47,7 @@ def start_server():
     
     # 创建服务器 / Create server
     handler = http.server.SimpleHTTPRequestHandler
-    
+
     # 自定义请求处理器以支持缓存控制 / Custom handler for cache control
     class NoCacheHTTPRequestHandler(handler):
         def end_headers(self):
@@ -55,13 +55,23 @@ def start_server():
             self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate')
             self.send_header('Expires', '0')
             super().end_headers()
-        
+
         def log_message(self, format, *args):
             # 彩色日志输出 / Colored log output
             print(f"[{self.log_date_time_string()}] {format % args}")
+
+    class QuietThreadingHTTPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+        allow_reuse_address = True
+        daemon_threads = True
+
+        def handle_error(self, request, client_address):
+            exc_type, exc_value, _ = sys.exc_info()
+            if isinstance(exc_value, (ConnectionResetError, BrokenPipeError)):
+                return  # 忽略客户端主动断开导致的错误 / Ignore client aborts to avoid noisy stack traces
+            super().handle_error(request, client_address)
     
     try:
-        with socketserver.TCPServer((HOST, port), NoCacheHTTPRequestHandler) as httpd:
+        with QuietThreadingHTTPServer((HOST, port), NoCacheHTTPRequestHandler) as httpd:
             url = f"http://{HOST}:{port}"
             
             print("\n" + "="*60)

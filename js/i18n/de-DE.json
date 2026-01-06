@@ -8,8 +8,38 @@
   "search": { "placeholder": "Suchinhalt", "button": "Suchen", "ariaLabel": "Suche starten", "noResults": "Keine Ergebnisse", "resultCount": "{count} Ergebnisse gefunden", "imageTag": "[Bild]" },
   "main": { "homeTitle": "Startseite", "homeContent": "Dies ist die Startseite der Version 2.0, derzeit im Aufbau und in einer <strong>sehr frühen Phase</strong>, für Lernzwecke", "aboutTitle": "Über", "aboutContent": "Dies ist die Startseite der Version 2.0, derzeit im Aufbau und in einer <strong>sehr frühen Phase</strong>", "testTitle": "test" },
   "aside": { "noticeTitle": "Hinweis", "noticeContent": "<strong>Frühe Testversion, Fehler möglich</strong>", "legacyTitle": "Zur 1.0-Startseite", "versionLabel": "Version 1.0", "legacyLink": "Zur 1.0-Startseite", "legacyStopped": "Nicht mehr aktualisiert" },
-  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Alle Rechte vorbehalten.", "version": "Aktuelle Version: <strong>2.0.2.4-20260104</strong>" },
-  "settings": { "title": "Einstellungen", "lightdark": { "title": "Hell/Dunkel umschalten", "subtitle": "Verhalten für hell/dunkel", "follow": "System folgen", "manual": "Manuell" }, "color": { "title": "Themenfarbe wechseln", "subtitle": "Wähle die Akzentfarbe" }, "pageProgress": { "title": "Seitenfortschritt", "subtitle": "Fortschritt unter der Kopfzeile anzeigen", "off": "Aus", "on": "An" }, "particleAnimation": { "title": "Partikel-Animation", "subtitle": "Partikelanimation auf der Seite anzeigen", "options": ["Aus","Sakura","Platane Blätter","Ginkgo Blätter","Schnee"] } },
+  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Alle Rechte vorbehalten.", "version": "Aktuelle Version: <strong>2.0.2.5-20260106</strong>" },
+  "settings": {
+    "title": "Einstellungen",
+    "lightdark": { "title": "Hell/Dunkel umschalten", "subtitle": "Verhalten für hell/dunkel", "follow": "System folgen", "manual": "Manuell" },
+    "color": {
+      "title": "Themenfarbe wechseln",
+      "subtitle": "Wähle die Akzentfarbe",
+      "customLabel": "Benutzerdefiniert",
+      "customPanel": {
+        "title": "Benutzerdefinierte Farbe",
+        "hue": "Farbton",
+        "saturation": "Sättigung",
+        "lightness": "Helligkeit",
+        "hexPlaceholder": "#RRGGBB oder #RGB",
+        "apply": "Übernehmen"
+      }
+    },
+    "pageProgress": { "title": "Seitenfortschritt", "subtitle": "Fortschritt unter der Kopfzeile anzeigen", "off": "Aus", "on": "An" },
+    "particleAnimation": { "title": "Partikel-Animation", "subtitle": "Partikelanimation auf der Seite anzeigen", "options": ["Aus","Sakura","Platane Blätter","Ginkgo Blätter","Schnee"] },
+    "clearCache": {
+      "title": "Seitencache leeren",
+      "subtitle": "Lokalen Seitencache löschen, um sicherzustellen, dass alles aktuell ist (normalerweise nicht empfohlen)",
+      "button": "Leeren",
+      "buttonWorking": "Wird geleert...",
+      "status": {
+        "unsupported": "Ihr Browser unterstützt das Leeren des Caches nicht",
+        "working": "Cache wird geleert...",
+        "done": "Cache geleert, Seite wird neu geladen",
+        "failed": "Leeren fehlgeschlagen, bitte erneut versuchen"
+      }
+    }
+  },
   "buttons": { "scrollToTop": "Nach oben" },
   "lightbox": { "close": "Bild schließen", "zoomIn": "Vergrößern", "zoomOut": "Verkleinern", "download": "Bild herunterladen", "locate": "Zum Text", "prev": "Vorherige", "next": "Nächste", "fullscreen": "Vollbild", "exitFullscreen": "Vollbild verlassen", "zoomInputPlaceholder": "40-400%", "zoomInputLabel": "Zoom-Prozentsatz" }
 }

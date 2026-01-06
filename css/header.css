@@ -20,6 +20,30 @@ header h1 {
 	gap: 0.5rem;
 }
 
+.page-loading-indicator {
+	display: inline-flex;
+	width: 16px;
+	height: 16px;
+	margin-left: 6px;
+	border-radius: 50%;
+	border: 2px solid var(--border-color);
+	border-top-color: var(--text-color);
+	animation: header-spin 0.8s linear infinite;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 160ms ease, visibility 160ms ease;
+}
+
+body.page-loading .page-loading-indicator {
+	opacity: 1;
+	visibility: visible;
+}
+
+@keyframes header-spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
 .header-title {
 	display: inline-flex;
 	align-items: center;

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频存档 · 哔哩哔哩 · 第 1 页</title>
+    <meta name="author" content="滄海水魚">
+    <meta name="description" content="滄海水魚哔哩哔哩视频存档，第 1 页">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/img/shell/bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
+    <link rel="stylesheet" href="/css/settings-modal.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="/css/column.css">
+    <link rel="stylesheet" href="/css/video-archive.css">
+    <link rel="stylesheet" href="/font/FluentSystemIcons-Regular.css">
+
+    <script src="/js/pwa/register-sw.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/language.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+</head>
+<body>
+    <div id="shell-root"></div>
+    <script>
+        (function(){
+            var container = document.getElementById('shell-root');
+            var inlineShell = `<!-- Shared shell: header, sidebar, aside, footer -->
+<!-- 模块：全站壳层 / Shared shell (header, sidebar, footer). 保留导航与动画。 -->
+<header>
+    <h1>
+        <span class="header-title">
+            <a href="/" title="">
+                <img src="/img/shell/favicon.ico" alt="logo" class="logo" fetchpriority="high">
+                <span class="title-text">主页</span>
+            </a>
+            <span id="page-loading-indicator" class="page-loading-indicator" aria-hidden="true"></span>
+        </span>
+        <div class="header-actions">
+            <button class="header-search-btn" id="header-search-btn" aria-label="搜索" title="搜索">
+                <i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>
+            </button>
+            <button class="theme-toggle-btn" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
+                <i class="fluent-font" aria-hidden="true">&#xF87E;</i>
+            </button>
+            <div class="theme-settings-container">
+                <button class="theme-settings-btn" aria-label="设置" title="设置">
+                    <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
+                </button>
+            </div>
+            <div class="language-selector-container">
+                <button class="language-selector-btn" aria-label="选择语言" title="选择语言">
+                    <i class="fluent-font" aria-hidden="true">&#xF45B;</i>
+                </button>
+                <div class="language-selector-menu">
+                    <label class="language-option">
+                        <input type="radio" name="language" value="zh-CN" aria-label="中文（简体）">
+                        <span>中文（简体）</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="zh-TW" aria-label="中文（繁体）">
+                        <span>中文（繁体）</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="en-US" aria-label="English (US)">
+                        <span>English (US)</span>
+                    </label>
+                    <!-- English (Global) removed -->
+                    <label class="language-option">
+                        <input type="radio" name="language" value="ru-RU" aria-label="Русский">
+                        <span>Русский</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="fr-FR" aria-label="Français">
+                        <span>Français</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="de-DE" aria-label="Deutsch">
+                        <span>Deutsch</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="ja-JP" aria-label="日本語">
+                        <span>日本語</span>
+                    </label>
+                </div>
+            </div>
+            <img src="/img/shell/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
+            <div id="avatar-links-menu" class="avatar-links-menu">
+                <a href="https://github.com/whwdzg" class="avatar-link" target="_blank" rel="noopener noreferrer">
+                    <i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://space.bilibili.com/588003657" class="avatar-link" target="_blank" rel="noopener noreferrer">
+                    <i class="icon-ic_fluent_tv_24_regular" aria-hidden="true"></i>
+                    <span>bilibili</span>
+                </a>
+            </div>
+        </div>
+    </h1>
+</header>
+<nav id="sidebar" class="sidebar" aria-label="主导航">
+    <button class="sidebar-collapse-btn inner-sidebar-collapse-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
+        <i class="icon-ic_fluent_list_24_regular item-icon" aria-hidden="true"></i>
+    </button>
+    <ul>
+        <li>
+            <a href="/">
+                <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
+                <span class="label">主页</span>
+            </a>
+        </li>
+        <li class="has-children">
+            <button class="toggle" aria-expanded="false">
+                <i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>
+                <span class="toggle-label">返回 1.0</span>
+                <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
+            </button>
+            <ul class="submenu">
+                <li>
+                    <a href="/Legacy-1.0/index.html">
+                        <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">主页（1.0）</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Legacy-1.0/about.html">
+                        <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">关于（1.0）</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Legacy-1.0/README.md">
+                        <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">README（1.0）</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="has-children">
+            <button class="toggle" aria-expanded="false">
+                <i class="icon-ic_fluent_apps_list_24_regular item-icon" aria-hidden="true"></i>
+                <span class="toggle-label">专栏</span>
+                <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
+            </button>
+            <ul class="submenu">
+                <li>
+                    <a href="/column/psn-img-legacy.html">
+                        <i class="icon-ic_fluent_image_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">个人图库</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/column/comments.html">
+                        <i class="icon-ic_fluent_comment_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">评论发癫区</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="has-children">
+            <button class="toggle" aria-expanded="false">
+                <i class="icon-ic_fluent_tv_24_regular item-icon" aria-hidden="true"></i>
+                <span class="toggle-label">视频存档</span>
+                <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
+            </button>
+            <ul class="submenu">
+                <li>
+                    <a href="/video-archive/list-bilivideo-1.html">
+                        <i class="icon-ic_fluent_channel_share_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">哔哩哔哩</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="/about.html">
+                    <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
+                    <span class="label">关于</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<button id="scroll-to-top" class="scroll-to-top" aria-label="返回顶部" title="返回顶部">
+    <i class="icon-ic_fluent_arrow_up_24_regular item-icon" aria-hidden="true"></i>
+</button>
+<aside>
+    <section id="beta">
+        <h3>注意</h3>
+        <p>
+            <strong>当前为早期测试版本，可能出现bug</strong>
+        </p>
+    </section>
+    <section id="archives">
+        <h3>返回1.0主页</h3>
+        <p>
+            <abbr title="1.3.12.2025.8.7-New_MusicPlayer">1.0版本</abbr>已终止更新
+            <br>
+            <a href="/Legacy-1.0/index.html" title="返回1.0版本主页">返回1.0主页</a>
+        </p>
+    </section>
+</aside>
+<footer>
+    <p>&copy; 2022-2026 滄海水魚. 保留所有权利。</p>
+    <p>当前版本：<strong>2.0.2.5-20260106</strong></p>
+</footer>`;
+
+            function normalize(pathname) {
+                var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
+                return p === '' ? '/' : p;
+            }
+
+            function markCurrentNav() {
+                var current = normalize(location.pathname);
+                document.querySelectorAll('#sidebar a[href]').forEach(function(a){
+                    var href = a.getAttribute('href');
+                    if (!href) return;
+                    var target = normalize(new URL(href, location.origin).pathname);
+                    if (target === current) {
+                        a.classList.add('current','selected');
+                        a.setAttribute('aria-current','page');
+                        var parent = a.closest('.has-children');
+                        if (parent) {
+                            parent.classList.add('open');
+                            var toggle = parent.querySelector('.toggle');
+                            var submenu = parent.querySelector('.submenu');
+                            if (toggle) toggle.setAttribute('aria-expanded','true');
+                            if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                        }
+                    }
+                });
+            }
+
+            function attachShell(html) {
+                if (!container || !html) return;
+                container.innerHTML = html;
+                // Re-run inline scripts from shell to enable controls
+                container.querySelectorAll('script').forEach(function(old){
+                    var s = document.createElement('script');
+                    if (old.src) {
+                        s.src = old.src;
+                        if (old.async) s.async = true;
+                        if (old.defer) s.defer = true;
+                    } else {
+                        s.textContent = old.textContent;
+                    }
+                    document.body.appendChild(s);
+                });
+                var move = function() {
+                    var main = document.querySelector('main');
+                    if (!main) return;
+                    var aside = container.querySelector('aside');
+                    var footer = container.querySelector('footer');
+                    if (aside && !main.contains(aside)) {
+                        aside.setAttribute('data-shell-moved', '1');
+                        main.appendChild(aside);
+                    }
+                    if (footer && footer.parentNode !== main.parentNode) {
+                        footer.setAttribute('data-shell-moved', '1');
+                        main.insertAdjacentElement('afterend', footer);
+                    }
+                    if (window.refreshAsideStack) {
+                        window.refreshAsideStack();
+                    }
+                    markCurrentNav();
+                };
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', move, { once: true });
+                } else {
+                    move();
+                }
+            }
+
+            function bust(url){
+                if (location.protocol === 'file:') return url;
+                var sep = url.indexOf('?') === -1 ? '?' : '&';
+                return url + sep + 'ts=' + Date.now();
+            }
+
+            fetch(bust('/includes/shell.html'), { cache: 'no-store' })
+                .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
+                .then(function(html){ attachShell(html); })
+                .catch(function(){ attachShell(inlineShell); });
+        })();
+    </script>
+
+    <main>
+        <div class="column-stack">
+            <section class="article-card">
+                <p class="eyebrow">视频存档</p>
+                <h1>哔哩哔哩</h1>
+                <p class="article-subtitle">滄海水魚在 B 站发布的作品归档。部分早期视频已失效，仅保留记录。</p>
+                <div class="article-meta">
+                    <span class="pill"><i class="icon-ic_fluent_person_24_regular" aria-hidden="true"></i>滄海水魚</span>
+                    <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>起始：2021-06</span>
+                    <span class="pill"><i class="icon-ic_fluent_arrow_clockwise_20_regular" aria-hidden="true"></i>最后整理：2026-01-05</span>
+                </div>
+                <div class="article-actions">
+                    <a href="https://space.bilibili.com/588003657" target="_blank" rel="noopener noreferrer">
+                        <i class="icon-ic_fluent_tv_24_regular" aria-hidden="true"></i>前往 bilibili 空间
+                    </a>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <h2>视频列表 · 第 1 / 3 页</h2>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <img src="/img/bili/【Minecraft官方短视频】是敌是友.avif" alt="Minecraft官方短视频-1" loading="lazy">
+                            <img src="/img/bili/【Minecraft官方短视频】你是怎么玩Minecraft的.avif" alt="Minecraft官方短视频-2" loading="lazy">
+                        </div>
+                        <h3>合集 | Minecraft官方短视频</h3>
+                        <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>2024-07-29</span>
+                        <span class="pill"><i class="icon-ic_fluent_number_row_24_regular" aria-hidden="true"></i>合集 · 138</span>
+                        <p class="video-desc"></p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV1tWvKe5E8p" target="_blank" rel="noopener noreferrer">在哔哩哔哩观看</a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <img src="/img/bili/方向盘第三章魔王IV难度原来可以卡进去？.avif" alt="方向盘第三章魔王IV难度原来可以卡进去？" loading="lazy">
+                        </div>
+                        <h3>方向盘第三章魔王IV难度原来可以卡进去？</h3>
+                        <p class="video-desc">直接录屏<br>华为录屏没有声音，配上魔王曲换源的</p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV1Zz42187pF" target="_blank" rel="noopener noreferrer">在哔哩哔哩观看</a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <span class="video-badge offline">已失效</span>
+                            <img src="/img/bili/铃铛 × 骨折 ✓.avif" alt="铃铛 × 骨折 ✓" loading="lazy">
+                        </div>
+                        <h3>铃铛 × 骨折 ✓</h3>
+                        <p class="video-desc">你在期待什么？</p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV1TF4m1j7Hm" target="_blank" rel="noopener noreferrer" aria-disabled="true">链接已失效</a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <span class="video-badge offline">已失效</span>
+                            <img src="/img/bili/《2023人物小传·水鱼Unknown》.avif" alt="《2023人物小传·水鱼Unknown》" loading="lazy">
+                        </div>
+                        <h3>《2023人物小传·水鱼Unknown》</h3>
+                        <p class="video-desc"></p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV1dN4y1z76f" target="_blank" rel="noopener noreferrer" aria-disabled="true">链接已失效</a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <span class="video-badge offline">已失效</span>
+                            <img src="/img/bili/新文生视频模型Pika效果.avif" alt="新文生视频模型Pika效果" loading="lazy">
+                        </div>
+                        <h3>新文生视频模型 Pika 效果</h3>
+                        <p class="video-desc">Pika:https://pika.art<br>新的文生视频模型,目前只能生成3秒的无音频视频</p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV1hN4y1s76f" target="_blank" rel="noopener noreferrer" aria-disabled="true">链接已失效</a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <span class="video-badge offline">已失效</span>
+                            <img src="/img/bili/不普通の水鱼的2023年度推荐.avif" alt="不普通の水鱼的2023年度推荐" loading="lazy">
+                        </div>
+                        <h3>不普通の水鱼的 2023 年度推荐</h3>
+                        <p class="video-desc"></p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV1ej411p7Tf" target="_blank" rel="noopener noreferrer" aria-disabled="true">链接已失效</a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <img src="/img/bili/Minecraft Monthly：新的试炼地牢！【生肉（AI翻译字幕）】.avif" alt="Minecraft Monthly：新的试炼地牢！【生肉（AI翻译字幕）】" loading="lazy">
+                        </div>
+                        <h3>Minecraft Monthly：新的试炼地牢！（生肉 AI 字幕）</h3>
+                        <p class="video-desc"></p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV1XN411g7zw" target="_blank" rel="noopener noreferrer">在哔哩哔哩观看</a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <img src="/img/bili/Minecraft Live 2023 官方活动第三人称小游戏.avif" alt="Minecraft Live 2023 官方活动第三人称小游戏" loading="lazy">
+                        </div>
+                        <h3>Minecraft Live 2023 官方活动第三人称小游戏</h3>
+                        <p class="video-desc">Minecraft live 2023 基岩版生物投票服务器</p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV1DG41117FM" target="_blank" rel="noopener noreferrer">在哔哩哔哩观看</a>
+                        </div>
+                    </div>
+
+                    <div class="video-card">
+                        <div class="video-thumb">
+                            <img src="/img/bili/这BOSS战真的燃起来了！.avif" alt="这BOSS战真的燃起来了！" loading="lazy">
+                        </div>
+                        <h3>这 BOSS 战真的燃起来了！</h3>
+                        <p class="video-desc">整合包：生命的准则v1.2<br>和@云海_永恒 的和谐友爱生存，觉得很燃就剪了下发出来，都是游戏原声音。
+                            </p>
+                        <div class="video-actions">
+                            <a href="https://www.bilibili.com/video/BV19u4y197xT" target="_blank" rel="noopener noreferrer">在哔哩哔哩观看</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagination">
+                    <a aria-disabled="true">上一页</a>
+                    <a class="current" aria-current="page" href="/video-archive/list-bilivideo-1.html">1</a>
+                    <a href="/video-archive/list-bilivideo-2.html">2</a>
+                    <a href="/video-archive/list-bilivideo-3.html">3</a>
+                    <a href="/video-archive/list-bilivideo-2.html">下一页</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+        <script>
+            (function(){
+                var thumbs = document.querySelectorAll('.video-thumb');
+                thumbs.forEach(function(thumb){
+                    var imgs = thumb.querySelectorAll('img');
+                    if (imgs.length >= 2) {
+                        thumb.classList.add('has-stack');
+                        if (!thumb.querySelector('.video-badge.collection')) {
+                            var badge = document.createElement('span');
+                            badge.className = 'video-badge collection';
+                            badge.textContent = '合集';
+                            thumb.insertBefore(badge, thumb.firstChild);
+                        }
+                    }
+                });
+            })();
+        </script>
+</body>
+</html>

@@ -7,6 +7,27 @@ const SETTINGS_LANG_KEY = 'language';
 const DEFAULT_THEME_COLOR = '#33CC99';
 const CUSTOM_DEFAULT_COLOR = '#b6b6b6';
 const CACHE_BUST = () => 'ts=' + Date.now();
+const SETTINGS_URL_CANDIDATES = ['includes/setting.html', '../includes/setting.html', '../../includes/setting.html', '../../../includes/setting.html'];
+let __settingsTemplateHtml = null; // in-memory cache of fetched template
+let __settingsTemplatePromise = null; // inflight promise to avoid duplicate fetches
+
+const getTranslationsMap = () => {
+  return (typeof window !== 'undefined' && window.__translations) || (typeof translations !== 'undefined' ? translations : null);
+};
+
+function resolveSettingsLang(map) {
+  const saved = localStorage.getItem(SETTINGS_LANG_KEY) || document.documentElement.lang || 'zh-CN';
+  if (map && map[saved]) return saved;
+  return 'zh-CN';
+}
+
+function getSettingsStrings() {
+  const map = getTranslationsMap();
+  if (!map) return null;
+  const lang = resolveSettingsLang(map);
+  const settings = map[lang] && map[lang].settings;
+  return settings || null;
+}
 
 function hslToHex(h, s, l) {
   const sN = s / 100;
@@ -54,7 +75,7 @@ function hexToHsl(hex) {
   return { h: (h + 360) % 360, s: Math.round(s * 100), l: Math.round(l * 100) };
 }
 
-// ���ն��ף�����޷����� includes/setting.html����ʹ�ô�����ģ��
+// Fallback markup: used when includes/setting.html cannot be loaded
 const SETTINGS_FALLBACK_HTML = `
   <title>设置</title>
   <section id="lightdarktoggle" data-setting="follow-system">
@@ -93,6 +114,54 @@ const SETTINGS_FALLBACK_HTML = `
   </section>
 `;
 
+function buildSettingUrls() {
+  const resolved = SETTINGS_URL_CANDIDATES.map(p => {
+    try { return new URL(p, location.href).href; } catch (_) { return null; }
+  }).filter(Boolean);
+  return [...new Set(resolved)];
+}
+
+async function fetchSettingsTemplate({ allowAbort } = {}) {
+  const urls = buildSettingUrls();
+  let lastErr = null;
+  for (const url of urls) {
+    try {
+      const controller = allowAbort ? new AbortController() : null;
+      if (allowAbort) __settingsFetchController = controller;
+      const resp = await fetch(url, {
+        cache: 'force-cache',
+        signal: controller ? controller.signal : undefined,
+      });
+      if (!resp.ok) throw new Error('fetch failed: ' + resp.status);
+      return resp.text();
+    } catch (err) {
+      if (err && err.name === 'AbortError') throw err;
+      lastErr = err;
+    }
+  }
+  if (lastErr) console.warn('[Settings Modal] fetch failed, using fallback', lastErr);
+  return SETTINGS_FALLBACK_HTML;
+}
+
+async function loadSettingsTemplate(options) {
+  const opts = options || {};
+  if (__settingsTemplateHtml) return __settingsTemplateHtml;
+  if (__settingsTemplatePromise) return __settingsTemplatePromise;
+
+  __settingsTemplatePromise = (async () => {
+    const html = await fetchSettingsTemplate({ allowAbort: opts.allowAbort });
+    __settingsTemplateHtml = html;
+    return html;
+  })();
+
+  try {
+    return await __settingsTemplatePromise;
+  } catch (err) {
+    __settingsTemplatePromise = null;
+    throw err;
+  }
+}
+
 function ensureContainers(){
   if (!document.getElementById('settings-backdrop')){
     const backdrop = document.createElement('div');
@@ -110,6 +179,7 @@ function ensureContainers(){
 }
 
 function buildSection(sec){
+  const settingsStrings = getSettingsStrings();
   const wrapper = document.createElement('section');
   wrapper.className = 'settings-section';
 
@@ -179,6 +249,10 @@ function buildSection(sec){
       row.className = 'color-picker-row';
       const currentThemeColor = localStorage.getItem('theme-color') || DEFAULT_THEME_COLOR;
 
+      const colorStrings = settingsStrings && settingsStrings.color;
+      const customStrings = colorStrings && colorStrings.customPanel;
+      const customLabel = colorStrings && colorStrings.customLabel;
+
       const swatchColors = ['#007DC5','#33CC99','#D70040','#F59E0B','#7C3AED'];
       let customOption = null;
       let customCore = null;
@@ -228,7 +302,7 @@ function buildSection(sec){
 
         const header = document.createElement('div');
         header.className = 'color-panel-header';
-        header.textContent = '自定义颜色';
+        header.textContent = (customStrings && customStrings.title) || '自定义颜色';
 
         preview = document.createElement('div');
         preview.className = 'color-preview';
@@ -236,7 +310,7 @@ function buildSection(sec){
         const hueRow = document.createElement('div');
         hueRow.className = 'color-slider-row';
         const hueLabel = document.createElement('span');
-        hueLabel.textContent = '色相';
+        hueLabel.textContent = (customStrings && customStrings.hue) || '色相';
         hueSlider = document.createElement('input');
         hueSlider.type = 'range';
         hueSlider.className = 'color-slider color-hue';
@@ -246,7 +320,7 @@ function buildSection(sec){
         const satRow = document.createElement('div');
         satRow.className = 'color-slider-row';
         const satLabel = document.createElement('span');
-        satLabel.textContent = '饱和';
+        satLabel.textContent = (customStrings && customStrings.saturation) || '饱和';
         satSlider = document.createElement('input');
         satSlider.type = 'range';
         satSlider.className = 'color-slider color-sat';
@@ -256,7 +330,7 @@ function buildSection(sec){
         const lightRow = document.createElement('div');
         lightRow.className = 'color-slider-row';
         const lightLabel = document.createElement('span');
-        lightLabel.textContent = '明度';
+        lightLabel.textContent = (customStrings && customStrings.lightness) || '明度';
         lightSlider = document.createElement('input');
         lightSlider.type = 'range';
         lightSlider.className = 'color-slider color-light';
@@ -354,13 +428,13 @@ function buildSection(sec){
         hexInput = document.createElement('input');
         hexInput.type = 'text';
         hexInput.className = 'color-hex-input';
-        hexInput.placeholder = '#RRGGBB 或 #RGB';
+        hexInput.placeholder = (customStrings && customStrings.hexPlaceholder) || '#RRGGBB 或 #RGB';
         hexInput.value = currentThemeColor;
 
         const applyBtn = document.createElement('button');
         applyBtn.type = 'button';
         applyBtn.className = 'color-apply-btn';
-        applyBtn.textContent = '确定';
+        applyBtn.textContent = (customStrings && customStrings.apply) || '确定';
         applyBtn.addEventListener('click', ()=>{
           const val = (hexInput.value || '').trim();
           if (!/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(val)) {
@@ -399,7 +473,8 @@ function buildSection(sec){
       ps.forEach(p => {
         const color = p.getAttribute('data-color');
         if (!color) return;
-        const isCustom = color === '自定义';
+        const lower = (color || '').toLowerCase();
+        const isCustom = lower === 'custom' || color === '自定义' || (customLabel && color === customLabel);
         const colorOption = document.createElement('div');
         colorOption.className = 'color-option' + (isCustom ? ' custom' : '');
         const core = document.createElement('div');
@@ -470,7 +545,17 @@ function buildSection(sec){
         row.appendChild(colorOption);
       });
 
-      const presetColors = new Set(ps.map(p => p.getAttribute('data-color')).filter(c => c && c !== '自定义').map(c => c.toLowerCase()));
+      const presetColors = new Set(ps
+        .map(p => p.getAttribute('data-color'))
+        .filter(c => {
+          if (!c) return false;
+          const val = c.toLowerCase();
+          if (val === 'custom') return false;
+          if (c === '自定义') return false;
+          if (customLabel && c === customLabel) return false;
+          return true;
+        })
+        .map(c => c.toLowerCase()));
       if (customOption && customCore && !presetColors.has(currentThemeColor.toLowerCase())) {
         customCore.style.backgroundColor = currentThemeColor;
         markSelected(customOption);
@@ -510,8 +595,9 @@ function buildSection(sec){
     const pOn = document.createElement('p');
     const pOff = document.createElement('p');
     const psAll = sec.querySelectorAll('p');
-    pOn.innerHTML = psAll[1] ? psAll[1].innerHTML : '����';
-    pOff.innerHTML = psAll[0] ? psAll[0].innerHTML : '�ر�';
+    const pageProgressStrings = settingsStrings && settingsStrings.pageProgress;
+    pOn.innerHTML = psAll[1] ? psAll[1].innerHTML : ((pageProgressStrings && pageProgressStrings.on) || '开启');
+    pOff.innerHTML = psAll[0] ? psAll[0].innerHTML : ((pageProgressStrings && pageProgressStrings.off) || '关闭');
     pOn.style.margin = '0';
     pOff.style.margin = '0';
     pContainer.appendChild(pOn);
@@ -929,6 +1015,14 @@ function buildToggle(onChange, initialState){
 
 async function handleClearPageCache(btn, statusEl){
   if (!btn) return;
+  const settingsStrings = getSettingsStrings();
+  const clearStrings = (settingsStrings && settingsStrings.clearCache) || null;
+  const statusStrings = clearStrings && clearStrings.status;
+  const workingBtnText = (clearStrings && clearStrings.buttonWorking) || '清除中...';
+  const unsupportedText = (statusStrings && statusStrings.unsupported) || '当前浏览器不支持清除缓存';
+  const workingText = (statusStrings && statusStrings.working) || '正在清除缓存...';
+  const doneText = (statusStrings && statusStrings.done) || '已清除缓存，正在刷新';
+  const failedText = (statusStrings && statusStrings.failed) || '清除失败，请重试';
   const originalText = btn.textContent;
   const setStatus = (text, tone) => {
     if (!statusEl) return;
@@ -940,7 +1034,7 @@ async function handleClearPageCache(btn, statusEl){
   const start = () => {
     btn.disabled = true;
     btn.classList.add('loading');
-    btn.textContent = '清除中...';
+    btn.textContent = workingBtnText;
   };
 
   const reset = () => {
@@ -956,12 +1050,12 @@ async function handleClearPageCache(btn, statusEl){
   };
 
   if (!hasAnyCapability()) {
-    setStatus('当前浏览器不支持清除缓存', 'error');
+    setStatus(unsupportedText, 'error');
     return;
   }
 
   start();
-  setStatus('正在清除缓存...', 'muted');
+  setStatus(workingText, 'muted');
 
   try {
     const cacheTask = (async () => {
@@ -977,13 +1071,13 @@ async function handleClearPageCache(btn, statusEl){
     })();
 
     await Promise.all([cacheTask, swTask]);
-    setStatus('已清除缓存，正在刷新', 'ok');
+    setStatus(doneText, 'ok');
     setTimeout(() => {
       try { location.reload(); } catch (e) { reset(); }
     }, 220);
   } catch (err) {
     console.error('[Settings Modal] 清除缓存失败', err);
-    setStatus('清除失败，请重试', 'error');
+    setStatus(failedText, 'error');
     reset();
   }
 }
@@ -1056,7 +1150,7 @@ async function openModal(){
 
   const body = document.querySelector('#settings-modal .modal-body');
   if (body) {
-    body.innerHTML = '<div class="settings-loading">���ڼ���������</div>';
+    body.innerHTML = '<div class="settings-loading">Loading settings...</div>';
   }
   showModal();
 
@@ -1065,63 +1159,10 @@ async function openModal(){
 
   const stillValid = () => myToken === __settingsLoadToken;
 
-  const buildSettingUrls = () => {
-    const candidates = ['includes/setting.html', '../includes/setting.html', '../../includes/setting.html', '../../../includes/setting.html'];
-    const resolved = candidates.map(p => {
-      try { return new URL(p, location.href).href; } catch (_) { return null; }
-    }).filter(Boolean);
-    return [...new Set(resolved)];
-  };
-
-  const withBust = (url) => {
-    if (!url) return url;
-    return url + (url.includes('?') ? '&' : '?') + CACHE_BUST();
-  };
-
-  const tryLoad = async (url) => {
-    const target = withBust(url);
-    try {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', target, false);
-      xhr.send(null);
-      if (xhr.status === 200 || xhr.status === 0) {
-        return xhr.responseText;
-      }
-    } catch (err) {
-      console.warn('[Settings Modal] XHR load failed, will try fetch', err);
-    }
-
-    __settingsFetchController = new AbortController();
-    const resp = await fetch(target, { cache: 'no-store', signal: __settingsFetchController.signal });
-    if (!resp.ok) throw new Error('fetch failed');
-    return resp.text();
-  };
-
-  const fetchSettingsMarkup = async () => {
-    const urls = buildSettingUrls();
-    let lastErr = null;
-    for (const url of urls) {
-      try {
-        const text = await tryLoad(url);
-        if (text) return text;
-      } catch (e) {
-        lastErr = e;
-      }
-    }
-    if (lastErr) console.warn('[Settings Modal] fallback to built-in settings, last error:', lastErr);
-    return SETTINGS_FALLBACK_HTML;
-  };
-
-  const resolveLang = (map) => {
-    const saved = localStorage.getItem(SETTINGS_LANG_KEY) || document.documentElement.lang || 'zh-CN';
-    if (map && map[saved]) return saved;
-    return 'zh-CN';
-  };
-
   const applySettingsTranslations = (container) => {
-    const map = (typeof window !== 'undefined' && window.__translations) || (typeof translations !== 'undefined' ? translations : null);
+    const map = getTranslationsMap();
     if (!map) return;
-    const lang = resolveLang(map);
+    const lang = resolveSettingsLang(map);
     const t = map[lang] && map[lang].settings;
     if (!t) return;
 
@@ -1145,6 +1186,16 @@ async function openModal(){
       const h4 = color.querySelector('h4');
       if (h2 && t.color.title) h2.textContent = t.color.title;
       if (h4 && t.color.subtitle) h4.textContent = t.color.subtitle;
+      if (t.color.customLabel) {
+        const customLabel = t.color.customLabel;
+        Array.from(color.querySelectorAll('p[data-color]')).forEach(p => {
+          const val = (p.getAttribute('data-color') || '').toLowerCase();
+          if (val === 'custom' || val === '自定义' || val === '自訂') {
+            p.textContent = customLabel;
+            p.setAttribute('data-color', 'custom');
+          }
+        });
+      }
     }
 
     const prog = container.querySelector('#pageprogress');
@@ -1184,13 +1235,13 @@ async function openModal(){
   };
 
   try {
-    const markup = await fetchSettingsMarkup();
+    const markup = await loadSettingsTemplate({ allowAbort: true });
     if (!stillValid()) return;
     const tmp = document.createElement('div');
     tmp.innerHTML = markup;
     applySettingsTranslations(tmp);
     const titleEl = tmp.querySelector('title');
-    const title = titleEl ? titleEl.textContent.trim() : '����';
+    const title = titleEl ? titleEl.textContent.trim() : '设置';
     document.querySelector('#settings-modal .modal-title').textContent = title;
     await minVisible;
     if (!stillValid()) return;
@@ -1210,7 +1261,7 @@ async function openModal(){
   } catch (e) {
     if (e && e.name === 'AbortError') return;
     console.error('[Settings Modal] Error loading settings:', e);
-    if (body) body.innerHTML = '<div class="settings-loading">���ڼ��������ʧ�ܣ�</div>';
+    if (body) body.innerHTML = '<div class="settings-loading">Failed to load settings</div>';
   } finally {
     __settingsFetchController = null;
   }
@@ -1290,4 +1341,14 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('theme-color', colorToUse);
   }
   applyThemeColor(colorToUse);
+
+  // warm settings template to speed up first open
+  try {
+    const kickOffPrefetch = () => loadSettingsTemplate().catch(()=>{});
+    if (typeof requestIdleCallback === 'function') {
+      requestIdleCallback(kickOffPrefetch, { timeout: 1200 });
+    } else {
+      setTimeout(kickOffPrefetch, 800);
+    }
+  } catch (e) {}
 });

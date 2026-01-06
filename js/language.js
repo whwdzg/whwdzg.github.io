@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const languageSelectorBtn = document.querySelector('.language-selector-btn');
 	const languageSelectorMenu = document.querySelector('.language-selector-menu');
 	const LANGUAGE_KEY = 'language';
-		const FALLBACK_LOCALE = { page: { title: '主页', aboutTitle: '关于' }, header: {}, avatar: {}, sidebar: {}, buttons: {}, main: {}, aside: {}, footer: { version: '当前版本：<strong>2.0.2.4-20260104</strong>' }, theme: {}, language: {} };
+		const FALLBACK_LOCALE = { page: { title: '主页', aboutTitle: '关于' }, header: {}, avatar: {}, sidebar: {}, buttons: {}, main: {}, aside: {}, footer: { version: '当前版本：<strong>2.0.2.5-20260106</strong>' }, theme: {}, language: {} };
 
 		async function ensureI18nReady() {
 			if (typeof loadLocale === 'function' && typeof getCachedLocale === 'function') return;
@@ -59,11 +59,15 @@ document.addEventListener('DOMContentLoaded', function () {
 	function updatePageWithTranslations(translations) {
 		// 更新页面标题，根据当前页面选择对应标题
 		if (translations.page) {
-			const isAboutPage = document.querySelector('#about') && !document.querySelector('#home');
-			const targetTitle = isAboutPage && translations.page.aboutTitle ? translations.page.aboutTitle : translations.page.title;
-			if (targetTitle) {
-				document.title = targetTitle;
+			const hasHomeSection = !!document.querySelector('#home');
+			const hasAboutSection = !!document.querySelector('#about');
+			let targetTitle = null;
+			if (!hasHomeSection && hasAboutSection && translations.page.aboutTitle) {
+				targetTitle = translations.page.aboutTitle;
+			} else if (hasHomeSection && translations.page.title) {
+				targetTitle = translations.page.title;
 			}
+			if (targetTitle) document.title = targetTitle;
 		}
 		
 		// 更新头部链接和按钮
@@ -161,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				const noticeTitle = section.querySelector('h3');
 				const noticeContent = section.querySelector('p');
 				if (noticeTitle) {
-					noticeTitle.innerHTML = `<i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>${translations.aside.noticeTitle}`;
+					noticeTitle.textContent = translations.aside.noticeTitle;
 				}
 				if (noticeContent) {
 					noticeContent.innerHTML = translations.aside.noticeContent;
@@ -171,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				const legacyCardTitle = section.querySelector('h3');
 				const legacyCardContent = section.querySelector('p');
 				if (legacyCardTitle) {
-					legacyCardTitle.innerHTML = `<i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>${translations.aside.legacyTitle}`;
+					legacyCardTitle.textContent = translations.aside.legacyTitle;
 				}
 				if (legacyCardContent) {
 					// 重新构建内容（需要保持原有的HTML结构）
