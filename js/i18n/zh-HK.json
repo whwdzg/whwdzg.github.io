@@ -1,1 +1,45 @@
-{}
+{
+	"page": { "title": "主頁", "aboutTitle": "關於", "description": "whwdzg's personal page" },
+	"header": { "homeLink": "主頁", "searchBtn": "搜尋", "themeToggleBtn": "切換深色/淺色模式", "themeSettingsBtn": "設定", "languageSelectorBtn": "選擇語言", "avatarAlt": "頭像" },
+	"avatar": { "github": "GitHub", "bilibili": "bilibili" },
+	"theme": { "followSystem": "跟隨系統", "manual": "手動設定" },
+	"language": { "zhCN": "中文（简体）", "zhTW": "中文（繁体）", "enUS": "English (US)", "ruRU": "Русский", "frFR": "Français", "deDE": "Deutsch", "jaJP": "日本語" },
+	"sidebar": { "home": "主頁", "about": "關於", "legacy": "返回 1.0", "home1_0": "主頁（1.0）", "about1_0": "關於（1.0）", "readme1_0": "README（1.0）", "readme": "README", "collapseBtn": "收合/展開側邊欄" },
+	"search": { "placeholder": "搜尋內容", "button": "搜尋", "ariaLabel": "開始搜尋", "noResults": "未找到相關內容", "resultCount": "找到 {count} 個結果", "imageTag": "[圖片]" },
+	"main": { "homeTitle": "主頁", "homeContent": "這裡是 2.0 版本的主頁，當前正在構建中，尚處於<strong>極早期階段</strong>，供實驗學習使用", "aboutTitle": "關於", "aboutContent": "這裡是 2.0 版本的主頁，當前正在構建中，尚處於<strong>極早期階段</strong>", "testTitle": "test" },
+	"aside": { "noticeTitle": "注意", "noticeContent": "<strong>目前為早期測試版本，可能出現 bug</strong>", "legacyTitle": "返回 1.0 主頁", "versionLabel": "1.0 版本", "legacyLink": "返回 1.0 主頁", "legacyStopped": "已終止更新" },
+	"footer": { "copyright": "&copy; 2022-2026 滄海水魚. 保留所有權利。", "version": "當前版本：<strong>2.0.2.5-20260106</strong>" },
+	"settings": {
+		"title": "設定",
+		"lightdark": { "title": "淺色/深色模式切換", "subtitle": "切換淺色/深色模式的行為", "follow": "跟隨系統", "manual": "手動設定" },
+		"color": {
+			"title": "切換主題色",
+			"subtitle": "選擇主題色標",
+			"customLabel": "自訂",
+			"customPanel": {
+				"title": "自訂顏色",
+				"hue": "色相",
+				"saturation": "飽和",
+				"lightness": "明度",
+				"hexPlaceholder": "#RRGGBB 或 #RGB",
+				"apply": "確定"
+			}
+		},
+		"pageProgress": { "title": "頁面進度條", "subtitle": "在頁眉底部顯示滾動進度", "off": "關閉", "on": "開啟" },
+		"particleAnimation": { "title": "粒子動畫", "subtitle": "在頁面上顯示粒子動畫", "options": ["關閉","櫻花","落葉梧桐","落葉銀杏","雪花"] },
+		"clearCache": {
+			"title": "清除頁面快取",
+			"subtitle": "清除本地頁面快取，確保內容為最新，一般不建議使用",
+			"button": "清除",
+			"buttonWorking": "清除中...",
+			"status": {
+				"unsupported": "當前瀏覽器不支援清除快取",
+				"working": "正在清除快取...",
+				"done": "已清除快取，正在重新載入",
+				"failed": "清除失敗，請重試"
+			}
+		}
+	},
+	"buttons": { "scrollToTop": "返回頂部" },
+	"lightbox": { "close": "關閉圖片", "zoomIn": "放大", "zoomOut": "縮小", "download": "下載圖片", "locate": "定位到原文", "prev": "上一張", "next": "下一張", "fullscreen": "全螢幕", "exitFullscreen": "退出全螢幕", "zoomInputPlaceholder": "40-400%", "zoomInputLabel": "縮放百分比" }
+}

@@ -51,14 +51,25 @@
   let isNavigating = false;
   const pageCache = new Map();
 
-  async function loadDocument(url){
+  const setLoadingState = (active) => {
+    document.body.classList.toggle('page-loading', !!active);
+    const indicator = document.getElementById('page-loading-indicator');
+    if (indicator) {
+      indicator.style.visibility = active ? 'visible' : 'hidden';
+      indicator.style.opacity = active ? '1' : '0';
+    }
+  };
+
+  async function loadDocument(url, forceReload=false){
     let html = pageCache.get(url);
-    if (!html) {
+    const fromCache = !!html;
+    if (!html || forceReload) {
+      if (forceReload) pageCache.delete(url);
       html = await fetchText(url, true);
       pageCache.set(url, html);
     }
     const { doc } = extractMain(html);
-    return doc;
+    return { doc, fromCache: !forceReload && fromCache };
   }
 
   function ensureRootContainers(){
@@ -161,23 +172,28 @@
     if (window.refreshAsideStack) {
       try { window.refreshAsideStack(); } catch (_) {}
     }
+    // After reordering, ensure footer sits after main/aside even if navigation moved nodes
+    reorderShellLayout();
     return true;
   }
 
   function reorderShellLayout(){
-    const main = document.getElementById(CONTENT_CONTAINER_ID);
+    let main = document.getElementById(CONTENT_CONTAINER_ID);
     if (!main) return;
+    if (main.parentNode !== document.body) {
+      document.body.appendChild(main);
+    }
+
     const header = document.querySelector('header');
     const sidebar = document.querySelector('nav.sidebar');
     const aside = document.querySelector('aside');
     const footer = document.querySelector('footer');
-
     // Ensure header then sidebar appear before main for layout CSS expectations
-    if (header && header.parentNode && header.parentNode !== main.parentNode) {
-      main.parentNode.insertBefore(header, main);
+    if (header && header.parentNode !== document.body) {
+      document.body.insertBefore(header, main);
     }
-    if (sidebar && sidebar.parentNode && sidebar.parentNode !== main.parentNode) {
-      main.parentNode.insertBefore(sidebar, main);
+    if (sidebar && sidebar.parentNode !== document.body) {
+      document.body.insertBefore(sidebar, main);
     }
 
     // Place aside inside main so grid rules apply
@@ -189,12 +205,30 @@
       }
     }
 
-    // Keep footer after aside/main
-    if (footer && footer.parentNode) {
-      const target = aside || main;
-      if (target && footer.previousElementSibling !== target) {
-        target.insertAdjacentElement('afterend', footer);
+    // Keep footer directly after main (as body sibling), never inside main
+    if (footer) {
+      footer.setAttribute('data-shell-preserve', '1');
+      if (footer.parentNode !== document.body) {
+        footer.remove();
+        document.body.appendChild(footer);
       }
+      if (footer.previousElementSibling !== main) {
+        main.insertAdjacentElement('afterend', footer);
+      }
+    }
+
+    updateHeaderHeightVar();
+  }
+
+  function updateHeaderHeightVar(){
+    const header = document.querySelector('header');
+    if (!header) return;
+    const h = Math.max(header.offsetHeight || 0, 40);
+    const root = document.documentElement;
+    const current = getComputedStyle(root).getPropertyValue('--header-height').trim();
+    const target = `${h}px`;
+    if (current !== target) {
+      root.style.setProperty('--header-height', target);
     }
   }
 
@@ -249,13 +283,34 @@
     } catch (_) { return null; }
   }
 
-  async function navigate(target, push=true){
+  function isLegacyPath(pathname){
+    try {
+      const path = new URL(pathname, window.location.origin).pathname;
+      return path === '/Legacy-1.0' || path.startsWith('/Legacy-1.0/');
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function enteringLegacy(targetPath){
+    if (!targetPath) return false;
+    const current = window.location.pathname;
+    return !isLegacyPath(current) && isLegacyPath(targetPath);
+  }
+
+  async function navigate(target, push=true, opts={}){
     if (isNavigating) return;
     const url = buildUrl(target);
     if (!url) return;
+    if (enteringLegacy(url)) {
+      window.location.assign(url);
+      return;
+    }
+    const forceReload = !!opts.forceReload;
     isNavigating = true;
+    setLoadingState(true);
     try {
-      const doc = await loadDocument(url);
+      const { doc, fromCache } = await loadDocument(url, forceReload);
       ensurePageAssets(doc, url);
       if (!swapContent(doc)) throw new Error('No <main> in target');
       if (window.lazySizes && window.lazySizes.loader && window.lazySizes.loader.checkElems) {
@@ -271,10 +326,12 @@
       if (push) window.history.pushState({ page: url }, '', url);
       window.scrollTo(0, 0);
       window.dispatchEvent(new CustomEvent('spa:page:loaded', { detail: { url } }));
+      setCacheNoticeVisibility(fromCache);
     } catch (err) {
       console.error('[spa-router] navigation failed, full load fallback', err);
       window.location.assign(target);
     } finally {
+      setLoadingState(false);
       isNavigating = false;
     }
   }
@@ -306,11 +363,64 @@
     window.history.replaceState({ page: window.location.pathname }, '', window.location.pathname);
   }
 
+  function attachResizeHandler(){
+    window.addEventListener('resize', () => {
+      updateHeaderHeightVar();
+    });
+  }
+
+  // Cache notice (bottom-right). Shown when serving cached page; offers reload.
+  let cacheNotice;
+  function ensureCacheNotice(){
+    if (cacheNotice && (!cacheNotice.wrap || !document.body.contains(cacheNotice.wrap))) {
+      cacheNotice = null;
+    }
+    if (cacheNotice) return cacheNotice;
+    const wrap = document.createElement('aside');
+    wrap.id = 'cache-notice';
+    wrap.className = 'cache-notice';
+    wrap.setAttribute('aria-live', 'polite');
+    wrap.innerHTML = [
+      '<div class="cache-notice__title">已加载缓存页面</div>',
+      '<div class="cache-notice__desc">点击刷新以获取最新内容。</div>',
+      '<div class="cache-notice__actions">',
+      '  <button type="button" class="cache-notice__refresh">刷新</button>',
+      '</div>'
+    ].join('');
+    document.body.appendChild(wrap);
+    const refreshBtn = wrap.querySelector('.cache-notice__refresh');
+    if (refreshBtn && !refreshBtn.dataset.bound) {
+      refreshBtn.dataset.bound = '1';
+      refreshBtn.addEventListener('click', () => {
+        setCacheNoticeVisibility(false);
+        const current = window.location.pathname + window.location.search;
+        navigate(current, true, { forceReload: true });
+      });
+    }
+    cacheNotice = { wrap, refreshBtn };
+    return cacheNotice;
+  }
+
+  function setCacheNoticeVisibility(show){
+    const n = ensureCacheNotice();
+    if (!n) return;
+    n.wrap.classList.toggle('show', !!show);
+    if (show && window.refreshAsideStack) {
+      try { window.refreshAsideStack(); } catch (_) {}
+    }
+  }
+
+  function attachCacheNoticeHandlers(){
+    ensureCacheNotice();
+  }
+
   async function boot(){
     await renderShell();
     await preloadSettingsTemplate();
     attachLinkHandler();
     attachPopstate();
+    attachResizeHandler();
+    attachCacheNoticeHandlers();
     const current = window.location.pathname + window.location.search;
     await navigate(current, false);
   }

@@ -1,18 +1,33 @@
-<div style="display:flex;flex-direction:column;align-items:center;text-align:center">
-    <img style="text-align:center" src="https://avatars.githubusercontent.com/u/91038761?v=4" alt="logo" width="200">
-    <h1 style="text-align:center">滄海水魚</h1>
-    <p style="text-align:center">个人向导览</p>
-    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/whwdzg/whwdzg.github.io">
-    <img alt="GitHub forks" src="https://img.shields.io/github/forks/whwdzg/whwdzg.github.io">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/whwdzg/whwdzg.github.io">
-    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/whwdzg/whwdzg.github.io">
-    <img alt="GitHub (Pre-)Release Date" src="https://img.shields.io/github/release-date-pre/whwdzg/whwdzg.github.io">
-    <img alt="GitHub release (with filter)" src="https://img.shields.io/github/v/release/whwdzg/whwdzg.github.io">
-    <img alt="GitHub tag (with filter)" src="https://img.shields.io/github/v/tag/whwdzg/whwdzg.github.io">
-    </br>
-</div>
+# whwdzg.github.io
 
----
-# whwdzg
+个人向导览与存档站点（2.0）。
 
-建设中……
+## 在线访问
+- 主页：https://whwdzg.github.io
+- 关于页面：/about.html
+- 旧版存档：/Legacy-1.0/
+
+## 功能概览
+- 单页导航：共享的 header/sidebar/aside 壳层与轻量路由
+- 多语言与主题切换：预置多语种 JSON 与深浅色模式
+- 渐进式增强：懒加载图片、滚动返回顶部、设置面板
+- PWA：manifest、service worker 与简单离线缓存
+
+## 目录速览
+- /css：全站样式与变量
+- /js：交互脚本、i18n、PWA、辅助工具
+- /includes：站点公共壳层片段
+- /Legacy-1.0：旧版本备份与回顾
+
+## 本地预览
+仓库是纯静态站点，无需构建步骤。确保已安装 Python 3 后，在项目根目录运行：
+
+```
+python serve.py
+```
+
+脚本会启动简易本地服务器，便于预览。
+
+## 许可
+
+本仓库采用 GPL v3 License，详见 LICENSE。

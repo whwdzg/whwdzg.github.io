@@ -1,0 +1,255 @@
+/* 模块：专栏页面 / Column pages styling. Provides card layout, gallery grid, and comment tiles. */
+
+.column-stack {
+    display: grid;
+    gap: 1rem;
+}
+
+.article-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 12px 30px var(--shadow-color);
+    padding: 1.1rem 1.2rem;
+    display: grid;
+    gap: 0.75rem;
+    color: var(--text-color);
+}
+
+.article-card h1,
+.article-card h2,
+.article-card h3 {
+    margin: 0;
+}
+
+.eyebrow {
+    margin: 0;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.82rem;
+    color: rgba(100, 116, 139, 0.9);
+}
+
+.article-subtitle {
+    margin: 0;
+    color: rgba(100, 116, 139, 0.96);
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    line-height: 1.1;
+}
+
+.pill i {
+    margin-right: 0;
+}
+
+.article-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+}
+
+.article-card p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.75rem;
+}
+
+.gallery-grid figure {
+    margin: 0;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.65rem;
+    display: grid;
+    gap: 0.5rem;
+}
+
+/* 折叠敏感内容：保持排版位置，但默认限制高度并加遮罩，可点击展开 */
+.gallery-grid figure.folded {
+    position: relative;
+    overflow: hidden;
+}
+
+.folded .folded-media {
+    transition: max-height 180ms ease, filter 160ms ease, opacity 160ms ease;
+}
+
+.folded.collapsed .folded-media {
+    max-height: 120px;
+    filter: blur(10px);
+    opacity: 0.6;
+}
+
+.folded.collapsed::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.08));
+    pointer-events: none;
+}
+
+.fold-toggle {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 2;
+    padding: 0.35rem 0.65rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    cursor: pointer;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    transition: background 0.18s ease, border 0.18s ease, transform 0.14s ease;
+}
+
+.fold-toggle:hover { background: var(--hover-bg); }
+.fold-toggle:active { transform: scale(0.98); }
+
+.gallery-grid img,
+.gallery-grid video,
+.media-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.media-card video,
+.media-card img,
+.media-card a {
+    width: 100%;
+}
+
+.note-card {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.75rem 0.85rem;
+    display: grid;
+    gap: 0.35rem;
+}
+
+.comment-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.comment-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem 0.85rem;
+    align-items: start;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.75rem;
+}
+
+.comment-reply {
+    grid-column: 1 / span 2;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 0.5rem 0.65rem;
+    padding: 0.65rem 0.75rem;
+    margin-top: 0.35rem;
+    border-left: 3px solid var(--primary-color, var(--accent-color, var(--border-color)));
+    background: rgba(148, 163, 184, 0.07);
+    border-radius: 10px;
+}
+
+.comment-reply i {
+    align-self: center;
+    color: rgba(100, 116, 139, 0.9);
+}
+
+.comment-reply img {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.comment-reply-text {
+    grid-column: 1 / span 3;
+    margin: 0;
+    line-height: 1.55;
+}
+
+.comment-card img {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.comment-author {
+    font-weight: 600;
+    margin: 0;
+}
+
+.comment-date {
+    margin: 0;
+    font-size: 0.92rem;
+    color: rgba(100, 116, 139, 0.96);
+}
+
+.comment-text {
+    grid-column: 1 / span 2;
+    margin: 0;
+    line-height: 1.55;
+}
+
+.link-quiet {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    padding: 0.35rem 0.5rem;
+}
+
+.link-quiet:hover {
+    background: var(--hover-bg);
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+.link-quiet:active {
+    transform: none;
+    box-shadow: none;
+}
+
+.divider {
+    height: 1px;
+    background: var(--border-color);
+    border: none;
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 640px) {
+    .article-card {
+        padding: 0.95rem 1rem;
+    }
+}

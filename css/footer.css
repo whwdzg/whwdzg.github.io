@@ -10,6 +10,39 @@ footer {
 	width: 100%;
 	box-sizing: border-box;
 }
+body > footer {
+	width: 100%;
+	margin: 0;
+	margin-top: auto;
+	box-sizing: border-box;
+}
+
+/* Sticky footer: keep it pinned to viewport bottom when内容偏少 */
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	align-items: stretch;
+	overflow-x: hidden;
+}
+#shell-root { flex: 0 0 auto; }
+main { flex: 1 0 auto; min-height: 0; width: 100%; }
+body > footer { margin-top: auto; }
+
+/* Fallback when footer暂留在main内时，强制跨越两列并拉满 */
+main footer {
+	grid-column: 1 / -1;
+	justify-self: stretch;
+	width: 100%;
+	margin: 0;
+}
+@media (max-width: 760px) {
+	main footer {
+		width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
 
 footer a {
 	color: #0366d6;

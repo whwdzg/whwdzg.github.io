@@ -16,7 +16,17 @@ document.addEventListener('DOMContentLoaded', function(){
             <div class="vp-progress-filled"></div>
           </div>
           <div class="vp-time vp-duration">0:00</div>
-          <button class="vp-volume" title="音量"><i class="icon icon-ic_fluent_speaker_2_24_regular" aria-hidden="true"></i></button>
+          <button class="vp-menu" title="菜单" aria-expanded="false"><i class="icon icon-ic_fluent_more_horizontal_24_regular" aria-hidden="true"></i></button>
+          <div class="vp-settings-panel" hidden>
+            <div class="vp-toggle-row">
+              <button class="vp-toggle vp-toggle-danmaku" aria-pressed="false">弹幕关</button>
+              <button class="vp-toggle vp-toggle-subtitle" aria-pressed="false">字幕关</button>
+            </div>
+            <div class="vp-volume-control" role="group" aria-label="音量控制">
+              <i class="icon icon-ic_fluent_speaker_2_24_regular vp-volume-icon" aria-hidden="true"></i>
+              <input class="vp-volume-slider" type="range" min="0" max="1" step="0.05" value="1" aria-label="音量滑块" />
+            </div>
+          </div>
           <button class="vp-fullscreen" title="全屏"><i class="icon icon-ic_fluent_full_screen_maximize_24_regular" aria-hidden="true"></i></button>
         </div>
       </div>`;
@@ -32,7 +42,12 @@ document.addEventListener('DOMContentLoaded', function(){
   const durationEl = overlay.querySelector('.vp-duration');
   const progress = overlay.querySelector('.vp-progress');
   const filled = overlay.querySelector('.vp-progress-filled');
-  const volumeEl = overlay.querySelector('.vp-volume');
+  const menuBtn = overlay.querySelector('.vp-menu');
+  const settingsPanel = overlay.querySelector('.vp-settings-panel');
+  const danmakuToggle = overlay.querySelector('.vp-toggle-danmaku');
+  const subtitleToggle = overlay.querySelector('.vp-toggle-subtitle');
+  const volumeSlider = overlay.querySelector('.vp-volume-slider');
+  const volumeIcon = overlay.querySelector('.vp-volume-icon');
   const fullscreenBtn = overlay.querySelector('.vp-fullscreen');
   // hint area for transient messages (e.g. no Range support)
   const controlsEl = overlay.querySelector('.vp-controls');
@@ -56,6 +71,36 @@ document.addEventListener('DOMContentLoaded', function(){
   let pendingSeekPct = null;
   let controlsHideTimer = null;
   let controlsVisible = true;
+  let menuOpen = false;
+
+  function updateVolumeIconFromValue(val){
+    if (!volumeIcon) return;
+    const v = Number(val);
+    let cls = 'icon icon-ic_fluent_speaker_2_24_regular';
+    if (v <= 0) cls = 'icon icon-ic_fluent_speaker_mute_24_regular';
+    else if (v < 0.5) cls = 'icon icon-ic_fluent_speaker_1_24_regular';
+    volumeIcon.className = cls;
+  }
+
+  function syncSettingsLayout(){
+    const isFull = !!document.fullscreenElement && container.classList.contains('vp-fullscreen-mode');
+    controlsEl.classList.toggle('menu-inline', isFull);
+    if (menuBtn) menuBtn.style.display = isFull ? 'none' : '';
+    if (settingsPanel) {
+      if (isFull) {
+        settingsPanel.hidden = false;
+      } else {
+        settingsPanel.hidden = !menuOpen;
+      }
+    }
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', (!isFull && menuOpen).toString());
+  }
+
+  function setMenuOpen(open){
+    menuOpen = !!open;
+    syncSettingsLayout();
+  }
+
   function showControls(){
     if (!controlsVisible){
       container.querySelector('.vp-controls').classList.remove('hidden');
@@ -64,6 +109,8 @@ document.addEventListener('DOMContentLoaded', function(){
     resetControlsHideTimer();
   }
   function hideControls(){
+    if (menuOpen) return; // keep controls visible while menu展开
+    if (document.fullscreenElement) return; // avoid hiding in fullscreen to keep UI usable
     container.querySelector('.vp-controls').classList.add('hidden');
     controlsVisible = false;
   }
@@ -95,6 +142,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
     overlay.classList.add('active');
     document.body.classList.add('no-scroll-lightbox');
+  setMenuOpen(false);
+  syncSettingsLayout();
+  if (typeof video.volume === 'number') { updateVolumeIconFromValue(video.muted ? 0 : video.volume); }
     // ensure controls visible and start hide timer
     showControls();
     // prefer to preload to allow buffering/seekability detection
@@ -266,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function(){
     video.load();
     document.body.classList.remove('no-scroll-lightbox');
     if (controlsHideTimer) { clearTimeout(controlsHideTimer); controlsHideTimer = null; }
+    setMenuOpen(false);
   }
 
   function updatePlayButton(){
@@ -474,12 +525,47 @@ document.addEventListener('DOMContentLoaded', function(){
     showControls();
   }
 
-  // volume toggle (simple mute/unmute) using Fluent icons
-  volumeEl.addEventListener('click', ()=>{
-    video.muted = !video.muted;
-    const vi = volumeEl.querySelector('i');
-    if (vi) vi.className = video.muted ? 'icon icon-ic_fluent_speaker_mute_24_regular' : 'icon icon-ic_fluent_speaker_2_24_regular';
+  // menu toggle
+  if (menuBtn && settingsPanel) {
+    menuBtn.addEventListener('click', (ev)=>{
+      ev.stopPropagation();
+      setMenuOpen(!menuOpen);
+      showControls();
+    });
+  }
+
+  // click outside to close menu (only when not fullscreen)
+  document.addEventListener('click', (ev)=>{
+    if (!controlsEl.contains(ev.target)) setMenuOpen(false);
   });
+
+  function bindToggle(btn, labelOn, labelOff, eventName){
+    if (!btn) return;
+    btn.addEventListener('click', (ev)=>{
+      ev.stopPropagation();
+      const active = btn.getAttribute('aria-pressed') === 'true';
+      const next = !active;
+      btn.setAttribute('aria-pressed', String(next));
+      btn.classList.toggle('active', next);
+      btn.textContent = next ? labelOn : labelOff;
+      try { video.dispatchEvent(new CustomEvent(eventName, { detail: { enabled: next } })); } catch(_){ }
+      showControls();
+    });
+  }
+
+  bindToggle(danmakuToggle, '弹幕开', '弹幕关', 'videoplay:danmaku');
+  bindToggle(subtitleToggle, '字幕开', '字幕关', 'videoplay:subtitle');
+
+  // volume slider (inside menu / inline in fullscreen)
+  if (volumeSlider) {
+    const applyVolume = (val)=>{
+      const v = Math.max(0, Math.min(1, Number(val)));
+      try { video.volume = v; video.muted = v === 0; } catch(_){ }
+      updateVolumeIconFromValue(v);
+    };
+    volumeSlider.addEventListener('input', (e)=>{ applyVolume(e.target.value); showControls(); });
+    applyVolume(volumeSlider.value || 1);
+  }
 
   // fullscreen toggle
   if (fullscreenBtn) {
@@ -492,10 +578,13 @@ document.addEventListener('DOMContentLoaded', function(){
           const fi = fullscreenBtn.querySelector('i'); if (fi) fi.className = 'icon icon-ic_fluent_full_screen_minimize_24_regular';
           // add class to help CSS target fullscreen mode
           container.classList.add('vp-fullscreen-mode');
+          syncSettingsLayout();
         } else {
           if (document.exitFullscreen) await document.exitFullscreen();
           const fi = fullscreenBtn.querySelector('i'); if (fi) fi.className = 'icon icon-ic_fluent_full_screen_maximize_24_regular';
           container.classList.remove('vp-fullscreen-mode');
+          setMenuOpen(false);
+          syncSettingsLayout();
         }
       } catch (err) { /* ignore */ }
     });
@@ -505,7 +594,8 @@ document.addEventListener('DOMContentLoaded', function(){
       if (!fi) return;
       fi.className = document.fullscreenElement ? 'icon icon-ic_fluent_full_screen_minimize_24_regular' : 'icon icon-ic_fluent_full_screen_maximize_24_regular';
       // ensure class toggled if user uses ESC or other global action
-      if (document.fullscreenElement) container.classList.add('vp-fullscreen-mode'); else container.classList.remove('vp-fullscreen-mode');
+      if (document.fullscreenElement) container.classList.add('vp-fullscreen-mode'); else { container.classList.remove('vp-fullscreen-mode'); setMenuOpen(false); }
+      syncSettingsLayout();
     });
   }
 
@@ -516,6 +606,8 @@ document.addEventListener('DOMContentLoaded', function(){
   ['mousemove','pointermove','pointerdown','touchstart','keydown'].forEach(ev => {
     overlay.addEventListener(ev, ()=>{ showControls(); }, { passive:true });
   });
+
+  syncSettingsLayout();
 
   // expose a helper to open by src
   window.openVideoOverlay = openVideo;
@@ -531,10 +623,11 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 // videoplay: independent overlay video player with controls
 document.addEventListener('DOMContentLoaded', function(){
-    // initialize video wrappers: find inline <video> in main / aside and replace with thumbnail wrapper if poster exists
+    // initialize overlay wrappers: only videos explicitly marked for overlay
     function initVideoPlay() {
-        const videos = Array.from(document.querySelectorAll('main video, #aside-stack video'));
+      const videos = Array.from(document.querySelectorAll('main video[data-overlay-player], #aside-stack video[data-overlay-player]'));
         videos.forEach((v, idx) => {
+        if (v.hasAttribute('data-inline-player')) return; // inline players handled separately
             if (v.dataset.videoplayAttached) return;
             v.dataset.videoplayAttached = '1';
             // create wrapper
@@ -559,6 +652,7 @@ document.addEventListener('DOMContentLoaded', function(){
               wrapper.appendChild(v);
               wrapper.appendChild(playIcon);
               v.style.display = 'none';
+              try { v.controls = false; v.removeAttribute('controls'); } catch(_){}
             } catch(e) { return; }
             // determine a usable src for the video (src attribute, currentSrc, or first <source>)
             const srcAttr = v.getAttribute('src') || v.currentSrc || (v.querySelector && (v.querySelector('source') || {}).src) || '';
@@ -575,7 +669,142 @@ document.addEventListener('DOMContentLoaded', function(){
         });
     }
 
+    // Inline player: keep video in place with custom controls
+    function initInlinePlayers(){
+      const vids = Array.from(document.querySelectorAll('main video:not([data-overlay-player]), #aside-stack video:not([data-overlay-player]), article video:not([data-overlay-player]), video[data-inline-player]'));
+      vids.forEach((v)=>{
+        if (v.dataset.vpInlineAttached) return;
+        v.dataset.vpInlineAttached = '1';
+        try { v.controls = false; v.removeAttribute('controls'); } catch(_){}
+        // build wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'vp-inline';
+        v.parentNode.insertBefore(wrapper, v);
+        wrapper.appendChild(v);
+
+        const controls = document.createElement('div');
+        controls.className = 'vp-inline-controls';
+        controls.innerHTML = `
+          <button class="vp-inline-play" title="播放"><i class="icon icon-ic_fluent_play_24_regular" aria-hidden="true"></i></button>
+          <span class="vp-inline-time vp-inline-current">0:00</span>
+          <input class="vp-inline-progress" type="range" min="0" max="100" step="0.1" value="0" aria-label="进度" />
+          <span class="vp-inline-time vp-inline-duration">0:00</span>
+          <button class="vp-inline-toggle vp-inline-danmaku" aria-pressed="false">弹幕关</button>
+          <button class="vp-inline-toggle vp-inline-subtitle" aria-pressed="false">字幕关</button>
+          <div class="vp-inline-volume">
+            <i class="icon icon-ic_fluent_speaker_2_24_regular" aria-hidden="true"></i>
+            <input class="vp-inline-volume-slider" type="range" min="0" max="1" step="0.05" value="1" aria-label="音量" />
+          </div>
+          <button class="vp-inline-fullscreen" title="全屏"><i class="icon icon-ic_fluent_full_screen_maximize_24_regular" aria-hidden="true"></i></button>
+        `;
+        wrapper.appendChild(controls);
+
+        const playBtn = controls.querySelector('.vp-inline-play');
+        const curEl = controls.querySelector('.vp-inline-current');
+        const durEl = controls.querySelector('.vp-inline-duration');
+        const progress = controls.querySelector('.vp-inline-progress');
+        const danmakuBtn = controls.querySelector('.vp-inline-danmaku');
+        const subtitleBtn = controls.querySelector('.vp-inline-subtitle');
+        const volumeSlider = controls.querySelector('.vp-inline-volume-slider');
+        const volumeIcon = controls.querySelector('.vp-inline-volume i');
+        const fullscreenBtn = controls.querySelector('.vp-inline-fullscreen');
+
+        const fmt = (sec)=>{
+          if (!isFinite(sec)) return '0:00';
+          const s = Math.floor(sec%60); const m = Math.floor(sec/60);
+          return `${m}:${s.toString().padStart(2,'0')}`;
+        };
+
+        function syncPlayIcon(){
+          const i = playBtn.querySelector('i');
+          if (!i) return;
+          i.className = v.paused ? 'icon icon-ic_fluent_play_24_regular' : 'icon icon-ic_fluent_pause_24_regular';
+        }
+        function syncProgress(){
+          const pct = v.duration ? (v.currentTime / v.duration) * 100 : 0;
+          progress.value = pct;
+          curEl.textContent = fmt(v.currentTime);
+          durEl.textContent = fmt(v.duration);
+        }
+        function setVolume(val){
+          const vol = Math.max(0, Math.min(1, Number(val)));
+          try { v.volume = vol; v.muted = vol === 0; } catch(_){ }
+          if (volumeIcon) {
+            let cls = 'icon icon-ic_fluent_speaker_2_24_regular';
+            if (vol === 0) cls = 'icon icon-ic_fluent_speaker_mute_24_regular';
+            else if (vol < 0.5) cls = 'icon icon-ic_fluent_speaker_1_24_regular';
+            volumeIcon.className = cls;
+          }
+        }
+
+        playBtn.addEventListener('click', ()=>{ if (v.paused) v.play(); else v.pause(); });
+        v.addEventListener('play', syncPlayIcon);
+        v.addEventListener('pause', syncPlayIcon);
+        v.addEventListener('timeupdate', syncProgress);
+        v.addEventListener('loadedmetadata', syncProgress, { once:true });
+
+        progress.addEventListener('input', ()=>{
+          if (v.duration && isFinite(v.duration)) {
+            v.currentTime = (progress.value / 100) * v.duration;
+            curEl.textContent = fmt(v.currentTime);
+          }
+        });
+
+        volumeSlider.addEventListener('input', ()=>{ setVolume(volumeSlider.value); });
+        setVolume(volumeSlider.value || 1);
+
+        function bindToggle(btn, labelOn, labelOff, evt){
+          if (!btn) return;
+          btn.addEventListener('click', ()=>{
+            const active = btn.getAttribute('aria-pressed') === 'true';
+            const next = !active;
+            btn.setAttribute('aria-pressed', String(next));
+            btn.classList.toggle('active', next);
+            btn.textContent = next ? labelOn : labelOff;
+            try { v.dispatchEvent(new CustomEvent(evt, { detail: { enabled: next } })); } catch(_){ }
+          });
+        }
+        bindToggle(danmakuBtn, '弹幕开', '弹幕关', 'videoplay:danmaku');
+        bindToggle(subtitleBtn, '字幕开', '字幕关', 'videoplay:subtitle');
+
+        fullscreenBtn.addEventListener('click', async ()=>{
+          try {
+            if (!document.fullscreenElement) {
+              if (wrapper.requestFullscreen) await wrapper.requestFullscreen();
+              const i = fullscreenBtn.querySelector('i'); if (i) i.className = 'icon icon-ic_fluent_full_screen_minimize_24_regular';
+            } else {
+              if (document.exitFullscreen) await document.exitFullscreen();
+              const i = fullscreenBtn.querySelector('i'); if (i) i.className = 'icon icon-ic_fluent_full_screen_maximize_24_regular';
+            }
+          } catch(_){ }
+        });
+        document.addEventListener('fullscreenchange', ()=>{
+          const i = fullscreenBtn.querySelector('i');
+          if (!i) return;
+          i.className = document.fullscreenElement ? 'icon icon-ic_fluent_full_screen_minimize_24_regular' : 'icon icon-ic_fluent_full_screen_maximize_24_regular';
+        });
+
+        syncPlayIcon();
+        syncProgress();
+      });
+    }
+
       // Generate a thumbnail image for a video element and set it on the provided img element.
+
+          // Observe DOM changes to catch dynamically injected videos
+          const mo = new MutationObserver((mutations)=>{
+            let found = false;
+            for (const m of mutations) {
+              if ((m.addedNodes || []).length === 0) continue;
+              m.addedNodes.forEach(node => {
+                if (node.nodeType === 1 && node.querySelector && node.querySelector('video')) found = true;
+                if (node.nodeType === 1 && node.tagName === 'VIDEO') found = true;
+              });
+              if (found) break;
+            }
+            if (found) { initVideoPlay(); initInlinePlayers(); }
+          });
+            try { mo.observe(document.body, { childList: true, subtree: true }); } catch(_){ }
       // This creates a temporary offscreen video, seeks to a short time and draws a frame to canvas.
       function generateThumbnailFromVideo(sourceVideoEl, imgEl) {
         const src = sourceVideoEl.getAttribute('src') || sourceVideoEl.currentSrc || '';
@@ -634,5 +863,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     // init on DOM ready and SPA events
     initVideoPlay();
+    initInlinePlayers();
     document.addEventListener('spa:page:loaded', initVideoPlay);
+  document.addEventListener('spa:page:loaded', initInlinePlayers);
 });

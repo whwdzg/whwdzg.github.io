@@ -2,7 +2,7 @@
 .sidebar {
 	position: fixed;
 	top: var(--header-height, 64px); /* 与页眉错开 */
-	left: 0;
+	left: var(--layout-offset, 0px);
 	height: calc(100vh - var(--header-height, 64px));
 	width: var(--sidebar-width);
 	background: var(--card-bg);
@@ -86,8 +86,16 @@ body.sidebar-collapsed .sidebar {
 	background: var(--card-bg);
 }
 
+body.sidebar-collapsed {
+	--sidebar-current-width: 60px;
+}
+
+/* 默认展开态：当前侧栏宽度与配置一致，用于居中计算 */
+body:not(.sidebar-collapsed) {
+	--sidebar-current-width: var(--sidebar-width);
+}
+
 body.sidebar-collapsed main {
-	margin-left: 6rem; /* 宽屏折叠时略多留 2rem 空间，避免贴边 */
 	padding-left: 0;
 }
 
@@ -110,6 +118,7 @@ body.sidebar-collapsed .sidebar .submenu {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
+	position: relative; /* anchor pseudo stripes to each item */
 	width: 100%;
 	min-height: 44px;
 	box-sizing: border-box;
@@ -134,7 +143,7 @@ body.sidebar-collapsed .sidebar .submenu {
 	padding: 0.5rem 0.5rem;
 	font-size: 1rem;
 	line-height: 1.45;
-	min-height: 40px;
+	min-height: 44px; /* match top-level height so stripe length stays consistent */
 	padding-left: 1.75rem; /* 子项稍作缩进 */
 }
 
@@ -191,13 +200,15 @@ body.sidebar-collapsed .sidebar .toggle:hover {
 .sidebar .toggle.selected::before {
 	content: '';
 	position: absolute;
-	/* move further left, make thicker and shorter */
-	left: -2px;
-	top: 12px;
-	bottom: 12px;
-	width: 5px;
+	/* stripe aligned flush with highlight left edge */
+	left: 0;
+	width: 4px;
+	height: calc(100% - 18px);
+	top: 50%;
+	transform: translateY(-50%);
 	border-radius: 3px;
 	background: rgba(var(--primary-color-rgb, 51,204,153), 0.95);
+	pointer-events: none;
 }
 
 /* 当侧栏折叠时隐藏竖条（避免视觉拥挤） */
@@ -223,6 +234,13 @@ body.sidebar-collapsed .sidebar .toggle.selected::before {
 	color: var(--text-color);
 	background: transparent;
 	box-shadow: none;
+}
+
+/* 打开状态下若当前项在该组内，仍保留高亮底色与阴影 */
+.sidebar .has-children.open > .toggle.current,
+.sidebar .has-children.open > .toggle.selected {
+	background: var(--hover-bg);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* 展开状态下的母项在悬停时仍显示高光（避免被上面规则覆盖） */
@@ -337,20 +355,24 @@ body:not(.sidebar-collapsed) .sidebar > ul {
 
 /* 页面主要内容不要被侧栏遮挡 */
 main {
-	margin-left: calc(var(--sidebar-width) + 1rem);
+	margin-left: var(--main-left, calc(var(--sidebar-current-width, var(--sidebar-width)) + var(--layout-gap, 1rem)));
 	transition: margin-left 240ms ease, padding-left 240ms ease;
 }
 
 /* 响应式：小屏幕时侧栏相对定位，按钮绝对定位在侧栏内，内容留出按钮空间 */
-@media (max-width: 760px) {
+@media (max-width: 960px) {
 	:root { --sidebar-width: 100%; }
 	.sidebar {
-		position: relative;
+		/* 窄屏下侧栏固定在页眉下方，避免参与文档流产生额外空白 */
+		position: fixed;
+		top: var(--header-height, 64px);
+		left: 0;
 		width: 100%;
-		height: auto;
-		min-height: max-content; /* 以内容为基准，防止过小截断 */
+		height: calc(100vh - var(--header-height, 64px));
+		min-height: 0;
 		border-right: none;
-		padding-top: 64px; /* 留出按钮高度 */
+		padding-top: var(--sidebar-button-space);
+		overflow-y: auto;
 	}
 	main { margin-left: 0; padding-left: 1rem; padding-right: 1rem; }
 	body.sidebar-collapsed main { margin-left: 0; padding-left: 1rem; }

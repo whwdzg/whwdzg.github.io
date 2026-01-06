@@ -1,28 +1,139 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>README</title>
-  <link rel="stylesheet" href="/css/variables.css" />
-  <link rel="stylesheet" href="/css/header.css" />
-  <link rel="stylesheet" href="/css/sidebar.css" />
-  <link rel="stylesheet" href="/css/main-content.css" />
-  <link rel="stylesheet" href="/css/footer.css" />
-  <link rel="stylesheet" href="/css/lightbox.css" />
-  <link rel="stylesheet" href="/css/scroll-to-top.css" />
-  <link rel="stylesheet" href="/css/settings-modal.css" />
-  <link rel="stylesheet" href="/css/videoplay.css" />
-  <link rel="stylesheet" href="/css/input.css" />
+  <meta name="description" content="whwdzg.github.io README">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/img/shell/favicon.ico" type="image/x-icon">
+  <link rel="preload" href="/img/shell/favicon.ico" as="image" type="image/x-icon">
+  <link rel="preload" href="/img/shell/shuiyu.avif" as="image" type="image/avif">
+  <link rel="preload" href="/css/variables.css" as="style">
+  <link rel="preload" href="/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/input.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/main-content.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/lightbox.css">
+  <link rel="stylesheet" href="/css/settings-modal.css">
+  <link rel="stylesheet" href="/css/scroll-to-top.css">
+  <link rel="stylesheet" href="/font/FluentSystemIcons-Regular.css">
+  <style>
+    :root.readme-page body {
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(244,246,248,0.9)), url('/img/shell/bg.jpg') center/cover no-repeat fixed;
+      color: var(--text, #111827);
+    }
+    .readme-shell-gap {
+      min-height: 54px;
+    }
+    #page-root {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+    .readme-card {
+      background: var(--surface, #ffffff);
+      border: 1px solid var(--border, #e5e7eb);
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+      padding: 20px;
+      margin: 0 0 16px;
+    }
+    .readme-hero {
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+    .readme-hero img {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(0, 0, 0, 0.08);
+    }
+    .readme-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+      margin: 0 0 4px;
+      color: var(--text-subtle, #4b5563);
+    }
+    .readme-lead {
+      margin: 8px 0 12px;
+      font-size: 1rem;
+      color: var(--text-subtle, #4b5563);
+    }
+    .readme-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .readme-badges img {
+      height: 20px;
+    }
+    .readme-loader {
+      font-size: 0.95rem;
+      color: var(--text-subtle, #4b5563);
+      margin-bottom: 12px;
+    }
+    .markdown-body h1,
+    .markdown-body h2,
+    .markdown-body h3 {
+      color: var(--text, #111827);
+      margin-top: 1.25em;
+      margin-bottom: 0.5em;
+      line-height: 1.2;
+    }
+    .markdown-body p,
+    .markdown-body ul,
+    .markdown-body ol {
+      margin: 0.35em 0 0.5em;
+      color: var(--text, #111827);
+    }
+    .markdown-body ul,
+    .markdown-body ol {
+      padding-left: 1.1em;
+    }
+    .markdown-body code,
+    .markdown-body pre {
+      background: #f3f4f6;
+      border-radius: 6px;
+      padding: 0.2em 0.4em;
+      font-size: 0.95em;
+    }
+    .markdown-body pre {
+      padding: 12px;
+      overflow-x: auto;
+    }
+    @media (max-width: 640px) {
+      .readme-hero {
+        grid-template-columns: 72px 1fr;
+      }
+      .readme-hero img {
+        width: 72px;
+        height: 72px;
+      }
+      #page-root {
+        padding: 16px 12px 32px;
+      }
+    }
+  </style>
+  <script src="/js/pwa/register-sw.js" defer></script>
+  <script src="/js/i18n-loader.js" defer></script>
   <script src="/js/theme.js" defer></script>
+  <script src="/js/language.js" defer></script>
   <script src="/js/sidebar.js" defer></script>
-  <script src="/js/header.js" defer></script>
-  <script src="/js/settings-modal.js" defer></script>
   <script src="/js/lightbox.js" defer></script>
+  <script src="/js/avatar.js" defer></script>
   <script src="/js/scroll-to-top.js" defer></script>
   <script src="/js/search.js" defer></script>
-  <script src="/js/videoplay.js" defer></script>
-  <script src="/js/spa-router.js" type="module"></script>
+  <script src="/js/spa-router.js" defer type="module"></script>
+  <script src="/js/settings-modal.js" defer></script>
   <script>
     document.documentElement.classList.add('readme-page');
   </script>
@@ -99,9 +210,26 @@
   </script>
 
   <main id="page-root">
-    <section class="readme-content">
-      <div id="readme-loader">Loading README...</div>
-      <article id="readme-body"></article>
+    <section class="readme-card readme-hero">
+      <div class="readme-hero__media">
+        <img src="/img/shell/shuiyu.avif" alt="头像" loading="lazy" fetchpriority="high">
+      </div>
+      <div>
+        <p class="readme-kicker">whwdzg.github.io</p>
+        <h1>README</h1>
+        <p class="readme-lead">个人向导览与存档站点的说明与快速导航。</p>
+        <div class="readme-badges" aria-label="仓库状态">
+          <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/whwdzg/whwdzg.github.io">
+          <img alt="GitHub forks" src="https://img.shields.io/github/forks/whwdzg/whwdzg.github.io">
+          <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/whwdzg/whwdzg.github.io">
+          <img alt="GitHub release" src="https://img.shields.io/github/v/release/whwdzg/whwdzg.github.io">
+        </div>
+      </div>
+    </section>
+
+    <section class="readme-card">
+      <div id="readme-loader" class="readme-loader" aria-live="polite">正文加载中…</div>
+      <article id="readme-body" class="markdown-body" aria-live="polite"></article>
     </section>
   </main>
 
@@ -112,29 +240,50 @@
       var readmePath = '/README.md';
       var bodyEl = document.getElementById('readme-body');
       var loaderEl = document.getElementById('readme-loader');
+      var fallbackMarkdown = [
+        '# whwdzg.github.io',
+        '',
+        '个人向导览与存档站点（2.0）。',
+        '',
+        '## 在线访问',
+        '- 主页：https://whwdzg.github.io',
+        '- README 页面：/readme.html',
+        '- 旧版存档：/Legacy-1.0/',
+        '',
+        '## 功能概览',
+        '- 单页导航：共享的 header/sidebar/aside 壳层与轻量路由',
+        '- 多语言与主题切换：预置多语种 JSON 与深浅色模式',
+        '- 渐进式增强：懒加载图片、滚动返回顶部、设置面板',
+        '- PWA：manifest、service worker 与简单离线缓存',
+        '',
+        '## 本地预览',
+        'python serve.py',
+        '',
+        '## 许可',
+        'MIT License，详见 LICENSE。'
+      ].join('\n');
 
-      function renderReadme(mdText) {
-        if (!window.marked) {
-          bodyEl.textContent = 'Markdown renderer unavailable';
-          return;
-        }
-        var html = window.marked.parse(mdText || '');
+      function renderMarkdown(mdText) {
+        var html = window.marked ? window.marked.parse(mdText || '') : (mdText || '').replace(/\n/g, '<br>');
         if (window.DOMPurify && window.DOMPurify.sanitize) {
           html = window.DOMPurify.sanitize(html);
         }
         bodyEl.innerHTML = html;
       }
 
+      function setLoader(message) {
+        if (!loaderEl) return;
+        if (!message) {
+          loaderEl.remove();
+          return;
+        }
+        loaderEl.textContent = message;
+      }
+
       function loadReadme() {
-        fetch(readmePath).then(function(resp) {
-          if (!resp.ok) throw new Error('Failed to load README');
-          return resp.text();
-        }).then(function(text) {
-          if (loaderEl) loaderEl.remove();
-          renderReadme(text);
-        }).catch(function(err) {
-          if (loaderEl) loaderEl.textContent = err.message || 'Unable to load README';
-        });
+        // 直接使用内置内容，避免加载失败导致空白
+        renderMarkdown(fallbackMarkdown);
+        setLoader('');
       }
 
       window.addEventListener('spa:page:loaded', loadReadme);

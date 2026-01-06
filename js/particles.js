@@ -219,7 +219,7 @@
       case 'sakura': p.vx *= 0.7; p.vy *= 0.7; p.size *= 0.9; p.alpha = Math.min(1, p.alpha * 1.0); break;
       case 'leaf-a': p.vx *= 1.0; p.vy *= 0.85; p.size *= 1.1; p.alpha = Math.min(1, p.alpha * 1.0); break;
       case 'leaf-b': p.vx *= 0.9; p.vy *= 0.95; p.size *= 1.05; p.alpha = Math.min(1, p.alpha * 1.0); break;
-      case 'snow': p.vx *= 0.35; p.vy *= 0.5; p.size *= 0.8; p.alpha = rand(0.85, 1.0); break;
+      case 'snow': p.vx *= 0.4; p.vy *= 0.45; p.size *= 1.05; p.alpha = rand(0.9, 1.0); break;
     }
     return p;
   }
@@ -233,13 +233,16 @@
     // limit spawn and overall particle count to keep effect light
     // adjusted for narrow viewports: base rate + width-scaled rate
     const w = window.innerWidth;
+    const effectName = effects[enabled].name;
     const baseSpawn = (w < 768) ? 1 : 0.5;  // more base spawn for narrow screens
-    const spawn = Math.max(0, Math.min(3, Math.floor(baseSpawn + (w/1000) * (enabled === 4 ? 3 : 2))));
+    const spawnBoost = effectName === 'snow' ? 1.35 : 1;
+    const spawn = Math.max(0, Math.min(4, Math.floor((baseSpawn + (w/1000) * (effectName === 'snow' ? 3.6 : 2)) * spawnBoost)));
     const baseMax = (w < 768) ? 30 : 20;     // higher base max for narrow screens
-    const maxParticles = Math.max(baseMax, Math.floor(w / 35));
+    const maxParticles = Math.max(baseMax, Math.floor((effectName === 'snow' ? 1.6 : 1) * w / 35));
+    const spawnChance = effectName === 'snow' ? 0.18 : 0.1;
     for (let i=0;i<spawn;i++){
       if (particles.length >= maxParticles) break;
-      if (Math.random() < 0.08) particles.push(createParticle(effects[enabled].name));
+      if (Math.random() < spawnChance) particles.push(createParticle(effectName));
     }
     // update
     for (let i=particles.length-1;i>=0;i--){
@@ -370,9 +373,16 @@
     ctx.fill();
   }
   function drawSnow(ctx, size){
-    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    const radius = size * 0.55;
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(0.55, 'rgba(255,255,255,0.9)');
+    g.addColorStop(1, 'rgba(255,255,255,0.45)');
+    ctx.fillStyle = g;
+    ctx.shadowBlur = radius * 0.8;
+    ctx.shadowColor = 'rgba(255,255,255,0.65)';
     ctx.beginPath();
-    ctx.arc(0,0,size*0.45,0,Math.PI*2);
+    ctx.arc(0,0,radius,0,Math.PI*2);
     ctx.fill();
   }
 
@@ -396,8 +406,9 @@
     const w = window.innerWidth;
     const warmupBase = (w < 768) ? 15 : 5;    // more initial particles for narrow screens
     const warmupMax = (w < 768) ? 25 : Math.max(10, Math.floor(w/60));
+    const warmupBoost = eff.name === 'snow' ? 1.35 : 1;
     for (let i=0; i < Math.floor(warmupBase + (w/1000)*3); i++) {
-      if (particles.length > warmupMax) break;
+      if (particles.length > warmupMax * warmupBoost) break;
       particles.push(createParticle(eff.name));
     }
     if (!raf) raf = requestAnimationFrame(step);
