@@ -1,3 +1,38 @@
+  "sidebar": {
+    "home": "Главная",
+    "about": "О сайте",
+    "legacy": "Назад к 1.0",
+    "home1_0": "Главная (1.0)",
+    "about1_0": "О сайте (1.0)",
+    "readme1_0": "README (1.0)",
+    "readme": "README",
+    "column": "Колонка",
+    "gallery": "Личная галерея",
+    "comments": "Зона комментариев",
+    "videoArchive": "Видеоархив",
+    "bilibili": "bilibili",
+    "collapseBtn": "Свернуть/развернуть панель"
+  },
+  "aside": {
+    "noticeTitle": "Примечание",
+    "noticeContent": "<strong>Ранняя тестовая версия, возможны ошибки</strong>",
+    "legacyTitle": "Вернуться на главную 1.0",
+    "versionLabel": "Версия 1.0",
+    "legacyLink": "К главной 1.0",
+    "legacyStopped": "Больше не обновляется",
+    "shell": {
+      "betaTitle": "Примечание",
+      "betaContent": "<strong>Ранняя тестовая версия, возможны ошибки</strong>",
+      "archivesTitle": "Вернуться на главную 1.0",
+      "archivesDesc": "Версия 1.0 больше не обновляется",
+      "archivesLink": "К главной 1.0"
+    }
+  },
+  "footer": {
+    "copyright": "&copy; 2022-2026 whwdzg.",
+    "allRights": "Все права защищены.",
+    "version": "Текущая версия: <strong>2.0.2.6-20260117</strong>"
+  },
 {
   "page": { "title": "Главная", "aboutTitle": "О сайте", "description": "whwdzg's personal page" },
   "header": { "homeLink": "Главная", "searchBtn": "Поиск", "themeToggleBtn": "Переключить тёмную/светлую тему", "themeSettingsBtn": "Настройки темы", "languageSelectorBtn": "Выбор языка", "avatarAlt": "Аватар" },
@@ -6,9 +41,28 @@
   "language": { "zhCN": "中文（简体）", "zhTW": "中文（繁体）", "enUS": "English (US)", "ruRU": "Русский", "frFR": "Français", "deDE": "Deutsch", "jaJP": "日本語" },
   "sidebar": { "home": "Главная", "about": "О сайте", "legacy": "Назад к 1.0", "home1_0": "Главная (1.0)", "about1_0": "О сайте (1.0)", "readme1_0": "README (1.0)", "readme": "README", "collapseBtn": "Свернуть/развернуть боковую панель" },
   "search": { "placeholder": "Поисковый запрос", "button": "Искать", "ariaLabel": "Начать поиск", "noResults": "Ничего не найдено", "resultCount": "Найдено результатов: {count}", "imageTag": "[Изображение]" },
-  "main": { "homeTitle": "Главная", "homeContent": "Это главная страница версии 2.0, сейчас в разработке и на <strong>самой ранней стадии</strong>, для учебных целей", "aboutTitle": "О сайте", "aboutContent": "Это главная страница версии 2.0, сейчас в разработке и на <strong>самой ранней стадии</strong>", "testTitle": "test" },
+  "main": {
+    "homeTitle": "Главная",
+    "homeContent": "Это главная страница версии 2.0, сейчас в разработке и на <strong>самой ранней стадии</strong>, для учебных целей",
+    "aboutTitle": "О сайте",
+    "aboutContent": "Это главная страница версии 2.0, сейчас в разработке и на <strong>самой ранней стадии</strong>",
+    "testTitle": "test",
+    "columnTitle": "Личная галерея",
+    "columnDesc": "Коллекция личных изображений и воспоминаний.",
+    "commentsTitle": "Зона комментариев",
+    "commentsDesc": "Поделитесь своими мыслями здесь.",
+    "videoArchiveTitle": "Видеоархив",
+    "videoArchiveDesc": "Видеоархив whwdzg, страница {page}",
+    "notFoundTitle": "404 Не найдено",
+    "notFoundDesc": "Извините, страница не существует или была перемещена.",
+    "offlineTitle": "Оффлайн режим",
+    "offlineDesc": "Вы сейчас оффлайн или сервер недоступен. Часть контента может не загрузиться, но кэшированные страницы доступны.",
+    "readmeTitle": "README",
+    "readmeLead": "Личное руководство и быстрая навигация по сайту.",
+    "readmeLoading": "Загрузка содержимого..."
+  },
   "aside": { "noticeTitle": "Примечание", "noticeContent": "<strong>Ранняя тестовая версия, возможны ошибки</strong>", "legacyTitle": "Вернуться на главную 1.0", "versionLabel": "Версия 1.0", "legacyLink": "К главной 1.0", "legacyStopped": "Больше не обновляется" },
-  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Все права защищены.", "version": "Текущая версия: <strong>2.0.2.5-20260106</strong>" },
+  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Все права защищены.", "version": "Текущая версия: <strong>2.0.2.6-20260117</strong>" },
   "settings": {
     "title": "Настройки",
     "lightdark": { "title": "Переключение светлой/тёмной темы", "subtitle": "Как переключать светлую/тёмную тему", "follow": "Следовать системе", "manual": "Ручные настройки" },

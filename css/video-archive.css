@@ -1,10 +1,67 @@
+/* 视频归档列表布局重构：仅支持 grid/list 两种布局，无 column-count 冲突 */
+.video-grid.grid-view {
+  display: block !important;
+  column-count: 3;
+  column-gap: 0.9rem;
+  width: 100%;
+}
+@media (max-width: 900px) {
+  .video-grid.grid-view {
+    column-count: 2;
+  }
+}
+@media (max-width: 600px) {
+  .video-grid.grid-view {
+    column-count: 1;
+  }
+}
+.video-grid.grid-view .video-card {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.9rem;
+  break-inside: avoid;
+}
+.video-grid.list-view {
+  display: flex !important;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.video-grid.list-view .video-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.2rem;
+  min-height: 120px;
+}
+.video-grid.list-view .video-thumb {
+  flex: 0 0 180px;
+  max-width: 180px;
+  margin-right: 1.2rem;
+}
+.video-grid.list-view .video-thumb img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+}
+.video-grid.list-view .video-desc {
+  max-width: 420px;
+}
+
 /* Module: Video archive listing for 2.0 layout. */
 .video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 0.9rem;
-    align-items: start;
+    column-count: 3;
+    column-gap: 1.2rem;
+    width: 100%;
+    /* 适配响应式 */
+    @media (max-width: 900px) {
+        column-count: 2;
+    }
+    @media (max-width: 600px) {
+        column-count: 1;
+    }
 }
+
 
 .video-card {
     background: var(--secondary-bg);
@@ -12,8 +69,9 @@
     border-radius: 12px;
     box-shadow: 0 10px 26px var(--shadow-color);
     padding: 0.75rem;
-    display: grid;
-    gap: 0.55rem;
+    display: block;
+    break-inside: avoid;
+    margin-bottom: 1.2rem;
     color: var(--text-color);
     overflow: hidden; /* 防止内部元素外溢 */
 }
@@ -62,7 +120,7 @@
 
 .video-card .pill {
     width: fit-content;
-    max-width: 100%;
+    max-width: 50%;
 }
 
 .video-thumb img {
@@ -145,4 +203,75 @@
 
 @media (max-width: 640px) {
     .video-card { padding: 0.7rem; }
+}
+
+/* 视图切换按钮样式（正方形+居中图标） */
+.settings-action-btn {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  max-width: 40px !important;
+  max-height: 40px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--secondary-bg);
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease, opacity 120ms ease;
+}
+.settings-action-btn i {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 仅限视频归档页面的视图切换按钮组 segment 样式，避免全局冲突 */
+.video-archive-view-switch {
+  display: inline-flex;
+  background: #f4f7fa;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 2px;
+}
+.video-archive-view-switch .settings-action-btn {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  margin: 0 1px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+.video-archive-view-switch .settings-action-btn.active,
+.video-archive-view-switch .settings-action-btn:focus {
+  background: #fff;
+  color: var(--primary-color, #2563eb);
+  box-shadow: 0 0 0 2px var(--primary-color, #2563eb) inset;
+}
+.video-archive-view-switch .settings-action-btn:not(.active):hover {
+  background: #e5eaf1;
+}
+
+/* 修正 column-count 瀑布流下 .video-card 宽度自适应 */
+.video-grid.grid-view .video-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.9rem;
+  display: block;
+}
+@media (min-width: 1200px) {
+  .video-grid.grid-view .video-card {
+    width: 100%;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

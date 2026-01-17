@@ -44,7 +44,8 @@
     resolve('js/avatar.js'),
     resolve('js/scroll-to-top.js'),
     resolve('js/search.js'),
-    resolve('js/settings-modal.js')
+    resolve('js/settings-modal.js'),
+    resolve('js/code.js')
   ];
 
   let shellLoaded = false;
@@ -381,8 +382,8 @@
     wrap.className = 'cache-notice';
     wrap.setAttribute('aria-live', 'polite');
     wrap.innerHTML = [
-      '<div class="cache-notice__title">已加载缓存页面</div>',
-      '<div class="cache-notice__desc">点击刷新以获取最新内容。</div>',
+      '<div class="cache-notice__title">当前正在浏览缓存页面</div>',
+      '<div class="cache-notice__desc">刷新以更新页面。</div>',
       '<div class="cache-notice__actions">',
       '  <button type="button" class="cache-notice__refresh">刷新</button>',
       '</div>'
