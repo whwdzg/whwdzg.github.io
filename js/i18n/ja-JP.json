@@ -1,4 +1,38 @@
-{
+  "sidebar": {
+    "home": "ホーム",
+    "about": "概要",
+    "legacy": "1.0へ戻る",
+    "home1_0": "ホーム（1.0）",
+    "about1_0": "概要（1.0）",
+    "readme1_0": "README（1.0）",
+    "readme": "README",
+    "column": "コラム",
+    "gallery": "個人ギャラリー",
+    "comments": "コメントゾーン",
+    "videoArchive": "ビデオアーカイブ",
+    "bilibili": "bilibili",
+    "collapseBtn": "サイドバーを開閉"
+  },
+  "aside": {
+    "noticeTitle": "注意",
+    "noticeContent": "<strong>初期テスト版のため、不具合が発生する可能性があります</strong>",
+    "legacyTitle": "1.0ホームへ戻る",
+    "versionLabel": "1.0バージョン",
+    "legacyLink": "1.0ホームへ戻る",
+    "legacyStopped": "更新停止",
+    "shell": {
+      "betaTitle": "注意",
+      "betaContent": "<strong>初期テスト版のため、不具合が発生する可能性があります</strong>",
+      "archivesTitle": "1.0ホームへ戻る",
+      "archivesDesc": "1.0バージョンは更新停止",
+      "archivesLink": "1.0ホームへ戻る"
+    }
+  },
+  "footer": {
+    "copyright": "&copy; 2022-2026 whwdzg.",
+    "allRights": "無断転載を禁じます。",
+    "version": "現在のバージョン：<strong>2.0.2.6-20260117</strong>"
+  }
   "page": { "title": "ホーム", "aboutTitle": "概要", "description": "whwdzg's personal page" },
   "header": { "homeLink": "ホーム", "searchBtn": "検索", "themeToggleBtn": "ダーク/ライト切替", "themeSettingsBtn": "設定", "languageSelectorBtn": "言語を選択", "avatarAlt": "アバター" },
   "avatar": { "github": "GitHub", "bilibili": "bilibili" },
@@ -6,9 +40,28 @@
   "language": { "zhCN": "中文（简体）", "zhTW": "中文（繁体）", "enUS": "English (US)", "ruRU": "Русский", "frFR": "Français", "deDE": "Deutsch", "jaJP": "日本語" },
   "sidebar": { "home": "ホーム", "about": "概要", "legacy": "1.0へ戻る", "home1_0": "ホーム（1.0）", "about1_0": "概要（1.0）", "readme1_0": "README（1.0）", "readme": "README", "collapseBtn": "サイドバーを開閉" },
   "search": { "placeholder": "検索内容", "button": "検索", "ariaLabel": "検索開始", "noResults": "該当なし", "resultCount": "{count} 件の結果", "imageTag": "[画像]" },
-  "main": { "homeTitle": "ホーム", "homeContent": "これは 2.0 バージョンのホームページです。現在構築中で、<strong>非常に初期段階</strong>のため、学習用です", "aboutTitle": "概要", "aboutContent": "これは 2.0 バージョンのホームページです。現在構築中で、<strong>非常に初期段階</strong>", "testTitle": "test" },
+  "main": {
+    "homeTitle": "ホーム",
+    "homeContent": "これは 2.0 バージョンのホームページです。現在構築中で、<strong>非常に初期段階</strong>のため、学習用です",
+    "aboutTitle": "概要",
+    "aboutContent": "これは 2.0 バージョンのホームページです。現在構築中で、<strong>非常に初期段階</strong>",
+    "testTitle": "test",
+    "columnTitle": "個人ギャラリー",
+    "columnDesc": "個人の画像と思い出のコレクション。",
+    "commentsTitle": "コメントゾーン",
+    "commentsDesc": "ここであなたの考えを共有してください。",
+    "videoArchiveTitle": "ビデオアーカイブ",
+    "videoArchiveDesc": "whwdzgのビデオアーカイブ、{page}ページ",
+    "notFoundTitle": "404 見つかりません",
+    "notFoundDesc": "申し訳ありませんが、アクセスしたページは存在しないか移動されました。",
+    "offlineTitle": "オフラインモード",
+    "offlineDesc": "現在オフラインかサーバーが利用できません。一部のコンテンツが読み込めない場合がありますが、キャッシュされたページは引き続き利用できます。",
+    "readmeTitle": "README",
+    "readmeLead": "サイトの個人ガイドとクイックナビゲーション。",
+    "readmeLoading": "コンテンツを読み込み中..."
+  },
   "aside": { "noticeTitle": "注意", "noticeContent": "<strong>初期テスト版のため、不具合が発生する可能性があります</strong>", "legacyTitle": "1.0 ホームへ戻る", "versionLabel": "1.0 バージョン", "legacyLink": "1.0 ホームへ戻る", "legacyStopped": "更新停止" },
-  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. 無断転載を禁じます。", "version": "現在のバージョン：<strong>2.0.2.5-20260106</strong>" },
+  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. 無断転載を禁じます。", "version": "現在のバージョン：<strong>2.0.2.6-20260117</strong>" },
   "settings": {
     "title": "設定",
     "lightdark": { "title": "ライト/ダーク切替", "subtitle": "ライト/ダーク切替の挙動", "follow": "システムに従う", "manual": "手動設定" },

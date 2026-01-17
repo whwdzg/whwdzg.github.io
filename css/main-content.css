@@ -169,3 +169,69 @@ main > section:first-of-type h3:first-child { margin-top: 0; }
 @media (max-width: 640px) {
 	.cache-notice { max-width: 100%; }
 }
+
+/* code-block 样式 */
+.code-block {
+	position: relative;
+	background: #23272e;
+	border-radius: 8px;
+	padding: 1.5em 1em 1em 3.5em;
+	color: #fff;
+	font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+	overflow-x: auto;
+	margin: 1.5em 0;
+}
+
+.code-block .code-lines {
+	counter-reset: line;
+}
+
+.code-block .code-line {
+	display: block;
+	padding-left: 0.5em;
+	position: relative;
+}
+
+.code-block .code-line::before {
+	counter-increment: line;
+	content: counter(line);
+	display: inline-block;
+	width: 2em;
+	text-align: right;
+	margin-right: 1em;
+	color: #b0b0b0;
+	background: #2d313a;
+	border-radius: 4px;
+	font-size: 0.95em;
+	position: absolute;
+	left: -2.8em;
+	top: 0;
+	height: 100%;
+	padding-right: 0.5em;
+}
+
+.code-block .copy-btn {
+	position: absolute;
+	top: 0.7em;
+	right: 1em;
+	background: rgba(180, 180, 180, 0.3);
+	border: none;
+	border-radius: 6px;
+	padding: 0.3em 0.7em;
+	cursor: pointer;
+	transition: background 0.2s;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+}
+
+.code-block .copy-btn:hover {
+	background: rgba(180, 180, 180, 0.5);
+}
+
+.code-block .copy-btn .fluent-icon {
+	font-family: 'FluentSystemIcons-Regular';
+	font-size: 1.2em;
+	color: #fff;
+	pointer-events: none;
+}

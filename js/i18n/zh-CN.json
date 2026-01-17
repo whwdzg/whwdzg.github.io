@@ -38,6 +38,13 @@
     "readme1_0": "README（1.0）",
     "readme": "README",
     "collapseBtn": "折叠/展开侧边栏"
+    },
+    "column": "专栏",
+    "gallery": "个人图库",
+    "comments": "评论区",
+    "videoArchive": "视频存档",
+    "bilibili": "哔哩哔哩",
+    "collapseBtn": "折叠/展开侧边栏"
   },
   "search": {
     "placeholder": "搜索内容",
@@ -61,10 +68,19 @@
     "versionLabel": "1.0版本",
     "legacyLink": "返回1.0主页",
     "legacyStopped": "已终止更新"
+    },
+    "shell": {
+      "betaTitle": "注意",
+      "betaContent": "<strong>当前为早期测试版本，可能出现bug</strong>",
+      "archivesTitle": "返回1.0主页",
+      "archivesDesc": "1.0版本已终止更新",
+      "archivesLink": "返回1.0主页"
+    }
   },
   "footer": {
-  "copyright": "&copy; 2022-2026 滄海水魚. 保留所有权利。",
-  "version": "当前版本：<strong>2.0.2.5-20260106</strong>"
+    "copyright": "&copy; 2022-2026 滄海水魚.",
+    "allRights": "保留所有权利。",
+    "version": "当前版本：<strong>2.0.2.6-20260117</strong>"
   },
   "settings": {
     "title": "设置",
