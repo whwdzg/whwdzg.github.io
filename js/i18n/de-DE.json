@@ -31,7 +31,7 @@
   "footer": {
     "copyright": "&copy; 2022-2026 whwdzg.",
     "allRights": "Alle Rechte vorbehalten.",
-    "version": "Aktuelle Version: <strong>2.0.2.6-20260117</strong>"
+    "version": "Aktuelle Version: <strong>2.0.3.0-20260209</strong>"
   }
   "page": { "title": "Startseite", "aboutTitle": "Über", "description": "whwdzg's personal page" },
   "header": { "homeLink": "Startseite", "searchBtn": "Suche", "themeToggleBtn": "Dunkel/Hell umschalten", "themeSettingsBtn": "Theme-Einstellungen", "languageSelectorBtn": "Sprache wählen", "avatarAlt": "Avatar" },
@@ -61,7 +61,7 @@
     "readmeLoading": "Inhalt wird geladen..."
   },
   "aside": { "noticeTitle": "Hinweis", "noticeContent": "<strong>Frühe Testversion, Fehler möglich</strong>", "legacyTitle": "Zur 1.0-Startseite", "versionLabel": "Version 1.0", "legacyLink": "Zur 1.0-Startseite", "legacyStopped": "Nicht mehr aktualisiert" },
-  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Alle Rechte vorbehalten.", "version": "Aktuelle Version: <strong>2.0.2.6-20260117</strong>" },
+  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Alle Rechte vorbehalten.", "version": "Aktuelle Version: <strong>2.0.3.0-20260209</strong>" },
   "settings": {
     "title": "Einstellungen",
     "lightdark": { "title": "Hell/Dunkel umschalten", "subtitle": "Verhalten für hell/dunkel", "follow": "System folgen", "manual": "Manuell" },

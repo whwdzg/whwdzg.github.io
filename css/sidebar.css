@@ -7,7 +7,7 @@
 	width: var(--sidebar-width);
 	background: var(--card-bg);
 	border-right: 1px solid var(--border-color);
-	padding: calc(var(--sidebar-button-space)) 0.75rem 1rem 0.75rem;
+	padding: var(--sidebar-button-space) 0.75rem 1rem 0.75rem;
 	box-sizing: border-box;
 	overflow-y: auto;
 	z-index: 50;
@@ -21,15 +21,15 @@ body:not(.sidebar-collapsed) .sidebar {
 	box-shadow: 0 12px 30px var(--shadow-color);
 }
 
-/* 侧边栏折叠按钮样式（固定在侧栏外，避免遮挡内容） */
+/* 侧边栏折叠按钮样式（与页眉 logo 共享空间） */
 .sidebar-collapse-btn {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 40px;
-	height: 40px;
-	min-width: 40px;
-	min-height: 40px;
+	width: var(--header-action-size);
+	height: var(--header-action-size);
+	min-width: var(--header-action-size);
+	min-height: var(--header-action-size);
 	padding: 0;
 	margin: 0;
 	background: var(--secondary-bg);
@@ -37,12 +37,8 @@ body:not(.sidebar-collapsed) .sidebar {
 	border-radius: 10px;
 	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
 	cursor: pointer;
-	font-size: 1.25rem;
+	font-size: 1.1rem;
 	box-sizing: border-box;
-	position: absolute;
-	top: 8px;
-	left: 8px;
-	z-index: 80;
 	color: var(--text-color);
 	transition: background 0.18s, border 0.18s, color 0.18s, box-shadow 0.18s;
 }
@@ -62,7 +58,6 @@ body:not(.sidebar-collapsed) .sidebar {
 body.sidebar-collapsed .sidebar-collapse-btn {
 	background: var(--secondary-bg);
 	border-color: var(--border-color);
-	width: 40px;
 }
 
 .sidebar-collapse-btn:hover {
@@ -93,10 +88,6 @@ body.sidebar-collapsed {
 /* 默认展开态：当前侧栏宽度与配置一致，用于居中计算 */
 body:not(.sidebar-collapsed) {
 	--sidebar-current-width: var(--sidebar-width);
-}
-
-body.sidebar-collapsed main {
-	padding-left: 0;
 }
 
 /* 折叠时隐藏子菜单文本（通过缩放字体和文本裁剪实现） */
@@ -236,11 +227,10 @@ body.sidebar-collapsed .sidebar .toggle.selected::before {
 	box-shadow: none;
 }
 
-/* 打开状态下若当前项在该组内，仍保留高亮底色与阴影 */
-.sidebar .has-children.open > .toggle.current,
-.sidebar .has-children.open > .toggle.selected {
-	background: var(--hover-bg);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+/* 展开时取消母项的高亮边条，让子项独占焦点 */
+.sidebar .has-children.open > .toggle.current::before,
+.sidebar .has-children.open > .toggle.selected::before {
+	display: none;
 }
 
 /* 展开状态下的母项在悬停时仍显示高光（避免被上面规则覆盖） */
@@ -304,8 +294,8 @@ body.sidebar-collapsed .sidebar .toggle {
 }
 body.sidebar-collapsed .sidebar a .item-icon,
 body.sidebar-collapsed .sidebar .toggle .item-icon,
-body.sidebar-collapsed i[class^="icon-"],
-body.sidebar-collapsed i[class*=" icon-"] {
+body.sidebar-collapsed .sidebar i[class^="icon-"],
+body.sidebar-collapsed .sidebar i[class*=" icon-"] {
 	margin-right: 0; /* 收起时移除右边距，使图标居中 */
 	width: 28px;
 	min-width: 28px;
@@ -330,32 +320,14 @@ body.sidebar-collapsed .sidebar .toggle .toggle-icon {
     display: none !important;
 }
 
-/* 侧栏内收起按钮：固定在侧栏左上角（单按钮方案） */
-.inner-sidebar-collapse-btn {
-	display: flex;
-	position: absolute;
-	top: 8px;
-	left: 8px;
-	width: 40px;
-	height: 40px;
-	min-width: 40px;
-	min-height: 40px;
-	margin: 0;
-	font-size: 1.2rem;
-	border-radius: 6px;
-	align-items: center;
-	justify-content: center;
-	z-index: 80;
-}
-
-/* 展开时侧栏内容顶部加 padding，避免被按钮遮挡 */
+/* 展开时侧栏内容顶部微调，避免紧贴边缘 */
 body:not(.sidebar-collapsed) .sidebar > ul {
-	padding-top: 2px; /* 紧贴按钮下方排列，保留按钮高度 40px + 间距 */
+	padding-top: 2px; /* 保持首项与顶部留出微小空隙 */
 }
 
 /* 页面主要内容不要被侧栏遮挡 */
 main {
-	margin-left: var(--main-left, calc(var(--sidebar-current-width, var(--sidebar-width)) + var(--layout-gap, 1rem)));
+	margin-left: calc(var(--sidebar-width) + var(--layout-gap, 1rem));
 	transition: margin-left 240ms ease, padding-left 240ms ease;
 }
 
@@ -376,17 +348,6 @@ main {
 	}
 	main { margin-left: 0; padding-left: 1rem; padding-right: 1rem; }
 	body.sidebar-collapsed main { margin-left: 0; padding-left: 1rem; }
-	.inner-sidebar-collapse-btn {
-		position: absolute;
-		top: 8px;
-		left: 8px;
-		width: 40px;
-		height: 40px;
-		min-width: 40px;
-		min-height: 40px;
-		margin: 0;
-		z-index: 80;
-	}
 	body.sidebar-collapsed .sidebar > ul { display: none; }
 
 	/* 折叠时侧栏不占位；按钮固定到页眉下方 */
@@ -402,11 +363,5 @@ main {
 		margin: 0;
 		box-shadow: none;
 		background: transparent;
-	}
-	body.sidebar-collapsed .inner-sidebar-collapse-btn {
-		position: fixed;
-		top: calc(var(--header-height) + 8px);
-		left: 8px;
-		z-index: 120;
 	}
 }

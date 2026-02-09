@@ -31,7 +31,7 @@
   "footer": {
     "copyright": "&copy; 2022-2026 whwdzg.",
     "allRights": "Все права защищены.",
-    "version": "Текущая версия: <strong>2.0.2.6-20260117</strong>"
+    "version": "Текущая версия: <strong>2.0.3.0-20260209</strong>"
   },
 {
   "page": { "title": "Главная", "aboutTitle": "О сайте", "description": "whwdzg's personal page" },
@@ -62,7 +62,7 @@
     "readmeLoading": "Загрузка содержимого..."
   },
   "aside": { "noticeTitle": "Примечание", "noticeContent": "<strong>Ранняя тестовая версия, возможны ошибки</strong>", "legacyTitle": "Вернуться на главную 1.0", "versionLabel": "Версия 1.0", "legacyLink": "К главной 1.0", "legacyStopped": "Больше не обновляется" },
-  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Все права защищены.", "version": "Текущая версия: <strong>2.0.2.6-20260117</strong>" },
+  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Все права защищены.", "version": "Текущая версия: <strong>2.0.3.0-20260209</strong>" },
   "settings": {
     "title": "Настройки",
     "lightdark": { "title": "Переключение светлой/тёмной темы", "subtitle": "Как переключать светлую/тёмную тему", "follow": "Следовать системе", "manual": "Ручные настройки" },

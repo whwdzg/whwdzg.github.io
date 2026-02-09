@@ -345,7 +345,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // 可选：在页面载入后把所有 submenu 的内联 maxHeight 归零（确保一致）
 window.addEventListener('load', function () {
-	document.querySelectorAll('.sidebar .submenu').forEach(s => s.style.maxHeight = '0px');
+	document.querySelectorAll('.sidebar .submenu').forEach(s => {
+		const parent = s.closest('.has-children');
+		if (!parent || !parent.classList.contains('open')) {
+			s.style.maxHeight = '0px';
+		}
+	});
 });
 
 	// SPA routing handled by js/spa-router.js; sidebar keeps only navigation/highlight logic
