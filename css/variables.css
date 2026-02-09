@@ -15,10 +15,12 @@
 	--layout-gap: 1rem; /* 侧栏与主内容间距 */
 	--layout-offset: 0px; /* 侧栏贴边：不再为整体居中预留偏移 */
 	--sidebar-current-width: var(--sidebar-width); /* 侧栏当前宽度，折叠时被覆盖 */
-	--header-height: 64px;
+	--header-height: 60px;
+	--header-action-size: 40px;
+	--header-logo-size: 26px;
 	--sidebar-width: 220px;
 	--sidebar-offset: 0px; /* 侧边栏偏移，由 JS 写入 */
-	--sidebar-button-space: 56px; /* 为侧栏顶部按钮预留的高度（按钮高度 + 间距），已从 56px 调小 */
+	--sidebar-button-space: 0.75rem; /* 侧栏顶部内边距，保持轻微间隔 */
 	--icon-size: 32px;     /* 默认：页眉/Logo 图标大小 */
 	--icon-small: 20px;    /* 页脚/地址等小图标的较小尺寸 */
 }
@@ -237,6 +239,17 @@ body {
 
 *::-webkit-scrollbar-corner {
 	background: transparent;
+}
+
+/* Prevent Android's blue tap highlight on interactive elements */
+button,
+a,
+input,
+textarea,
+select,
+[role="button"] {
+	-webkit-tap-highlight-color: transparent;
+	tap-highlight-color: transparent;
 }
 
 /* 所有图片统一圆角裁切 */

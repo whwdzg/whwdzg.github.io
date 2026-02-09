@@ -31,7 +31,7 @@
   "footer": {
     "copyright": "&copy; 2022-2026 whwdzg.",
     "allRights": "Tous droits réservés.",
-    "version": "Version actuelle : <strong>2.0.2.6-20260117</strong>"
+    "version": "Version actuelle : <strong>2.0.3.0-20260209</strong>"
   },
 {
   "page": { "title": "Accueil", "aboutTitle": "À propos", "description": "whwdzg's personal page" },
@@ -62,7 +62,7 @@
     "readmeLoading": "Chargement du contenu..."
   },
   "aside": { "noticeTitle": "Remarque", "noticeContent": "<strong>Version de test précoce, des bugs peuvent survenir</strong>", "legacyTitle": "Retour à l'accueil 1.0", "versionLabel": "Version 1.0", "legacyLink": "Retour à l'accueil 1.0", "legacyStopped": "Plus de mises à jour" },
-  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Tous droits réservés.", "version": "Version actuelle : <strong>2.0.2.6-20260117</strong>" },
+  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Tous droits réservés.", "version": "Version actuelle : <strong>2.0.3.0-20260209</strong>" },
   "settings": {
     "title": "Paramètres",
     "lightdark": { "title": "Mode clair/sombre", "subtitle": "Choisir le comportement clair/sombre", "follow": "Suivre le système", "manual": "Réglage manuel" },

@@ -38,7 +38,7 @@ async function loadLocale(lang) {
 		if (lang !== 'zh-CN') return loadLocale('zh-CN');
 		const fallback = {
 			page: { title: '主页', aboutTitle: '关于', description: "whwdzg's personal page" },
-			footer: { version: '当前版本：<strong>2.0.2.6-20260117</strong>' }
+			footer: { version: '当前版本：<strong>2.0.3.0-20260209</strong>' }
 		};
 		localeCache.set('zh-CN', fallback);
 		window.__translations = window.__translations || {};

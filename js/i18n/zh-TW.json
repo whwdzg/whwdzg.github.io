@@ -31,7 +31,7 @@
   "footer": {
     "copyright": "&copy; 2022-2026 滄海水魚.",
     "allRights": "保留所有權利。",
-    "version": "當前版本：<strong>2.0.2.6-20260117</strong>"
+    "version": "當前版本：<strong>2.0.3.0-20260209</strong>"
   },
 {
   "page": { "title": "主頁", "aboutTitle": "關於", "description": "whwdzg's personal page" },
@@ -62,7 +62,7 @@
     "readmeLoading": "內容加載中..."
   },
   "aside": { "noticeTitle": "注意", "noticeContent": "<strong>目前為早期測試版本，可能出現 bug</strong>", "legacyTitle": "返回 1.0 主頁", "versionLabel": "1.0 版本", "legacyLink": "返回 1.0 主頁", "legacyStopped": "已終止更新" },
-  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. 保留所有權利。", "version": "當前版本：<strong>2.0.2.6-20260117</strong>" },
+  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. 保留所有權利。", "version": "當前版本：<strong>2.0.3.0-20260209</strong>" },
   "settings": {
     "title": "設定",
     "lightdark": { "title": "淺色/深色模式切換", "subtitle": "切換淺色/深色模式的行為", "follow": "跟隨系統", "manual": "手動設定" },

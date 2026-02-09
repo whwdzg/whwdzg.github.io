@@ -1,73 +1,32 @@
-/* 模块：主内容区域 / Main content grid layout. */
-/* 主内容占据剩余空间，推动 footer 到底部 */
+/* Module: main content / keep footer pinned after page content */
 main {
-	/* 固定页眉避让：主内容下移，避免被 fixed header 覆盖 */
+	/* reserve header height so content starts below the fixed shell */
 	margin-top: calc(var(--header-height, 64px) - 4px);
 	flex: 1 0 auto;
-	/* 主区自适应最大宽度且整体居中，侧栏只是预留内边距，不参与居中判断 */
 	--content-max: min(var(--content-max-width, 1280px), calc(100vw - 2rem));
 	width: var(--content-max);
 	max-width: var(--content-max);
 	margin-left: auto;
 	margin-right: auto;
-	padding-left: calc(var(--sidebar-current-width, var(--sidebar-width)) + var(--layout-gap, 1rem));
-	padding-right: 1rem;
-	padding-bottom: 1rem;
-	background: transparent; /* 确保主内容区域透明，不遮挡背景图 */
+	--shell-side-gap: calc(var(--sidebar-width) + var(--layout-gap, 1rem));
+	padding: 0 var(--shell-side-gap) 1rem;
+	background: transparent;
 	box-sizing: border-box;
-	transition: padding-left 240ms ease, padding-right 240ms ease;
+	transition: padding 240ms ease;
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) 320px;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 1.25rem;
 	align-items: start;
-	grid-auto-flow: row;
 }
 
 body > footer {
 	margin-top: 0;
 }
 
-/* 侧栏折叠时仅调整左侧预留间距，保持居中策略不变 */
-body.sidebar-collapsed main {
-	padding-left: calc(var(--sidebar-current-width, 60px) + var(--layout-gap, 1rem));
-}
-
-/* Aside (right column card) — ensure visible, elevated and responsive */
-main aside {
-	background: var(--card-bg);
-	border: 1px solid var(--border-color);
-	border-radius: 10px;
-	box-shadow: 0 12px 30px var(--shadow-color);
-	padding: 0.75rem 0.9rem;
-	color: var(--text-color);
-	position: relative;
-	box-sizing: border-box;
-	grid-column: 2;
-	grid-row: 1 / span 100;
-}
-
-main aside section + section {
-	margin-top: 0.75rem;
-}
-
-/* 主体内容保持在第一列 */
-main > :not(aside) {
-	grid-column: 1;
-}
-
 @media (max-width: 960px) {
 	main {
 		padding-left: 1rem;
 		padding-right: 1rem;
-		grid-template-columns: 1fr;
-	}
-	body.sidebar-collapsed main {
-		padding-left: 1rem;
-	}
-	main aside {
-		order: 2;
-		grid-column: 1;
-		grid-row: auto;
 	}
 }
 
@@ -82,9 +41,6 @@ main > :not(aside) {
 	}
 }
 
-
-
-/* 给主内容区域的图片增加行间距，避免紧贴堆叠 */
 main img {
 	display: block;
 	max-width: 100%;
@@ -92,13 +48,11 @@ main img {
 	margin-bottom: 0.75rem;
 }
 
-/* 确保 footer 横向占满视口 */
 footer {
 	width: 100%;
 	box-sizing: border-box;
 }
 
-/* 主内容区域通用链接样式：未特别定义的链接采用与侧边栏按钮一致的圆角矩形风格 */
 main a {
 	display: inline-flex;
 	align-items: center;
@@ -128,22 +82,17 @@ main a:active {
 	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
 }
 
-/* 去除主体首元素默认外边距，避免与 header 间距叠加 */
 main > :first-child { margin-top: 0; }
 main > section:first-child > :first-child { margin-top: 0; }
-/* 兼容 main 内存在注释节点时，首个 section 的标题外边距归零，防止塌陷到 main 顶部 */
 main > section:first-of-type { margin-top: 0; }
 main > section:first-of-type h1:first-child,
 main > section:first-of-type h2:first-child,
 main > section:first-of-type h3:first-child { margin-top: 0; }
 
-
-
-/* Cached page notice (uses aside stack styling) */
 .cache-notice {
 	display: none;
 	padding: 0.75rem 0.9rem;
-	padding-right: 2.6rem; /* leave room for stack close button */
+	padding-right: 2.6rem;
 	background: var(--card-bg);
 	border: 1px solid var(--border-color);
 	border-radius: 10px;
@@ -170,7 +119,6 @@ main > section:first-of-type h3:first-child { margin-top: 0; }
 	.cache-notice { max-width: 100%; }
 }
 
-/* code-block 样式 */
 .code-block {
 	position: relative;
 	background: #23272e;
