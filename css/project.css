@@ -1,5 +1,5 @@
 /* 视频归档列表布局重构：仅支持 grid/list 两种布局 */
-.video-grid.grid-view {
+.project-grid.grid-view {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.9rem;
@@ -9,38 +9,38 @@
   width: 100%;
 }
 @media (max-width: 900px) {
-  .video-grid.grid-view {
+  .project-grid.grid-view {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (max-width: 600px) {
-  .video-grid.grid-view {
+  .project-grid.grid-view {
     grid-template-columns: minmax(0, 1fr);
   }
 }
-.video-grid.grid-view .video-card {
+.project-grid.grid-view .project-card {
   display: block;
   width: 100%;
   margin: 0;
   align-self: start;
 }
 @media (max-width: 900px) {
-  .video-grid.grid-view .video-card {
+  .project-grid.grid-view .project-card {
     width: calc(100% - 40px);
   }
 }
 @media (min-width: 900px) {
-  .video-grid.grid-view .video-card {
+  .project-grid.grid-view .project-card {
     width: calc(100% - 30px);
   }
 }
-.video-grid.list-view {
+.project-grid.list-view {
   display: flex !important;
   flex-direction: column;
   gap: 0.1rem;
 }
 
-.video-grid.list-view .video-card {
+.project-grid.list-view .project-card {
   display: grid;
   grid-template-columns: 180px minmax(0, 1fr) auto;
   grid-template-rows: auto auto auto;
@@ -49,7 +49,7 @@
   align-items: start;
   min-height: 120px;
 }
-.video-grid.list-view .video-thumb {
+.project-grid.list-view .project-thumb {
   grid-column: 1;
   grid-row: 1 / -1;
   width: 180px;
@@ -57,14 +57,14 @@
   margin-right: 0;
   align-self: center;
 }
-.video-grid.list-view .video-card h3 {
+.project-grid.list-view .project-card h3 {
   grid-column: 2;
   grid-row: 1;
   margin-bottom: 0.15rem;
 }
-.video-grid.list-view .video-card .video-pill-row {
+.project-grid.list-view .project-card .project-pill-row {
   grid-column: 2;
-  grid-row: 3;
+  grid-row: 2;
   display: flex;
   gap: 0.4rem;
   flex-wrap: nowrap;
@@ -74,40 +74,42 @@
   overflow: hidden;
   white-space: nowrap;
 }
-.video-grid.list-view .video-card .video-pill-row .pill {
+.project-grid.list-view .project-card .project-pill-row .pill {
   white-space: nowrap;
   flex: 0 0 auto;
 }
-.video-grid.list-view .video-card .video-desc {
+.project-grid.list-view .project-card .project-desc {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 3;
   margin-top: 0.1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.video-grid.list-view .video-actions {
+.project-grid.list-view .project-actions {
   grid-column: 3;
   grid-row: 1 / -1;
   justify-self: end;
   align-self: center;
+  flex-direction: column;
+  align-items: flex-end;
 }
-.video-grid.list-view .video-thumb img {
+.project-grid.list-view .project-thumb img {
   width: 100%;
-  height: auto;
-  aspect-ratio: 16/9;
+  height: 100%;
+  aspect-ratio: 1 / 1;
 }
-.video-grid.list-view .video-desc {
+.project-grid.list-view .project-desc {
   max-width: none;
 }
 
-/* Module: Video archive listing for 2.0 layout. */
-.video-grid {
+/* Module: project archive listing for 2.0 layout. */
+.project-grid {
   width: 100%;
 }
 
 
-.video-card {
+.project-card {
     background: var(--secondary-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -119,29 +121,29 @@
     overflow: hidden; /* 防止内部元素外溢 */
 }
 
-  .video-grid.grid-view .video-card {
+  .project-grid.grid-view .project-card {
     margin-bottom: 0;
   }
 
-.video-thumb {
+.project-thumb {
   position: relative;
   border-radius: 10px;
   overflow: hidden;
   background: transparent;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1 / 1;
 }
 
-.video-thumb .video-badge { z-index: 3; }
+.project-thumb .project-badge { z-index: 3; }
 
-.video-card .pill {
+.project-card .pill {
   width: fit-content;
   max-width: 50%;
 }
-.video-card .pill.collection {
+.project-card .pill.collection {
   color: var(--text-color);
 }
 
-.video-thumb img {
+.project-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -149,7 +151,7 @@
     margin: 0; /* 覆盖 main img 的默认外边距，避免撑出容器 */
 }
 
-.video-badge {
+.project-badge {
     position: absolute;
     top: 8px;
     left: 8px;
@@ -162,37 +164,37 @@
     backdrop-filter: blur(4px);
 }
 
-.video-badge.offline {
+.project-badge.offline {
     background: linear-gradient(135deg, #ef4444, #b91c1c);
 }
 
-.video-badge.collection {
+.project-badge.collection {
   background: linear-gradient(135deg, #7dd3fc, #38bdf8);
 }
 
-.video-badge.private {
+.project-badge.private {
   background: linear-gradient(135deg, #fcd34d, #f59e0b);
   color: #0f172a;
 }
 
-.video-badge.muted {
+.project-badge.muted {
     background: rgba(15, 23, 42, 0.6);
 }
 
-.video-card h3 {
+.project-card h3 {
     margin: 0;
     font-size: 1.05rem;
     word-break: break-word;
 }
 
-.video-desc {
+.project-desc {
     margin: 0;
     color: rgba(100, 116, 139, 0.96);
     line-height: 1.55;
     word-break: break-word;
 }
 
-.video-meta-line {
+.project-meta-line {
     display: flex;
     gap: 0.4rem;
     flex-wrap: wrap;
@@ -201,17 +203,17 @@
     font-size: 0.95rem;
 }
 
-.video-actions {
+.project-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
-.video-actions a[aria-disabled="true"] {
+.project-actions a[aria-disabled="true"] {
     opacity: 0.6;
     pointer-events: none;
 }
-.video-actions a.stale-link {
+.project-actions a.stale-link {
   opacity: 0.7;
 }
 
@@ -229,7 +231,7 @@
 }
 
 @media (max-width: 640px) {
-    .video-card { padding: 0.7rem; }
+    .project-card { padding: 0.7rem; }
 }
 
 /* 视图切换按钮样式（正方形+居中图标） */
@@ -259,15 +261,15 @@
   justify-content: center;
 }
 
-/* 仅限视频归档页面的视图切换按钮组 segment 样式，避免全局冲突 */
-.video-archive-view-switch {
+/* 仅限项目页面的视图切换按钮组 segment 样式，避免全局冲突 */
+.project-archive-view-switch {
   display: inline-flex;
   background: var(--view-switch-bg, #f4f7fa);
   border-radius: 10px;
   border: 1px solid var(--border-color);
   padding: 2px;
 }
-.video-archive-view-switch .settings-action-btn {
+.project-archive-view-switch .settings-action-btn {
   border: none;
   background: transparent;
   box-shadow: none;
@@ -275,23 +277,23 @@
   border-radius: 8px;
   transition: background 0.15s, color 0.15s;
 }
-.video-archive-view-switch .settings-action-btn.active,
-.video-archive-view-switch .settings-action-btn:focus {
+.project-archive-view-switch .settings-action-btn.active,
+.project-archive-view-switch .settings-action-btn:focus {
   background: var(--view-switch-active-bg, #fff);
   color: var(--primary-color, #2563eb);
   box-shadow: 0 0 0 2px var(--primary-color, #2563eb) inset;
 }
-.video-archive-view-switch .settings-action-btn:not(.active):hover {
+.project-archive-view-switch .settings-action-btn:not(.active):hover {
   background: var(--view-switch-hover-bg, #e5eaf1);
 }
 
-/* 修正 grid masonry 下 .video-card 宽度自适应 */
-.video-grid.grid-view .video-card {
+/* 修正 grid masonry 下 .project-card 宽度自适应 */
+.project-grid.grid-view .project-card {
   min-width: 0;
   max-width: 100%;
 }
 @media (min-width: 1200px) {
-  .video-grid.grid-view .video-card {
+  .project-grid.grid-view .project-card {
     max-width: 410px;
     margin-left: auto;
     margin-right: auto;
@@ -299,29 +301,29 @@
 }
 
 @media (max-width: 720px) {
-  .video-grid.list-view .video-card {
+  .project-grid.list-view .project-card {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(5, auto);
   }
-  .video-grid.list-view .video-thumb {
+  .project-grid.list-view .project-thumb {
     grid-column: 1;
     grid-row: 1;
     width: 100%;
     max-width: 100%;
   }
-  .video-grid.list-view .video-card h3 {
+  .project-grid.list-view .project-card h3 {
     grid-column: 1;
     grid-row: 2;
   }
-  .video-grid.list-view .video-card .video-desc {
+  .project-grid.list-view .project-card .project-pill-row {
     grid-column: 1;
     grid-row: 3;
   }
-  .video-grid.list-view .video-card .video-pill-row {
+  .project-grid.list-view .project-card .project-desc {
     grid-column: 1;
     grid-row: 4;
   }
-  .video-grid.list-view .video-actions {
+  .project-grid.list-view .project-actions {
     grid-column: 1;
     grid-row: 5;
     justify-self: start;

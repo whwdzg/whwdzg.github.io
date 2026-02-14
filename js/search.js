@@ -373,14 +373,30 @@ document.addEventListener('DOMContentLoaded', () => {
 			const item = document.createElement('div');
 			item.className = 'search-result-item';
 			item.dataset.index = idx;
-			
+
+			const textWrapper = document.createElement('span');
+			textWrapper.className = 'search-result-text';
+
 			if (result.type === 'image') {
 				const imageTag = (typeof translations !== 'undefined' && translations[document.documentElement.lang] && translations[document.documentElement.lang].search) ? translations[document.documentElement.lang].search.imageTag : '[图片]';
-				item.innerHTML = `<span class="result-tag">${imageTag}</span> ${highlightImageCaption(result.caption, queryNormalized)}`;
+				textWrapper.innerHTML = `<span class="result-tag">${imageTag}</span> ${highlightImageCaption(result.caption, queryNormalized)}`;
 			} else {
-				item.innerHTML = generatePreview(result.text, queryNormalized);
+				textWrapper.innerHTML = generatePreview(result.text, queryNormalized);
 			}
-			
+
+			item.appendChild(textWrapper);
+
+			if (result.page) {
+				item.classList.add('search-result-external');
+				const indicator = document.createElement('span');
+				indicator.className = 'search-result-indicator';
+				indicator.setAttribute('role', 'img');
+				indicator.setAttribute('aria-label', '来自其他页面');
+				indicator.setAttribute('title', '在其他页面查看');
+				indicator.textContent = '↗';
+				item.appendChild(indicator);
+			}
+
 			item.addEventListener('click', () => {
 				// 关闭设置弹窗（如果已打开）
 				document.dispatchEvent(new CustomEvent('close-settings-modal'));

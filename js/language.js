@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const languageSelectorBtn = document.querySelector('.language-selector-btn');
 	const languageSelectorMenu = document.querySelector('.language-selector-menu');
 	const LANGUAGE_KEY = 'language';
-		const FALLBACK_LOCALE = { page: { title: '主页', aboutTitle: '关于' }, header: {}, avatar: {}, sidebar: {}, buttons: {}, main: {}, aside: {}, footer: { version: '当前版本：<strong>2.0.3.0-20260209</strong>' }, theme: {}, language: {} };
+		const FALLBACK_LOCALE = { page: { title: '主页', aboutTitle: '关于' }, header: {}, avatar: {}, sidebar: {}, buttons: {}, main: {}, aside: {}, footer: { version: '当前版本：<strong>2.0.3.1-20260214</strong>' }, theme: {}, language: {} };
 
 		async function ensureI18nReady() {
 			if (typeof loadLocale === 'function' && typeof getCachedLocale === 'function') return;

@@ -1,3 +1,22 @@
+from pathlib import Path
+
+content = """{
+  "page": {
+    "title": "Startseite",
+    "aboutTitle": "Über",
+    "description": "whwdzg's personal page"
+  },
+  "header": {
+    "homeLink": "Startseite",
+    "searchBtn": "Suche",
+    "themeToggleBtn": "Dunkel/Hell umschalten",
+    "themeSettingsBtn": "Theme-Einstellungen",
+    "languageSelectorBtn": "Sprache wählen",
+    "avatarAlt": "Avatar"
+  },
+  "avatar": { "github": "GitHub", "bilibili": "bilibili" },
+  "theme": { "followSystem": "System folgen", "manual": "Manuelle Einstellungen" },
+  "language": { "zhCN": "中文（简体）", "zhTW": "中文（繁体）", "enUS": "English (US)", "ruRU": "Русский", "frFR": "Français", "deDE": "Deutsch", "jaJP": "日本語" },
   "sidebar": {
     "home": "Startseite",
     "about": "Über",
@@ -13,6 +32,7 @@
     "bilibili": "bilibili",
     "collapseBtn": "Seitenleiste ein-/ausblenden"
   },
+  "search": { "placeholder": "Suchinhalt", "button": "Suchen", "ariaLabel": "Suche starten", "noResults": "Keine Ergebnisse", "resultCount": "{count} Ergebnisse gefunden", "imageTag": "[Bild]" },
   "aside": {
     "noticeTitle": "Hinweis",
     "noticeContent": "<strong>Frühe Testversion, Fehler möglich</strong>",
@@ -31,37 +51,8 @@
   "footer": {
     "copyright": "&copy; 2022-2026 whwdzg.",
     "allRights": "Alle Rechte vorbehalten.",
-    "version": "Aktuelle Version: <strong>2.0.3.0-20260209</strong>"
-  }
-  "page": { "title": "Startseite", "aboutTitle": "Über", "description": "whwdzg's personal page" },
-  "header": { "homeLink": "Startseite", "searchBtn": "Suche", "themeToggleBtn": "Dunkel/Hell umschalten", "themeSettingsBtn": "Theme-Einstellungen", "languageSelectorBtn": "Sprache wählen", "avatarAlt": "Avatar" },
-  "avatar": { "github": "GitHub", "bilibili": "bilibili" },
-  "theme": { "followSystem": "System folgen", "manual": "Manuelle Einstellungen" },
-  "language": { "zhCN": "中文（简体）", "zhTW": "中文（繁体）", "enUS": "English (US)", "ruRU": "Русский", "frFR": "Français", "deDE": "Deutsch", "jaJP": "日本語" },
-  "sidebar": { "home": "Startseite", "about": "Über", "legacy": "Zurück zu 1.0", "home1_0": "Startseite (1.0)", "about1_0": "Über (1.0)", "readme1_0": "README (1.0)", "readme": "README", "collapseBtn": "Seitenleiste ein-/ausblenden" },
-  "search": { "placeholder": "Suchinhalt", "button": "Suchen", "ariaLabel": "Suche starten", "noResults": "Keine Ergebnisse", "resultCount": "{count} Ergebnisse gefunden", "imageTag": "[Bild]" },
-  "main": {
-    "homeTitle": "Startseite",
-    "homeContent": "Dies ist die Startseite der Version 2.0, derzeit im Aufbau und in einer <strong>sehr frühen Phase</strong>, für Lernzwecke",
-    "aboutTitle": "Über",
-    "aboutContent": "Dies ist die Startseite der Version 2.0, derzeit im Aufbau und in einer <strong>sehr frühen Phase</strong>",
-    "testTitle": "test",
-    "columnTitle": "Persönliche Galerie",
-    "columnDesc": "Eine Sammlung persönlicher Bilder und Erinnerungen.",
-    "commentsTitle": "Kommentarbereich",
-    "commentsDesc": "Teilen Sie hier Ihre Gedanken.",
-    "videoArchiveTitle": "Videoarchiv",
-    "videoArchiveDesc": "whwdzg's Videoarchiv, Seite {page}",
-    "notFoundTitle": "404 Nicht gefunden",
-    "notFoundDesc": "Entschuldigung, die von Ihnen besuchte Seite existiert nicht oder wurde verschoben.",
-    "offlineTitle": "Offline-Modus",
-    "offlineDesc": "Sie sind derzeit offline oder der Server ist nicht verfügbar. Einige Inhalte werden möglicherweise nicht geladen, aber zwischengespeicherte Seiten sind weiterhin verfügbar.",
-    "readmeTitle": "README",
-    "readmeLead": "Persönlicher Leitfaden und Schnellnavigation für die Website.",
-    "readmeLoading": "Inhalt wird geladen..."
+    "version": "Aktuelle Version: <strong>2.0.3.1-20260214</strong>"
   },
-  "aside": { "noticeTitle": "Hinweis", "noticeContent": "<strong>Frühe Testversion, Fehler möglich</strong>", "legacyTitle": "Zur 1.0-Startseite", "versionLabel": "Version 1.0", "legacyLink": "Zur 1.0-Startseite", "legacyStopped": "Nicht mehr aktualisiert" },
-  "footer": { "copyright": "&copy; 2022-2026 滄海水魚. Alle Rechte vorbehalten.", "version": "Aktuelle Version: <strong>2.0.3.0-20260209</strong>" },
   "settings": {
     "title": "Einstellungen",
     "lightdark": { "title": "Hell/Dunkel umschalten", "subtitle": "Verhalten für hell/dunkel", "follow": "System folgen", "manual": "Manuell" },
@@ -96,3 +87,5 @@
   "buttons": { "scrollToTop": "Nach oben" },
   "lightbox": { "close": "Bild schließen", "zoomIn": "Vergrößern", "zoomOut": "Verkleinern", "download": "Bild herunterladen", "locate": "Zum Text", "prev": "Vorherige", "next": "Nächste", "fullscreen": "Vollbild", "exitFullscreen": "Vollbild verlassen", "zoomInputPlaceholder": "40-400%", "zoomInputLabel": "Zoom-Prozentsatz" }
 }
+"""
+Path("js/i18n/de-DE.json").write_text(content, encoding="utf-8")
