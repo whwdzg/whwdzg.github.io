@@ -89,7 +89,7 @@ const SETTINGS_FALLBACK_HTML = `
     <h4>选择主题色标</h4>
     <p data-color="#007DC5">#007DC5</p>
     <p data-color="#33CC99">#33CC99</p>
-    <p data-color="#D70040">#D70040</p>
+    <p data-color="#F50000">#F50000</p>
     <p data-color="自定义">自定义</p>
   </section>
   <section id="pageprogress" data-setting="page-progress">
@@ -113,6 +113,100 @@ const SETTINGS_FALLBACK_HTML = `
     <button type="button">清除</button>
   </section>
 `;
+
+const DEFAULT_CATEGORY_TITLES = {
+  personalization: '个性化',
+  technical: '技术性',
+  about: '关于'
+};
+
+const SECTION_ICON_MAP = {
+  lightdarktoggle: 'icon-ic_fluent_brightness_high_24_regular',
+  maincolorpicker: 'icon-ic_fluent_color_line_24_regular',
+  pageprogress: 'icon-ic_fluent_chart_multiple_24_regular',
+  'page-progress': 'icon-ic_fluent_chart_multiple_24_regular',
+  particleanimation: 'icon-ic_fluent_sparkle_24_regular',
+  'clear-page-cache': 'icon-ic_fluent_delete_24_regular',
+  'settings-about-browserUA': 'icon-ic_fluent_window_24_regular',
+  'settings-about-currentTime': 'icon-ic_fluent_timer_24_regular',
+  'settings-about-siteVersion': 'icon-ic_fluent_code_24_regular',
+  default: 'icon-ic_fluent_settings_24_regular'
+};
+
+function getSectionIconClass(sec) {
+  if (!sec) return SECTION_ICON_MAP.default;
+  const candidates = [sec.id, (sec.dataset && sec.dataset.setting)];
+  for (const key of candidates) {
+    if (key && SECTION_ICON_MAP[key]) return SECTION_ICON_MAP[key];
+  }
+  return SECTION_ICON_MAP.default;
+}
+
+const ABOUT_ENTRY_DEFINITIONS = [
+  {
+    key: 'browserUA',
+    defaultTitle: '浏览器UA',
+    defaultSubtitle: '当前浏览器标识',
+    valueFactory: () => (typeof navigator !== 'undefined' ? navigator.userAgent : 'Unknown UA'),
+    allowHtml: false
+  },
+  {
+    key: 'currentTime',
+    defaultTitle: '当前时间',
+    defaultSubtitle: '包含年月日时分秒',
+    valueFactory: () => formatCurrentTime(),
+    allowHtml: false
+  },
+  {
+    key: 'siteVersion',
+    defaultTitle: '本站版本',
+    defaultSubtitle: '当前构建版本',
+    valueFactory: () => getSiteVersionMarkup(),
+    allowHtml: true
+  }
+];
+
+let __settingsCurrentTimeIntervalId = null;
+
+function formatCurrentTime() {
+  const now = new Date();
+  const docLang = (typeof document !== 'undefined' && document.documentElement && document.documentElement.lang) ? document.documentElement.lang : '';
+  const locale = docLang || (typeof navigator !== 'undefined' ? navigator.language : '') || 'zh-CN';
+  return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).format(now);
+}
+
+function getSiteVersionMarkup() {
+  const map = getTranslationsMap();
+  const lang = resolveSettingsLang(map);
+  const version = map && map[lang] && map[lang].footer && map[lang].footer.version;
+  return version || '当前版本：<strong>未知</strong>';
+}
+
+function stopCurrentTimeTicker() {
+  if (__settingsCurrentTimeIntervalId) {
+    clearInterval(__settingsCurrentTimeIntervalId);
+    __settingsCurrentTimeIntervalId = null;
+  }
+}
+
+function startCurrentTimeTicker(valueEl) {
+  if (!valueEl) return;
+  stopCurrentTimeTicker();
+  const update = () => {
+    if (valueEl) valueEl.textContent = formatCurrentTime();
+  };
+  update();
+  __settingsCurrentTimeIntervalId = setInterval(update, 1000);
+  valueEl.setAttribute('aria-live', 'polite');
+}
 
 function buildSettingUrls() {
   const resolved = SETTINGS_URL_CANDIDATES.map(p => {
@@ -162,6 +256,81 @@ async function loadSettingsTemplate(options) {
   }
 }
 
+function applySettingsTranslations(container) {
+  const map = getTranslationsMap();
+  if (!map) return;
+  const lang = resolveSettingsLang(map);
+  const t = map[lang] && map[lang].settings;
+  if (!t) return;
+
+  const titleEl = container.querySelector('title');
+  if (titleEl && t.title) titleEl.textContent = t.title;
+
+  const light = container.querySelector('#lightdarktoggle');
+  if (light && t.lightdark) {
+    const h2 = light.querySelector('h2');
+    const h4 = light.querySelector('h4');
+    const ps = light.querySelectorAll('p');
+    if (h2 && t.lightdark.title) h2.textContent = t.lightdark.title;
+    if (h4 && t.lightdark.subtitle) h4.textContent = t.lightdark.subtitle;
+    if (ps[0] && t.lightdark.follow) ps[0].textContent = t.lightdark.follow;
+    if (ps[1] && t.lightdark.manual) ps[1].textContent = t.lightdark.manual;
+  }
+
+  const color = container.querySelector('#maincolorpicker');
+  if (color && t.color) {
+    const h2 = color.querySelector('h2');
+    const h4 = color.querySelector('h4');
+    if (h2 && t.color.title) h2.textContent = t.color.title;
+    if (h4 && t.color.subtitle) h4.textContent = t.color.subtitle;
+    if (t.color.customLabel) {
+      const customLabel = t.color.customLabel;
+      Array.from(color.querySelectorAll('p[data-color]')).forEach(p => {
+        const val = (p.getAttribute('data-color') || '').toLowerCase();
+        if (val === 'custom' || val === '自定义' || val === '自訂') {
+          p.textContent = customLabel;
+          p.setAttribute('data-color', 'custom');
+        }
+      });
+    }
+  }
+
+  const prog = container.querySelector('#pageprogress');
+  if (prog && t.pageProgress) {
+    const h2 = prog.querySelector('h2');
+    const h4 = prog.querySelector('h4');
+    const ps = prog.querySelectorAll('p');
+    if (h2 && t.pageProgress.title) h2.textContent = t.pageProgress.title;
+    if (h4 && t.pageProgress.subtitle) h4.textContent = t.pageProgress.subtitle;
+    if (ps[0] && t.pageProgress.off) ps[0].textContent = t.pageProgress.off;
+    if (ps[1] && t.pageProgress.on) ps[1].textContent = t.pageProgress.on;
+  }
+
+  const particle = container.querySelector('#particleanimation');
+  if (particle && t.particleAnimation) {
+    const h2 = particle.querySelector('h2');
+    const h4 = particle.querySelector('h4');
+    const ps = particle.querySelectorAll('p');
+    if (h2 && t.particleAnimation.title) h2.textContent = t.particleAnimation.title;
+    if (h4 && t.particleAnimation.subtitle) h4.textContent = t.particleAnimation.subtitle;
+    if (ps && ps.length && Array.isArray(t.particleAnimation.options)) {
+      for (let i = 0; i < ps.length && i < t.particleAnimation.options.length; i++) {
+        ps[i].textContent = t.particleAnimation.options[i];
+      }
+    }
+  }
+
+  const clearCache = container.querySelector('#clear-page-cache');
+  if (clearCache && t.clearCache) {
+    const h2 = clearCache.querySelector('h2');
+    const h4 = clearCache.querySelector('h4');
+    const btn = clearCache.querySelector('button');
+    if (h2 && t.clearCache.title) h2.textContent = t.clearCache.title;
+    if (h4 && t.clearCache.subtitle) h4.textContent = t.clearCache.subtitle;
+    if (btn && t.clearCache.button) btn.textContent = t.clearCache.button;
+  }
+}
+
 function ensureContainers(){
   if (!document.getElementById('settings-backdrop')){
     const backdrop = document.createElement('div');
@@ -203,6 +372,13 @@ function buildSection(sec){
   }
 
   wrapper.appendChild(left);
+  const iconClass = getSectionIconClass(sec);
+  if (iconClass) {
+    const icon = document.createElement('i');
+    icon.className = `section-icon fluent-icon ${iconClass}`;
+    icon.setAttribute('aria-hidden', 'true');
+    wrapper.insertBefore(icon, left);
+  }
 
   const ps = Array.from(sec.querySelectorAll('p'));
 
@@ -253,7 +429,7 @@ function buildSection(sec){
       const customStrings = colorStrings && colorStrings.customPanel;
       const customLabel = colorStrings && colorStrings.customLabel;
 
-      const swatchColors = ['#007DC5','#33CC99','#D70040','#F59E0B','#7C3AED'];
+      const swatchColors = ['#007DC5','#33CC99','#F50000','#F59E0B','#7C3AED'];
       let customOption = null;
       let customCore = null;
       let customPanel = null;
@@ -942,7 +1118,162 @@ function buildSection(sec){
     wrapper.appendChild(content);
   }
 
+  const infoEl = wrapper.querySelector('.info-value');
+  if (infoEl && left) {
+    infoEl.classList.add('section-info');
+    left.appendChild(infoEl);
+  }
+
   return wrapper;
+}
+
+function getSettingsCategoryDefinitions(strings) {
+  const categories = strings && strings.categories;
+  return [
+    {
+      key: 'personalization',
+      title: (categories && categories.personalization) || DEFAULT_CATEGORY_TITLES.personalization,
+      sectionIds: ['lightdarktoggle', 'maincolorpicker', 'pageprogress', 'particleanimation']
+    },
+    {
+      key: 'technical',
+      title: (categories && categories.technical) || DEFAULT_CATEGORY_TITLES.technical,
+      sectionIds: ['clear-page-cache']
+    },
+    {
+      key: 'about',
+      title: (categories && categories.about) || DEFAULT_CATEGORY_TITLES.about
+    }
+  ];
+}
+
+function buildAboutEntries(strings) {
+  const entryStrings = strings && strings.aboutEntries;
+  return ABOUT_ENTRY_DEFINITIONS.map(def => {
+    const localized = entryStrings && entryStrings[def.key];
+    const title = (localized && localized.title) || def.defaultTitle;
+    const subtitle = (localized && localized.subtitle) || def.defaultSubtitle || '';
+    const section = document.createElement('section');
+    section.id = `settings-about-${def.key}`;
+    const h2 = document.createElement('h2');
+    h2.textContent = title;
+    section.appendChild(h2);
+    if (subtitle) {
+      const h4 = document.createElement('h4');
+      h4.textContent = subtitle;
+      section.appendChild(h4);
+    }
+    const info = document.createElement('div');
+    info.className = 'info-value';
+    info.dataset.infoKey = def.key;
+    const value = def.valueFactory(strings);
+    if (def.allowHtml) {
+      info.innerHTML = value;
+    } else {
+      info.textContent = value;
+    }
+    section.appendChild(info);
+    const wrapper = buildSection(section);
+    const valueEl = wrapper.querySelector('.info-value');
+    return { key: def.key, wrapper, valueEl };
+  });
+}
+
+function buildSettingsLayout(sectionMap, settingsStrings) {
+  stopCurrentTimeTicker();
+  const layout = document.createElement('div');
+  layout.className = 'settings-layout';
+  const nav = document.createElement('div');
+  nav.className = 'settings-layout-nav';
+  nav.setAttribute('role', 'tablist');
+  const panels = document.createElement('div');
+  panels.className = 'settings-layout-panels';
+  layout.appendChild(nav);
+  layout.appendChild(panels);
+
+  const categories = getSettingsCategoryDefinitions(settingsStrings);
+  const tabs = [];
+  const categoryPanels = [];
+  const assigned = new Set();
+
+  categories.forEach(category => {
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'settings-category-tab';
+    tab.dataset.category = category.key;
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-selected', 'false');
+    tab.tabIndex = -1;
+    tab.textContent = category.title;
+    tab.addEventListener('click', () => activateCategory(category.key));
+    tabs.push(tab);
+    nav.appendChild(tab);
+
+    const panel = document.createElement('div');
+    panel.className = 'settings-category-panel';
+    panel.dataset.category = category.key;
+    panels.appendChild(panel);
+    categoryPanels.push(panel);
+
+    if (Array.isArray(category.sectionIds)) {
+      category.sectionIds.forEach(id => {
+        const built = sectionMap.get(id);
+        if (built) {
+          panel.appendChild(built);
+          assigned.add(id);
+        }
+      });
+    }
+  });
+
+  const aboutPanel = categoryPanels.find(panel => panel.dataset.category === 'about');
+  if (aboutPanel) {
+    const aboutEntries = buildAboutEntries(settingsStrings);
+    aboutEntries.forEach(entry => aboutPanel.appendChild(entry.wrapper));
+    const timeEntry = aboutEntries.find(entry => entry.key === 'currentTime');
+    if (timeEntry && timeEntry.valueEl) {
+      startCurrentTimeTicker(timeEntry.valueEl);
+    }
+  }
+
+  const fallbackPanel = categoryPanels[0] || null;
+  sectionMap.forEach((wrapper, id) => {
+    if (!assigned.has(id) && fallbackPanel) {
+      fallbackPanel.appendChild(wrapper);
+      assigned.add(id);
+    }
+  });
+
+  function activateCategory(key) {
+    tabs.forEach(tab => {
+      const active = tab.dataset.category === key;
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      tab.tabIndex = active ? 0 : -1;
+    });
+    categoryPanels.forEach(panel => panel.classList.toggle('active', panel.dataset.category === key));
+  }
+
+  if (categories.length) {
+    activateCategory(categories[0].key);
+  }
+
+  return layout;
+}
+
+function renderSettingsSections(source, bodyEl, settingsStrings) {
+  if (!bodyEl) return;
+  const sections = source.querySelectorAll('section');
+  if (sections.length === 0) throw new Error('no sections');
+  const sectionMap = new Map();
+  sections.forEach((sec, index) => {
+    const built = buildSection(sec);
+    const key = sec.id || sec.getAttribute('data-setting') || `section-${index}`;
+    sectionMap.set(key, built);
+  });
+  const layout = buildSettingsLayout(sectionMap, settingsStrings);
+  bodyEl.innerHTML = '';
+  bodyEl.appendChild(layout);
 }
 
 function buildToggle(onChange, initialState){
@@ -1116,6 +1447,7 @@ function closeModal(){
   const b = document.getElementById('settings-backdrop');
   const m = document.getElementById('settings-modal');
   __settingsLoadToken += 1;
+  stopCurrentTimeTicker();
 
   if (__settingsFetchController) {
     try { __settingsFetchController.abort(); } catch (e) {}
@@ -1149,6 +1481,7 @@ async function openModal(){
   }
 
   const body = document.querySelector('#settings-modal .modal-body');
+  const settingsStrings = getSettingsStrings();
   if (body) {
     body.innerHTML = '<div class="settings-loading">Loading settings...</div>';
   }
@@ -1158,81 +1491,6 @@ async function openModal(){
   const minVisible = new Promise(resolve => setTimeout(resolve, minVisibleMs));
 
   const stillValid = () => myToken === __settingsLoadToken;
-
-  const applySettingsTranslations = (container) => {
-    const map = getTranslationsMap();
-    if (!map) return;
-    const lang = resolveSettingsLang(map);
-    const t = map[lang] && map[lang].settings;
-    if (!t) return;
-
-    const titleEl = container.querySelector('title');
-    if (titleEl && t.title) titleEl.textContent = t.title;
-
-    const light = container.querySelector('#lightdarktoggle');
-    if (light && t.lightdark) {
-      const h2 = light.querySelector('h2');
-      const h4 = light.querySelector('h4');
-      const ps = light.querySelectorAll('p');
-      if (h2 && t.lightdark.title) h2.textContent = t.lightdark.title;
-      if (h4 && t.lightdark.subtitle) h4.textContent = t.lightdark.subtitle;
-      if (ps[0] && t.lightdark.follow) ps[0].textContent = t.lightdark.follow;
-      if (ps[1] && t.lightdark.manual) ps[1].textContent = t.lightdark.manual;
-    }
-
-    const color = container.querySelector('#maincolorpicker');
-    if (color && t.color) {
-      const h2 = color.querySelector('h2');
-      const h4 = color.querySelector('h4');
-      if (h2 && t.color.title) h2.textContent = t.color.title;
-      if (h4 && t.color.subtitle) h4.textContent = t.color.subtitle;
-      if (t.color.customLabel) {
-        const customLabel = t.color.customLabel;
-        Array.from(color.querySelectorAll('p[data-color]')).forEach(p => {
-          const val = (p.getAttribute('data-color') || '').toLowerCase();
-          if (val === 'custom' || val === '自定义' || val === '自訂') {
-            p.textContent = customLabel;
-            p.setAttribute('data-color', 'custom');
-          }
-        });
-      }
-    }
-
-    const prog = container.querySelector('#pageprogress');
-    if (prog && t.pageProgress) {
-      const h2 = prog.querySelector('h2');
-      const h4 = prog.querySelector('h4');
-      const ps = prog.querySelectorAll('p');
-      if (h2 && t.pageProgress.title) h2.textContent = t.pageProgress.title;
-      if (h4 && t.pageProgress.subtitle) h4.textContent = t.pageProgress.subtitle;
-      if (ps[0] && t.pageProgress.off) ps[0].textContent = t.pageProgress.off;
-      if (ps[1] && t.pageProgress.on) ps[1].textContent = t.pageProgress.on;
-    }
-
-    const particle = container.querySelector('#particleanimation');
-    if (particle && t.particleAnimation) {
-      const h2 = particle.querySelector('h2');
-      const h4 = particle.querySelector('h4');
-      const ps = particle.querySelectorAll('p');
-      if (h2 && t.particleAnimation.title) h2.textContent = t.particleAnimation.title;
-      if (h4 && t.particleAnimation.subtitle) h4.textContent = t.particleAnimation.subtitle;
-      if (ps && ps.length && Array.isArray(t.particleAnimation.options)) {
-        for (let i = 0; i < ps.length && i < t.particleAnimation.options.length; i++) {
-          ps[i].textContent = t.particleAnimation.options[i];
-        }
-      }
-    }
-
-    const clearCache = container.querySelector('#clear-page-cache');
-    if (clearCache && t.clearCache) {
-      const h2 = clearCache.querySelector('h2');
-      const h4 = clearCache.querySelector('h4');
-      const btn = clearCache.querySelector('button');
-      if (h2 && t.clearCache.title) h2.textContent = t.clearCache.title;
-      if (h4 && t.clearCache.subtitle) h4.textContent = t.clearCache.subtitle;
-      if (btn && t.clearCache.button) btn.textContent = t.clearCache.button;
-    }
-  };
 
   try {
     const markup = await loadSettingsTemplate({ allowAbort: true });
@@ -1245,18 +1503,17 @@ async function openModal(){
     document.querySelector('#settings-modal .modal-title').textContent = title;
     await minVisible;
     if (!stillValid()) return;
-    body.innerHTML = '';
-    const sections = tmp.querySelectorAll('section');
-    if (sections.length === 0) throw new Error('no sections');
-    try {
-      sections.forEach(sec => body.appendChild(buildSection(sec)));
-    } catch (e) {
-      console.error('[Settings Modal] render error, fallback to built-in template', e);
-      const fallback = document.createElement('div');
-      fallback.innerHTML = SETTINGS_FALLBACK_HTML;
-      const fbSections = fallback.querySelectorAll('section');
+    if (body) {
       body.innerHTML = '';
-      fbSections.forEach(sec => body.appendChild(buildSection(sec)));
+      try {
+        renderSettingsSections(tmp, body, settingsStrings);
+      } catch (e) {
+        console.error('[Settings Modal] render error, fallback to built-in template', e);
+        const fallback = document.createElement('div');
+        fallback.innerHTML = SETTINGS_FALLBACK_HTML;
+        applySettingsTranslations(fallback);
+        renderSettingsSections(fallback, body, settingsStrings);
+      }
     }
   } catch (e) {
     if (e && e.name === 'AbortError') return;
@@ -1313,22 +1570,22 @@ try {
 } catch (e) {}
 
 document.addEventListener('follow-system-changed', (e) => {
-  if (e.detail && e.detail.fromModal) {
-    return;
-  }
-  
+  if (e.detail && e.detail.fromModal) return;
   const modal = document.getElementById('settings-modal');
-  if (modal && modal.classList.contains('show')) {
-    const body = modal.querySelector('.modal-body');
-    if (body) {
-      const template = document.getElementById('settings-template');
-      if (template) {
-        body.innerHTML = '';
-        const content = template.content.cloneNode(true);
-        const sections = content.querySelectorAll('section');
-        sections.forEach(sec => body.appendChild(buildSection(sec)));
-      }
-    }
+  if (!modal || !modal.classList.contains('show')) return;
+  const body = modal.querySelector('.modal-body');
+  if (!body || !__settingsTemplateHtml) return;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = __settingsTemplateHtml;
+  applySettingsTranslations(tmp);
+  const titleEl = tmp.querySelector('title');
+  if (titleEl && titleEl.textContent.trim()) {
+    document.querySelector('#settings-modal .modal-title').textContent = titleEl.textContent.trim();
+  }
+  try {
+    renderSettingsSections(tmp, body, getSettingsStrings());
+  } catch (err) {
+    console.error('[Settings Modal] follow-system re-render failed', err);
   }
 });
 

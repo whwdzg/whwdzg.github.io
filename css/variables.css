@@ -8,6 +8,9 @@
 	--shadow-color: rgba(15, 23, 42, 0.12);
 	--overlay-bg: rgba(255, 255, 255, 0.5);
 	--card-bg: rgba(255, 255, 255, 0.95);
+	--view-switch-bg: #f4f7fa;
+	--view-switch-active-bg: var(--card-bg);
+	--view-switch-hover-bg: #e5eaf1;
 	--hover-bg: #eef1f5;
 	--active-bg: #e2e6ed;
 	--input-focus-bg: #ffffff;
@@ -148,7 +151,7 @@
 	}
 }
 
-body.dark-mode {
+	body.dark-mode {
 	--bg-color: #1a1a1a;
 	--text-color: #e5e5e5;
 	--text-muted: #9ca3af;
@@ -157,6 +160,9 @@ body.dark-mode {
 	--shadow-color: rgba(0, 0, 0, 0.3);
 	--overlay-bg: rgba(0, 0, 0, 0.6);
 	--card-bg: rgba(42, 42, 42, 0.95);
+	--view-switch-bg: rgba(255, 255, 255, 0.03);
+	--view-switch-active-bg: rgba(255, 255, 255, 0.08);
+	--view-switch-hover-bg: rgba(255, 255, 255, 0.05);
 	--hover-bg: #333333;
 	--active-bg: #3d3d3d;
 	--input-focus-bg: rgba(255, 255, 255, 0.12);

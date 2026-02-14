@@ -1,57 +1,50 @@
 <!DOCTYPE html>
-<!-- 模块：站点首页 / Home page entry. 保留主导航、路由与动画效果。 -->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>主页</title>
 
+    <title>主页</title>
     <meta name="author" content="whwdzg">
-    <meta name="description" content="whwdzg's personal page">
+    <meta name="description" content="主页">
     <meta name="theme-color" content="#ffffff">
 
     <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/img/shell/bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
-    <link rel="icon" href="img/shell/favicon.ico" type="image/x-icon">
-    
-    <!-- 预加载关键资源：优先级从高到低 -->
-    <!-- 1. 页眉图片（最高优先级） -->
-    <link rel="preload" href="img/shell/favicon.ico" as="image" type="image/x-icon">
-    <link rel="preload" href="img/shell/shuiyu.avif" as="image" type="image/avif">
-    <!-- 2. 背景图片 -->
-    <link rel="preload" href="img/shell/bg.jpg" as="image" type="image/jpeg">
-    <!-- 3. 关键CSS -->
-    <link rel="preload" href="css/variables.css" as="style">
-    <link rel="preload" href="font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    
-    <!-- CSS 模块 -->
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/input.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/sidebar.css">
-    <link rel="stylesheet" href="css/main-content.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/lightbox.css">
-    <link rel="stylesheet" href="css/settings-modal.css">
-    <link rel="stylesheet" href="css/scroll-to-top.css">
-    <link rel="stylesheet" href="font/FluentSystemIcons-Regular.css">
-    <!-- JavaScript 模块 -->
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
+    <link rel="stylesheet" href="/css/settings-modal.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="/font/FluentSystemIcons-Regular.css">
+
     <script src="/js/pwa/register-sw.js" defer></script>
-    <script src="js/i18n-loader.js" defer></script>
-    <script src="js/theme.js" defer></script>
-    <script src="js/language.js" defer></script>
-    <script src="js/sidebar.js" defer></script>
-    <script src="js/lightbox.js" defer></script>
-    <script src="js/avatar.js" defer></script>
-    <script src="js/scroll-to-top.js" defer></script>
-    <script src="js/search.js" defer></script>
-    <script src="js/spa-router.js" defer></script>
-        <script src="js/settings-modal.js" defer></script>
-</head>
+    <script src="/js/i18n-loader.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/language.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/lightbox.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+
+    <link rel="stylesheet" href="/css/column.css">
+    </head>
 <body>
-    <!-- shell placeholder: will be populated from includes/shell.html -->
     <div id="shell-root"></div>
-         <script>
+        <script>
             (function(){
                 var container = document.getElementById('shell-root');
                 function normalize(pathname) {
@@ -123,66 +116,138 @@
                     .then(function(html){ attachShell(html); });
             })();
         </script>
+
     <main>
-        <!--主体-->
-        <section id="home">
-            <h2>主页</h2>
-            <p>这里是2.0版本的主页，当前正在构建中，尚处于<strong>极早期阶段</strong>，供实验学习使用</p>
-        </section>
-        <section id="test">
-            <h2>test</h2>
-            <p>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
-                1<br>
+        <section class="hero-pane" id="home">
+            <p class="hero-eyebrow">主页</p>
+            <h1>水鱼 Blog</h1>
+            <p class="hero-lead">
+                滄海水魚个人网站，陈列项目、工具、社交媒体。
             </p>
-            <!--img插入图片后，不添加<br>换行时，直接加<p>视作图片标题，正文不显示，只在查看大图时显示-->
-            <img src="img/shell/shuiyu.avif" loading="lazy" fetchpriority="low"><p>head</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg2</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <video src="vid/[P01]1 羊皮伪装.mp4" controls preload="metadata" loading="lazy" fetchpriority="low"></video><p>sample video</p><br>
-            <img src="img/shell/bg.jpg" loading="lazy" fetchpriority="low"><p>bg</p><br>
-            <p>结束</p>
+            <div class="hero-actions">
+                <a class="hero-btn primary" href="/projects/modrinth.html">Modrinth 项目</a>
+                <a class="hero-btn secondary" href="/column/psn-img-legacy.html">专栏 · 留言板</a>
+                <a class="hero-btn secondary" href="/video-archive/list-bilivideo.html">哔哩哔哩视频</a>
+                <a class="hero-btn ghost" href="/Legacy-1.0/index.html">Legacy 1.0</a>
+            </div>
+            <div class="hero-meta">
+                <div>
+                    <strong>个人项目</strong>
+                    <span>Modrinth / Github</span>
+                </div>
+                <div>
+                    <strong>社交媒体</strong>
+                    <span>哔哩哔哩 / 专栏</span>
+                </div>
+                <div>
+                    <strong>工具（暂未上线）</strong>
+                    <span>Minecraft相关等</span>
+                </div>
+            </div>
+        </section>
+        <section class="summary" aria-labelledby="summary-title">
+            <div class="section-heading">
+                <h2 id="summary-title">当前头条</h2>
+                <p>2026各位春节快乐！2.0版本正式上线！查看新版本亮点：</p>
+            </div>
+            <ul class="summary-grid">
+                <li>
+                    <h3>单页壳层</h3>
+                    <p>header、sidebar、footer 共享壳层，由 includes/shell.html 注入并由 spa-router 与 sidebar.js 维持当前状态。</p>
+                </li>
+                <li>
+                    <h3>交互模块</h3>
+                    <p>滚动返回、搜索、轻量 lightbox 与设置面板按需加载，保持首屏快速渲染。</p>
+                </li>
+                <li>
+                    <h3>资源归档</h3>
+                    <p>projects、column、video-archive 与 Legacy 1.0 记录多个迭代主题与作品内容。</p>
+                </li>
+                <li>
+                    <h3>技术迭代</h3>
+                    <p>PWA 注册脚本、多语言 JSON 与变量驱动的主题搭建了 2.0 的基础。</p>
+                </li>
+                <li>
+                    <h3>现代功能</h3>
+                    <p>出色的动画设计、深色模式支持、多种个性化选项。</p>
+                </li>
+            </ul>
+        </section>
+        <section class="spotlights" aria-labelledby="spotlights-title">
+            <div class="section-heading">
+                <h2 id="spotlights-title">精选页面</h2>
+                <p>点击快速跳转至精选页面。</p>
+            </div>
+            <div class="spotlight-grid">
+                <article class="spotlight-card">
+                    <p class="spotlight-tag">Modrinth 项目</p>
+                    <h3>Modrinth</h3>
+                    <p>收录在 modrinth的插件、数据包、模组。</p>
+                    <a class="spotlight-link" href="/projects/modrinth.html">前往 Modrinth 页</a>
+                </article>
+                <article class="spotlight-card">
+                    <p class="spotlight-tag">Github 项目</p>
+                    <h3>Github</h3>
+                    <p>收录在 Github 的插件、数据包、模组。</p>
+                    <a class="spotlight-link" href="/projects/github.html">前往 Github 页</a>
+                </article>
+                <article class="spotlight-card">
+                    <p class="spotlight-tag">专栏</p>
+                    <h3>留言板</h3>
+                    <p>留言板承载了现场即兴感，结合 lightbox 提供沉浸翻阅体验。</p>
+                    <a class="spotlight-link" href="/column/comments.html">查看评论</a>
+                </article>
+                <article class="spotlight-card">
+                    <p class="spotlight-tag">视频</p>
+                    <h3>哔哩哔哩存档</h3>
+                    <p>通过 video-archive 集合哔哩哔哩视频与字幕，支持直接播放与筛选浏览。</p>
+                    <a class="spotlight-link" href="/video-archive/list-bilivideo.html">浏览视频</a>
+                </article>
+                <article class="spotlight-card">
+                    <p class="spotlight-tag">旧版</p>
+                    <h3>Legacy 1.0</h3>
+                    <p>1.0 时代的设计与内容，便于查看演进轨迹和部分未迁移内容。</p>
+                    <a class="spotlight-link" href="/Legacy-1.0/index.html">回到 1.0</a>
+                </article>
+                <article class="spotlight-card">
+                    <p class="spotlight-tag">关于</p>
+                    <h3>站点说明</h3>
+                    <p>关于页面与 manifest 提供 PWA 元数据。</p>
+                    <a class="spotlight-link" href="/about.html">阅读关于</a>
+                </article>
+            </div>
+        </section>
+        <section class="timeline" aria-labelledby="timeline-title">
+            <div class="section-heading">
+                <h2 id="timeline-title">近期更新</h2>
+                <p>从 1.0 到 2.0 的持续打磨。</p>
+            </div>
+            <ol>
+                <li>
+                    <span class="timeline-year">2022</span>
+                    <div>
+                        <strong>Legacy 1.0</strong>
+                        <p>以传统静态页面打底，创建页面与 README。</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="timeline-year">2025</span>
+                    <div>
+                        <strong>2.0 架构搭建</strong>
+                        <p>引入共用壳层、动态语言包与交互脚本，构建单页导航体验。</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="timeline-year">当前版本</span>
+                    <div>
+                        <strong>持续优化</strong>
+                        <p>版本 2.0.3.1-20260214<br>
+                        更新Modrinth、Github、哔哩哔哩存档、主页<br>
+                        新增设置页二级选项<br>
+                        修复bug</p>
+                    </div>
+                </li>
+            </ol>
         </section>
     </main>
 </body>

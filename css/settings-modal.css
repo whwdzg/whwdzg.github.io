@@ -19,13 +19,20 @@
   visibility: visible;
   pointer-events: auto;
 }
+#settings-backdrop,
+#settings-modal,
+#settings-modal * {
+	/* ensure the settings overlay itself never shows Android tap highlights */
+	-webkit-tap-highlight-color: transparent;
+	tap-highlight-color: transparent;
+}
 #settings-modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 720px;
-  width: calc(100vw - 64px);
+  max-width: 880px;
+  width: calc(100vw - 48px);
   max-height: calc(100vh - 64px);
   overflow: auto;
   background: var(--card-bg);
@@ -97,6 +104,109 @@
   gap: 12px;
 }
 
+.settings-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-layout-nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.settings-layout-nav::-webkit-scrollbar {
+  height: 6px;
+}
+
+.settings-layout-nav::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.2);
+  border-radius: 999px;
+}
+
+.settings-category-tab {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 16px;
+  cursor: pointer;
+  background: var(--secondary-bg);
+  color: var(--text-color);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  flex: 0 0 auto;
+}
+
+.settings-category-tab:hover {
+  background: var(--hover-bg);
+  border-color: var(--border-color);
+}
+
+.settings-category-tab:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.settings-category-tab.active {
+  background: linear-gradient(135deg, var(--primary-color), rgba(var(--primary-color-rgb, 51,204,153), 0.55));
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.settings-layout-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-category-panel {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0 0;
+  overflow: visible;
+}
+
+.settings-category-panel[data-category="about"] {
+  padding-bottom: 10px;
+}
+
+.settings-category-panel.active {
+  display: flex;
+}
+
+.settings-section .settings-dropdown,
+.settings-section .color-picker-row {
+  align-self: center;
+}
+
+.info-value {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.95rem;
+  color: var(--text-muted, #6b7280);
+  text-align: left;
+  word-break: break-word;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .settings-layout-nav {
+    gap: 6px;
+  }
+  .settings-category-tab {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}
+
 .settings-loading {
   color: var(--text-muted, #6b7280);
   text-align: center;
@@ -111,16 +221,32 @@
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15,23,42,0.04);
   padding: 10px 12px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   min-height: 60px;
+  overflow: visible;
 }
 .settings-section .section-left {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   flex: 1;
+}
+.section-icon {
+  font-family: 'FluentSystemIcons-regular', 'Segoe MDL2 Assets', sans-serif;
+  font-size: 20px;
+  color: var(--primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.section-info {
+  color: var(--text-muted, #6b7280);
+  margin-top: 4px;
 }
 .settings-section .section-title {
   font-weight: 600;
@@ -135,6 +261,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  align-self: center;
 }
 
 .settings-action-row {
@@ -142,6 +269,7 @@
   align-items: center;
   gap: 10px;
   margin-left: auto;
+  align-self: center;
 }
 .settings-action-status {
   font-size: 0.9rem;

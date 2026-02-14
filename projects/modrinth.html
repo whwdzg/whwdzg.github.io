@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modrinth 数据包与模组</title>
+    <title>Modrinth</title>
     <meta name="author" content="滄海水魚">
     <meta name="description" content="滄海水魚在 Modrinth 上发布的全平台项目汇总">
     <link rel="manifest" href="/manifest.json">
@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/css/scroll-to-top.css">
     <link rel="stylesheet" href="/css/videoplay.css">
     <link rel="stylesheet" href="/css/column.css">
+    <link rel="stylesheet" href="/css/project.css">
     <link rel="stylesheet" href="/font/FluentSystemIcons-Regular.css">
 
     <script src="/js/pwa/register-sw.js" defer></script>
@@ -37,7 +38,7 @@
     <script src="/js/search.js" defer></script>
     <script src="/js/spa-router.js" defer></script>
     <script src="/js/settings-modal.js" defer></script>
-    <script src="/js/video-archive.js" defer></script>
+    <script src="/js/project.js" defer></script>
 </head>
 <body>
     <div id="shell-root"></div>
@@ -118,22 +119,23 @@
         <div class="column-stack">
             <section class="article-card">
                 <p class="eyebrow">项目</p>
-                <h1>Modrinth 数据包与模组</h1>
-                <p class="article-subtitle">继承 legacy-1.0 首页展示的内容，汇总在 Modrinth 上持续更新的精品数据包与模组。</p>
+                <h1>Modrinth</h1>
+                <p class="article-subtitle">当前 Modrinth 平台上发布的项目汇总</p></p>
                 <div class="article-meta">
                     <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>Modrinth</span>
-                    <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>实时同步</span>
+                    <span class="pill"><i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>MCMOD</span>
+                    <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>2026-2-14</span>
                 </div>
                 <div class="article-actions">
-                    <a href="https://modrinth.com/user/whwdzg" target="_blank" rel="noopener noreferrer">访问我的 Modrinth</a>
-                    <a href="/projects/github.html">前往 Github 项目页</a>
+                    <a href="https://modrinth.com/user/whwdzg" target="_blank" rel="noopener noreferrer">Modrinth 主页</a>
+                    <a href="https://center.mcmod.cn/216083/" target="_blank" rel="noopener noreferrer">MCMOD 主页</a>
                 </div>
             </section>
 
             <section class="article-card">
-                <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
-                    <h2 style="margin:0;">精选作品</h2>
-                    <div class="video-archive-view-switch" style="display:flex;align-items:center;gap:8px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <h2 style="margin:0;">项目列表</h2>
+                    <div class="project-archive-view-switch" style="display:flex;align-items:center;gap:8px;">
                         <button id="grid-view-btn" class="settings-action-btn" title="大网格视图" style="padding:8px 12px;">
                             <i class="icon-ic_fluent_grid_24_regular" aria-hidden="true"></i>
                         </button>
@@ -142,12 +144,14 @@
                         </button>
                     </div>
                 </div>
-                <div class="project-grid video-grid">
-                    <article class="project-card video-card">
-                        <div class="video-thumb">
-                            <img src="https://cdn.modrinth.com/data/aCXZzFav/809704f5f88483cba89c6095db3820c74c8aaf72.png" alt="whwdzg's Recipe" loading="lazy">
-                            <p>whwdzg's Recipe</p>
+                <div class="project-grid">
+                    <article class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://cdn-alt.modrinth.com/data/aCXZzFav/809704f5f88483cba89c6095db3820c74c8aaf72.png" alt="更好的合成配方 | Better Crafting Recipes ( whwdzg's Recipe)" loading="lazy">
+                            <p>更好的合成配方 | Better Crafting Recipes ( whwdzg's Recipe)</p>
                         </div>
+                        <h3>更好的合成配方 | Better Crafting Recipes ( whwdzg's Recipe)</h3>
+                        <p class="project-desc">新增许多便捷的合成表，在不破坏难度下优化游玩流程。</p>
                         <div class="project-tags">
                             <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.13~1.21.11</span>
                             <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
@@ -157,17 +161,20 @@
                             <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
                             <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
                         </div>
-                        <h3><a href="https://modrinth.com/datapack/whwdzg-s-recipe" target="_blank" rel="noopener noreferrer">whwdzg's Recipe</a></h3>
-                        <p class="video-desc">为 Minecraft 带来均衡的自定义合成表，强化探索后的战利品体验。</p>
-                        <div class="project-actions video-actions">
-                            <a class="link-quiet" href="https://modrinth.com/datapack/whwdzg-s-recipe" target="_blank" rel="noopener noreferrer">查看作品</a>
+                        <div class="project-actions">
+                            <a href="https://www.mcmod.cn/class/17614.html" target="_blank" rel="noopener noreferrer">在 MCMOD 上查看</a>
+                            <a href="https://modrinth.com/datapack/better-crafting-recipes" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://github.com/whwdzg/better-crafting-recipes" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
+                            <a href="https://github.com/whwdzg/better-crafting-recipes-i18n" target="_blank" rel="noopener noreferrer">多语言支持</a>
                         </div>
                     </article>
-                    <article class="project-card video-card">
-                        <div class="video-thumb">
-                            <img src="https://cdn.modrinth.com/data/z5l00wq2/14ba612ef2b9ee7281f4e59a5c406ac532be8602.png" alt="Glowing Players" loading="lazy">
-                            <p>Glowing Players</p>
+                    <article class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://cdn-alt.modrinth.com/data/DUx62rbS/a5c56d6bc3ca6b5a54e378dbd14895e065f68567.png" alt="更好的生物掉落 | Better Mob Drop" loading="lazy">
+                            <p>更好的生物掉落 | Better Mob Drop</p>
                         </div>
+                        <h3>更好的生物掉落 | Better Mob Drop</h3>
+                        <p class="project-desc">优化生物掉落，使生物掉落更加合理。</p>
                         <div class="project-tags">
                             <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.13~1.21.11</span>
                             <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
@@ -177,17 +184,20 @@
                             <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
                             <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
                         </div>
-                        <h3><a href="https://modrinth.com/datapack/glowing_players" target="_blank" rel="noopener noreferrer">Glowing Players</a></h3>
-                        <p class="video-desc">被动光效让队友更容易辨认，适用于合作服务器或錄制素材。</p>
-                        <div class="project-actions video-actions">
-                            <a class="link-quiet" href="https://modrinth.com/datapack/glowing_players" target="_blank" rel="noopener noreferrer">查看作品</a>
+                        <div class="project-actions">
+                            <a href="https://www.mcmod.cn/class/17769.html" target="_blank" rel="noopener noreferrer">在 MCMOD 上查看</a>
+                            <a href="https://modrinth.com/datapack/better-mob-drop" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://github.com/whwdzg/better-mob-drop" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
+                            <a href="https://github.com/whwdzg/better-mob-drop-i18n" target="_blank" rel="noopener noreferrer">多语言支持</a>
                         </div>
                     </article>
-                    <article class="project-card video-card">
-                        <div class="video-thumb">
-                            <img src="https://cdn.modrinth.com/data/wIJqstTL/4f7ea7687186ba659d7dac16b449f4bec7df0e36.png" alt="Only Survival Mode" loading="lazy">
-                            <p>Only Survival Mode</p>
+                    <article class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://cdn-alt.modrinth.com/data/7wDeosct/3212a477d58f7daca0c67c3f25a0a193b46a7e86.png" alt="更好的生物掉落（无进度版）| Better Mob Drop (No Advancements Version)" loading="lazy">
+                            <p>更好的生物掉落（无进度版）| Better Mob Drop (No Advancements Version)</p>
                         </div>
+                        <h3>更好的生物掉落（无进度版）| Better Mob Drop (No Advancements Version)</h3>
+                        <p class="project-desc">优化生物掉落，使生物掉落更加合理。</p>
                         <div class="project-tags">
                             <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.13~1.21.11</span>
                             <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
@@ -197,17 +207,43 @@
                             <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
                             <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
                         </div>
-                        <h3><a href="https://modrinth.com/datapack/only-survival-mode" target="_blank" rel="noopener noreferrer">Only Survival Mode</a></h3>
-                        <p class="video-desc">轻量脚本保证世界只能以生存模式运行，适合极限挑战或者速刷。</p>
-                        <div class="project-actions video-actions">
-                            <a class="link-quiet" href="https://modrinth.com/datapack/only-survival-mode" target="_blank" rel="noopener noreferrer">查看作品</a>
+                        <div class="project-actions">
+                            <a href="https://www.mcmod.cn/class/17769.html" target="_blank" rel="noopener noreferrer">在 MCMOD 上查看</a>
+                            <a href="https://modrinth.com/datapack/better-mob-drop-nav" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://github.com/whwdzg/better-mob-drop" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
+                            <a href="https://github.com/whwdzg/better-mob-drop-i18n" target="_blank" rel="noopener noreferrer">多语言支持</a>
                         </div>
                     </article>
-                    <article class="project-card video-card">
-                        <div class="video-thumb">
-                            <img src="https://cdn.modrinth.com/data/DUx62rbS/a5c56d6bc3ca6b5a54e378dbd14895e065f68567.png" alt="Better Mob Drop" loading="lazy">
-                            <p>Better Mob Drop</p>
+                    <article class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://cdn-alt.modrinth.com/data/BZ2KHI32/69053e9351872b8dcc755059fd75ad0acb4eb7ff.png" alt="更好附魔 | Better Enchantments" loading="lazy">
+                            <p>更好附魔 | Better Enchantments</p>
                         </div>
+                        <h3>更好附魔 | Better Enchantments</h3>
+                        <p class="project-desc">使更多物品可以被附魔，增强已有附魔的使用对象。</p>
+                        <div class="project-tags">
+                            <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.21.5~1.21.11</span>
+                            <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
+                            <span class="pill pill--datapack"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>数据包</span>
+                            <span class="pill pill--fabric"><i class="icon-ic_fluent_stack_24_regular" aria-hidden="true"></i>Fabric</span>
+                            <span class="pill pill--quilt"><i class="icon-ic_fluent_patch_24_regular" aria-hidden="true"></i>Quilt</span>
+                            <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
+                            <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://www.mcmod.cn/class/22543.html" target="_blank" rel="noopener noreferrer">在 MCMOD 上查看</a>
+                            <a href="https://modrinth.com/datapack/better-enchantment" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://github.com/whwdzg/better-enchantments" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
+                            <a href="https://github.com/whwdzg/better-enchantments-i18n" target="_blank" rel="noopener noreferrer">多语言支持</a>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://cdn-alt.modrinth.com/data/z5l00wq2/14ba612ef2b9ee7281f4e59a5c406ac532be8602.png" alt="发光玩家 | Glowing Players" loading="lazy">
+                            <p>发光玩家 | Glowing Players</p>
+                        </div>
+                        <h3>发光玩家 | Glowing Players</h3>
+                        <p class="project-desc">始终发光让多人模式下更容易辨认玩家位置，适用于合作服务器或录制素材。</p>
                         <div class="project-tags">
                             <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.13~1.21.11</span>
                             <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
@@ -217,10 +253,51 @@
                             <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
                             <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
                         </div>
-                        <h3><a href="https://modrinth.com/datapack/better_mob_drop" target="_blank" rel="noopener noreferrer">Better Mob Drop</a></h3>
-                        <p class="video-desc">重新设计怪物掉落，令稀有战利品更有意义而不会破坏难度曲线。</p>
-                        <div class="project-actions video-actions">
-                            <a class="link-quiet" href="https://modrinth.com/datapack/better_mob_drop" target="_blank" rel="noopener noreferrer">查看作品</a>
+                        <div class="project-actions">
+                            <a href="https://modrinth.com/datapack/glowing_players" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://github.com/whwdzg/Glowing_Players" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://cdn-alt.modrinth.com/data/wIJqstTL/4f7ea7687186ba659d7dac16b449f4bec7df0e36.png" alt="严格生存模式 | Only Survival Mode" loading="lazy">
+                            <p>严格生存模式 | Only Survival Mode</p>
+                        </div>
+                        <h3>严格生存模式 | Only Survival Mode</h3>
+                        <p class="project-desc">严格保证世界始终未生存模式，适合限制喜欢开创造/旁观的朋友。</p>
+                        <div class="project-tags">
+                            <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.13~1.21.11</span>
+                            <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
+                            <span class="pill pill--datapack"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>数据包</span>
+                            <span class="pill pill--fabric"><i class="icon-ic_fluent_stack_24_regular" aria-hidden="true"></i>Fabric</span>
+                            <span class="pill pill--quilt"><i class="icon-ic_fluent_patch_24_regular" aria-hidden="true"></i>Quilt</span>
+                            <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
+                            <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://modrinth.com/datapack/only-survival-mode" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://github.com/whwdzg/Only_Survival_Mode" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://cdn-alt.modrinth.com/data/ucfRuKlc/51254c6117102a53e2c8c9a38968958dd4e19bab.png" alt="魔法染料 | Magical Dye" loading="lazy">
+                            <p>魔法染料 | Magical Dye</p>
+                        </div>
+                        <h3>魔法染料 | Magical Dye</h3>
+                        <p class="project-desc">2025年愚人节数据包，染料现在可以将粉末、矿物块进行染色转化。</p>
+                        <div class="project-tags">
+                            <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.21.2~1.21.4</span>
+                            <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
+                            <span class="pill pill--datapack"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>数据包</span>
+                            <span class="pill pill--fabric"><i class="icon-ic_fluent_stack_24_regular" aria-hidden="true"></i>Fabric</span>
+                            <span class="pill pill--quilt"><i class="icon-ic_fluent_patch_24_regular" aria-hidden="true"></i>Quilt</span>
+                            <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
+                            <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://modrinth.com/datapack/magical_dye" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://github.com/whwdzg/Magical_Dye" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
                         </div>
                     </article>
                 </div>
@@ -231,7 +308,6 @@
                 <div class="article-actions">
                     <a aria-current="page" href="/projects/modrinth.html">Modrinth 项目</a>
                     <a href="/projects/github.html">Github 项目页</a>
-                    <a href="/">返回主页</a>
                 </div>
             </section>
         </div>

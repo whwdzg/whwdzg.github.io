@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>评论发癫区</title>
+    <title>留言板</title>
     <meta name="author" content="滄海水魚">
-    <meta name="description" content="评论发癫区">
+    <meta name="description" content="留言板">
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/img/shell/favicon.ico" type="image/x-icon">
     <link rel="preload" href="/img/shell/favicon.ico" as="image" type="image/x-icon">
@@ -36,6 +36,7 @@
     <script src="/js/search.js" defer></script>
     <script src="/js/spa-router.js" defer></script>
     <script src="/js/settings-modal.js" defer></script>
+    <script src="/js/column-directory.js" defer></script>
 </head>
 <body>
      <div id="shell-root"></div>
@@ -113,10 +114,11 @@
         </script>
 
     <main>
-        <div class="column-stack">
+        <div class="column-layout">
+            <div class="column-stack">
             <section class="article-card">
                 <p class="eyebrow">专栏</p>
-                <h1>评论发癫区</h1>
+                <h1>留言板</h1>
                 <p class="article-subtitle">静态站的“留言板”：想说的、想吐槽的，都可以在这里留下。</p>
                 <div class="article-meta">
                     <span class="pill"><i class="icon-ic_fluent_person_24_regular" aria-hidden="true"></i>滄海水魚</span>
@@ -182,10 +184,17 @@
                 <h2>目录与跳转</h2>
                 <div class="article-actions">
                     <a href="/column/psn-img-legacy.html">个人图库-过去的记忆</a>
-                    <a aria-current="page" href="/column/comments.html">评论发癫区</a>
+                    <a aria-current="page" href="/column/comments.html">留言板</a>
                     <a href="https://www.bilibili.com/opus/968748900391321609/" target="_blank" rel="noopener noreferrer">海绵宝宝 add-on</a>
                 </div>
             </section>
+            </div>
+            <nav class="column-directory" aria-label="文章目录" data-column-directory>
+                <p class="column-directory__title">文章目录</p>
+                <div class="column-directory__content" data-column-directory-content>
+                    <p class="column-directory__empty">正在为您生成目录……</p>
+                </div>
+            </nav>
         </div>
     </main>
 </body>

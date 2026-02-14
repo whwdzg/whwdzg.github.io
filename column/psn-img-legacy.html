@@ -36,6 +36,7 @@
     <script src="/js/search.js" defer></script>
     <script src="/js/spa-router.js" defer></script>
     <script src="/js/settings-modal.js" defer></script>
+    <script src="/js/column-directory.js" defer></script>
 </head>
 <body>
      <div id="shell-root"></div>
@@ -113,7 +114,8 @@
         </script>
 
     <main>
-        <div class="column-stack">
+        <div class="column-layout">
+            <div class="column-stack">
             <section class="article-card">
                 <p class="eyebrow">专栏</p>
                 <h1>个人图库 · 过去的记忆</h1>
@@ -125,7 +127,7 @@
                 </div>
                 <div class="article-actions">
                     <a href="https://space.bilibili.com/588003657" target="_blank" rel="noopener noreferrer">作者主页</a>
-                    <a href="/column/comments.html">下一篇：评论发癫区</a>
+                    <a href="/column/comments.html">下一篇：留言板</a>
                 </div>
             </section>
 
@@ -199,10 +201,17 @@
                 <h2>目录与跳转</h2>
                 <div class="article-actions">
                     <a aria-current="page" href="/column/psn-img-legacy.html">个人图库-过去的记忆</a>
-                    <a href="/column/comments.html">评论发癫区</a>
+                    <a href="/column/comments.html">留言板</a>
                     <a href="https://www.bilibili.com/opus/968748900391321609/" target="_blank" rel="noopener noreferrer">海绵宝宝 add-on</a>
                 </div>
             </section>
+            </div>
+            <nav class="column-directory" aria-label="文章目录" data-column-directory>
+                <p class="column-directory__title">文章目录</p>
+                <div class="column-directory__content" data-column-directory-content>
+                    <p class="column-directory__empty">正在为您生成目录……</p>
+                </div>
+            </nav>
         </div>
     </main>
         <script>

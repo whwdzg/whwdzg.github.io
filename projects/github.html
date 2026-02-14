@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Github 项目集</title>
+    <title>Github</title>
     <meta name="author" content="滄海水魚">
     <meta name="description" content="收录在 Github 上管理的开源项目与工具">
     <link rel="manifest" href="/manifest.json">
@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/css/scroll-to-top.css">
     <link rel="stylesheet" href="/css/videoplay.css">
     <link rel="stylesheet" href="/css/column.css">
+    <link rel="stylesheet" href="/css/project.css">
     <link rel="stylesheet" href="/font/FluentSystemIcons-Regular.css">
 
     <script src="/js/pwa/register-sw.js" defer></script>
@@ -37,7 +38,7 @@
     <script src="/js/search.js" defer></script>
     <script src="/js/spa-router.js" defer></script>
     <script src="/js/settings-modal.js" defer></script>
-    <script src="/js/video-archive.js" defer></script>
+    <script src="/js/project.js" defer></script>
 </head>
 <body>
     <div id="shell-root"></div>
@@ -118,22 +119,21 @@
         <div class="column-stack">
             <section class="article-card">
                 <p class="eyebrow">项目</p>
-                <h1>Github 上的开源工程</h1>
-                <p class="article-subtitle">沿袭旧站展示，集中呈现当前维护的主要仓库与项目站点。</p>
+                <h1>Github</h1>
+                <p class="article-subtitle">Github 当前维护的主要仓库与项目站点。Modrinth 项目不包含在此页面。</p>
                 <div class="article-meta">
                     <span class="pill"><i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>Github</span>
-                    <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>持续同步</span>
+                    <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>2026-2-14</span>
                 </div>
                 <div class="article-actions">
-                    <a href="https://github.com/whwdzg" target="_blank" rel="noopener noreferrer">访问我的 Github</a>
-                    <a href="/projects/modrinth.html">前往 Modrinth 项目页</a>
+                    <a href="https://github.com/whwdzg" target="_blank" rel="noopener noreferrer">Github 主页</a>
                 </div>
             </section>
 
             <section class="article-card">
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
-                    <h2 style="margin:0;">核心仓库</h2>
-                    <div class="video-archive-view-switch" style="display:flex;align-items:center;gap:8px;">
+                    <h2 style="margin:0;">仓库</h2>
+                    <div class="project-archive-view-switch" style="display:flex;align-items:center;gap:8px;">
                         <button id="grid-view-btn" class="settings-action-btn" title="大网格视图" style="padding:8px 12px;">
                             <i class="icon-ic_fluent_grid_24_regular" aria-hidden="true"></i>
                         </button>
@@ -142,44 +142,83 @@
                         </button>
                     </div>
                 </div>
-                <div class="project-grid video-grid">
-                    <article class="project-card video-card">
-                        <div class="video-thumb">
+                <div class="project-grid project-grid">
+                    <article class="project-card project-card">
+                        <div class="project-thumb">
                             <img src="/img/head/shuiyu.avif" alt="shuiyu 头像" loading="lazy">
                             <p>本站</p>
                         </div>
-                        <span class="pill">Site</span>
-                        <span class="pill">HTML</span>
-                        <h3><a href="https://github.com/whwdzg/whwdzg.github.io" target="_blank" rel="noopener noreferrer">whwdzg.github.io</a></h3>
-                        <p class="video-desc">本站点的源码仓库，包含 SPA 壳层、PWA 资源与站点动画逻辑。</p>
-                        <div class="project-actions video-actions">
-                            <a class="link-quiet" href="https://github.com/whwdzg/whwdzg.github.io" target="_blank" rel="noopener noreferrer">查看源码</a>
+                        <h3>whwdzg.github.io</h3>
+                        <p class="project-desc">本站源码仓库。</p>
+                        <div class="project-tags">
+                            <span class="pill"><i class="icon-ic_fluent_window_24_regular" aria-hidden="true"></i>Site</span>
+                            <span class="pill"><i class="icon-ic_fluent_code_24_regular" aria-hidden="true"></i>HTML</span>
+                        </div>
+                        <div class="project-actions project-actions">
+                            <a href="https://github.com/whwdzg/whwdzg.github.io" target="_blank" rel="noopener noreferrer">查看源码</a>
                         </div>
                     </article>
-                    <article class="project-card video-card">
-                        <div class="video-thumb">
+
+                    <article class="project-card project-card">
+                        <div class="project-thumb">
                             <img src="/img/head/shuiyu.avif" alt="shuiyu 头像" loading="lazy">
                             <p>ShuiyuBlog-PWA</p>
                         </div>
-                        <span class="pill">PowerShell</span>
-                        <span class="pill">PWA</span>
-                        <h3><a href="https://github.com/whwdzg/ShuiyuBlog-PWA" target="_blank" rel="noopener noreferrer">ShuiyuBlog-PWA</a></h3>
-                        <p class="video-desc">在 Windows 上可打包的 PWA 方案，集成了离线与自定义客户端功能。</p>
-                        <div class="project-actions video-actions">
-                            <a class="link-quiet" href="https://github.com/whwdzg/ShuiyuBlog-PWA" target="_blank" rel="noopener noreferrer">查看仓库</a>
+                        <h3>ShuiyuBlog-PWA</h3>
+                        <p class="project-desc">本站的PWA版本支持。</p>
+                        <div class="project-tags">
+                            <span class="pill"><i class="icon-ic_fluent_window_24_regular" aria-hidden="true"></i>PWA</span>
+                            <span class="pill"><i class="icon-ic_fluent_code_24_regular" aria-hidden="true"></i>Powershell</span>
+                        </div>
+                        <div class="project-actions project-actions">
+                            <a href="https://github.com/whwdzg/ShuiyuBlog-PWA" target="_blank" rel="noopener noreferrer">查看仓库</a>
                         </div>
                     </article>
-                    <article class="project-card video-card">
-                        <div class="video-thumb">
+                    <article class="project-card project-card">
+                        <div class="project-thumb">
                             <img src="/img/head/shuiyu.avif" alt="shuiyu 头像" loading="lazy">
                             <p>whwdzg</p>
                         </div>
-                        <span class="pill">个人</span>
-                        <span class="pill">Profile</span>
-                        <h3><a href="https://github.com/whwdzg/whwdzg" target="_blank" rel="noopener noreferrer">whwdzg</a></h3>
-                        <p class="video-desc">个人资料和灵感集中地，记录简历、日记及创作碎片。</p>
-                        <div class="project-actions video-actions">
-                            <a class="link-quiet" href="https://github.com/whwdzg/whwdzg" target="_blank" rel="noopener noreferrer">查看内容</a>
+                        <h3>whwdzg</h3>
+                        <p class="project-desc">个人资料页。</p>
+                        <div class="project-tags">
+                            <span class="pill"><i class="icon-ic_fluent_window_24_regular" aria-hidden="true"></i>Profile</span>
+                            <span class="pill"><i class="icon-ic_fluent_code_24_regular" aria-hidden="true"></i>Markdown</span>
+                        </div>
+                        <div class="project-actions project-actions">
+                            <a href="https://github.com/whwdzg/whwdzg" target="_blank" rel="noopener noreferrer">查看内容</a>
+                        </div>
+                    </article>
+
+                    <article class="project-card project-card">
+                        <div class="project-thumb">
+                            <img src="/img/head/shuiyu.avif" alt="shuiyu 头像" loading="lazy">
+                            <p>better_collection-neoforge</p>
+                        </div>
+                        <h3>better_collection-neoforge</h3>
+                        <p class="project-desc">更多Minecraft的物品块。（早期测试）</p>
+                        <div class="project-tags">
+                            <span class="pill"><i class="icon-ic_fluent_window_24_regular" aria-hidden="true"></i>Minecraft Mod</span>
+                            <span class="pill"><i class="icon-ic_fluent_code_24_regular" aria-hidden="true"></i>Java</span>
+                        </div>
+                        <div class="project-actions project-actions">
+                            <a href="https://github.com/whwdzg/better_collection-neoforge" target="_blank" rel="noopener noreferrer">查看内容</a>
+                        </div>
+                    </article>
+
+                    <article class="project-card project-card">
+                        <div class="project-thumb">
+                            <img src="/img/head/shuiyu.avif" alt="shuiyu 头像" loading="lazy">
+                            <p>Battle_Pioneer</p>
+                        </div>
+                        <h3>Battle_Pioneer</h3>
+                        <p class="project-desc">Minecraft装备战斗模组。（早期测试）</p>
+                        <div class="project-tags">
+                            <span class="pill"><i class="icon-ic_fluent_window_24_regular" aria-hidden="true"></i>Minecraft Mod</span>
+                            <span class="pill"><i class="icon-ic_fluent_code_24_regular" aria-hidden="true"></i>Java</span>
+                        </div>
+                        <div class="project-actions project-actions">
+                            <a href="https://github.com/whwdzg/Battle_Pioneer" target="_blank" rel="noopener noreferrer">查看内容</a>
                         </div>
                     </article>
                 </div>
@@ -190,7 +229,6 @@
                 <div class="article-actions">
                     <a href="/projects/github.html" aria-current="page">Github 项目页</a>
                     <a href="/projects/modrinth.html">Modrinth 项目页</a>
-                    <a href="/">返回主页</a>
                 </div>
             </section>
         </div>

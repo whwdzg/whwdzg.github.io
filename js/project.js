@@ -1,24 +1,17 @@
 (function () {
     function wrapPills(card) {
-        if (!card || card.querySelector('.video-pill-row')) return;
+        if (!card || card.querySelector('.project-pill-row')) return;
         var pills = Array.prototype.filter.call(card.children, function (child) {
             return child.classList && child.classList.contains('pill');
         });
         if (!pills.length) return;
         var row = document.createElement('div');
-        row.className = 'video-pill-row';
+        row.className = 'project-pill-row';
         pills.forEach(function (pill) {
             row.appendChild(pill);
         });
         var title = card.querySelector('h3');
-        var description = card.querySelector('.video-desc');
-        if (description && description.parentNode === card) {
-            if (description.nextSibling) {
-                card.insertBefore(row, description.nextSibling);
-            } else {
-                card.appendChild(row);
-            }
-        } else if (title && title.parentNode === card) {
+        if (title && title.parentNode === card) {
             if (title.nextSibling) {
                 card.insertBefore(row, title.nextSibling);
             } else {
@@ -40,7 +33,7 @@
 
     function adjustActionButtons(card) {
         if (!card) return;
-        card.querySelectorAll('.video-actions a').forEach(function (link) {
+        card.querySelectorAll('.project-actions a').forEach(function (link) {
             var text = (link.textContent || '').trim();
             if (!text) return;
             if (text.indexOf('链接已失效') !== -1) {
@@ -60,7 +53,7 @@
         var gapValue = parseFloat(styles.getPropertyValue('row-gap'));
         var rowGap = Number.isNaN(gapValue) ? 0 : gapValue;
         if (!rowHeight) return false;
-        var cards = grid.querySelectorAll('.video-card');
+        var cards = grid.querySelectorAll('.project-card');
         cards.forEach(function (card) {
             var cardHeight = card.getBoundingClientRect().height;
             var rowSpan = Math.ceil((cardHeight + rowGap) / (rowHeight + rowGap));
@@ -71,14 +64,14 @@
 
     function resetMasonry(grid) {
         if (!grid) return;
-        grid.querySelectorAll('.video-card').forEach(function (card) {
+        grid.querySelectorAll('.project-card').forEach(function (card) {
             card.style.gridRowEnd = '';
         });
     }
 
-    function initVideoArchivePage(root) {
+    function initprojectArchivePage(root) {
         var scope = root || document;
-        var grid = scope.querySelector('.video-grid');
+        var grid = scope.querySelector('.project-grid');
         if (!grid) return;
 
         var viewStorageKey = 'view-mode:' + (location.pathname || location.href);
@@ -97,7 +90,7 @@
             }
         }
 
-        var cards = grid.querySelectorAll('.video-card');
+        var cards = grid.querySelectorAll('.project-card');
         cards.forEach(function (card) {
             wrapPills(card);
             markCollectionPills(card);
@@ -108,13 +101,13 @@
         grid.dataset.viewSwitchBound = '1';
 
         // Add collection badge for multi-image thumbs.
-        var thumbs = scope.querySelectorAll('.video-thumb');
+        var thumbs = scope.querySelectorAll('.project-thumb');
         thumbs.forEach(function (thumb) {
             var imgs = thumb.querySelectorAll('img');
             if (imgs.length >= 2) {
-                if (!thumb.querySelector('.video-badge.collection')) {
+                if (!thumb.querySelector('.project-badge.collection')) {
                     var badge = document.createElement('span');
-                    badge.className = 'video-badge collection';
+                    badge.className = 'project-badge collection';
                     badge.textContent = '合集';
                     thumb.appendChild(badge);
                 }
@@ -185,7 +178,7 @@
     }
 
     function init() {
-        initVideoArchivePage(document);
+        initprojectArchivePage(document);
     }
 
     if (document.readyState === 'loading') {
@@ -195,6 +188,6 @@
     }
 
     window.addEventListener('spa:page:loaded', function () {
-        initVideoArchivePage(document);
+        initprojectArchivePage(document);
     });
 })();
