@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_crimson_stem" ]
+  },
+  "criteria": {
+    "crimson_stem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:crimson_stem" } ]
+      }
+    }
+    
+  },
+  "requirements": [
+    [
+      "crimson_stem"
+    ]
+  ]
+}

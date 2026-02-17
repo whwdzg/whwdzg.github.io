@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "deepslate": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:deepslate"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["deepslate"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:cobbled_deepslate"]  
+  }
+}

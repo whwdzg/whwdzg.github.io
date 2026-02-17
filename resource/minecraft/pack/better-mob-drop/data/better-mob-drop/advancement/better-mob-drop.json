@@ -1,0 +1,31 @@
+{
+  "criteria": {
+    "killed_by_something": {
+      "trigger": "minecraft:entity_killed_player"
+    },
+    "killed_something": {
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:block/chiseled_stone_bricks",
+    "description": {
+      "translate": "更好的生物掉落，掉落他们原本应该掉落的东西"
+    },
+    "icon": {
+      "id": "minecraft:iron_sword"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "Better Mob Drop"
+    }
+  },
+  "requirements": [
+    [
+      "killed_something",
+      "killed_by_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "orange_stained_glass": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:orange_stained_glass"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["orange_stained_glass"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:orange_stained_glass_pane"]  
+  }
+}

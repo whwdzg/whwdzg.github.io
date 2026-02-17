@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "* *",
+    "#X#",
+    " * "
+  ],
+  "key": {
+    "#": [
+       "minecraft:experience_bottle"
+    ],
+    "*": [
+       "minecraft:gold_ingot"
+    ],
+    "X": [
+       "minecraft:enchanted_golden_apple"
+    ]
+  },
+  "result": {
+    "id": "minecraft:totem_of_undying"
+  }
+}

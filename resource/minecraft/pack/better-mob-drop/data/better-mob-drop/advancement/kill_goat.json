@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_goat": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:goat"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:mutton"
+       },
+       "title": {
+           "translate": "高山甄选"
+       },
+       "description": {
+           "translate": "山中羊的山珍味道"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_goat"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:better-mob-drop"
+}

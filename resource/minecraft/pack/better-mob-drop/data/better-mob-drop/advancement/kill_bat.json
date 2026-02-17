@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_bat": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:bat"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:phantom_membrane"
+       },
+       "title": {
+           "translate": "我也不想在这里"
+       },
+       "description": {
+           "translate": "杀死阴暗无人角落里的蝙蝠"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_bat"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:kill_bee"
+}

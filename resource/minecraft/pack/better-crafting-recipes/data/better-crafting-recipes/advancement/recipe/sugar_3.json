@@ -1,0 +1,26 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+    "rewards": {
+      "recipes": [ "better-crafting-recipes:sugar_3" ]
+    },
+    "criteria": {
+      "sugar_resource_3": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [
+            {
+              "items": "#better-crafting-recipes:sugar_resource_3",
+              "count": {
+                "min": 1
+              }
+            }
+          ] 
+        }
+      }
+    },
+    "requirements": [
+      [
+        "sugar_resource_3"
+      ]
+    ]
+  }

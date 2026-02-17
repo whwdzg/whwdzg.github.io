@@ -1,0 +1,31 @@
+{
+  "criteria": {   
+      "water_bucket": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:water_bucket"
+                  }
+              ]
+          }
+      },
+      "dirt":{
+          "trigger":"minecraft:inventory_changed",
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:dirt"
+              }
+            ]
+          } 
+      }
+  },
+  "requirements": [    
+      ["water_bucket","dirt"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:mud"]  
+  }
+}

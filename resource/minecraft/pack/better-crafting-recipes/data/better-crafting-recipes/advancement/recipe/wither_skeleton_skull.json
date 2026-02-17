@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "coal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:coal"],
+            "count": {
+              "min": 8
+            }
+          }
+        ]
+      }
+    },
+    "skeleton_skull": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:skeleton_skull"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:wither_skeleton_skull"]
+  },
+  "requirements": [
+    [
+      "coal",
+      "skeleton_skull"
+    ]
+  ]
+}

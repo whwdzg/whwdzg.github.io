@@ -1,0 +1,50 @@
+{
+  "criteria": {
+    "prismarine_crystals": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:prismarine_crystals"],
+            "count": {
+              "min": 4
+            }
+          }
+        ]
+      }
+    },
+    "prismarine_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:prismarine_shard"],
+            "count": {
+              "min": 4
+            }
+          }
+        ]
+      }
+    },
+    "diamond": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:diamond"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:heart_of_the_sea"]
+  },
+  "requirements": [
+    [
+      "prismarine_crystals",
+      "prismarine_shard",
+      "diamond"
+    ]
+  ]
+}

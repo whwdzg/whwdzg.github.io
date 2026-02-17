@@ -1,0 +1,19 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_warped_stem" ]
+  },
+  "criteria": {
+    "warped_stem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:warped_stem" } ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "warped_stem"
+    ]
+  ]
+}

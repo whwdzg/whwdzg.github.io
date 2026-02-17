@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category":"misc",
+  "result": {
+      "id": "minecraft:powder_snow_bucket",
+      "count": 1
+  },
+  "ingredients": [
+      [
+          
+               "minecraft:snow_block" 
+          
+      ],
+      [
+        
+             "minecraft:bucket" 
+        
+      ]
+  ]
+}

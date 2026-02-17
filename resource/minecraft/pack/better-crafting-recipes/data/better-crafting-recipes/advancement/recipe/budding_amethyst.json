@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "amethyst_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:amethyst_shard"],
+            "count": {
+              "min": 4
+            }
+          }
+        ]
+      }
+    },
+    "amethyst_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:amethyst_block"]
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:budding_amethyst"]
+  },
+  "requirements": [
+    [
+      "amethyst_shard",
+      "amethyst_block"
+    ]
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "lapis_lazuli": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:lapis_lazuli"],
+            "count": {
+              "min": 4
+            }
+          }
+        ]
+      }
+    },
+    "glass_bottle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:glass_bottle"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:experience_bottle"]
+  },
+  "requirements": [
+    [
+      "lapis_lazuli",
+      "glass_bottle"
+    ]
+  ]
+}

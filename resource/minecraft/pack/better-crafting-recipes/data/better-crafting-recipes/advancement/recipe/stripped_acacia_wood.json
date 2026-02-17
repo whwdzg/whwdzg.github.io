@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_acacia_wood" ]
+  },
+  "criteria": {
+    "acacia_wood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:acacia_wood" } ]
+      }
+    }
+    
+  },
+  "requirements": [
+    [
+      "acacia_wood"
+    ]
+  ]
+}

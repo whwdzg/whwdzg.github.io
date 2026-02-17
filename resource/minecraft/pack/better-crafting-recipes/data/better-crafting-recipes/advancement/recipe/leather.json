@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "rotten_flesh": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:rotten_flesh"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["rotten_flesh"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:leather"]  
+  }
+}

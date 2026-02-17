@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "nether_bricks": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:nether_bricks"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["nether_bricks"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:nether_brick"]  
+  }
+}

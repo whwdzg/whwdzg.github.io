@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": [
+     "minecraft:terracotta"
+  ],
+  "result": {
+    "id": "minecraft:red_sand",
+    "count": 1
+  }
+}

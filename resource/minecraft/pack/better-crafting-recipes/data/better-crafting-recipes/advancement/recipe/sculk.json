@@ -1,0 +1,25 @@
+{
+  "criteria": {
+    "echo_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:echo_shard"],
+            "count": {
+              "min": 4
+            }
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:sculk"]
+  },
+  "requirements": [
+    [
+      "echo_shard"
+    ]
+  ]
+}

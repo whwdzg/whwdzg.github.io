@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_bogged": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:bogged"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:red_mushroom"
+       },
+       "title": {
+           "translate": "沼泽弓手"
+       },
+       "description": {
+           "translate": "剧毒法师的死亡"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_bogged"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:better-mob-drop"
+}

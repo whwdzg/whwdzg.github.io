@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "black_stained_glass": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:black_stained_glass"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["black_stained_glass"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:black_stained_glass_pane"]  
+  }
+}

@@ -1,0 +1,37 @@
+{
+    "criteria": {   
+        "totem_of_undying": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:totem_of_undying",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:experience_bottle","minecraft:enchanted_golden_apple","minecraft:gold_ingot"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:totem_of_undying"
+         },
+         "title": {
+             "translate": "不死力量"
+         },
+         "description": {
+             "translate": "人造魔法"
+         },
+         "frame": "challenge",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:experience_bottle",
+    "requirements": [    
+        ["totem_of_undying"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

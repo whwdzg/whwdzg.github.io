@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "diamond": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:diamond"],
+            "count": {
+              "min": 6
+            }
+          }
+        ]
+      }
+    },
+    "leather_horse_armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:leather_horse_armor"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:diamond_horse_armor"]
+  },
+  "requirements": [
+    [
+      "diamond",
+      "leather_horse_armor"
+    ]
+  ]
+}

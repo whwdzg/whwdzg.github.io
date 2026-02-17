@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "&&&",
+    "#*#",
+    "#X#"
+  ],
+  "key": {
+    "#": 
+     "#better-crafting-recipes:stone_resource_crafting"
+    ,
+    "X": [
+     "minecraft:redstone"
+    ],
+    "&":
+     "#minecraft:planks"
+    ,
+    "*": [
+      "minecraft:iron_ingot"
+    ]
+  },
+  "result": {
+    "id": "minecraft:piston"
+  }
+}

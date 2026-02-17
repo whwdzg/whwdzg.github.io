@@ -1,0 +1,21 @@
+{
+    "criteria": {   
+        "blue_stained_glass": {    
+            "trigger": "minecraft:inventory_changed",    
+            "conditions": {
+                "items": [
+                    {
+                        "items": "minecraft:blue_stained_glass"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [    
+        ["blue_stained_glass"]
+    ],
+    "parent": "better-crafting-recipes:better-crafting-recipes",
+    "rewards": {    
+        "recipes": ["better-crafting-recipes:blue_stained_glass_pane"]  
+    }
+  }

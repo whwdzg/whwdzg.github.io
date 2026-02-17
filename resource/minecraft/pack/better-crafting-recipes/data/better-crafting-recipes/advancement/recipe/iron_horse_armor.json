@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "iron_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:iron_ingot"],
+            "count": {
+              "min": 6
+            }
+          }
+        ]
+      }
+    },
+    "leather_horse_armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:leather_horse_armor"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:iron_horse_armor"]
+  },
+  "requirements": [
+    [
+      "iron_ingot",
+      "leather_horse_armor"
+    ]
+  ]
+}

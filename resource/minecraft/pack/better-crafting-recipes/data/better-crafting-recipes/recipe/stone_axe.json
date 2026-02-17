@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "#X",
+    " X"
+  ],
+  "key": {
+    "#": 
+     "#better-crafting-recipes:stone_resource_crafting"
+    ,
+    "X": [
+       "minecraft:stick"
+    ]
+  },
+  "result": {
+    "id": "minecraft:stone_axe"
+  }
+}

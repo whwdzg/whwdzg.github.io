@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "*#*",
+    "#X#",
+    "*#*"
+  ],
+  "key": {
+    "#": [
+       "minecraft:prismarine_crystals"
+    ],
+    "*": [
+       "minecraft:prismarine_shard"
+    ],
+    "X": [
+       "minecraft:diamond"
+    ]
+  },
+  "result": {
+    "id": "minecraft:heart_of_the_sea"
+  }
+}

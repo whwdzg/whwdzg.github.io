@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_piglin": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:piglin"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:gold_ingot"
+       },
+       "title": {
+           "translate": "下界奸商"
+       },
+       "description": {
+           "translate": "成为摸金校尉"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_piglin"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:better-mob-drop"
+}

@@ -1,0 +1,48 @@
+{
+    "criteria": {   
+        "gunpowder": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:gunpowder",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:gravel","minecraft:flint","minecraft:coal","minecraft:sugar"]
+                    }
+                ]
+            }
+        },
+        "gunpowder2":{
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:gunpowder2",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:gravel","minecraft:flint","minecraft:charcoal","minecraft:sugar"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:gunpowder"
+         },
+         "title": {
+             "translate": "火药制作"
+         },
+         "description": {
+             "translate": "糖是易燃的，你知道嘛？"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:mutisugar",
+    "requirements": [    
+        ["gunpowder","gunpowder2"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

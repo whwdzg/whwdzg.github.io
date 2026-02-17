@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  #",
+    "#X#",
+    "###"
+  ],
+  "key": {
+    "#": [
+       "minecraft:gold_ingot"
+    ],
+    "X": [
+       "minecraft:leather_horse_armor"
+    ]
+  },
+  "result": {
+    "id": "minecraft:golden_horse_armor"
+  }
+}

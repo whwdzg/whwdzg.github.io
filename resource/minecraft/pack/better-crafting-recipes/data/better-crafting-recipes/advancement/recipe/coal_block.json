@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "charcoal": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:charcoal"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["charcoal"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:coal_block"]  
+  }
+}

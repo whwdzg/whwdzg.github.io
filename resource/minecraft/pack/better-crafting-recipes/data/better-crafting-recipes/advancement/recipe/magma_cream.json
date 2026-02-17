@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "magma_block": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:magma_block"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["magma_block"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:magma_cream"]  
+  }
+}

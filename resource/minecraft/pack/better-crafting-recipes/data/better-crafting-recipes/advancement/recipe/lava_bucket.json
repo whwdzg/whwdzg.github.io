@@ -1,0 +1,31 @@
+{
+  "criteria": {   
+      "bucket": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:bucket"
+                  }
+              ]
+          }
+      },
+      "magma_block":{
+          "trigger":"minecraft:inventory_changed",
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:magma_block"
+              }
+            ]
+          } 
+      }
+  },
+  "requirements": [    
+      ["bucket","magma_block"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:lava_bucket"]  
+  }
+}

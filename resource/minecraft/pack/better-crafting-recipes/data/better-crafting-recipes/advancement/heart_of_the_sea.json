@@ -1,0 +1,37 @@
+{
+    "criteria": {   
+        "heart_of_the_sea": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:heart_of_the_sea",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:prismarine_crystals","minecraft:prismarine_shard","minecraft:diamond"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:heart_of_the_sea"
+         },
+         "title": {
+             "translate": "海洋之力"
+         },
+         "description": {
+             "translate": "统领海洋的力量"
+         },
+         "frame": "goal",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:make_chainmail_armor",
+    "requirements": [    
+        ["heart_of_the_sea"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

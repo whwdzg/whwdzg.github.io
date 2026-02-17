@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "cyan_stained_glass": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:cyan_stained_glass"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["cyan_stained_glass"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:cyan_stained_glass_pane"]  
+  }
+}

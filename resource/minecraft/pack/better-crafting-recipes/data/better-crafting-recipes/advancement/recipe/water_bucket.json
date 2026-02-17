@@ -1,0 +1,31 @@
+{
+  "criteria": {   
+      "bucket": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:bucket"
+                  }
+              ]
+          }
+      },
+      "ice":{
+          "trigger":"minecraft:inventory_changed",
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:ice"
+              }
+            ]
+          } 
+      }
+  },
+  "requirements": [    
+      ["bucket","ice"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:water_bucket"]  
+  }
+}

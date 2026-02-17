@@ -1,0 +1,70 @@
+{
+    "criteria": {   
+        "chainmail_boots": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:chainmail_boots",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:iron_chain"]
+                    }
+                ]
+            }
+        },
+        "chainmail_leggings": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:chainmail_leggings",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:iron_chain"]
+                    }
+                ]
+            }
+        },
+        "chainmail_chestplate": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:chainmail_chestplate",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:iron_chain"]
+                    }
+                ]
+            }
+        },
+        "chainmail_helmet": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:chainmail_helmet",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:iron_chain"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:chainmail_chestplate"
+         },
+         "title": {
+             "translate": "隐藏护甲"
+         },
+         "description": {
+             "translate": "寻找未知护甲的秘密，并解锁隐藏的力量。"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:better-crafting-recipes",
+    "requirements": [    
+        ["chainmail_boots", "chainmail_leggings", "chainmail_chestplate", "chainmail_helmet"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

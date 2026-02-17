@@ -1,0 +1,92 @@
+{
+    "criteria": {   
+        "furnace": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:furnace",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:stone_resource_crafting"
+                    }
+                ]
+            }
+        },
+        "observer": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:observer",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:stone_resource_crafting"
+                    }
+                ]
+            }
+        },
+        "dispenser": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:dispenser",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:stone_resource_crafting"
+                    }
+                ]
+            }
+        },
+        "dropper": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:dropper",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:stone_resource_crafting"
+                    }
+                ]
+            }
+        },
+        "piston": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:piston",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:stone_resource_crafting"
+                    }
+                ]
+            }
+        },
+        "brewing_stand": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:brewing_stand",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:stone_resource_crafting"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:furnace"
+         },
+         "title": {
+             "translate": "石质工作方块扩展"
+         },
+         "description": {
+             "translate": "用各类石头制成工作方块。"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:stonemade_tools",
+    "requirements": [    
+        ["furnace", "observer",  "dispenser", "dropper", "piston","brewing_stand"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

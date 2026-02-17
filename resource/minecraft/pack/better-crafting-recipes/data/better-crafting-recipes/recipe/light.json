@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#X#",
+    " # "
+  ],
+  "key": {
+    "#": [
+       "minecraft:glowstone_dust"
+    ],
+    "X": [
+       "minecraft:glass"
+    ]
+  },
+  "result": {
+    "id": "minecraft:light"
+  }
+}

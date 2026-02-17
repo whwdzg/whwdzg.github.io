@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "gravel": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:gravel"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["gravel"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:flint"]  
+  }
+}

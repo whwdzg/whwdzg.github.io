@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "sculk": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:sculk"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["sculk"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:echo_shard"]  
+  }
+}

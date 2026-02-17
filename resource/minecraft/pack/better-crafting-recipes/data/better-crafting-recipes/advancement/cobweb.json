@@ -1,0 +1,37 @@
+{
+    "criteria": {   
+        "cobweb": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:cobweb",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:string","minecraft:slime_ball"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:cobweb"
+         },
+         "title": {
+             "translate": "黏线织网"
+         },
+         "description": {
+             "translate": "网线具有黏性，使人难以逃脱"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:string",
+    "requirements": [    
+        ["cobweb"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

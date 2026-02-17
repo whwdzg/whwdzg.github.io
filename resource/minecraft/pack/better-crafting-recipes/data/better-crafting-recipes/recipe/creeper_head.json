@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#&#",
+    "###"
+  ],
+  "key": {
+    "#": [
+       "minecraft:gunpowder"
+    ],
+    "&":[
+       "minecraft:skeleton_skull"
+    ]
+  },
+  "result": {
+    "id": "minecraft:creeper_head"
+  }
+}

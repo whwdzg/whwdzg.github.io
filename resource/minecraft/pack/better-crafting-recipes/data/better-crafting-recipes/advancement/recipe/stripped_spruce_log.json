@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_spruce_log" ]
+  },
+  "criteria": {
+    "spruce_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:spruce_log" } ]
+      }
+    }
+    
+  },
+     "requirements": [
+    [
+      "spruce_log"
+    ]
+  ]
+}

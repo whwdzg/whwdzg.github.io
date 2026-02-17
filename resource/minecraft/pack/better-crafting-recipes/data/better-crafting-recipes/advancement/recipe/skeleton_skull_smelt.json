@@ -1,0 +1,25 @@
+{
+  "criteria": {
+    "skeleton_skull_smelt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#better-crafting-recipes:skeleton_skull_smelt",
+            "count": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:skeleton_skull_smelt"]
+  },
+  "requirements": [
+    [
+      "skeleton_skull_smelt"
+    ]
+  ]
+}

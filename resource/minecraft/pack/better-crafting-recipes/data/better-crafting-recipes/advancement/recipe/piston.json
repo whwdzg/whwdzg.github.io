@@ -1,0 +1,67 @@
+{
+  "criteria": {
+    "stone_resource_crafting": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#better-crafting-recipes:stone_resource_crafting",
+            "count": {
+              "min": 4
+            }
+          }
+        ]
+      }
+    },
+    "redstone":{
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:redstone"],
+            "count": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    },
+    "iron_ingot":{
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:iron_ingot"],
+            "count": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    },
+    "planks":{
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#minecraft:planks",
+            "count": {
+              "min": 3
+            }
+          }
+        ]
+      }
+    }      
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:piston"]
+  },
+  "requirements": [
+    [
+      "stone_resource_crafting",
+      "redstone",
+      "iron_ingot",
+      "planks"
+    ]
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "criteria": {   
+      "bucket": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:bucket"
+                  }
+              ]
+          }
+      },
+      "snow_block":{
+          "trigger":"minecraft:inventory_changed",
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:snow_block"
+              }
+            ]
+          } 
+      }
+  },
+  "requirements": [    
+      ["bucket","snow_block"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:powder_snow_bucket"]  
+  }
+}

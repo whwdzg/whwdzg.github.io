@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_allay": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:allay"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:amethyst_shard"
+       },
+       "title": {
+           "translate": "你个魔鬼！"
+       },
+       "description": {
+           "translate": "杀死一只友好的悦灵"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_allay"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:better-mob-drop"
+}

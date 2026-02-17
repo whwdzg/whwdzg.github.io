@@ -1,0 +1,37 @@
+{
+    "criteria": {   
+        "skeleton_skull_smelt": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:skeleton_skull_smelt",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:skeleton_skull_smelt"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:skeleton_skull"
+         },
+         "title": {
+             "translate": "头骨回收"
+         },
+         "description": {
+             "translate": "-不是，你在干什么！-移植头骨！"
+         },
+         "frame": "challenge",    
+         "announce_to_chat": false,     
+         "hidden": true,
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:head_head",
+    "requirements": [    
+        ["skeleton_skull_smelt"]
+    ],
+    "rewards": {    
+        "experience": 100 
+    }
+}

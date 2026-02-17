@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+      "id": "minecraft:cobweb",
+      "count": 1
+  },
+  "ingredients": [
+      [
+         "minecraft:slime_ball" 
+      ],
+      [
+            "minecraft:string" 
+      ]
+  ]
+}

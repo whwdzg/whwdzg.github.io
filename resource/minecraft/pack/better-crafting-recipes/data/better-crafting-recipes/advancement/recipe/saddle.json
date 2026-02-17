@@ -1,0 +1,50 @@
+{
+  "criteria": {
+    "leather": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:leather"],
+            "count": {
+              "min": 5
+            }
+          }
+        ]
+      }
+    },
+    "iron_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:iron_ingot"],
+            "count": {
+              "min": 2
+            }
+          }
+        ]
+      }
+    },
+    "string": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:string"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:saddle"]
+  },
+  "requirements": [
+    [
+      "leather",
+      "iron_ingot",
+      "string"
+    ]
+  ]
+}

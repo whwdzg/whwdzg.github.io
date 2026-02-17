@@ -1,0 +1,2 @@
+scoreboard objectives add Kill_Mobs totalKillCount
+scoreboard objectives setdisplay sidebar Kill_Mobs

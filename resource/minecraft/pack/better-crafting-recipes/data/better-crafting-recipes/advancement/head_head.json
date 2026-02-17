@@ -1,0 +1,59 @@
+{
+    "criteria": {   
+        "zombie_head": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:zombie_head",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:skeleton_skull","minecraft:rotten_flesh"]
+                    }
+                ]
+            }
+        },
+        "creeper_head": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:creeper_head",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:skeleton_skull","minecraft:gunpowder"]
+                    }
+                ]
+            }
+        },
+        "piglin_head": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:piglin_head",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:skeleton_skull","minecraft:porkchop"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:creeper_head"
+         },
+         "title": {
+             "translate": "头头是道"
+         },
+         "description": {
+             "translate": "首级仙人，就得有首级"
+         },
+         "frame": "goal",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:skeleton_skull",
+    "requirements": [    
+        ["zombie_head","creeper_head","piglin_head"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

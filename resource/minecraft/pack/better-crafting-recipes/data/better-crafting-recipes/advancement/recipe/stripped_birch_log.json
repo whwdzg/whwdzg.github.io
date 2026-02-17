@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_birch_log" ]
+  },
+  "criteria": {
+    "birch_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:birch_log" } ]
+      }
+    }
+    
+  },
+  "requirements": [
+    [
+      "birch_log"
+    ]
+  ]
+}

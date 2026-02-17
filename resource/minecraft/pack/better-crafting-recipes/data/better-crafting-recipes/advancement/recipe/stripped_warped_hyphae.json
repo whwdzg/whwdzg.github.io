@@ -1,0 +1,19 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_warped_hyphae" ]
+  },
+  "criteria": {
+    "warped_hyphae": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:warped_hyphae" } ]
+      }
+    }  
+  },
+  "requirements": [
+    [
+      "warped_hyphae"
+    ]
+  ]
+}

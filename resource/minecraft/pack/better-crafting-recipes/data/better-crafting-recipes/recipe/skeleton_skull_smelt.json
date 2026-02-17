@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": 
+     "#better-crafting-recipes:skeleton_skull_smelt"
+  ,
+  "result": {
+    "id": "minecraft:skeleton_skull"
+  },
+  "experience": 50,
+  "cookingtime": 100
+}

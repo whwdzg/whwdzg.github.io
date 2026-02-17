@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "chain": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:iron_chain"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:chainmail_helmet"]
+  },
+  "requirements": [
+    [
+      "chain"
+    ]
+  ]
+}

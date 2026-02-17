@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "clay": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:clay"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["clay"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:clay_ball"]  
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "lime_stained_glass": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:lime_stained_glass"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["lime_stained_glass"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:lime_stained_glass_pane"]  
+  }
+}

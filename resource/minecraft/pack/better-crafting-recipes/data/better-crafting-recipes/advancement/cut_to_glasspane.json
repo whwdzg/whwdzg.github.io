@@ -1,0 +1,213 @@
+{
+    "criteria": {   
+        "glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:glass"
+                    }
+                ]
+            }
+        },
+        "black_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:black_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:black_stained_glass"
+                    }
+                ]
+            }
+        },
+        "blue_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:blue_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:blue_stained_glass"
+                    }
+                ]
+            }
+        },
+        "brown_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:brown_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:brown_stained_glass"
+                    }
+                ]
+            }
+        },
+        "cyan_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:cyan_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:cyan_stained_glass"
+                    }
+                ]
+            }
+        },
+        "gray_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": { 
+                "recipe_id": "better-crafting-recipes:gray_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:gray_stained_glass"
+                    }
+                ]
+            }
+        },
+        "green_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:green_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:green_stained_glass"
+                    }
+                ]
+            }
+        },
+        "light_blue_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:light_blue_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:light_blue_stained_glass"
+                    }
+                ]
+            }
+        },
+        "light_gray_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:light_gray_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:light_gray_stained_glass"
+                    }
+                ]
+            }
+        },
+        "lime_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:lime_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:lime_stained_glass"
+                    }
+                ]
+            }
+        },
+        "magenta_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:magenta_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:magenta_stained_glass"
+                    }
+                ]
+            }
+        },
+        "orange_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:orange_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:orange_stained_glass"
+                    }
+                ]
+            }
+        },
+        "pink_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:pink_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:pink_stained_glass"
+                    }
+                ]
+            }
+        },
+        "purple_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:purple_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:purple_stained_glass"
+                    }
+                ]
+            }
+        },
+        "red_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:red_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:red_stained_glass"
+                    }
+                ]
+            }
+        },
+        "white_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:white_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:white_stained_glass"
+                    }
+                ]
+            }
+        },
+        "yellow_stained_glass_pane": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:yellow_stained_glass_pane",
+                "ingredients": [
+                    {
+                        "items": "minecraft:yellow_stained_glass"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:glass_pane"
+         },
+         "title": {
+             "translate": "玻璃切片"
+         },
+         "description": {
+             "translate": "使用切石机将玻璃加工为玻璃板"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:grine_to_gravel",
+    "requirements": [    
+        ["glass_pane","black_stained_glass_pane","blue_stained_glass_pane","brown_stained_glass_pane","cyan_stained_glass_pane","gray_stained_glass_pane","green_stained_glass_pane","light_blue_stained_glass_pane","light_gray_stained_glass_pane","lime_stained_glass_pane","magenta_stained_glass_pane","orange_stained_glass_pane","pink_stained_glass_pane","purple_stained_glass_pane","red_stained_glass_pane","white_stained_glass_pane","yellow_stained_glass_pane"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

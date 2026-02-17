@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_mangrove_wood" ]
+  },
+  "criteria": {
+    "mangrove_wood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:mangrove_wood" } ]
+      }
+    }
+    
+  },
+  "requirements": [
+    [
+      "mangrove_wood"
+    ]
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#&#",
+    "###"
+  ],
+  "key": {
+    "#": [
+       "minecraft:coal"
+    ],
+    "&": [
+       "minecraft:skeleton_skull"
+    ]
+  },
+  "result": {
+    "id": "minecraft:wither_skeleton_skull"
+  }
+}

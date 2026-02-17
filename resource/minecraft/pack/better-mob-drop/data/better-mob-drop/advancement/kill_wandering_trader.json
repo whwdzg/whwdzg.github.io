@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_wandering_trader": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:wandering_trader"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:lead"
+       },
+       "title": {
+           "translate": "流浪拴绳"
+       },
+       "description": {
+           "translate": "旅途的终点..."
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_wandering_trader"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:kill_vilager"
+}

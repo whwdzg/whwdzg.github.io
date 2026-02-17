@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_jungle_log" ]
+  },
+  "criteria": {
+    "jungle_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:jungle_log" } ]
+      }
+    }
+    
+  },
+  "requirements": [
+    [
+      "jungle_log"
+    ]
+  ]
+}

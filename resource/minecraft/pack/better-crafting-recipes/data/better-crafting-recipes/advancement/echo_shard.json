@@ -1,0 +1,48 @@
+{
+    "criteria": {   
+        "echo_shard": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:echo_shard",
+                "ingredients": [
+                    {
+                        "items": "minecraft:sculk"
+                    }
+                ]
+            }
+        },
+        "sculk": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:sculk",
+                "ingredients": [
+                    {
+                        "items": "minecraft:echo_shard"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:echo_shard"
+         },
+         "title": {
+             "translate": "幽匿碎片"
+         },
+         "description": {
+             "translate": "通过幽匿块与回声碎片的分解，探寻洞穴深处的神秘"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:better-crafting-recipes",
+    "requirements": [    
+        ["echo_shard","sculk"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

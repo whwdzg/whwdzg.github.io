@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_frog": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:frog"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:frogspawn"
+       },
+       "title": {
+           "translate": "我劝你识相"
+       },
+       "description": {
+           "translate": "蛙蛙犯了什么错？"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_frog"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:kill_chicken"
+}

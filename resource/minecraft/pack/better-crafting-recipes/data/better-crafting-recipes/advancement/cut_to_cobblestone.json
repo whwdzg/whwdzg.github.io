@@ -1,0 +1,48 @@
+{
+    "criteria": {   
+        "cobblestone": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:cobblestone",
+                "ingredients": [
+                    {
+                        "items": "minecraft:stone"
+                    }
+                ]
+            }
+        },
+        "cobbled_deepslate": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:cobbled_deepslate",
+                "ingredients": [
+                    {
+                        "items": "minecraft:deepslate"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:cobblestone"
+         },
+         "title": {
+             "translate": "加工圆石"
+         },
+         "description": {
+             "translate": "使用切石机将石头快速加工为圆石"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:grine_to_gravel",
+    "requirements": [    
+        ["cobblestone","cobbled_deepslate"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

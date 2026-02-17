@@ -1,0 +1,37 @@
+{
+    "criteria": {   
+        "enchanted_golden_apple": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:enchanted_golden_apple",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:gold_block","minecraft:apple"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:enchanted_golden_apple"
+         },
+         "title": {
+             "translate": "至尊食物"
+         },
+         "description": {
+             "translate": "老玩家会回忆的东西"
+         },
+         "frame": "challenge",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:make_chainmail_armor",
+    "requirements": [    
+        ["enchanted_golden_apple"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

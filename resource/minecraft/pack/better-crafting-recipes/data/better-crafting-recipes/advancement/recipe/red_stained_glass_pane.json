@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+    "rewards": {
+      "recipes": [ "better-crafting-recipes:red_stained_glass_pane" ]
+    },
+    "criteria": {
+      "red_stained_glass": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [ { "items": "minecraft:red_stained_glass" } ]
+        }
+      }
+      
+    },
+    "requirements": [
+      [
+        "red_stained_glass"
+      ]
+    ]
+  }

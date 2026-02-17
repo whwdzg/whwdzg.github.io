@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_polar_bear": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:polar_bear"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:ice"
+       },
+       "title": {
+           "translate": "熊皮大衣"
+       },
+       "description": {
+           "translate": "北极的御寒神器"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_polar_bear"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:better-mob-drop"
+}

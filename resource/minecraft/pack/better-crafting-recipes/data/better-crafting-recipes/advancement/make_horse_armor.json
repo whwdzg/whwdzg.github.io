@@ -1,0 +1,59 @@
+{
+    "criteria": {   
+        "iron_horse_armor": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:iron_horse_armor",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:iron_ingot","minecraft:leather_horse_armor"]
+                    }
+                ]
+            }
+        },
+        "golden_horse_armor": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:golden_horse_armor",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:gold_ingot","minecraft:leather_horse_armor"]
+                    }
+                ]
+            }
+        },
+        "diamond_horse_armor": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:diamond_horse_armor",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:diamond","minecraft:leather_horse_armor"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:diamond_horse_armor"
+         },
+         "title": {
+             "translate": "骑士护甲"
+         },
+         "description": {
+             "translate": "锻造更好的马铠，然后准备为你的宝马装备它。"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:make_chainmail_armor",
+    "requirements": [    
+        ["iron_horse_armor","golden_horse_armor","diamond_horse_armor"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "criteria": {   
+        "bricks": {    
+            "trigger": "minecraft:inventory_changed",    
+            "conditions": {
+                "items": [
+                    {
+                        "items": "minecraft:bricks"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [    
+        ["bricks"]
+    ],
+    "parent": "better-crafting-recipes:better-crafting-recipes",
+    "rewards": {    
+        "recipes": ["better-crafting-recipes:brick"]  
+    }
+  }

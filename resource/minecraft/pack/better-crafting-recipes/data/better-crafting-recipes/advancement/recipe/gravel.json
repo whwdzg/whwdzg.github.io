@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "stone": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "#better-crafting-recipes:stone_resource"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["stone"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:gravel"]  
+  }
+}

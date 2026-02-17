@@ -1,0 +1,37 @@
+{
+    "criteria": {   
+        "dirt":{
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:dirt",
+                "ingredients": [
+                    {
+                        "items": "minecraft:coarse_dirt"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:dirt"
+         },
+         "title": {
+             "translate": "搅拌均匀"
+         },
+         "description": {
+             "translate": "使用切石机将砂土均匀打散为泥土"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:grine_to_gravel",
+    "requirements": [    
+        ["dirt"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

@@ -1,0 +1,39 @@
+{
+  "criteria": {
+    "bone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:bone"],
+            "count": {
+              "min": 2
+            }
+          }
+        ]
+      }
+    },
+    "sculk": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:sculk"],
+            "count": {
+              "min": 2
+            }
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:sculk_shrieker"]
+  },
+  "requirements": [
+    [
+      "bone",
+      "sculk"
+    ]
+  ]
+}

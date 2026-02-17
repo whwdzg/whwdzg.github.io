@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "mud": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:mud"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["mud"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:clay"]  
+  }
+}

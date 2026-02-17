@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+    "rewards": {
+      "recipes": [ "better-crafting-recipes:white_stained_glass_pane" ]
+    },
+    "criteria": {
+      "white_stained_glass": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [ { "items": "minecraft:white_stained_glass" } ]
+        }
+      }
+      
+    },
+    "requirements": [
+      [
+        "white_stained_glass"
+      ]
+    ]
+  }

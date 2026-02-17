@@ -1,0 +1,50 @@
+{
+  "criteria": {
+    "gold_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:gold_ingot"],
+            "count": {
+              "min": 3
+            }
+          }
+        ]
+      }
+    },
+    "experience_bottle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:experience_bottle"],
+            "count": {
+              "min": 2
+            }
+          }
+        ]
+      }
+    },
+    "enchanted_golden_apple": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:enchanted_golden_apple"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:totem_of_undying"]
+  },
+  "requirements": [
+    [
+      "gold_ingot",
+      "experience_bottle",
+      "enchanted_golden_apple"
+    ]
+  ]
+}

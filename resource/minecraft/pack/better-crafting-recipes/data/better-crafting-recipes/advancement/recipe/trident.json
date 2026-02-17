@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "heart_of_the_sea":{
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:heart_of_the_sea"]
+          }
+        ]
+      }
+    },
+    "diamond": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:diamond"],
+            "count": {
+              "min": 5
+            }
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:trident"]
+  },
+  "requirements": [
+    [
+      "heart_of_the_sea",
+      "diamond"
+    ]
+  ]
+}

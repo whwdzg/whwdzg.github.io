@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "gold_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:gold_ingot"],
+            "count": {
+              "min": 6
+            }
+          }
+        ]
+      }
+    },
+    "leather_horse_armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:leather_horse_armor"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:golden_horse_armor"]
+  },
+  "requirements": [
+    [
+      "gold_ingot",
+      "leather_horse_armor"
+    ]
+  ]
+}

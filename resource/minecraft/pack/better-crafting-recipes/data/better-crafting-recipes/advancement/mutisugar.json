@@ -1,0 +1,48 @@
+{
+    "criteria": {   
+        "sugar_1": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:sugar_1",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:sugar_resource_1"
+                    }
+                ]
+            }
+        },
+        "sugar_3":{
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:sugar_3",
+                "ingredients": [
+                    {
+                        "items": "#better-crafting-recipes:sugar_resource_3"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:sugar"
+         },
+         "title": {
+             "translate": "果糖提取"
+         },
+         "description": {
+             "translate": "果糖也是糖！还有那么多别的甜食，都是糖！"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:better-crafting-recipes",
+    "requirements": [    
+        ["sugar_1","sugar_3"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

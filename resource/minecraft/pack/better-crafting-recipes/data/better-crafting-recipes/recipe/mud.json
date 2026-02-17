@@ -1,0 +1,55 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category":"misc",
+  "result": {
+      "id": "minecraft:mud",
+      "count": 8
+  },
+  "ingredients": [
+      [
+          
+               "minecraft:dirt" 
+          
+      ],
+      [
+        
+             "minecraft:dirt" 
+        
+      ],
+      [
+        
+             "minecraft:dirt" 
+        
+      ],
+      [
+        
+             "minecraft:dirt" 
+        
+     ],
+      [
+        
+             "minecraft:dirt" 
+        
+      ],
+      [
+        
+             "minecraft:dirt" 
+        
+      ],
+      [
+        
+             "minecraft:dirt" 
+        
+      ],
+      [
+        
+             "minecraft:dirt" 
+        
+      ],
+      [
+        
+             "minecraft:water_bucket" 
+        
+      ]
+  ]
+}

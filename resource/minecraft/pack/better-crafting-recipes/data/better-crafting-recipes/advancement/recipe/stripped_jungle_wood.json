@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_jungle_wood" ]
+  },
+  "criteria": {
+    "jungle_wood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:jungle_wood" } ]
+      }
+    }
+    
+  },
+  "requirements": [
+    [
+      "jungle_wood"
+    ]
+  ]
+}

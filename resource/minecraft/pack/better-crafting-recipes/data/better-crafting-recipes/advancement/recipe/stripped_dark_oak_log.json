@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {
+    "recipes": [ "better-crafting-recipes:stripped_dark_oak_log" ]
+  },
+  "criteria": {
+    "dark_oak_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [ { "items": "minecraft:dark_oak_log" } ]
+      }
+    }
+    
+  },
+  "requirements": [
+    [
+      "dark_oak_log"
+    ]
+  ]
+}

@@ -1,0 +1,21 @@
+{
+    "criteria": {   
+        "skeleton_skull": {    
+            "trigger": "minecraft:inventory_changed",    
+            "conditions": {
+                "items": [
+                    {
+                        "items": "minecraft:skeleton_skull"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [    
+        ["skeleton_skull"]
+    ],
+    "parent": "better-crafting-recipes:better-crafting-recipes",
+    "rewards": {    
+        "recipes": ["better-crafting-recipes:bone"]  
+    }
+  }

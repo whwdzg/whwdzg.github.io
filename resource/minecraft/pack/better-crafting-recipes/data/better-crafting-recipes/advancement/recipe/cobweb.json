@@ -1,0 +1,31 @@
+{
+  "criteria": {   
+      "slime_ball": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:slime_ball"
+                  }
+              ]
+          }
+      },
+      "string": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:string"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["slime_ball","string"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:cobweb"]  
+  }
+}

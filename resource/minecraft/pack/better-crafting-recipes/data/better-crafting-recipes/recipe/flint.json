@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": [
+    "minecraft:gravel"
+  ],
+  "result": {
+    "id": "minecraft:flint",
+    "count": 1
+  }
+}

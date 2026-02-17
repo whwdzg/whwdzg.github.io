@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#X#"
+  ],
+  "key": {
+    "#": [
+     "minecraft:bone"
+    ],
+    "X": [
+      "minecraft:deepslate"
+    ]
+  },
+  "result": {
+    "id": "minecraft:reinforced_deepslate",
+    "count":1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "criteria": {
+    "deepslate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:deepslate"],
+            "count": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    },
+    "bone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:bone"],
+            "count": {
+              "min": 2
+            }
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:reinforced_deepslate"]
+  },
+  "requirements": [
+    [
+      "deepslate",
+      "bone"
+    ]
+  ]
+}

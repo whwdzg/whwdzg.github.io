@@ -1,0 +1,36 @@
+{
+    "criteria": {   
+        "crafting_table": {    
+            "trigger": "minecraft:inventory_changed",    
+            "conditions": {
+                "items": [
+                    {
+                        "items": "minecraft:crafting_table"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:bundle"
+         },
+         "title": {
+             "translate": "更好的合成配方"
+         },
+         "description": {
+             "translate": "Minecraft补充！完全！探索更合理的配方吧！"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": false,  
+         "background": "minecraft:block/oak_planks"
+    },
+    "requirements": [    
+        ["crafting_table"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

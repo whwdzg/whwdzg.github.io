@@ -1,0 +1,25 @@
+{
+  "criteria": {
+    "stone_resource_crafting": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#better-crafting-recipes:stone_resource_crafting",
+            "count": {
+              "min": 8
+            }
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:furnace"]
+  },
+  "requirements": [
+    [
+      "stone_resource_crafting"
+    ]
+  ]
+}

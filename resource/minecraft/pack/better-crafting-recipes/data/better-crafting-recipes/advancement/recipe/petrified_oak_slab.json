@@ -1,0 +1,26 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+    "rewards": {
+      "recipes": [ "better-crafting-recipes:petrified_oak_slab" ]
+    },
+    "criteria": {
+      "oak_slab": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [ { "items": "minecraft:oak_slab" } ]
+        }
+      },
+      "stone_slab": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [ { "items": "minecraft:stone_slab"} ]
+        }
+      }
+    },
+    "requirements": [
+      [
+        "oak_slab",
+        "stone_slab"
+      ]
+    ]
+  }

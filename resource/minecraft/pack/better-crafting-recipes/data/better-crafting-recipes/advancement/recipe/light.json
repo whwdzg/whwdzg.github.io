@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "glowstone_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:glowstone_dust"],
+            "count": {
+              "min": 4
+            }
+          }
+        ]
+      }
+    },
+    "glass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:glass"]
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:light"]
+  },
+  "requirements": [
+    [
+      "glowstone_dust",
+      "glass"
+    ]
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "porkchop": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:porkchop"],
+            "count": {
+              "min": 8
+            }
+          }
+        ]
+      }
+    },
+    "skeleton_skull": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:skeleton_skull"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:piglin_head"]
+  },
+  "requirements": [
+    [
+      "porkchop",
+      "skeleton_skull"
+    ]
+  ]
+}

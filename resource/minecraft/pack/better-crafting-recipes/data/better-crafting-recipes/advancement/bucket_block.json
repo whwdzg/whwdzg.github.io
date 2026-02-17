@@ -1,0 +1,59 @@
+{
+    "criteria": {   
+        "water_bucket": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:water_bucket",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:bucket","minecraft:ice"]
+                    }
+                ]
+            }
+        },
+        "lava_bucket": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:lava_bucket",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:bucket","minecraft:magma_block"]
+                    }
+                ]
+            }
+        },
+        "powder_snow_bucket": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:powder_snow_bucket",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:bucket","minecraft:snow_block"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:water_bucket"
+         },
+         "title": {
+             "translate": "块用桶装"
+         },
+         "description": {
+             "translate": "把冰、岩浆块、雪塞到桶里"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:better-crafting-recipes",
+    "requirements": [    
+        ["water_bucket","lava_bucket","powder_snow_bucket"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "gold_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:gold_block"],
+            "count": {
+              "min": 8
+            }
+          }
+        ]
+      }
+    },
+    "apple": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:apple"]
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:enchanted_golden_apple"]
+  },
+  "requirements": [
+    [
+      "gold_block",
+      "apple"
+    ]
+  ]
+}

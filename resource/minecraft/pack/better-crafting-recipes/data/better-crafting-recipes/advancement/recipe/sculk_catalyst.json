@@ -1,0 +1,33 @@
+{
+  "criteria": {
+    "bone_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:bone_block"]
+          }
+        ]
+      }
+    },
+    "sculk": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:sculk"]
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:sculk_catalyst"]
+  },
+  "requirements": [
+    [
+      "bone_block",
+      "sculk"
+    ]
+  ]
+}

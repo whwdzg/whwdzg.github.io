@@ -1,0 +1,53 @@
+{
+  "criteria": {
+    "stone_resource_crafting": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#better-crafting-recipes:stone_resource_crafting",
+            "count": {
+              "min": 6
+            }
+          }
+        ]
+      }
+    },
+    "redstone":{
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:redstone"],
+            "count": {
+              "min": 2
+            }
+          }
+        ]
+      }
+    },
+    "quartz":{
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:quartz_block"],
+            "count": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    }      
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:observer"]
+  },
+  "requirements": [
+    [
+      "stone_resource_crafting",
+      "redstone",
+      "quartz"
+    ]
+  ]
+}

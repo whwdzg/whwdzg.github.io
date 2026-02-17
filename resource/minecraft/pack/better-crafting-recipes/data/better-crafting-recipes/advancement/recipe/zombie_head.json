@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "rotten_flesh": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:rotten_flesh"],
+            "count": {
+              "min": 8
+            }
+          }
+        ]
+      }
+    },
+    "skeleton_skull": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:skeleton_skull"]
+          }
+        ]
+      }
+    }
+    },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:zombie_head"]
+  },
+  "requirements": [
+    [
+      "rotten_flesh",
+      "skeleton_skull"
+    ]
+  ]
+}

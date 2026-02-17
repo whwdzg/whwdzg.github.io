@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "XX&",
+    "###"
+  ],
+  "key": {
+    "#": 
+     "#better-crafting-recipes:stone_resource_crafting"
+    ,
+    "X": [
+     "minecraft:redstone"
+    ],
+    "&": [
+     "minecraft:quartz"
+    ]
+  },
+  "result": {
+    "id": "minecraft:observer"
+  }
+}

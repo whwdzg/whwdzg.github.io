@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_piglin_brute": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:piglin_brute"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:netherite_ingot"
+       },
+       "title": {
+           "translate": "决斗游戏"
+       },
+       "description": {
+           "translate": "杀死堡垒遗迹中最强劲的斗士"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_piglin_brute"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:kill_piglin"
+}

@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "glowstone": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:glowstone"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["glowstone"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:glowstone_dust"]  
+  }
+}

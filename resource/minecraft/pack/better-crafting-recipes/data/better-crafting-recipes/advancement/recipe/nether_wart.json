@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "nether_wart_block": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:nether_wart_block"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["nether_wart_block"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:nether_wart"]  
+  }
+}

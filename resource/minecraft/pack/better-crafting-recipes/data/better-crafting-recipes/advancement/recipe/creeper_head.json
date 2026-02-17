@@ -1,0 +1,36 @@
+{
+  "criteria": {
+    "gunpowder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:gunpowder"],
+            "count": {
+              "min": 8
+            }
+          }
+        ]
+      }
+    },
+    "skeleton_skull": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:skeleton_skull"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards":{
+    "recipes": ["better-crafting-recipes:creeper_head"]
+  },
+  "requirements": [
+    [
+      "gunpowder",
+      "skeleton_skull"
+    ]
+  ]
+}

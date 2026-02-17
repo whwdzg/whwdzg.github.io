@@ -1,0 +1,37 @@
+{
+    "criteria": {   
+        "wither_skeleton_skull": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:wither_skeleton_skull",
+                "ingredients": [
+                    {
+                        "items": ["minecraft:skeleton_skull","minecraft:coal"]
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:wither_skeleton_skull"
+         },
+         "title": {
+             "translate": "恶魔钥匙"
+         },
+         "description": {
+             "translate": "当潘多拉的魔盒可以被大规模制造时，世界会怎么样？"
+         },
+         "frame": "goal",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:skeleton_skull",
+    "requirements": [    
+        ["wither_skeleton_skull"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

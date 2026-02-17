@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_bee": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:bee"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:honeycomb"
+       },
+       "title": {
+           "translate": "辛勤小蜜蜂"
+       },
+       "description": {
+           "translate": "危险的抢劫"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_bee"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:better-mob-drop"
+}

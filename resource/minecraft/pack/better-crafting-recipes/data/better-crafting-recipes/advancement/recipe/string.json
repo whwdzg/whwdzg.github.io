@@ -1,0 +1,20 @@
+{
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+    "rewards": {
+      "recipes": [ "better-crafting-recipes:string" ]
+    },
+    "criteria": {
+      "white_wool": {
+        "trigger": "minecraft:inventory_changed",
+        "conditions": {
+          "items": [ { "items": "minecraft:white_wool" } ]
+        }
+      }
+    
+    },
+    "requirements": [
+      [
+        "white_wool"
+      ]
+    ]
+  }

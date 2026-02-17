@@ -1,0 +1,34 @@
+{
+  "criteria": {   
+      "kill_armadilo": {    
+          "trigger": "player_killed_entity",    
+          "conditions": {
+              "entity":{
+                "type": "minecraft:armadillo"
+            }
+          }
+      }
+  },
+  "display": {
+      "icon": {    
+          "id": "minecraft:armadillo_scute"
+       },
+       "title": {
+           "translate": "狗铠的诞生"
+       },
+       "description": {
+           "translate": "杀死一只路过的犰狳"
+       },
+       "frame": "task",    
+       "announce_to_chat": false,     
+       "hidden": false,   
+       "show_toast": true
+  },
+  "requirements": [    
+      ["kill_armadilo"]
+  ],
+  "rewards": {    
+      "experience": 10    
+  },
+  "parent": "better-mob-drop:kill_turtle"
+}

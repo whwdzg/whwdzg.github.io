@@ -1,0 +1,59 @@
+{
+    "criteria": {   
+        "sand": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:sand",
+                "ingredients": [
+                    {
+                        "items": "minecraft:gravel"
+                    }
+                ]
+            }
+        },
+        "red_sand": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:red_sand",
+                "ingredients": [
+                    {
+                        "items": "minecraft:gravel"
+                    }
+                ]
+            }
+        },
+        "red_sand2":{
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "better-crafting-recipes:red_sand2",
+                "ingredients": [
+                    {
+                        "items": "minecraft:terracotta"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:sand"
+         },
+         "title": {
+             "translate": "精挑细筛"
+         },
+         "description": {
+             "translate": "使用切石机从筛出沙子，全能切石机无疑了"
+         },
+         "frame": "task",    
+         "announce_to_chat": false,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "better-crafting-recipes:grine_to_gravel",
+    "requirements": [    
+        ["sand","red_sand","red_sand2"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

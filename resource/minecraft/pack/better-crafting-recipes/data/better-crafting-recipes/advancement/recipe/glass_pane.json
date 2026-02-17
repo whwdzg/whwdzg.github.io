@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "glass": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:glass"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["glass"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:glass_pane"]  
+  }
+}

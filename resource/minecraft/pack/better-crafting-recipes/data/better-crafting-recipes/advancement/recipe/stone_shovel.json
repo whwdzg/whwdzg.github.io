@@ -1,0 +1,39 @@
+{
+  "criteria": {
+    "stone_resource_crafting": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#better-crafting-recipes:stone_resource_crafting",
+            "count": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    },
+    "stick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:stick"],
+            "count":{
+              "min": 2
+            }
+          }
+        ]
+      }
+    }
+  },  
+  "rewards":{
+    "recipes": ["better-crafting-recipes:stone_shovel"]
+  },
+  "requirements": [
+    [
+      "stone_resource_crafting",
+      "stick"
+    ]
+  ]
+}

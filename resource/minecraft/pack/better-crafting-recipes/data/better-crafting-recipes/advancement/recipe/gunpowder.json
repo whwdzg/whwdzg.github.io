@@ -1,0 +1,51 @@
+{
+  "criteria": {   
+      "coal": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "minecraft:coal"
+                  }
+              ]
+          }
+      },
+      "gravel":{
+          "trigger": "minecraft:inventory_changed",
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:gravel"
+              }
+            ]
+          }
+      },
+      "flint":{
+          "trigger": "minecraft:inventory_changed",
+          "conditions": {
+            "items": [
+              {
+                "items": "minecraft:flint"
+              }
+            ]
+          }
+      },
+      "sugar":{
+          "trigger":"minecraft:inventory_changed",
+          "conditions": {
+            "items": [
+              {
+                "items": "sugar"
+              }
+            ]
+          } 
+      }
+  },
+  "requirements": [    
+      ["coal","flint","gravel","sugar"]
+  ],
+  "parent": "better-crafting-recipes:better-crafting-recipes",
+  "rewards": {    
+      "recipes": ["better-crafting-recipes:gunpowder"]  
+  }
+}
