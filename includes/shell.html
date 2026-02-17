@@ -7,7 +7,7 @@
         </button>
         <span class="header-title">
             <a href="/" title="水鱼 Blog">
-                <img src="/img/shell/favicon.ico" alt="logo" class="logo" fetchpriority="high">
+                <img src="/resource/img/shell/favicon.ico" alt="logo" class="logo" fetchpriority="high">
                 <span class="title-text">水鱼 Blog</span>
             </a>
             <span id="page-loading-indicator" class="page-loading-indicator" aria-hidden="true"></span>
@@ -24,17 +24,7 @@
                 <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
             </button>
         </div>
-        <img src="/img/shell/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
-        <div id="avatar-links-menu" class="avatar-links-menu">
-            <a href="https://github.com/whwdzg" class="avatar-link" target="_blank" rel="noopener noreferrer">
-                <i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>
-                <span>GitHub</span>
-            </a>
-            <a href="https://space.bilibili.com/588003657" class="avatar-link" target="_blank" rel="noopener noreferrer">
-                <i class="icon-ic_fluent_tv_24_regular" aria-hidden="true"></i>
-                <span>bilibili</span>
-            </a>
-        </div>
+        <img src="/resource/img/shell/shuiyu.avif" alt="shuiyu" class="header-avatar" id="avatar-btn" fetchpriority="high">
     </h1>
 </header>
 <nav id="sidebar" class="sidebar" aria-label="主导航">
@@ -59,9 +49,42 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/projects/better-crafting-recipes.html">
+                        <i class="icon-ic_fluent_table_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">更好的合成配方</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/projects/better-enchantments.html">
+                        <i class="icon-ic_fluent_wand_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">更好附魔</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/projects/better-mob-drop.html">
+                        <i class="icon-ic_fluent_cube_multiple_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">更好的生物掉落</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/projects/github.html">
                         <i class="icon-ic_fluent_animal_cat_24_regular item-icon" aria-hidden="true"></i>
                         <span class="label">Github</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="has-children">
+            <button class="toggle" aria-expanded="false">
+                <i class="icon-ic_fluent_toolbox_24_regular item-icon" aria-hidden="true"></i>
+                <span class="toggle-label">工具</span>
+                <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
+            </button>
+            <ul class="submenu">
+                <li>
+                    <a href="/tool/base64.html">
+                        <i class="icon-ic_fluent_code_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">Base64 编解码</span>
                     </a>
                 </li>
             </ul>
@@ -73,12 +96,6 @@
                 <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
             </button>
             <ul class="submenu">
-                <li>
-                    <a href="/column/psn-img-legacy.html">
-                        <i class="icon-ic_fluent_image_24_regular item-icon" aria-hidden="true"></i>
-                        <span class="label">个人图库</span>
-                    </a>
-                </li>
                 <li>
                     <a href="/column/comments.html">
                         <i class="icon-ic_fluent_comment_24_regular item-icon" aria-hidden="true"></i>
@@ -102,33 +119,6 @@
                 </li>
             </ul>
         </li>
-        <li class="has-children">
-            <button class="toggle" aria-expanded="false">
-                <i class="icon-ic_fluent_history_24_regular item-icon" aria-hidden="true"></i>
-                <span class="toggle-label">返回 1.0</span>
-                <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
-            </button>
-            <ul class="submenu">
-                <li>
-                    <a href="/Legacy-1.0/index.html">
-                        <i class="icon-ic_fluent_home_24_regular item-icon" aria-hidden="true"></i>
-                        <span class="label">主页</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Legacy-1.0/about.html">
-                        <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
-                        <span class="label">关于</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Legacy-1.0/README.md">
-                        <i class="icon-ic_fluent_document_24_regular item-icon" aria-hidden="true"></i>
-                        <span class="label">README</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
         <li>
             <a href="/about.html">
                     <i class="icon-ic_fluent_info_24_regular item-icon" aria-hidden="true"></i>
@@ -142,9 +132,15 @@
 </button>
 <footer>
     <p>2022-2026 滄海水魚</p>
-    <p>当前版本：<strong>2.0.3.1-20260214</strong></p>
+    <p>当前版本：<strong>2.0.3.2-20260217</strong></p>
 </footer>
+<div id="global-copy-toast" class="global-copy-toast" role="status" aria-live="assertive">
+    <span class="global-toast-icon fluent-icon icon-ic_fluent_checkmark_circle_24_regular" aria-hidden="true"></span>
+    <span class="global-toast-message"></span>
+    <button type="button" class="global-toast-close" aria-label="关闭提示">×</button>
+</div>
 <!-- 分步加载 & 轻量懒加载库 -->
+<script src="/js/copy-toast.js" defer></script>
 <script>
 // 首先加载 lazysizes（用于图片/iframe 等懒加载），然后按需动态导入交互脚本
 (function(){

@@ -52,6 +52,24 @@
   let isNavigating = false;
   const pageCache = new Map();
 
+  const normalizePathname = (pathname) => pathname.replace(/\/index\.html$/i, '/');
+
+  const isSameDocumentUrl = (urlObj) => {
+    if (!urlObj) return false;
+    return normalizePathname(urlObj.pathname) === normalizePathname(window.location.pathname) &&
+      (urlObj.search || '') === (window.location.search || '');
+  };
+
+  const scrollToDocumentHash = (hash) => {
+    if (!hash) return false;
+    const id = hash.replace(/^#/, '');
+    if (!id) return false;
+    const target = document.getElementById(id);
+    if (!target) return false;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    return true;
+  };
+
   const setLoadingState = (active) => {
     document.body.classList.toggle('page-loading', !!active);
     const indicator = document.getElementById('page-loading-indicator');
@@ -337,20 +355,43 @@
     }
   }
 
+  // expose helper so other modules (e.g. avatar click) can reuse SPA navigation
+  window.spaRouterNavigate = (target, opts = {}) => navigate(target, true, opts);
+
   function attachLinkHandler(){
     document.addEventListener('click', (e) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const link = e.target.closest('a[href]');
       if (!link) return;
       const href = link.getAttribute('href');
-      if (!href || href.startsWith('#')) return;
+      if (!href) return;
       if (link.target && link.target !== '_self') return;
       if (link.hasAttribute('download')) return;
       if (/^(mailto:|tel:|javascript:)/i.test(href)) return;
-      const url = buildUrl(href);
+
+      let targetUrl;
+      try {
+        targetUrl = new URL(href, window.location.href);
+      } catch (_) {
+        return;
+      }
+
+      if (targetUrl.origin === window.location.origin && targetUrl.hash && isSameDocumentUrl(targetUrl)) {
+        e.preventDefault();
+        const newUrl = targetUrl.pathname + targetUrl.search + targetUrl.hash;
+        if (newUrl !== window.location.pathname + window.location.search + window.location.hash) {
+          history.replaceState(history.state || { page: window.location.pathname }, '', newUrl);
+        }
+        if (!scrollToDocumentHash(targetUrl.hash) && targetUrl.hash !== window.location.hash) {
+          window.location.hash = targetUrl.hash;
+        }
+        return;
+      }
+
+      if (href.startsWith('#')) return;
+      const url = targetUrl ? (targetUrl.pathname + targetUrl.search) : buildUrl(href);
       if (!url) return;
-      const sameOrigin = new URL(href, window.location.href).origin === window.location.origin;
-      if (!sameOrigin) return;
+      if (targetUrl.origin !== window.location.origin) return;
       e.preventDefault();
       navigate(url, true);
     }, true);

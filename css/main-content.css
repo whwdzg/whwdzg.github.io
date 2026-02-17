@@ -417,3 +417,64 @@ main > section:first-of-type h3:first-child { margin-top: 0; }
 	color: #fff;
 	pointer-events: none;
 }
+
+.global-copy-toast {
+	position: fixed;
+	left: 50%;
+	transform: translate(-50%, 12px);
+	bottom: 24px;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.65rem;
+	padding: 0.75rem 1.25rem;
+	border-radius: 14px;
+	background: rgba(16, 185, 129, 0.95);
+	color: #fff;
+	font-weight: 600;
+	box-shadow: 0 12px 40px rgba(15, 23, 42, 0.35);
+	opacity: 0;
+	transform-origin: bottom center;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	pointer-events: none;
+	z-index: 2200;
+}
+
+.global-copy-toast.show {
+	opacity: 1;
+	transform: translate(-50%, 0);
+	pointer-events: auto;
+}
+
+.global-copy-toast.global-copy-toast--error {
+	background: rgba(239, 68, 68, 0.95);
+}
+
+.global-copy-toast.global-copy-toast--success {
+	background: rgba(16, 185, 129, 0.95);
+}
+
+.global-toast-icon {
+	display: inline-flex;
+	font-size: 1.1rem;
+	line-height: 1;
+}
+
+.global-toast-message {
+	max-width: 260px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.global-toast-close {
+	background: transparent;
+	border: none;
+	color: #fff;
+	font-size: 1rem;
+	font-weight: 700;
+	cursor: pointer;
+	padding: 0;
+	line-height: 1;
+	margin-left: auto;
+	pointer-events: auto;
+}

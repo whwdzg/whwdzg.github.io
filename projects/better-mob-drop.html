@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更好的生物掉落 | Better Mob Drop</title>
+    <meta name="author" content="滄海水魚">
+    <meta name="description" content="展示 Better Mob Drop 数据包的生物掉落与进度。直接读取 datapack JSON，使用站点 UI 与 Minecraft 素材混搭呈现。">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/resource/img/shell/bg/bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
+    <link rel="stylesheet" href="/css/settings-modal.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="/css/videoplay.css">
+    <link rel="stylesheet" href="/css/column.css">
+    <link rel="stylesheet" href="/css/project.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+
+    <script src="/js/pwa/register-sw.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/language.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/lightbox.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+    <script src="/js/better-mob-drop.js" defer></script>
+</head>
+<body>
+    <div id="shell-root"></div>
+        <script>
+        (function () {
+            var container = document.getElementById('shell-root');
+            function normalize(pathname) {
+                var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
+                return p === '' ? '/' : p;
+            }
+            function markCurrentNav() {
+                var current = normalize(location.pathname);
+                document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
+                    var href = a.getAttribute('href');
+                    if (!href) return;
+                    var target = normalize(new URL(href, location.origin).pathname);
+                    if (target === current) {
+                        a.classList.add('current', 'selected');
+                        var parent = a.closest('.has-children');
+                        if (parent) {
+                            parent.classList.add('open');
+                            var toggle = parent.querySelector('.toggle');
+                            var submenu = parent.querySelector('.submenu');
+                            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+                            if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                        }
+                    }
+                });
+            }
+            function attachShell(html) {
+                if (!container || !html) return;
+                container.innerHTML = html;
+                var move = function () {
+                    var main = document.querySelector('main');
+                    if (!main) return;
+                    var aside = container.querySelector('aside');
+                    var footer = container.querySelector('footer');
+                    if (aside && !main.contains(aside)) {
+                        aside.setAttribute('data-shell-moved', '1');
+                        main.appendChild(aside);
+                    }
+                    if (footer && footer.parentNode !== main.parentNode) {
+                        footer.setAttribute('data-shell-moved', '1');
+                        main.insertAdjacentElement('afterend', footer);
+                    }
+                    if (window.refreshAsideStack) {
+                        window.refreshAsideStack();
+                    }
+                    markCurrentNav();
+                };
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', move, { once: true });
+                } else {
+                    move();
+                }
+            }
+            function bust(url) {
+                if (location.protocol === 'file:') return url;
+                var sep = url.indexOf('?') === -1 ? '?' : '&';
+                return url + sep + 'ts=' + Date.now();
+            }
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', bust('/includes/shell.html'), false);
+                xhr.send(null);
+                if (xhr.status === 200 || xhr.status === 0) {
+                    attachShell(xhr.responseText);
+                    return;
+                }
+            } catch (e) { }
+            fetch(bust('/includes/shell.html'), { cache: 'no-store' })
+                .then(function (resp) { return resp.ok ? resp.text() : Promise.reject(new Error('HTTP ' + resp.status)); })
+                .then(function (html) { attachShell(html); });
+        })();
+    </script>
+
+    <main>
+        <div class="column-stack">
+            <section class="article-card">
+                <p class="eyebrow">数据包</p>
+                <h1>更好的生物掉落 | Better Mob Drop</h1>
+                <p class="article-subtitle">读取数据包内的生物掉落表与进度，直接展示掉落物、数量范围、掠夺加成与可熔炼标记。</p>
+                <div class="article-meta">
+                    <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.13~1.21.11</span>
+                    <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
+                    <span class="pill pill--datapack"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>数据包</span>
+                    <span class="pill pill--fabric"><i class="icon-ic_fluent_stack_24_regular" aria-hidden="true"></i>Fabric</span>
+                    <span class="pill pill--quilt"><i class="icon-ic_fluent_patch_24_regular" aria-hidden="true"></i>Quilt</span>
+                    <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
+                    <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
+                    <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>2025-10-6</span>
+                    <span class="pill"><i class="icon-ic_fluent_info_24_regular" aria-hidden="true"></i>1.2.5</span>
+                </div>
+                <div class="article-actions">
+                            <a href="https://www.mcmod.cn/class/17769.html" target="_blank" rel="noopener noreferrer">在 MCMOD 上查看</a>
+                            <a href="https://modrinth.com/datapack/better-mob-drop" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://modrinth.com/datapack/better-mob-drop-nav" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看（无进度版）</a>
+                            <a href="https://github.com/whwdzg/better-mob-drop" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
+                            <a href="https://github.com/whwdzg/better-mob-drop-i18n" target="_blank" rel="noopener noreferrer">多语言支持</a>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <h2 style="margin:0;">目录</h2>
+                <div class="article-actions">
+                    <a href="#mobdrop-subtitle">掉落总览</a>
+                    <a href="#mobdrop-list">掉落清单</a>
+                    <a href="#mobdrop-adv-status">进度树</a>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <div class="recipe-meta-bar">
+                    <div>
+                        <h2 style="margin:0;">掉落总览</h2>
+                        <p class="article-subtitle" id="mobdrop-subtitle">正在读取掉落...</p>
+                    </div>
+                    <div class="recipe-filter-row" aria-label="统计">
+                        <div class="stat-card">
+                            <p class="stat-label">生物数</p>
+                            <p class="stat-value" id="mobdrop-total">--</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <div class="recipe-list-head">
+                    <h2 style="margin:0;">掉落清单</h2>
+                    <p class="article-subtitle" id="mobdrop-status">加载中...</p>
+                </div>
+                <div id="mobdrop-list" class="loot-list-wrap"></div>
+            </section>
+
+            <section class="article-card">
+                <div class="recipe-list-head">
+                    <h2 style="margin:0;">进度</h2>
+                    <p class="article-subtitle" id="mobdrop-adv-status">正在读取进度...</p>
+                </div>
+                <div class="adv-tree-wrap">
+                    <div id="mobdrop-adv-tree"></div>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <h2>更多项目</h2>
+                <div class="article-actions">
+                    <a href="/projects/better-crafting-recipes.html">更好的合成配方</a>
+                    <a href="/projects/better-enchantments.html">更好附魔</a>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

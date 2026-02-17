@@ -150,9 +150,8 @@
 		max-height: 50vh;
 	}
 }
-
-	body.dark-mode {
-	--bg-color: #1a1a1a;
+body.dark-mode {
+	--bg-color: #000000;
 	--text-color: #e5e5e5;
 	--text-muted: #9ca3af;
 	--secondary-bg: #2a2a2a;
@@ -171,9 +170,9 @@
 /* Fluent System Icons font (from microsoft/fluentui-system-icons) */
 @font-face {
 	font-family: 'FluentSystemIcons';
-	src: url('../font/FluentSystemIcons-Regular.woff2') format('woff2'),
-		 url('../font/FluentSystemIcons-Regular.woff') format('woff'),
-		 url('../font/FluentSystemIcons-Regular.ttf') format('truetype');
+	src: url('/resource/font/FluentSystemIcons-Regular.woff2') format('woff2'),
+		 url('/resource/font/FluentSystemIcons-Regular.woff') format('woff'),
+		 url('/resource/font/FluentSystemIcons-Regular.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
@@ -200,15 +199,16 @@ html {
 	/* 为锚点跳转添加顶部偏移，避免被固定页眉遮挡 */
 	scroll-padding-top: calc(var(--header-height, 60px) + 16px);
 }
-body {
+	body {
 	margin: 0;
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
 	box-sizing: border-box;
+	background-color: var(--bg-color);
 	color: var(--text-color);
 	/* 页面背景：底层图片 + 顶层半透明覆盖层，提升正文可读性 */
-	background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), url('../img/shell/bg.jpg');
+	background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), url('/resource/img/shell/bg/bg.jpg');
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;

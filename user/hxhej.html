@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>用户 · hxhej</title>
+    <meta name="author" content="whwdzg">
+    <meta name="description" content="whwdzg.github.io 的关于与使用说明">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/resource/img/shell/bg/bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
+    <link rel="stylesheet" href="/css/settings-modal.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+
+    <script src="/js/pwa/register-sw.js" defer></script>
+    <script src="/js/i18n-loader.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/language.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/lightbox.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+    <script src="/js/code.js" defer></script>
+
+    <link rel="stylesheet" href="/css/column.css">
+</head>
+
+<body>
+    <div id="shell-root"></div>
+    <script>
+        (function () {
+            var container = document.getElementById('shell-root');
+            function normalize(pathname) {
+                var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
+                return p === '' ? '/' : p;
+            }
+            function markCurrentNav() {
+                var current = normalize(location.pathname);
+                document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
+                    var href = a.getAttribute('href');
+                    if (!href) return;
+                    var target = normalize(new URL(href, location.origin).pathname);
+                    if (target === current) {
+                        a.classList.add('current', 'selected');
+                        var parent = a.closest('.has-children');
+                        if (parent) {
+                            parent.classList.add('open');
+                            var toggle = parent.querySelector('.toggle');
+                            var submenu = parent.querySelector('.submenu');
+                            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+                            if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                        }
+                    }
+                });
+            }
+            function attachShell(html) {
+                if (!container || !html) return;
+                container.innerHTML = html;
+                var move = function () {
+                    var main = document.querySelector('main');
+                    if (!main) return;
+                    var aside = container.querySelector('aside');
+                    var footer = container.querySelector('footer');
+                    if (aside && !main.contains(aside)) {
+                        aside.setAttribute('data-shell-moved', '1');
+                        main.appendChild(aside);
+                    }
+                    if (footer && footer.parentNode !== main.parentNode) {
+                        footer.setAttribute('data-shell-moved', '1');
+                        main.insertAdjacentElement('afterend', footer);
+                    }
+                    if (window.refreshAsideStack) {
+                        window.refreshAsideStack();
+                    }
+                    markCurrentNav();
+                };
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', move, { once: true });
+                } else {
+                    move();
+                }
+            }
+            function bust(url) {
+                if (location.protocol === 'file:') return url;
+                var sep = url.indexOf('?') === -1 ? '?' : '&';
+                return url + sep + 'ts=' + Date.now();
+            }
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', bust('/includes/shell.html'), false);
+                xhr.send(null);
+                if (xhr.status === 200 || xhr.status === 0) {
+                    attachShell(xhr.responseText);
+                    return;
+                }
+            } catch (e) { }
+            fetch(bust('/includes/shell.html'), { cache: 'no-store' })
+                .then(function (resp) { return resp.ok ? resp.text() : Promise.reject(new Error('HTTP ' + resp.status)); })
+                .then(function (html) { attachShell(html); });
+        })();
+    </script>
+
+    <main>
+        <div class="column-stack">
+            <section class="article-card">
+                <p class="eyebrow">用户</p>
+                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 1rem;">
+                    <img class="about-avatar" src="/resource/img/head/hxhej.avif" alt="用户头像" loading="lazy"
+                        fetchpriority="high">
+                    <div>
+                        <h1>hxhej</h1>
+                        <p class="about-lead">老东西一个</p>
+                        <div class="article-meta">
+                            <span class="pill"><i class="icon-ic_fluent_person_24_regular"
+                                    aria-hidden="true"></i>UID:2</span>
+                            <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular"
+                                    aria-hidden="true"></i>入站：2024-03-07</span>
+                            <span class="pill"><i class="icon-ic_fluent_arrow_clockwise_20_regular"
+                                    aria-hidden="true"></i>更新：2026-02-15</span>
+                        </div>
+                        <div class="link-row" aria-label="链接">
+                            <a href="https://space.bilibili.com/1642399671"><i class="icon-ic_fluent_tv_24_regular"
+                                    aria-hidden="true"></i>哔哩哔哩</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="article-card">
+                <h2>个人介绍</h2>
+                <ul>
+                    <li>hxhej</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+    <script src="/js/code.js"></script>
+</body>
+
+</html>

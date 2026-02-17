@@ -7,12 +7,12 @@
     <meta name="author" content="滄海水魚">
     <meta name="description" content="留言板">
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/img/shell/favicon.ico" type="image/x-icon">
-    <link rel="preload" href="/img/shell/favicon.ico" as="image" type="image/x-icon">
-    <link rel="preload" href="/img/shell/shuiyu.avif" as="image" type="image/avif">
-    <link rel="preload" href="/img/shell/bg.jpg" as="image" type="image/jpeg">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/resource/img/shell/bg/bg.jpg" as="image" type="image/jpeg">
     <link rel="preload" href="/css/variables.css" as="style">
-    <link rel="preload" href="/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/input.css">
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="/css/settings-modal.css">
     <link rel="stylesheet" href="/css/scroll-to-top.css">
     <link rel="stylesheet" href="/css/column.css">
-    <link rel="stylesheet" href="/font/FluentSystemIcons-Regular.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
 
     <script src="/js/pwa/register-sw.js" defer></script>
     <script src="/js/theme.js" defer></script>
@@ -121,13 +121,15 @@
                 <h1>留言板</h1>
                 <p class="article-subtitle">静态站的“留言板”：想说的、想吐槽的，都可以在这里留下。</p>
                 <div class="article-meta">
-                    <span class="pill"><i class="icon-ic_fluent_person_24_regular" aria-hidden="true"></i>滄海水魚</span>
+                    <a class="pill pill-author" href="/user/滄海水魚.html" aria-label="访问滄海水魚的用户页">
+                        <img src="/resource/img/head/shuiyu.avif" alt="滄海水魚头像" loading="lazy" fetchpriority="high">
+                        <span>滄海水魚</span>
+                    </a>
                     <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>2024-03-07</span>
                     <span class="pill"><i class="icon-ic_fluent_arrow_clockwise_20_regular" aria-hidden="true"></i>更新：2024-12-18</span>
                 </div>
                 <div class="article-actions">
                     <a href="https://space.bilibili.com/588003657" target="_blank" rel="noopener noreferrer">bilibili 私信作者</a>
-                    <a href="/column/psn-img-legacy.html">上一篇：个人图库</a>
                     <a href="https://www.bilibili.com/opus/968748900391321609/" target="_blank" rel="noopener noreferrer">下一篇：海绵宝宝 add-on</a>
                 </div>
             </section>
@@ -145,45 +147,52 @@
                 <p>以下为人工汇总的片段，原话保留。</p>
                 <div class="comment-list">
                     <div class="comment-card">
-                        <img src="/img/head/shuiyu.avif" alt="滄海水魚头像" loading="lazy">
-                        <div>
+                        <a class="comment-avatar-link" href="/user/滄海水魚.html" aria-label="访问滄海水魚的用户页">
+                            <img src="/resource/img/head/shuiyu.avif" alt="滄海水魚头像" loading="lazy">
+                        </a>
+                        <div class="comment-meta">
                             <p class="comment-author">滄海水魚</p>
                             <p class="comment-date">2024-03-07</p>
                         </div>
                         <p class="comment-text">遣返提示！下面不只是人类！可能出现不明生物！</p>
                     </div>
                     <div class="comment-card">
-                        <img src="/img/head/hxhej.avif" alt="hx_hej头像" loading="lazy">
-                        <div>
+                        <a class="comment-avatar-link" href="/user/hxhej.html" aria-label="访问hx_hej的用户页">
+                            <img src="/resource/img/head/hxhej.avif" alt="hx_hej头像" loading="lazy">
+                        </a>
+                        <div class="comment-meta">
                             <p class="comment-author">hx_hej</p>
                             <p class="comment-date">2024-03-07</p>
                         </div>
                         <p class="comment-text">张小龙没妈。</p>
                     </div>
                     <div class="comment-card">
-                        <img src="/img/head/hxhej.avif" alt="hx_hej头像" loading="lazy">
-                        <div>
+                        <a class="comment-avatar-link" href="/user/hxhej.html" aria-label="访问hx_hej的用户页">
+                            <img src="/resource/img/head/hxhej.avif" alt="hx_hej头像" loading="lazy">
+                        </a>
+                        <div class="comment-meta">
                             <p class="comment-author">hx_hej</p>
                             <p class="comment-date">2024-03-07</p>
                         </div>
                         <p class="comment-text">傻逼冈易。</p>
                         <div class="comment-reply">
                             <i class="icon-ic_fluent_reply_24_regular" aria-hidden="true"></i>
-                            <img src="/img/head/shuiyu.avif" alt="滄海水魚头像" loading="lazy">
-                            <div>
+                            <a class="comment-avatar-link" href="/user/滄海水魚.html" aria-label="访问滄海水魚的用户页">
+                                <img src="/resource/img/head/shuiyu.avif" alt="滄海水魚头像" loading="lazy">
+                            </a>
+                            <div class="comment-meta">
                                 <p class="comment-author">滄海水魚</p>
                                 <p class="comment-date">2026-01-06</p>
                             </div>
                             <p class="comment-reply-text">按你要求修正你的留言了</p>
+                        </div>
                     </div>
-                </div>
                 </div>
             </section>
 
             <section class="article-card">
                 <h2>目录与跳转</h2>
                 <div class="article-actions">
-                    <a href="/column/psn-img-legacy.html">个人图库-过去的记忆</a>
                     <a aria-current="page" href="/column/comments.html">留言板</a>
                     <a href="https://www.bilibili.com/opus/968748900391321609/" target="_blank" rel="noopener noreferrer">海绵宝宝 add-on</a>
                 </div>

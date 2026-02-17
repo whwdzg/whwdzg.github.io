@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更好的合成配方 | Better Crafting Recipes</title>
+    <meta name="author" content="滄海水魚">
+    <meta name="description" content="更好的合成配方数据包的全部配方可视化，使用站点 UI 与 Minecraft UI 混搭呈现。">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/resource/img/shell/bg/bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
+    <link rel="stylesheet" href="/css/settings-modal.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="/css/videoplay.css">
+    <link rel="stylesheet" href="/css/column.css">
+    <link rel="stylesheet" href="/css/project.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+
+    <script src="/js/pwa/register-sw.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/language.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/lightbox.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+    <script src="/js/better-crafting-recipes.js" defer></script>
+</head>
+<body>
+    <div id="shell-root"></div>
+        <script>
+        (function () {
+            var container = document.getElementById('shell-root');
+            function normalize(pathname) {
+                var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
+                return p === '' ? '/' : p;
+            }
+            function markCurrentNav() {
+                var current = normalize(location.pathname);
+                document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
+                    var href = a.getAttribute('href');
+                    if (!href) return;
+                    var target = normalize(new URL(href, location.origin).pathname);
+                    if (target === current) {
+                        a.classList.add('current', 'selected');
+                        var parent = a.closest('.has-children');
+                        if (parent) {
+                            parent.classList.add('open');
+                            var toggle = parent.querySelector('.toggle');
+                            var submenu = parent.querySelector('.submenu');
+                            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+                            if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                        }
+                    }
+                });
+            }
+            function attachShell(html) {
+                if (!container || !html) return;
+                container.innerHTML = html;
+                var move = function () {
+                    var main = document.querySelector('main');
+                    if (!main) return;
+                    var aside = container.querySelector('aside');
+                    var footer = container.querySelector('footer');
+                    if (aside && !main.contains(aside)) {
+                        aside.setAttribute('data-shell-moved', '1');
+                        main.appendChild(aside);
+                    }
+                    if (footer && footer.parentNode !== main.parentNode) {
+                        footer.setAttribute('data-shell-moved', '1');
+                        main.insertAdjacentElement('afterend', footer);
+                    }
+                    if (window.refreshAsideStack) {
+                        window.refreshAsideStack();
+                    }
+                    markCurrentNav();
+                };
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', move, { once: true });
+                } else {
+                    move();
+                }
+            }
+            function bust(url) {
+                if (location.protocol === 'file:') return url;
+                var sep = url.indexOf('?') === -1 ? '?' : '&';
+                return url + sep + 'ts=' + Date.now();
+            }
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', bust('/includes/shell.html'), false);
+                xhr.send(null);
+                if (xhr.status === 200 || xhr.status === 0) {
+                    attachShell(xhr.responseText);
+                    return;
+                }
+            } catch (e) { }
+            fetch(bust('/includes/shell.html'), { cache: 'no-store' })
+                .then(function (resp) { return resp.ok ? resp.text() : Promise.reject(new Error('HTTP ' + resp.status)); })
+                .then(function (html) { attachShell(html); });
+        })();
+    </script>
+
+    <main>
+        <div class="column-stack">
+            <section class="article-card">
+                <p class="eyebrow">项目</p>
+                <h1>更好的合成配方 | Better Crafting Recipes</h1>
+                <p class="article-subtitle">展示数据包内的信息，直接读取 better-crafting-recipes 中的 JSON 并调用 Minecraft 素材呈现。</p>
+                <div class="article-meta">
+                    <span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.13~1.21.11</span>
+                    <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
+                    <span class="pill pill--datapack"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>数据包</span>
+                    <span class="pill pill--fabric"><i class="icon-ic_fluent_stack_24_regular" aria-hidden="true"></i>Fabric</span>
+                    <span class="pill pill--quilt"><i class="icon-ic_fluent_patch_24_regular" aria-hidden="true"></i>Quilt</span>
+                    <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
+                    <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
+                    <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>2026-2-10</span>
+                    <span class="pill"><i class="icon-ic_fluent_info_24_regular" aria-hidden="true"></i>1.9.2</span>
+                </div>
+                <div class="article-actions">
+                    <a href="https://www.mcmod.cn/class/17614.html" target="_blank" rel="noopener noreferrer">在 MCMOD 上查看</a>
+                    <a href="https://modrinth.com/datapack/better-crafting-recipes" target="_blank" rel="noopener noreferrer">Modrinth 项目页</a>
+                    <a href="https://github.com/whwdzg/better-crafting-recipes" target="_blank" rel="noopener noreferrer">Github 源码</a>
+                    <a href="https://github.com/whwdzg/better-crafting-recipes-i18n" target="_blank" rel="noopener noreferrer">语言文件</a>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <h2 style="margin:0;">目录</h2>
+                <div class="article-actions">
+                    <a href="#recipe-meta-bar">配方总览</a>
+                    <a href="#recipe-list-head">配方清单</a>
+                    <a href="#advancement-list-head">进度树</a>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <div class="recipe-meta-bar" id="recipe-meta-bar">
+                    <div>
+                        <h2 style="margin:0;">配方总览</h2>
+                        <p class="article-subtitle" id="recipe-subtitle">正在读取数据包...</p>
+                    </div>
+                    <div class="recipe-filter-row" aria-label="筛选工作方块">
+                        <button class="filter-chip active" data-filter="all">全部</button>
+                        <button class="filter-chip" data-filter="crafting">工作台 · 有序合成</button>
+                        <button class="filter-chip" data-filter="shapeless">工作台 · 无序合成</button>
+                        <button class="filter-chip" data-filter="stonecutting">切石机</button>
+                        <button class="filter-chip" data-filter="smelting">熔炉</button>
+                    </div>
+                </div>
+                <div class="recipe-stat-grid" id="recipe-stats">
+                    <div class="stat-card">
+                        <p class="stat-label">总配方数</p>
+                        <p class="stat-value" id="stat-total">--</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">工作台 · 有序合成</p>
+                        <p class="stat-value" id="stat-crafting">--</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">工作台 · 无序合成</p>
+                        <p class="stat-value" id="stat-shapeless">--</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">切石机</p>
+                        <p class="stat-value" id="stat-stonecutting">--</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">熔炉</p>
+                        <p class="stat-value" id="stat-smelting">--</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <div class="recipe-list-head" id="recipe-list-head">
+                    <h2 style="margin:0;">配方清单</h2>
+                    <p class="article-subtitle" id="recipe-status">加载中...</p>
+                </div>
+                <div id="recipe-list" class="recipe-list"></div>
+            </section>
+            
+            <section class="article-card" id="advancement-list-head">
+                <div class="recipe-list-head advancement-list-head">
+                    <h2 style="margin:0;">进度</h2>
+                    <p class="article-subtitle" id="advancement-status">正在读取进度...</p>
+                </div>
+                <div class="adv-tree-wrap">
+                    <div id="advancement-tree"></div>
+                </div>
+            </section>
+
+
+            <section class="article-card">
+                <h2>更多项目</h2>
+                <div class="article-actions">
+                    <a href="/projects/better-enchantments.html">更好的合成配方</a>
+                    <a href="/projects/better-mob-drop.html">更好的生物掉落</a>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

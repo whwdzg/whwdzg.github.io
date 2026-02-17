@@ -184,10 +184,7 @@ function formatCurrentTime() {
 }
 
 function getSiteVersionMarkup() {
-  const map = getTranslationsMap();
-  const lang = resolveSettingsLang(map);
-  const version = map && map[lang] && map[lang].footer && map[lang].footer.version;
-  return version || '当前版本：<strong>未知</strong>';
+  return '当前版本：<strong>未知</strong>';
 }
 
 function stopCurrentTimeTicker() {
