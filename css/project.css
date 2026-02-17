@@ -405,6 +405,34 @@
   min-width: 0;
   font-size: 0.95rem;
 }
+.ench-item-title {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.ench-item-chips {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding-bottom: 0.1rem;
+}
+.ench-item-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--border-color);
+  border-radius: 9px;
+  background: var(--secondary-bg, rgba(255, 255, 255, 0.04));
+  flex: 0 0 auto;
+}
+.ench-item-chip .mc-slot {
+  --slot-size: 32px;
+}
+.ench-item-chip span {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
 .adv-card {
   display: flex;
   gap: 0.75rem;
