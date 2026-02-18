@@ -1,0 +1,46 @@
+{
+    "criteria": {   
+        "dust": {    
+            "trigger": "minecraft:inventory_changed",    
+            "conditions": {
+                "items": [
+                    {
+                        "items": "#magical_dye:dust"
+                    }
+                ]
+            }
+        },
+        "mineral_block": {
+            "trigger": "minecraft:inventory_changed",    
+            "conditions": {
+                "items": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:red_dye"
+         },
+         "title": {
+             "translate": "染料魔法"
+         },
+         "description": {
+             "translate": "由染料所掌控的魔法，物质的转换皆在你的手中"
+         },
+         "frame": "task",    
+         "announce_to_chat": true,     
+         "hidden": false,   
+         "show_toast": true,  
+         "background": "minecraft:textures/block/stone.png"
+    },
+    "requirements": [    
+        ["dust","mineral_block"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

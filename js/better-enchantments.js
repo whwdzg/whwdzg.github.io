@@ -131,26 +131,6 @@
         return "https://zh.minecraft.wiki/w/" + encodeURIComponent(name);
     }
 
-    function textureCandidates(name) {
-        var bases = [name];
-        var list = [];
-        bases.forEach(function (n) {
-            [
-                assetBase + "/textures/item/" + n + ".png",
-                assetBase + "/textures/block/" + n + ".png",
-                assetBase + "/textures/entity/" + n + ".png"
-            ].forEach(function (p) { if (list.indexOf(p) === -1) list.push(p); });
-        });
-        return list;
-    }
-
-    function pickTexture(id) {
-        if (!id) return [fallbackTexture];
-        var custom = customTextureMap[id] || customTextureMap[id.split(":")[1]] || [];
-        var name = id.split(":")[1] || id;
-        return custom.concat(textureCandidates(name), [fallbackTexture, assetBase + "/textures/item/barrier.png"]);
-    }
-
     function tagUrlFromId(id) {
         var clean = (id || "").replace(/^#/, "");
         var parts = clean.split(":");
@@ -200,45 +180,13 @@
     }
 
     function createSlotForId(id) {
-        var slot = document.createElement("div");
-        slot.className = "mc-slot slot-link";
-        slot.style.backgroundImage = "url('" + slotTexture + "')";
-        var textures = pickTexture(id);
-        var img = document.createElement("img");
-        var texIndex = 0;
-        img.src = textures[texIndex] || fallbackTexture;
-        img.alt = getName(id);
-        img.loading = "lazy";
-        img.decoding = "async";
-        img.onerror = function () {
-            texIndex += 1;
-            if (texIndex < textures.length) {
-                img.src = textures[texIndex];
-            } else {
-                img.onerror = null;
-                img.src = fallbackTexture;
-            }
-        };
-        var href = wikiUrl(id);
-        var label = getName(id);
-        if (href) {
-            label = label ? label + "（点击打开 Wiki）" : "点击打开 Wiki";
-        }
-        slot.title = label;
-        slot.appendChild(img);
-        if (href) {
-            var openWiki = function () { window.open(href, "_blank", "noopener"); };
-            slot.addEventListener("click", openWiki);
-            slot.addEventListener("keydown", function (e) {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    openWiki();
-                }
-            });
-            slot.tabIndex = 0;
-            slot.setAttribute("role", "link");
-        }
-        return slot;
+        if (!window.ItemSlot || typeof window.ItemSlot.createSlot !== "function") return document.createTextNode("");
+        return ItemSlot.createSlot(id, {
+            translations: state.translations,
+            assetBase: assetBase,
+            slotTexture: slotTexture,
+            customTextures: customTextureMap
+        });
     }
 
     function normalizeEnchantment(raw, fileName) {

@@ -1,0 +1,92 @@
+{
+    "criteria": {   
+        "dust_blaze_powder": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:dust_blaze_powder",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:dust"
+                    }
+                ]
+            }
+        },
+        "dust_bone_meal": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:dust_bone_meal",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:dust"
+                    }
+                ]
+            }
+        },
+        "dust_glowstone_dust": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:dust_glowstone_dust",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:dust"
+                    }
+                ]
+            }
+        },
+        "dust_gunpowder": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:dust_gunpowder",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:dust"
+                    }
+                ]
+            }
+        },
+        "dust_redstone": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:dust_redstone",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:dust"
+                    }
+                ]
+            }
+        },
+        "dust_sugar": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:dust_sugar",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:dust"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:redstone"
+         },
+         "title": {
+             "translate": "粉尘转换"
+         },
+         "description": {
+             "translate": "炼金术士的基础，染料与粉尘"
+         },
+         "frame": "task",    
+         "announce_to_chat": true,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "magical_dye:magical_dye",
+    "requirements": [    
+        ["dust_blaze_powder","dust_bone_meal","dust_glowstone_dust","dust_gunpowder","dust_redstone","dust_sugar"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

@@ -269,12 +269,24 @@
   gap: 0.35rem;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
+.recipe-materials .ench-item-chips {
+  flex-wrap: wrap;
+}
 .recipe-materials li {
   margin: 0;
   padding: 0.35rem 0.4rem;
   border-radius: 8px;
   background: rgba(148, 163, 184, 0.08);
   border: 1px solid var(--border-color);
+}
+.recipe-materials .ench-item-chip-sep {
+  padding: 0 0.25rem;
+}
+.material-count {
+  font-weight: 700;
+  color: var(--text-color, #0f172a);
+  margin-right: 0.35rem;
+  align-self: center;
 }
 .advancement-list {
   display: grid;
@@ -411,10 +423,9 @@
 }
 .ench-item-chips {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 0.35rem;
-  overflow-x: auto;
-  padding-bottom: 0.1rem;
+  overflow: visible;
 }
 .ench-item-chip {
   display: inline-flex;
@@ -432,6 +443,11 @@
 .ench-item-chip span {
   font-size: 0.9rem;
   white-space: nowrap;
+}
+.ench-item-chip-sep {
+  align-self: center;
+  color: var(--muted-color, #94a3b8);
+  font-weight: 700;
 }
 .adv-card {
   display: flex;

@@ -33,6 +33,73 @@ document.addEventListener('DOMContentLoaded', function () {
 		const DEFAULT_THEME_COLOR = '#33CC99';
 		let followSystem = localStorage.getItem(FOLLOW_SYSTEM_KEY) !== 'false';
 
+		const WALLPAPER_POOLS = {
+			light: [
+				'/resource/img/shell/bg/bg-light-1.png',
+				'/resource/img/shell/bg/bg-light-2.png',
+				'/resource/img/shell/bg/bg-light-3.png',
+				'/resource/img/shell/bg/bg-light-4.png',
+				'/resource/img/shell/bg/bg-light-5.png',
+				'/resource/img/shell/bg/bg-light-6.png'
+			],
+			dark: [
+				'/resource/img/shell/bg/bg-dark-1.png',
+				'/resource/img/shell/bg/bg-dark-2.png'
+			]
+		};
+
+		let wallpaperTheme = null;
+		let wallpaperLoadId = 0;
+
+		function setWallpaperLoading(active) {
+			document.body.classList.toggle('wallpaper-loading', !!active);
+		}
+
+		function pickWallpaper(isDark) {
+			const key = isDark ? 'dark' : 'light';
+			const pool = WALLPAPER_POOLS[key];
+			if (!Array.isArray(pool) || pool.length === 0) return null;
+			const idx = Math.floor(Math.random() * pool.length);
+			return pool[idx] || null;
+		}
+
+		function preloadImage(src) {
+			return new Promise((resolve) => {
+				if (!src) return resolve(false);
+				const img = new Image();
+				let done = false;
+				const finish = (ok) => {
+					if (done) return;
+					done = true;
+					resolve(ok);
+				};
+				img.onload = () => finish(true);
+				img.onerror = () => finish(false);
+				img.src = src;
+				if (img.complete) finish(true);
+				setTimeout(() => finish(false), 5000);
+			});
+		}
+
+		function applyWallpaper(isDark) {
+			const key = isDark ? 'dark' : 'light';
+			const current = document.documentElement.style.getPropertyValue('--wallpaper-image');
+			if (wallpaperTheme === key && current) return;
+			const picked = pickWallpaper(isDark);
+			if (!picked) return;
+			const loadId = ++wallpaperLoadId;
+			setWallpaperLoading(true);
+			preloadImage(picked).then(() => {
+				if (loadId !== wallpaperLoadId) return;
+				document.documentElement.style.setProperty('--wallpaper-image', `url('${picked}')`);
+				wallpaperTheme = key;
+				setWallpaperLoading(false);
+			}).catch(() => {
+				if (loadId !== wallpaperLoadId) return;
+				setWallpaperLoading(false);
+			});
+		}
+
 	function applyThemeColor(color) {
 		document.documentElement.style.setProperty('--primary-color', color);
 		try {
@@ -65,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		} else {
 			document.body.classList.remove('dark-mode');
 		}
+		applyWallpaper(isDark);
 		localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
 	}
 

@@ -41,7 +41,8 @@ header h1 {
 	transition: opacity 160ms ease, visibility 160ms ease;
 }
 
-body.page-loading .page-loading-indicator {
+body.page-loading .page-loading-indicator,
+body.wallpaper-loading .page-loading-indicator {
 	opacity: 1;
 	visibility: visible;
 }

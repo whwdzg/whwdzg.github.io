@@ -1,0 +1,147 @@
+{
+    "criteria": {   
+        "mineral_amethyst_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_amethyst_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_coal_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_coal_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_copper_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_copper_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_diamond_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_diamond_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_emerald_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_emerald_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_gold_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_gold_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_iron_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_iron_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_lapis_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_lapis_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_netherite_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_netherite_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_quartz_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_quartz_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        },
+        "mineral_redstone_block": {    
+            "trigger": "minecraft:recipe_crafted",    
+            "conditions": {
+                "recipe_id": "magical_dye:mineral_redstone_block",
+                "ingredients": [
+                    {
+                        "items": "#magical_dye:mineral_block"
+                    }
+                ]
+            }
+        }
+    },
+    "display": {
+        "icon": {    
+            "id": "minecraft:gold_block"
+         },
+         "title": {
+             "translate": "矿物块转换"
+         },
+         "description": {
+             "translate": "炼金术士的最爱与终极目标，点石成金！"
+         },
+         "frame": "task",    
+         "announce_to_chat": true,     
+         "hidden": false,   
+         "show_toast": true
+    },
+    "parent": "magical_dye:magical_dye",
+    "requirements": [    
+        ["mineral_amethyst_block","mineral_coal_block","mineral_copper_block","mineral_diamond_block","mineral_emerald_block","mineral_gold_block","mineral_iron_block","mineral_lapis_block","mineral_netherite_block","mineral_quartz_block","mineral_redstone_block"]
+    ],
+    "rewards": {    
+        "experience": 10    
+    }
+}

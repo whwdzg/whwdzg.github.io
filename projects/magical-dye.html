@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魔法染料 | Magical Dye</title>
+    <meta name="author" content="滄海水魚">
+    <meta name="description" content="展示魔法染料数据包的转换配方与进度，直接读取 datapack JSON 渲染。">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/resource/img/shell/bg/bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
+    <link rel="stylesheet" href="/css/settings-modal.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="/css/videoplay.css">
+    <link rel="stylesheet" href="/css/column.css">
+    <link rel="stylesheet" href="/css/project.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+
+    <script src="/js/pwa/register-sw.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/language.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/lightbox.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+    <script src="/js/item-slot.js" defer></script>
+    <script src="/js/magical-dye.js" defer></script>
+</head>
+<body>
+    <div id="shell-root"></div>
+    <script>
+    (function () {
+        var container = document.getElementById('shell-root');
+        function normalize(pathname) {
+            var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '');
+            p = p.replace(/\/+$/, '');
+            return p === '' ? '/' : p;
+        }
+        function markCurrentNav() {
+            var current = normalize(location.pathname);
+            document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
+                var href = a.getAttribute('href');
+                if (!href) return;
+                var target = normalize(new URL(href, location.origin).pathname);
+                if (target === current) {
+                    a.classList.add('current', 'selected');
+                    var parent = a.closest('.has-children');
+                    if (parent) {
+                        parent.classList.add('open');
+                        var toggle = parent.querySelector('.toggle');
+                        var submenu = parent.querySelector('.submenu');
+                        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+                        if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                    }
+                }
+            });
+        }
+        function attachShell(html) {
+            if (!container || !html) return;
+            container.innerHTML = html;
+            var move = function () {
+                var main = document.querySelector('main');
+                if (!main) return;
+                var aside = container.querySelector('aside');
+                var footer = container.querySelector('footer');
+                if (aside && !main.contains(aside)) {
+                    aside.setAttribute('data-shell-moved', '1');
+                    main.appendChild(aside);
+                }
+                if (footer && footer.parentNode !== main.parentNode) {
+                    footer.setAttribute('data-shell-moved', '1');
+                    main.insertAdjacentElement('afterend', footer);
+                }
+                if (window.refreshAsideStack) {
+                    window.refreshAsideStack();
+                }
+                markCurrentNav();
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', move, { once: true });
+            } else {
+                move();
+            }
+        }
+        function bust(url) {
+            if (location.protocol === 'file:') return url;
+            var sep = url.indexOf('?') === -1 ? '?' : '&';
+            return url + sep + 'ts=' + Date.now();
+        }
+        try {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', bust('/includes/shell.html'), false);
+            xhr.send(null);
+            if (xhr.status === 200 || xhr.status === 0) {
+                attachShell(xhr.responseText);
+                return;
+            }
+        } catch (e) { }
+        fetch(bust('/includes/shell.html'), { cache: 'no-store' })
+            .then(function (resp) { return resp.ok ? resp.text() : Promise.reject(new Error('HTTP ' + resp.status)); })
+            .then(function (html) { attachShell(html); });
+    })();
+    </script>
+
+    <main>
+        <div class="column-stack">
+            <section class="article-card">
+                <p class="eyebrow">数据包</p>
+                <h1>魔法染料 | Magical Dye</h1>
+                <p class="article-subtitle">2025年愚人节数据包，染料现在可以将粉末、矿物块进行染色转化。</p>
+                <p class="article-subtitle" style="color:#d92c2c;">加载数据包需要一定时间，请耐心等待。如出现加载失败或贴图未正确显示的问题，请尝试刷新网页。</p>
+                <div class="article-meta">
+<span class="pill"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>1.21.2~1.21.4</span>
+                            <span class="pill"><i class="icon-ic_fluent_storage_24_regular" aria-hidden="true"></i>服务端</span>
+                            <span class="pill pill--datapack"><i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>数据包</span>
+                            <span class="pill pill--fabric"><i class="icon-ic_fluent_stack_24_regular" aria-hidden="true"></i>Fabric</span>
+                            <span class="pill pill--quilt"><i class="icon-ic_fluent_patch_24_regular" aria-hidden="true"></i>Quilt</span>
+                            <span class="pill pill--forge"><i class="icon-ic_fluent_fire_24_regular" aria-hidden="true"></i>Forge</span>
+                            <span class="pill pill--neo-forge"><i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>NeoForge</span>
+                    <span class="pill"><i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>2025-03-2</span>
+                    <span class="pill"><i class="icon-ic_fluent_info_24_regular" aria-hidden="true"></i>1.0.0</span>
+                </div>
+                <div class="article-actions">
+                                                <a href="https://modrinth.com/datapack/magical_dye" target="_blank" rel="noopener noreferrer">在 Modrinth 上查看</a>
+                            <a href="https://github.com/whwdzg/Magical_Dye" target="_blank" rel="noopener noreferrer">在 Github 上查看源代码</a>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <h2 style="margin:0;">目录</h2>
+                <div class="article-actions">
+                    <a href="#mdye-meta">概览</a>
+                    <a href="#mdye-recipe-head">转换配方</a>
+                    <a href="#mdye-adv-head">进度</a>
+                </div>
+            </section>
+
+            <section class="article-card" id="mdye-meta">
+                <div class="recipe-meta-bar">
+                    <div>
+                        <h2 style="margin:0;">配方总览</h2>
+                        <p class="article-subtitle" id="mdye-subtitle">正在读取配方...</p>
+                    </div>
+                    <div class="recipe-filter-row" aria-label="统计">
+                        <div class="stat-card">
+                            <p class="stat-label">配方总数</p>
+                            <p class="stat-value" id="mdye-total">--</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-label">无序合成</p>
+                            <p class="stat-value" id="mdye-shapeless">--</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="stat-label">进度数量</p>
+                            <p class="stat-value" id="mdye-adv-total">--</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="article-card" id="mdye-recipe-head">
+                <div class="recipe-list-head">
+                    <h2 style="margin:0;">转换配方</h2>
+                    <p class="article-subtitle" id="mdye-status">加载中...</p>
+                </div>
+                <div id="mdye-recipe-list" class="recipe-list"></div>
+            </section>
+
+            <section class="article-card" id="mdye-adv-head">
+                <div class="recipe-list-head">
+                    <h2 style="margin:0;">进度</h2>
+                    <p class="article-subtitle" id="mdye-adv-status">正在读取进度...</p>
+                </div>
+                <div class="adv-tree-wrap">
+                    <div id="mdye-adv-tree"></div>
+                </div>
+            </section>
+
+            <section class="article-card">
+                <h2>更多项目</h2>
+                <div class="article-actions">
+                    <a href="/projects/better-crafting-recipes.html">更好的合成配方</a>
+                    <a href="/projects/better-enchantments.html">更好附魔</a>
+                    <a href="/projects/better-mob-drop.html">更好的生物掉落</a>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

@@ -172,72 +172,18 @@
         ]
     };
 
-    function textureCandidates(name) {
-        var bases = [name];
-        var list = [];
-        bases.forEach(function (n) {
-            [
-                assetBase + "/textures/item/" + n + ".png",
-                assetBase + "/textures/block/" + n + ".png",
-                assetBase + "/textures/entity/" + n + ".png",
-                assetBase + "/textures/item/" + n + "_spawn_egg.png"
-            ].forEach(function (p) { if (list.indexOf(p) === -1) list.push(p); });
-        });
-        // Handle blocks like cactus that don't have a single root-named texture file
-        if (name === "cactus") {
-            list.push(assetBase + "/textures/block/cactus_side.png");
-            list.push(assetBase + "/textures/block/cactus_top.png");
-        }
-        return list;
-    }
-
-    function pickTexture(id) {
-        if (!id) return [fallbackTexture];
-        var name = id.split(":")[1] || id;
-        var custom = customTextureMap[id] || customTextureMap[name] || [];
-        return custom.concat(textureCandidates(name), [fallbackTexture]);
-    }
-
     function spawnEggId(entityId) {
         return spawnEggMap[entityId] || null;
     }
 
     function createSlotForId(id) {
-        var slot = document.createElement("div");
-        slot.className = "mc-slot slot-link";
-        slot.style.backgroundImage = "url('" + slotTexture + "')";
-        var textures = pickTexture(id);
-        var img = document.createElement("img");
-        var texIndex = 0;
-        img.src = textures[texIndex] || fallbackTexture;
-        img.alt = getName(id);
-        img.loading = "lazy";
-        img.decoding = "async";
-        img.onerror = function () {
-            texIndex += 1;
-            if (texIndex < textures.length) {
-                img.src = textures[texIndex];
-            } else {
-                img.onerror = null;
-                img.src = fallbackTexture;
-            }
-        };
-        slot.title = getName(id) + "（点击打开 Wiki）";
-        slot.appendChild(img);
-        var href = wikiUrl(id);
-        if (href) {
-            var openWiki = function () { window.open(href, "_blank", "noopener"); };
-            slot.addEventListener("click", openWiki);
-            slot.addEventListener("keydown", function (e) {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    openWiki();
-                }
-            });
-            slot.tabIndex = 0;
-            slot.setAttribute("role", "link");
-        }
-        return slot;
+        if (!window.ItemSlot || typeof window.ItemSlot.createSlot !== "function") return document.createTextNode("");
+        return ItemSlot.createSlot(id, {
+            translations: state.translations,
+            assetBase: assetBase,
+            slotTexture: slotTexture,
+            customTextures: customTextureMap
+        });
     }
 
     function normalizeRange(count) {

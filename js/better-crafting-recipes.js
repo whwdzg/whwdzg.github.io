@@ -162,8 +162,6 @@
     var translationUrl = "/resource/minecraft/zh_ch.json";
     var translationFallbackUrl = assetBase + "/lang/en_us.json";
     var slotTexture = assetBase + "/textures/gui/sprites/container/slot.png";
-    // Inline magenta/black checker as a missingno-style fallback so missing assets stay visible
-    var fallbackTexture = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23000'/><rect x='0' y='0' width='8' height='8' fill='%23ff00ff'/><rect x='8' y='8' width='8' height='8' fill='%23ff00ff'/></svg>";
 
     var stationMeta = {
         "minecraft:crafting_shaped": {
@@ -553,6 +551,12 @@
         ]
     };
 
+    var customTextureMap = {};
+    Object.keys(specialTextures).forEach(function (key) {
+        customTextureMap[key] = specialTextures[key];
+        customTextureMap["minecraft:" + key] = specialTextures[key];
+    });
+
     function textureCandidates(name) {
         // Exact overrides for tricky assets
         if (specialTextures[name]) {
@@ -596,13 +600,6 @@
         return list;
     }
 
-    function pickTexture(id) {
-        if (!id) return [fallbackTexture];
-        var name = id.split(":")[1] || id;
-        var list = textureCandidates(name).concat([fallbackTexture]);
-        return list;
-    }
-
     function optionLabel(option) {
         if (option.isTag) {
             var values = state.tags[option.id] || [];
@@ -613,6 +610,15 @@
             return "标签 " + option.id;
         }
         return getName(option.id);
+    }
+
+    function optionIds(option) {
+        if (!option) return [];
+        if (option.isTag) {
+            var values = state.tags[option.id] || [];
+            return values.length ? values.slice() : [option.id];
+        }
+        return [option.id];
     }
 
     function requirementKey(req) {
@@ -684,36 +690,46 @@
 
     function createSlot(req, count, opts) {
         opts = opts || {};
-        var slot = document.createElement("div");
-        slot.className = "mc-slot";
-        slot.style.backgroundImage = "url('" + slotTexture + "')";
-        if (opts.isResult) slot.classList.add("result-slot");
-        if (!req || !req.options || !req.options.length) {
-            slot.classList.add("slot-empty");
-            return slot;
+        var hasOptions = req && Array.isArray(req.options) && req.options.length;
+        if (!hasOptions) {
+            var empty = document.createElement("div");
+            empty.className = "mc-slot slot-empty";
+            empty.style.backgroundImage = "url('" + slotTexture + "')";
+            if (opts.isResult) empty.classList.add("result-slot");
+            return empty;
         }
+
         var primary = primaryOption(req);
+        var primaryId = primary ? primary.id : null;
+        var slot = null;
+        if (window.ItemSlot && typeof window.ItemSlot.createSlot === "function") {
+            slot = ItemSlot.createSlot(primaryId || "minecraft:barrier", {
+                translations: state.translations,
+                assetBase: assetBase,
+                slotTexture: slotTexture,
+                customTextures: customTextureMap
+            });
+        }
+        if (!slot) {
+            slot = document.createElement("div");
+            slot.className = "mc-slot";
+            slot.style.backgroundImage = "url('" + slotTexture + "')";
+            var img = document.createElement("img");
+            img.src = assetBase + "/textures/item/barrier.png";
+            img.alt = primaryId || "";
+            img.loading = "lazy";
+            img.decoding = "async";
+            slot.appendChild(img);
+        }
+        if (opts.isResult) slot.classList.add("result-slot");
+
         var names = (req.options || []).map(optionLabel).join(" / ");
-        var textures = pickTexture(primary ? primary.id : null);
-        var wikiTargetId = primary ? primary.id : null;
-        var wikiHref = wikiUrl(wikiTargetId);
-        var img = document.createElement("img");
-        var texIndex = 0;
-        img.src = textures[texIndex] || fallbackTexture;
-        img.alt = names;
-        img.loading = "lazy";
-        img.decoding = "async";
-        img.onerror = function () {
-            texIndex += 1;
-            if (texIndex < textures.length) {
-                img.src = textures[texIndex];
-            } else {
-                img.onerror = null;
-                img.src = fallbackTexture;
-            }
-        };
-        slot.title = names;
-        slot.appendChild(img);
+        var wikiHref = window.ItemSlot && typeof ItemSlot.wikiUrl === "function" ? ItemSlot.wikiUrl(primaryId, state.translations) : wikiUrl(primaryId);
+        if (names) {
+            var imgEl = slot.querySelector("img");
+            if (imgEl) imgEl.alt = names;
+            slot.title = wikiHref ? names + "（点击打开 Wiki）" : names;
+        }
         var showCount = typeof count === "number" && count > 1;
         if (showCount) {
             var badge = document.createElement("span");
@@ -728,11 +744,10 @@
             altBadge.textContent = "+" + (alts - 1);
             slot.appendChild(altBadge);
         }
-        if (wikiHref) {
+        if (wikiHref && slot && !slot.classList.contains("slot-link")) {
             slot.classList.add("slot-link");
             slot.setAttribute("role", "link");
             slot.tabIndex = 0;
-            slot.title = names + "（点击打开 Wiki）";
             var openWiki = function () { window.open(wikiHref, "_blank", "noopener"); };
             slot.addEventListener("click", openWiki);
             slot.addEventListener("keydown", function (e) {
@@ -812,7 +827,36 @@
         list.className = "recipe-materials";
         materials.forEach(function (entry) {
             var li = document.createElement("li");
-            li.textContent = entry.count + " × " + (entry.requirement ? (entry.requirement.options || []).map(optionLabel).join(" / ") : "");
+            var chips = document.createElement("div");
+            chips.className = "ench-item-chips";
+            if (entry.count > 1) {
+                var cnt = document.createElement("span");
+                cnt.className = "material-count";
+                cnt.textContent = "数量 × " + entry.count;
+                chips.appendChild(cnt);
+            }
+            var opts = (entry.requirement && entry.requirement.options) ? entry.requirement.options : [];
+            var ids = [];
+            opts.forEach(function (opt) { ids = ids.concat(optionIds(opt)); });
+            ids = Array.from(new Set(ids));
+            ids.forEach(function (id, idx) {
+                var chip = document.createElement("div");
+                chip.className = "ench-item-chip";
+                var slot = createSlot({ options: [{ id: id, isTag: false, raw: id }] }, 1);
+                slot.classList.add("ench-item-chip-slot");
+                var name = document.createElement("span");
+                name.textContent = getName(id);
+                chip.appendChild(slot);
+                chip.appendChild(name);
+                chips.appendChild(chip);
+                if (idx !== ids.length - 1) {
+                    var sep = document.createElement("span");
+                    sep.className = "ench-item-chip-sep";
+                    sep.textContent = "或";
+                    chips.appendChild(sep);
+                }
+            });
+            li.appendChild(chips);
             list.appendChild(li);
         });
         return list;
