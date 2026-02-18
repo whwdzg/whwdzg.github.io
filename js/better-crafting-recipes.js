@@ -1164,7 +1164,8 @@
             crafting: recipes.filter(function (r) { return r.type === "minecraft:crafting_shaped"; }).length,
             shapeless: recipes.filter(function (r) { return r.type === "minecraft:crafting_shapeless"; }).length,
             stonecutting: recipes.filter(function (r) { return r.type === "minecraft:stonecutting"; }).length,
-            smelting: recipes.filter(function (r) { return r.type === "minecraft:smelting"; }).length
+            smelting: recipes.filter(function (r) { return r.type === "minecraft:smelting"; }).length,
+            adv: state.advancements.length
         };
         var setText = function (id, value) {
             var el = document.getElementById(id);
@@ -1175,6 +1176,7 @@
         setText("stat-shapeless", counts.shapeless);
         setText("stat-stonecutting", counts.stonecutting);
         setText("stat-smelting", counts.smelting);
+        setText("stat-adv", counts.adv);
         var subtitle = document.getElementById("recipe-subtitle");
         if (subtitle) subtitle.textContent = "已加载 " + counts.total + " 条配方";
     }

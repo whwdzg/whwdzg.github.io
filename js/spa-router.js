@@ -36,9 +36,7 @@
   ];
 
   const sharedJs = [
-    resolve('js/i18n-loader.js'),
     resolve('js/theme.js'),
-    resolve('js/language.js'),
     resolve('js/sidebar.js'),
     resolve('js/lightbox.js'),
     resolve('js/avatar.js'),

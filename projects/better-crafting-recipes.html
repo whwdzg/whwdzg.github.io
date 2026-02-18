@@ -30,7 +30,6 @@
 
     <script src="/js/pwa/register-sw.js" defer></script>
     <script src="/js/theme.js" defer></script>
-    <script src="/js/language.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="/js/lightbox.js" defer></script>
     <script src="/js/avatar.js" defer></script>
@@ -52,18 +51,35 @@
             }
             function markCurrentNav() {
                 var current = normalize(location.pathname);
+                var sidebar = document.getElementById('sidebar');
+                if (!sidebar) return;
+                sidebar.querySelectorAll('.current, .selected').forEach(function (el) {
+                    el.classList.remove('current', 'selected');
+                    if (el.tagName === 'A') el.removeAttribute('aria-current');
+                });
                 document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
                     var href = a.getAttribute('href');
                     if (!href) return;
                     var target = normalize(new URL(href, location.origin).pathname);
                     if (target === current) {
-                        a.classList.add('current', 'selected');
                         var parent = a.closest('.has-children');
+                        var toggle = parent ? parent.querySelector('.toggle') : null;
+                        var submenu = parent ? parent.querySelector('.submenu') : null;
+                        var parentOpen = !!(parent && parent.classList.contains('open'));
+
+                        if (parent && !parentOpen) {
+                            parent.classList.add('current');
+                            if (toggle) toggle.classList.add('current');
+                            return;
+                        }
+
+                        a.classList.add('current', 'selected');
+                        a.setAttribute('aria-current', 'page');
                         if (parent) {
-                            parent.classList.add('open');
-                            var toggle = parent.querySelector('.toggle');
-                            var submenu = parent.querySelector('.submenu');
-                            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+                            if (toggle) {
+                                toggle.classList.add('current');
+                                toggle.setAttribute('aria-expanded', 'true');
+                            }
                             if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
                         }
                     }
@@ -145,7 +161,7 @@
             <section class="article-card">
                 <h2 style="margin:0;">目录</h2>
                 <div class="article-actions">
-                    <a href="#recipe-meta-bar">配方总览</a>
+                    <a href="#recipe-meta-bar">总览</a>
                     <a href="#recipe-list-head">配方清单</a>
                     <a href="#advancement-list-head">进度树</a>
                 </div>
@@ -154,7 +170,7 @@
             <section class="article-card">
                 <div class="recipe-meta-bar" id="recipe-meta-bar">
                     <div>
-                        <h2 style="margin:0;">配方总览</h2>
+                        <h2 style="margin:0;">总览</h2>
                         <p class="article-subtitle" id="recipe-subtitle">正在读取数据包...</p>
                     </div>
                     <div class="recipe-filter-row" aria-label="筛选工作方块">
@@ -185,6 +201,10 @@
                     <div class="stat-card">
                         <p class="stat-label">熔炉</p>
                         <p class="stat-value" id="stat-smelting">--</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">进度数量</p>
+                        <p class="stat-value" id="stat-adv">--</p>
                     </div>
                 </div>
             </section>

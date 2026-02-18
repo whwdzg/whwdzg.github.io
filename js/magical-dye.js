@@ -33,6 +33,29 @@
     var translationFallbackUrl = assetBase + "/lang/en_us.json";
     var slotTexture = assetBase + "/textures/gui/sprites/container/slot.png";
 
+    var stationMeta = {
+        "minecraft:crafting_shaped": {
+            label: "工作台",
+            badge: "有序合成",
+            blockTexture: assetBase + "/textures/block/crafting_table_front.png"
+        },
+        "minecraft:crafting_shapeless": {
+            label: "工作台",
+            badge: "无序合成",
+            blockTexture: assetBase + "/textures/block/crafting_table_front.png"
+        },
+        "minecraft:stonecutting": {
+            label: "切石机",
+            badge: "单素材",
+            blockTexture: assetBase + "/textures/block/stonecutter_top.png"
+        },
+        "minecraft:smelting": {
+            label: "熔炉",
+            badge: "熔炼",
+            blockTexture: assetBase + "/textures/block/furnace_front.png"
+        }
+    };
+
     var tagCache = new Map();
 
     var state = {
@@ -40,8 +63,11 @@
         advancements: [],
         translations: {},
         loaded: false,
-        hashPending: true
+        hashPending: true,
+        filter: "all"
     };
+
+    var filtersBound = false;
 
     function fetchJson(url) {
         return fetch(url).then(function (resp) {
@@ -293,6 +319,7 @@
         if (!value) return Promise.resolve([]);
         var list = Array.isArray(value) ? value.slice() : [value];
         var jobs = list.map(function (v) {
+            if (Array.isArray(v)) return resolveItemList(v);
             if (typeof v === "string" && v.charAt(0) === "#") return loadTagItems(v);
             if (typeof v === "string") return Promise.resolve([v]);
             if (v && typeof v === "object") {
@@ -322,6 +349,7 @@
         var base = {
             id: "magical_dye:" + fileName.replace(/\.json$/i, ""),
             file: fileName,
+            type: raw && raw.type ? raw.type : "minecraft:crafting_shapeless",
             resultId: resultId,
             resultCount: resultCount,
             ingredients: []
@@ -468,18 +496,44 @@
         roots.forEach(function (r) { ul.appendChild(renderAdvTreeNode(r)); });
         container.appendChild(ul);
         setAdvStatus("已加载 " + state.advancements.length + " 个进度");
-        var advTotal = document.getElementById("mdye-adv-total");
+        var advTotal = document.getElementById("mdye-stat-adv");
         if (advTotal) advTotal.textContent = state.advancements.length;
         tryScrollToHash();
     }
 
     function updateStats() {
-        var total = document.getElementById("mdye-total");
-        if (total) total.textContent = state.recipes.length;
-        var shapeless = document.getElementById("mdye-shapeless");
-        if (shapeless) shapeless.textContent = state.recipes.filter(function (r) { return r.type === "minecraft:crafting_shapeless"; }).length;
-        var advTotal = document.getElementById("mdye-adv-total");
-        if (advTotal) advTotal.textContent = state.advancements.length;
+        var counts = {
+            total: state.recipes.length,
+            shapeless: state.recipes.filter(function (r) { return r.type === "minecraft:crafting_shapeless"; }).length,
+            adv: state.advancements.length
+        };
+        var setText = function (id, value) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = value;
+        };
+        setText("mdye-stat-total", counts.total);
+        setText("mdye-stat-shapeless", counts.shapeless);
+        setText("mdye-stat-adv", counts.adv);
+        var subtitle = document.getElementById("mdye-subtitle");
+        if (subtitle) subtitle.textContent = "已加载 " + counts.total + " 条配方";
+    }
+
+    function matchesFilter(recipe) {
+        if (state.filter === "shapeless") return recipe.type === "minecraft:crafting_shapeless";
+        return true; // "all" or any unknown falls back to showing everything
+    }
+
+    function applyFilter(filter) {
+        state.filter = filter === "shapeless" ? "shapeless" : "all";
+        var buttons = document.querySelectorAll('#mdye-filter .filter-chip');
+        buttons.forEach(function (btn) {
+            if ((btn.getAttribute('data-filter') || 'all') === state.filter) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        renderRecipes();
     }
 
     function describeRecipeType(type) {
@@ -491,7 +545,7 @@
     }
 
     function workstationChip(type) {
-        var meta = {
+        var meta = stationMeta[type] || {
             label: describeRecipeType(type),
             badge: "配方",
             blockTexture: assetBase + "/textures/block/crafting_table_front.png"
@@ -625,18 +679,30 @@
         var container = document.getElementById("mdye-recipe-list");
         if (!container) return;
         container.innerHTML = "";
-        if (!state.recipes.length) {
+        var filtered = state.recipes.filter(matchesFilter);
+        if (!filtered.length) {
             var none = document.createElement("p");
             none.className = "recipe-empty";
-            none.textContent = "未找到配方数据";
+            none.textContent = state.recipes.length ? "没有匹配的配方" : "未找到配方数据";
             container.appendChild(none);
-            setStatus("未找到配方");
+            setStatus(state.recipes.length ? "没有匹配的配方" : "未找到配方");
             return;
         }
-        state.recipes.forEach(function (r) { container.appendChild(renderRecipe(r)); });
-        setStatus(state.recipes.length + " 条配方");
+        filtered.forEach(function (r) { container.appendChild(renderRecipe(r)); });
+        setStatus(filtered.length + " 条配方" + (state.filter !== "all" ? " · 已筛选" : ""));
         updateStats();
         tryScrollToHash();
+    }
+
+    function bindFilters() {
+        if (filtersBound) return;
+        filtersBound = true;
+        document.querySelectorAll('#mdye-filter .filter-chip').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var mode = btn.getAttribute('data-filter') || 'all';
+                applyFilter(mode);
+            });
+        });
     }
 
     function tryScrollToHash() {
@@ -652,8 +718,10 @@
     }
 
     function init() {
+        bindFilters();
         if (state.loaded) {
-            renderRecipes();
+            updateStats();
+            applyFilter(state.filter || "all");
             renderAdvancements();
             return;
         }
@@ -672,10 +740,10 @@
             state.recipes = results[0] || [];
             state.advancements = results[1] || [];
             state.loaded = true;
-            renderRecipes();
+            updateStats();
+            applyFilter(state.filter || "all");
             renderAdvancements();
             setStatus("加载完成");
-            updateStats();
         }).catch(function (err) {
             setStatus("加载失败: " + err.message);
             setAdvStatus("加载进度失败");
@@ -691,6 +759,7 @@
     window.addEventListener("spa:page:loaded", function () {
         state.loaded = false;
         state.hashPending = true;
+        filtersBound = false;
         init();
     });
 })();

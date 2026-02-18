@@ -55,7 +55,31 @@
         advancements: [],
         translations: {},
         loaded: false,
-        hashPending: true
+        hashPending: true,
+        filter: "all"
+    };
+
+    var filtersBound = false;
+
+    var mobType = {
+        "minecraft:allay": "friendly",
+        "minecraft:axolotl": "friendly",
+        "minecraft:bat": "friendly",
+        "minecraft:camel": "friendly",
+        "minecraft:chicken": "friendly",
+        "minecraft:turtle": "friendly",
+        "minecraft:villager": "friendly",
+        "minecraft:wandering_trader": "friendly",
+        "minecraft:armadillo": "neutral",
+        "minecraft:bee": "neutral",
+        "minecraft:fox": "neutral",
+        "minecraft:frog": "neutral",
+        "minecraft:goat": "neutral",
+        "minecraft:piglin": "neutral",
+        "minecraft:polar_bear": "neutral",
+        "minecraft:bogged": "hostile",
+        "minecraft:ender_dragon": "hostile",
+        "minecraft:piglin_brute": "hostile"
     };
 
     function fetchJson(url) {
@@ -70,6 +94,27 @@
         if (status) status.textContent = text;
         var subtitle = document.getElementById("mobdrop-subtitle");
         if (subtitle) subtitle.textContent = text;
+    }
+
+    function updateStats() {
+        var counts = {
+            total: state.loot.length,
+            friendly: state.loot.filter(function (m) { return mobType[m.entityId] === "friendly"; }).length,
+            neutral: state.loot.filter(function (m) { return mobType[m.entityId] === "neutral"; }).length,
+            hostile: state.loot.filter(function (m) { return mobType[m.entityId] === "hostile"; }).length
+        };
+        var advCount = state.advancements.length;
+        var setText = function (id, value) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = value;
+        };
+        setText("mobdrop-total", counts.total);
+        setText("mobdrop-friendly", counts.friendly);
+        setText("mobdrop-neutral", counts.neutral);
+        setText("mobdrop-hostile", counts.hostile);
+        setText("mobdrop-adv-count", advCount);
+        var subtitle = document.getElementById("mobdrop-subtitle");
+        if (subtitle) subtitle.textContent = "已加载 " + counts.total + " 种生物";
     }
 
     function setAdvStatus(text) {
@@ -100,22 +145,44 @@
 
     function getName(id) {
         if (!id) return "";
-        var parts = id.split(":");
-        var ns = parts[0] || "minecraft";
-        var name = parts[1] || parts[0];
-        var keyItem = "item." + ns + "." + name;
-        var keyBlock = "block." + ns + "." + name;
-        var keyEntity = "entity." + ns + "." + name;
-        if (state.translations[keyItem]) return state.translations[keyItem];
-        if (state.translations[keyBlock]) return state.translations[keyBlock];
-        if (state.translations[keyEntity]) return state.translations[keyEntity];
-        return titleCase(name.replace(/_/g, " "));
+        if (window.ItemSlot && typeof ItemSlot.getName === "function") {
+            return ItemSlot.getName(id, state.translations || {});
+        }
+        var name = (id.split(":")[1] || id).replace(/_/g, " ");
+        return titleCase(name);
     }
 
-    function wikiUrl(id) {
-        if (!id) return null;
-        var name = getName(id) || (id.split(":")[1] || id);
-        return "https://zh.minecraft.wiki/w/" + encodeURIComponent(name);
+    function init() {
+        bindFilters();
+        if (state.loaded) {
+            updateStats();
+            applyFilter(state.filter || "all");
+            renderAdvancements();
+            return;
+        }
+        setStatus("正在读取掉落 0% (0/" + lootFiles.length + ")");
+        setAdvStatus("正在读取进度...");
+        loadTranslations().then(function () {
+            return Promise.all([
+                loadLootTables(function (done, total, pct) {
+                    setStatus("正在读取掉落 " + pct + "% (" + done + "/" + total + ")");
+                }),
+                loadAdvancements(function (done, total) {
+                    setAdvStatus("正在读取进度 " + done + "/" + total);
+                })
+            ]);
+        }).then(function (results) {
+            state.loot = results[0] || [];
+            state.advancements = results[1] || [];
+            state.loaded = true;
+            updateStats();
+            applyFilter(state.filter || "all");
+            renderAdvancements();
+            setStatus("加载完成");
+        }).catch(function (err) {
+            setStatus("加载失败: " + err.message);
+            setAdvStatus("加载进度失败");
+        });
     }
 
     var spawnEggMap = {
@@ -347,6 +414,35 @@
         });
     }
 
+    function bindFilters() {
+        if (filtersBound) return;
+        filtersBound = true;
+        document.querySelectorAll('#mobdrop-filter .filter-chip').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var mode = btn.getAttribute('data-filter') || 'all';
+                applyFilter(mode);
+            });
+        });
+    }
+
+    function matchesFilter(entityId) {
+        var tag = mobType[entityId] || "friendly";
+        if (state.filter === "friendly") return tag === "friendly";
+        if (state.filter === "neutral") return tag === "neutral";
+        if (state.filter === "hostile") return tag === "hostile";
+        return true;
+    }
+
+    function applyFilter(filter) {
+        state.filter = (filter === "friendly" || filter === "neutral" || filter === "hostile") ? filter : "all";
+        var buttons = document.querySelectorAll('#mobdrop-filter .filter-chip');
+        buttons.forEach(function (btn) {
+            var mode = btn.getAttribute('data-filter') || 'all';
+            if (mode === state.filter) btn.classList.add('active'); else btn.classList.remove('active');
+        });
+        renderLoot();
+    }
+
     function buildAdvTreeData(advancements) {
         var map = new Map();
         advancements.forEach(function (adv) {
@@ -432,14 +528,18 @@
         var list = document.getElementById("mobdrop-list");
         if (!list) return;
         list.innerHTML = "";
-        if (!state.loot.length) {
-            var empty = document.createElement("p");
-            empty.className = "recipe-empty";
-            empty.textContent = "没有可显示的掉落";
-            list.appendChild(empty);
-            return;
-        }
-        state.loot.forEach(function (mob) {
+        updateStats();
+            var filtered = state.loot.filter(function (m) { return matchesFilter(m.entityId); });
+            setStatus(filtered.length + " 种生物" + (state.filter !== "all" ? " · 已筛选" : ""));
+            if (!filtered.length) {
+                var empty = document.createElement("p");
+                empty.className = "recipe-empty";
+                empty.textContent = state.loot.length ? "没有匹配的生物" : "没有可显示的掉落";
+                list.appendChild(empty);
+                setStatus(state.loot.length ? "没有匹配的生物" : "未找到掉落");
+                return;
+            }
+            filtered.forEach(function (mob) {
             var card = document.createElement("article");
             card.className = "loot-card";
 
@@ -509,44 +609,6 @@
         }
     }
 
-    function updateStats() {
-        var total = document.getElementById("mobdrop-total");
-        if (total) total.textContent = state.loot.length;
-    }
-
-    function init() {
-        if (state.loaded) {
-            renderLoot();
-            renderAdvancements();
-            updateStats();
-            return;
-        }
-        setStatus("正在读取掉落 0% (0/" + lootFiles.length + ")");
-        setAdvStatus("正在读取进度...");
-        loadTranslations().then(function () {
-            return Promise.all([
-                loadLootTables(function (done, total, pct) {
-                    setStatus("正在读取掉落 " + pct + "% (" + done + "/" + total + ")");
-                }),
-                loadAdvancements(function (done, total) {
-                    setAdvStatus("正在读取进度 " + done + "/" + total);
-                })
-            ]);
-        }).then(function (results) {
-            state.loot = results[0];
-            state.advancements = results[1];
-            state.loaded = true;
-            renderLoot();
-            renderAdvancements();
-            updateStats();
-            setStatus("加载完成");
-            setAdvStatus("已加载 " + state.advancements.length + " 个进度");
-        }).catch(function (err) {
-            setStatus("加载失败: " + err.message);
-            setAdvStatus("加载进度失败");
-        });
-    }
-
     if (document.readyState === "complete" || document.readyState === "interactive") {
         init();
     } else {
@@ -556,6 +618,7 @@
     window.addEventListener("spa:page:loaded", function () {
         state.loaded = false;
         state.hashPending = true;
+        filtersBound = false;
         init();
     });
 })();

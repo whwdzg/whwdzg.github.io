@@ -253,7 +253,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	let pinchStartMidY = 0;
 	let swipeStartX = 0, swipeStartY = 0, swipeEndX = 0, swipeEndY = 0, isSwipePossible = false;
 	const activePointers = new Map();
-	const getLang = () => document.documentElement.lang || localStorage.getItem('language') || 'zh-CN';
 	const applyLightboxLabels = () => {
 		if (typeof translations === 'undefined') return;
 		const strings = translations[getLang()] && translations[getLang()].lightbox;
@@ -285,9 +284,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (closeBtn && strings.close) closeBtn.setAttribute('title', strings.close);
 	};
 
-	// apply labels now and when language changes
-	applyLightboxLabels();
-	document.addEventListener('languagechange', applyLightboxLabels);
 
 	const updateCursor = () => {
 		const dragging = isPanning || isPinching;

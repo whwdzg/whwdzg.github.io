@@ -34,7 +34,6 @@
 
     <script src="/js/pwa/register-sw.js" defer></script>
     <script src="/js/theme.js" defer></script>
-    <script src="/js/language.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="/js/lightbox.js" defer></script>
     <script src="/js/avatar.js" defer></script>
@@ -56,18 +55,35 @@
             }
             function markCurrentNav() {
                 var current = normalize(location.pathname);
+                var sidebar = document.getElementById('sidebar');
+                if (!sidebar) return;
+                sidebar.querySelectorAll('.current, .selected').forEach(function (el) {
+                    el.classList.remove('current', 'selected');
+                    if (el.tagName === 'A') el.removeAttribute('aria-current');
+                });
                 document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
                     var href = a.getAttribute('href');
                     if (!href) return;
                     var target = normalize(new URL(href, location.origin).pathname);
                     if (target === current) {
-                        a.classList.add('current', 'selected');
                         var parent = a.closest('.has-children');
+                        var toggle = parent ? parent.querySelector('.toggle') : null;
+                        var submenu = parent ? parent.querySelector('.submenu') : null;
+                        var parentOpen = !!(parent && parent.classList.contains('open'));
+
+                        if (parent && !parentOpen) {
+                            parent.classList.add('current');
+                            if (toggle) toggle.classList.add('current');
+                            return;
+                        }
+
+                        a.classList.add('current', 'selected');
+                        a.setAttribute('aria-current', 'page');
                         if (parent) {
-                            parent.classList.add('open');
-                            var toggle = parent.querySelector('.toggle');
-                            var submenu = parent.querySelector('.submenu');
-                            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+                            if (toggle) {
+                                toggle.classList.add('current');
+                                toggle.setAttribute('aria-expanded', 'true');
+                            }
                             if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
                         }
                     }

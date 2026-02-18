@@ -3,7 +3,6 @@
 let __settingsLoadToken = 0; // incrementing token for each open
 let __settingsFetchController = null; // AbortController for fetch
 let __settingsClearTimeoutId = null; // timeout id used when closing
-const SETTINGS_LANG_KEY = 'language';
 const DEFAULT_THEME_COLOR = '#33CC99';
 const CUSTOM_DEFAULT_COLOR = '#b6b6b6';
 const CACHE_BUST = () => 'ts=' + Date.now();
@@ -171,7 +170,6 @@ let __settingsCurrentTimeIntervalId = null;
 function formatCurrentTime() {
   const now = new Date();
   const docLang = (typeof document !== 'undefined' && document.documentElement && document.documentElement.lang) ? document.documentElement.lang : '';
-  const locale = docLang || (typeof navigator !== 'undefined' ? navigator.language : '') || 'zh-CN';
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: '2-digit',

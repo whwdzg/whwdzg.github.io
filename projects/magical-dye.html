@@ -30,7 +30,6 @@
 
     <script src="/js/pwa/register-sw.js" defer></script>
     <script src="/js/theme.js" defer></script>
-    <script src="/js/language.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="/js/lightbox.js" defer></script>
     <script src="/js/avatar.js" defer></script>
@@ -53,18 +52,35 @@
         }
         function markCurrentNav() {
             var current = normalize(location.pathname);
+            var sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            sidebar.querySelectorAll('.current, .selected').forEach(function (el) {
+                el.classList.remove('current', 'selected');
+                if (el.tagName === 'A') el.removeAttribute('aria-current');
+            });
             document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
                 var href = a.getAttribute('href');
                 if (!href) return;
                 var target = normalize(new URL(href, location.origin).pathname);
                 if (target === current) {
-                    a.classList.add('current', 'selected');
                     var parent = a.closest('.has-children');
+                    var toggle = parent ? parent.querySelector('.toggle') : null;
+                    var submenu = parent ? parent.querySelector('.submenu') : null;
+                    var parentOpen = !!(parent && parent.classList.contains('open'));
+
+                    if (parent && !parentOpen) {
+                        parent.classList.add('current');
+                        if (toggle) toggle.classList.add('current');
+                        return;
+                    }
+
+                    a.classList.add('current', 'selected');
+                    a.setAttribute('aria-current', 'page');
                     if (parent) {
-                        parent.classList.add('open');
-                        var toggle = parent.querySelector('.toggle');
-                        var submenu = parent.querySelector('.submenu');
-                        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+                        if (toggle) {
+                            toggle.classList.add('current');
+                            toggle.setAttribute('aria-expanded', 'true');
+                        }
                         if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
                     }
                 }
@@ -144,31 +160,35 @@
             <section class="article-card">
                 <h2 style="margin:0;">目录</h2>
                 <div class="article-actions">
-                    <a href="#mdye-meta">概览</a>
+                    <a href="#mdye-meta">总览</a>
                     <a href="#mdye-recipe-head">转换配方</a>
                     <a href="#mdye-adv-head">进度</a>
                 </div>
             </section>
 
             <section class="article-card" id="mdye-meta">
-                <div class="recipe-meta-bar">
+                <div class="recipe-meta-bar" id="mdye-meta-bar">
                     <div>
-                        <h2 style="margin:0;">配方总览</h2>
+                        <h2 style="margin:0;">总览</h2>
                         <p class="article-subtitle" id="mdye-subtitle">正在读取配方...</p>
                     </div>
-                    <div class="recipe-filter-row" aria-label="统计">
-                        <div class="stat-card">
-                            <p class="stat-label">配方总数</p>
-                            <p class="stat-value" id="mdye-total">--</p>
-                        </div>
-                        <div class="stat-card">
-                            <p class="stat-label">无序合成</p>
-                            <p class="stat-value" id="mdye-shapeless">--</p>
-                        </div>
-                        <div class="stat-card">
-                            <p class="stat-label">进度数量</p>
-                            <p class="stat-value" id="mdye-adv-total">--</p>
-                        </div>
+                    <div class="recipe-filter-row" id="mdye-filter" aria-label="筛选配方类型">
+                        <button class="filter-chip active" data-filter="all">全部</button>
+                        <button class="filter-chip" data-filter="shapeless">工作台 · 无序合成</button>
+                    </div>
+                </div>
+                <div class="recipe-stat-grid" id="mdye-stats">
+                    <div class="stat-card">
+                        <p class="stat-label">总配方数</p>
+                        <p class="stat-value" id="mdye-stat-total">--</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">工作台 · 无序合成</p>
+                        <p class="stat-value" id="mdye-stat-shapeless">--</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">进度数量</p>
+                        <p class="stat-value" id="mdye-stat-adv">--</p>
                     </div>
                 </div>
             </section>

@@ -66,8 +66,11 @@
         enchantments: [],
         advancements: [],
         translations: {},
-        loaded: false
+        loaded: false,
+        filter: "all"
     };
+
+    var filtersBound = false;
 
     function fetchJson(url) {
         return fetch(url).then(function (resp) {
@@ -290,18 +293,50 @@
         if (status) status.textContent = text;
     }
 
-    function updateStats(list) {
-        var total = document.getElementById("ench-total");
-        if (total) total.textContent = list.length;
-        var maxLevel = list.reduce(function (acc, cur) { return Math.max(acc, cur.maxLevel || 0); }, 0);
-        var maxLevelEl = document.getElementById("ench-max-level");
-        if (maxLevelEl) maxLevelEl.textContent = maxLevel || "--";
-        var slotSet = new Set();
-        list.forEach(function (e) { (e.slots || []).forEach(function (s) { slotSet.add(s); }); });
-        var slotEl = document.getElementById("ench-slot-types");
-        if (slotEl) slotEl.textContent = slotSet.size ? Array.from(slotSet).join(" · ") : "--";
+    function updateStats() {
+        var totalCount = state.enchantments.length;
+        var armorCount = state.enchantments.filter(function (e) { return Array.isArray(e.slots) && e.slots.indexOf("armor") !== -1; }).length;
+        var anyCount = state.enchantments.filter(function (e) { return Array.isArray(e.slots) && e.slots.indexOf("any") !== -1; }).length;
+        var advCount = state.advancements.length;
+        var setText = function (id, value) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = value;
+        };
+        setText("ench-total", totalCount);
+        setText("ench-armor", armorCount);
+        setText("ench-any", anyCount);
+        setText("ench-adv-count", advCount);
         var subtitle = document.getElementById("ench-subtitle");
-        if (subtitle) subtitle.textContent = "已加载 " + list.length + " 个附魔";
+        if (subtitle) subtitle.textContent = "已加载 " + totalCount + " 个附魔";
+    }
+
+    function matchesFilter(enchant) {
+        if (!enchant) return false;
+        if (state.filter === "armor") return Array.isArray(enchant.slots) && enchant.slots.indexOf("armor") !== -1;
+        if (state.filter === "any") return Array.isArray(enchant.slots) && enchant.slots.indexOf("any") !== -1;
+        return true;
+    }
+
+    function applyFilter(filter) {
+        var next = (filter === "armor" || filter === "any") ? filter : "all";
+        state.filter = next;
+        var buttons = document.querySelectorAll('#ench-filter .filter-chip');
+        buttons.forEach(function (btn) {
+            var mode = btn.getAttribute('data-filter') || 'all';
+            if (mode === state.filter) btn.classList.add('active'); else btn.classList.remove('active');
+        });
+        renderEnchantmentList();
+    }
+
+    function bindFilters() {
+        if (filtersBound) return;
+        filtersBound = true;
+        document.querySelectorAll('#ench-filter .filter-chip').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var mode = btn.getAttribute('data-filter') || 'all';
+                applyFilter(mode);
+            });
+        });
     }
 
     function formatCost(cost) {
@@ -429,10 +464,19 @@
             container.appendChild(none);
             return;
         }
-        state.enchantments.forEach(function (e) {
+        var filtered = state.enchantments.filter(matchesFilter);
+        if (!filtered.length) {
+            var empty = document.createElement("p");
+            empty.className = "recipe-empty";
+            empty.textContent = state.enchantments.length ? "没有匹配的附魔" : "未找到附魔数据";
+            container.appendChild(empty);
+            setStatus(state.enchantments.length ? "没有匹配的附魔" : "未找到附魔数据");
+            return;
+        }
+        filtered.forEach(function (e) {
             container.appendChild(renderEnchantment(e));
         });
-        setStatus(state.enchantments.length + " 个附魔");
+        setStatus(filtered.length + " 个附魔" + (state.filter !== "all" ? " · 已筛选" : ""));
     }
 
     function buildAdvTreeData(advancements) {
@@ -513,10 +557,11 @@
     }
 
     function init() {
+        bindFilters();
         if (state.loaded) {
             renderEnchantmentList();
             renderAdvancements();
-            updateStats(state.enchantments);
+            updateStats();
             return;
         }
         setStatus("正在读取附魔 0% (0/" + enchantmentFiles.length + ")");
@@ -541,7 +586,7 @@
             state.loaded = true;
             renderEnchantmentList();
             renderAdvancements();
-            updateStats(state.enchantments);
+            updateStats();
             setStatus("加载完成");
         }).catch(function (err) {
             setStatus("加载失败: " + err.message);
@@ -557,6 +602,8 @@
 
     window.addEventListener("spa:page:loaded", function () {
         state.loaded = false;
+        state.filter = "all";
+        filtersBound = false;
         init();
     });
 })();

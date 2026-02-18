@@ -40,19 +40,37 @@
         "minecraft:sculk": [
             "https://zh.minecraft.wiki/images/Sculk_JE1_BE1.gif"
         ],
-        "minecraft:crimson_hyphae": [],
+        "minecraft:crimson_hyphae": [
+            "https://zh.minecraft.wiki/images/Crimson_Hyphae_Axis_Y_JE1_BE1.gif?format=original",
+            "https://zh.minecraft.wiki/images/Crimson_Hyphae_Axis_Y_JE1_BE1.gif",
+            "https://zh.minecraft.wiki/images/Crimson_Hyphae_Axis_Y_JE1_BE1.gif?download=1"
+        ],
         "minecraft:crimson_stem": [],
-        "minecraft:warped_hyphae": [],
+        "minecraft:warped_hyphae": [
+            "https://zh.minecraft.wiki/images/Warped_Hyphae_Axis_Y_JE1_BE1.gif?format=original",
+            "https://zh.minecraft.wiki/images/Warped_Hyphae_Axis_Y_JE1_BE1.gif",
+            "https://zh.minecraft.wiki/images/Warped_Hyphae_Axis_Y_JE1_BE1.gif?download=1"
+        ],
         "minecraft:warped_stem": [],
-        "minecraft:magma_block": [],
+        "minecraft:magma_block": [
+            "https://zh.minecraft.wiki/images/Magma_Block_JE2.gif?format=original",
+            "https://zh.minecraft.wiki/images/Magma_Block_JE2.gif",
+            "https://zh.minecraft.wiki/images/Magma_Block_JE2.gif?download=1"
+        ],
         "minecraft:oak_slab": [
-            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png"
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png?format=original",
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png",
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png?download=1"
         ],
         "minecraft:petrified_oak_slab": [
-            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png"
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png?format=original",
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png",
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png?download=1"
         ],
         "minecraft:stone_slab": [
-            "https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png"
+            "https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png?format=original",
+            "https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png",
+            "https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png?download=1"
         ],
         "minecraft:enchanted_book": [
             "https://zh.minecraft.wiki/images/Enchanted_Book.gif"
@@ -77,14 +95,38 @@
         ],
         "sculk_sensor": ["https://zh.minecraft.wiki/images/Inactive_Sculk_Sensor.gif"],
         "sculk": ["https://zh.minecraft.wiki/images/Sculk_JE1_BE1.gif"],
-        "crimson_hyphae": [],
+        "crimson_hyphae": [
+            "https://zh.minecraft.wiki/images/Crimson_Hyphae_Axis_Y_JE1_BE1.gif?format=original",
+            "https://zh.minecraft.wiki/images/Crimson_Hyphae_Axis_Y_JE1_BE1.gif",
+            "https://zh.minecraft.wiki/images/Crimson_Hyphae_Axis_Y_JE1_BE1.gif?download=1"
+        ],
         "crimson_stem": [],
-        "warped_hyphae": [],
+        "warped_hyphae": [
+            "https://zh.minecraft.wiki/images/Warped_Hyphae_Axis_Y_JE1_BE1.gif?format=original",
+            "https://zh.minecraft.wiki/images/Warped_Hyphae_Axis_Y_JE1_BE1.gif",
+            "https://zh.minecraft.wiki/images/Warped_Hyphae_Axis_Y_JE1_BE1.gif?download=1"
+        ],
         "warped_stem": [],
-        "magma_block": [],
-        "oak_slab": ["https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png"],
-        "petrified_oak_slab": ["https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png"],
-        "stone_slab": ["https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png"],
+        "magma_block": [
+            "https://zh.minecraft.wiki/images/Magma_Block_JE2.gif?format=original",
+            "https://zh.minecraft.wiki/images/Magma_Block_JE2.gif",
+            "https://zh.minecraft.wiki/images/Magma_Block_JE2.gif?download=1"
+        ],
+        "oak_slab": [
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png?format=original",
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png",
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png?download=1"
+        ],
+        "petrified_oak_slab": [
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png?format=original",
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png",
+            "https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png?download=1"
+        ],
+        "stone_slab": [
+            "https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png?format=original",
+            "https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png",
+            "https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png?download=1"
+        ],
         "enchanted_book": ["https://zh.minecraft.wiki/images/Enchanted_Book.gif"],
         "experience_bottle": ["https://zh.minecraft.wiki/images/Bottle_o%27_Enchanting.gif"]
     };
@@ -213,6 +255,8 @@
 
         var textures = pickTextures(id, opts);
         var img = document.createElement("img");
+        img.referrerPolicy = "no-referrer";
+        img.crossOrigin = "anonymous";
         var texIndex = 0;
         img.src = textures[texIndex];
         img.alt = name;

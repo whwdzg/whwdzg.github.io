@@ -248,6 +248,9 @@ document.addEventListener('DOMContentLoaded', function () {
 				// 折叠时设置为 0
 				submenu.style.maxHeight = '0px';
 			}
+
+			// 切换展开状态后重新标记当前项，确保父/子高亮符合规则
+			markCurrentSidebarItem();
 		});
 
 		// 如果窗口大小改变，且子菜单打开，刷新 max-height
@@ -290,16 +293,29 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 				}
 				if (matched && matched.el) {
-					matched.el.classList.add('current');
-					matched.el.setAttribute('aria-current', 'page');
-					// 如果在 submenu 内，展开父菜单并确保 maxHeight
 					const parentLi = matched.el.closest('.has-children');
+					const submenu = parentLi ? parentLi.querySelector('.submenu') : null;
+					const toggle = parentLi ? parentLi.querySelector('.toggle') : null;
+					const parentOpen = !!(parentLi && parentLi.classList.contains('open'));
+
+					// 仅在父级已展开时高亮子项，否则高亮父级
+					if (parentLi && !parentOpen) {
+						parentLi.classList.add('current');
+						if (toggle) {
+							toggle.classList.add('current');
+							toggle.setAttribute('aria-expanded', toggle.getAttribute('aria-expanded') || 'false');
+						}
+						return;
+					}
+
+					matched.el.classList.add('current', 'selected');
+					matched.el.setAttribute('aria-current', 'page');
 					if (parentLi) {
-						parentLi.classList.add('open');
-						const sm = parentLi.querySelector('.submenu');
-						if (sm) sm.style.maxHeight = sm.scrollHeight + 'px';
-						const toggle = parentLi.querySelector('.toggle');
-						if (toggle) toggle.classList.add('current');
+						if (toggle) {
+							toggle.classList.add('current');
+							toggle.setAttribute('aria-expanded', 'true');
+						}
+						if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
 					}
 				}
 			} catch (err) { console.error('[sidebar] mark current failed', err); }
