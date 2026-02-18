@@ -748,13 +748,79 @@
             slot.classList.add("slot-link");
             slot.setAttribute("role", "link");
             slot.tabIndex = 0;
-            var openWiki = function () { window.open(wikiHref, "_blank", "noopener"); };
+            slot.dataset.wikiHref = wikiHref;
+            var openWiki = function () {
+                var href = slot.dataset.wikiHref || wikiHref;
+                if (href) window.open(href, "_blank", "noopener");
+            };
             slot.addEventListener("click", openWiki);
             slot.addEventListener("keydown", function (e) {
                 if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     openWiki();
                 }
+            });
+        }
+
+        // If the requirement is a tag or has multiple options, rotate displayed item every 2s
+        var variantIds = [];
+        var hasTagOption = false;
+        (req.options || []).forEach(function (opt) {
+            if (opt.isTag) {
+                hasTagOption = true;
+                var values = state.tags[opt.id] || [];
+                variantIds = variantIds.concat(values);
+            } else if (opt.id) {
+                variantIds.push(opt.id);
+            }
+        });
+        variantIds = variantIds.filter(Boolean);
+
+        var rotationStarted = false;
+        function startRotation(ids) {
+            if (!ids || ids.length < 2 || rotationStarted) return;
+            rotationStarted = true;
+            var imgEl = slot.querySelector("img");
+            var idx = 0;
+            setInterval(function () {
+                idx = (idx + 1) % ids.length;
+                var nextId = ids[idx];
+                var textures = (window.ItemSlot && typeof ItemSlot.pickTextures === "function")
+                    ? ItemSlot.pickTextures(nextId, { assetBase: assetBase, customTextures: customTextureMap })
+                    : [assetBase + "/textures/item/barrier.png"];
+                var texIdx = 0;
+                if (imgEl && textures.length) {
+                    imgEl.onerror = function () {
+                        texIdx += 1;
+                        if (texIdx < textures.length) {
+                            imgEl.src = textures[texIdx];
+                        } else {
+                            imgEl.onerror = null;
+                        }
+                    };
+                    imgEl.src = textures[0];
+                }
+                var nextName = getName(nextId);
+                if (imgEl) imgEl.alt = nextName;
+                var nextHref = (window.ItemSlot && typeof ItemSlot.wikiUrl === "function") ? ItemSlot.wikiUrl(nextId, state.translations) : wikiUrl(nextId);
+                if (slot) {
+                    slot.title = nextHref ? nextName + "（点击打开 Wiki）" : nextName;
+                    slot.dataset.wikiHref = nextHref || "";
+                }
+            }, 5000);
+        }
+
+        if (variantIds.length > 1) {
+            startRotation(variantIds);
+        } else if (!rotationStarted && hasTagOption) {
+            // If tag values were not ready yet, load and then rotate once available
+            (req.options || []).forEach(function (opt) {
+                if (!opt.isTag) return;
+                loadTag(opt.id).then(function (vals) {
+                    if (vals && vals.length > 1) {
+                        startRotation(vals.filter(Boolean));
+                    }
+                });
             });
         }
         return slot;

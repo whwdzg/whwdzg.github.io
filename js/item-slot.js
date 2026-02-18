@@ -54,6 +54,12 @@
         "minecraft:stone_slab": [
             "https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png"
         ],
+        "minecraft:enchanted_book": [
+            "https://zh.minecraft.wiki/images/Enchanted_Book.gif"
+        ],
+        "minecraft:experience_bottle": [
+            "https://zh.minecraft.wiki/images/Bottle_o%27_Enchanting.gif"
+        ],
         "dragon_head": ["https://zh.minecraft.wiki/images/Dragon_Head_JE1_BE1.png"],
         "tipped_arrow": ["https://zh.minecraft.wiki/images/Invicon_Arrow_of_Poison.png"],
         "dragon_egg": ["https://zh.minecraft.wiki/images/Dragon_Egg_JE3.png"],
@@ -78,7 +84,9 @@
         "magma_block": [],
         "oak_slab": ["https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png"],
         "petrified_oak_slab": ["https://zh.minecraft.wiki/images/Oak_Slab_JE5_BE2.png"],
-        "stone_slab": ["https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png"]
+        "stone_slab": ["https://zh.minecraft.wiki/images/Stone_Slab_JE2_BE2.png"],
+        "enchanted_book": ["https://zh.minecraft.wiki/images/Enchanted_Book.gif"],
+        "experience_bottle": ["https://zh.minecraft.wiki/images/Bottle_o%27_Enchanting.gif"]
     };
 
     function titleCase(text) {

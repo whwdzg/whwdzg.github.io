@@ -217,6 +217,13 @@
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
   pointer-events: none;
 }
+.slot-no-frame {
+  background-image: none !important;
+  box-shadow: none !important;
+}
+.slot-no-frame img {
+  filter: none !important;
+}
 .mc-slot.slot-empty::after {
   content: "";
   position: absolute;
@@ -385,6 +392,18 @@
 }
 .loot-head h3 {
   margin: 0;
+}
+.mobdrop-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.mobdrop-entity-slot {
+  --slot-size: 92px;
+}
+.mobdrop-entity-slot img {
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.32));
 }
 .loot-egg-slot {
   --slot-size: 42px;

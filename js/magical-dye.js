@@ -194,8 +194,12 @@
             slot.classList.add("slot-link");
             slot.setAttribute("role", "link");
             slot.tabIndex = 0;
+            slot.dataset.wikiHref = href;
             slot.title = label ? label + "（点击打开 Wiki）" : "点击打开 Wiki";
-            var openWiki = function () { window.open(href, "_blank", "noopener"); };
+            var openWiki = function () {
+                var target = slot.dataset.wikiHref || href;
+                if (target) window.open(target, "_blank", "noopener");
+            };
             slot.addEventListener("click", openWiki);
             slot.addEventListener("keydown", function (e) {
                 if (e.key === "Enter" || e.key === " ") {
@@ -205,6 +209,39 @@
             });
         } else if (label) {
             slot.title = label;
+        }
+
+        // If this ingredient came from a tag or has multiple options, rotate displayed item every 2s
+        var variantIds = options.slice().filter(Boolean);
+        if (variantIds.length > 1) {
+            var imgEl = slot.querySelector("img");
+            var idx = 0;
+            setInterval(function () {
+                idx = (idx + 1) % variantIds.length;
+                var nextId = variantIds[idx];
+                var textures = (window.ItemSlot && typeof ItemSlot.pickTextures === "function")
+                    ? ItemSlot.pickTextures(nextId, { assetBase: assetBase })
+                    : [assetBase + "/textures/item/barrier.png"];
+                var texIdx = 0;
+                if (imgEl && textures.length) {
+                    imgEl.onerror = function () {
+                        texIdx += 1;
+                        if (texIdx < textures.length) {
+                            imgEl.src = textures[texIdx];
+                        } else {
+                            imgEl.onerror = null;
+                        }
+                    };
+                    imgEl.src = textures[0];
+                }
+                var nextName = getName(nextId);
+                if (imgEl) imgEl.alt = nextName;
+                var nextHref = wikiUrl(nextId);
+                if (slot) {
+                    slot.title = nextHref ? nextName + "（点击打开 Wiki）" : nextName;
+                    if (nextHref) slot.dataset.wikiHref = nextHref;
+                }
+            }, 5000);
         }
         return slot;
     }

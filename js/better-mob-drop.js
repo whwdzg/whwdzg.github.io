@@ -169,21 +169,48 @@
         "minecraft:crossbow": [
             "https://zh.minecraft.wiki/images/Crossbow_JE1_BE1.png",
             assetBase + "/textures/item/crossbow.png"
-        ]
+        ],
+        "minecraft:allay": [
+            "https://zh.minecraft.wiki/images/Allay_JE2.gif"
+        ],
+        "minecraft:armadillo": ["https://zh.minecraft.wiki/images/Armadillo_JE2_BE2.png"],
+        "minecraft:axolotl": ["https://zh.minecraft.wiki/images/Lucy_Axolotl_JE2_BE2.png"],
+        "minecraft:bat": ["https://zh.minecraft.wiki/images/Bat_JE4_BE3.gif"],
+        "minecraft:bee": ["https://zh.minecraft.wiki/images/Bee_JE1.gif"],
+        "minecraft:bogged": ["https://zh.minecraft.wiki/images/Bogged_JE2_BE2.png"],
+        "minecraft:camel": ["https://zh.minecraft.wiki/images/Camel_JE1_BE2.png"],
+        "minecraft:chicken": ["https://zh.minecraft.wiki/images/Chicken_JE2_BE2.png"],
+        "minecraft:ender_dragon": ["https://zh.minecraft.wiki/images/Ender_Dragon.gif"],
+        "minecraft:fox": ["https://zh.minecraft.wiki/images/Fox_JE1_BE1.png"],
+        "minecraft:frog": ["https://zh.minecraft.wiki/images/Temperate_Frog_BE1.png"],
+        "minecraft:goat": ["https://zh.minecraft.wiki/images/Goat_JE2_BE1.png"],
+        "minecraft:piglin": ["https://zh.minecraft.wiki/images/Piglin_JE1.png"],
+        "minecraft:piglin_brute": ["https://zh.minecraft.wiki/images/Piglin_Brute_JE1_BE1.png"],
+        "minecraft:polar_bear": ["https://zh.minecraft.wiki/images/Polar_Bear_JE2_BE2.png"],
+        "minecraft:turtle": ["https://zh.minecraft.wiki/images/Turtle_JE1_BE1.png"],
+        "minecraft:villager": ["https://zh.minecraft.wiki/images/Plains_Villager_Base_JE2.png"],
+        "minecraft:wandering_trader": ["https://zh.minecraft.wiki/images/Wandering_Trader_JE1_BE1.png"]
     };
 
     function spawnEggId(entityId) {
         return spawnEggMap[entityId] || null;
     }
 
-    function createSlotForId(id) {
+    function createSlotForId(id, opts) {
+        opts = opts || {};
         if (!window.ItemSlot || typeof window.ItemSlot.createSlot !== "function") return document.createTextNode("");
-        return ItemSlot.createSlot(id, {
+        var slot = ItemSlot.createSlot(id, {
             translations: state.translations,
             assetBase: assetBase,
             slotTexture: slotTexture,
             customTextures: customTextureMap
         });
+        // For entity showcases, drop the frame; keep frames for normal item drops
+        if (opts.isEntity) {
+            slot.style.backgroundImage = "none";
+            slot.classList.add("slot-no-frame");
+        }
+        return slot;
     }
 
     function normalizeRange(count) {
@@ -423,47 +450,48 @@
             var nameEl = document.createElement("h3");
             nameEl.textContent = getName(mob.entityId) || mob.entityId;
             title.appendChild(nameEl);
-            var egg = spawnEggId(mob.entityId);
-            if (egg) {
-                var eggSlot = createSlotForId(egg);
-                eggSlot.classList.add("loot-egg-slot");
-                title.appendChild(eggSlot);
-            }
             head.appendChild(title);
             var meta = document.createElement("span");
             meta.className = "loot-meta";
             meta.textContent = mob.drops.length + " 种掉落";
             head.appendChild(meta);
             card.appendChild(head);
+                var body = document.createElement("div");
+                body.className = "mobdrop-body";
 
-            var ul = document.createElement("ul");
-            ul.className = "loot-list";
-            if (!mob.drops.length) {
-                var none = document.createElement("li");
-                none.textContent = "无掉落";
-                ul.appendChild(none);
-            }
-            mob.drops.forEach(function (drop) {
-                var li = document.createElement("li");
-                li.className = "loot-item";
-                li.appendChild(createSlotForId(drop.id));
-                var text = document.createElement("div");
-                text.className = "loot-text";
-                var range = drop.min === drop.max ? String(drop.min) : (drop.min + " – " + drop.max);
-                var line = getName(drop.id) + " · 掉落 " + range;
-                if (drop.looting) {
-                    var lr = drop.looting;
-                    var lrange = lr.min === lr.max ? ("+" + lr.min) : ("+" + lr.min + " – +" + lr.max);
-                    line += " · 掠夺额外 " + lrange;
+                var mobSlotLarge = createSlotForId(mob.entityId, { isEntity: true });
+                mobSlotLarge.classList.add("mobdrop-entity-slot");
+                body.appendChild(mobSlotLarge);
+
+                var ul = document.createElement("ul");
+                ul.className = "loot-list";
+                if (!mob.drops.length) {
+                    var none = document.createElement("li");
+                    none.textContent = "无掉落";
+                    ul.appendChild(none);
                 }
-                if (drop.smelt) {
-                    line += " · 可被熔炼掉落";
-                }
-                text.textContent = line;
-                li.appendChild(text);
-                ul.appendChild(li);
-            });
-            card.appendChild(ul);
+                mob.drops.forEach(function (drop) {
+                    var li = document.createElement("li");
+                    li.className = "loot-item";
+                    li.appendChild(createSlotForId(drop.id));
+                    var text = document.createElement("div");
+                    text.className = "loot-text";
+                    var range = drop.min === drop.max ? String(drop.min) : (drop.min + " – " + drop.max);
+                    var line = getName(drop.id) + " · 掉落 " + range;
+                    if (drop.looting) {
+                        var lr = drop.looting;
+                        var lrange = lr.min === lr.max ? ("+" + lr.min) : ("+" + lr.min + " – +" + lr.max);
+                        line += " · 掠夺额外 " + lrange;
+                    }
+                    if (drop.smelt) {
+                        line += " · 可被熔炼掉落";
+                    }
+                    text.textContent = line;
+                    li.appendChild(text);
+                    ul.appendChild(li);
+                });
+                body.appendChild(ul);
+                card.appendChild(body);
             list.appendChild(card);
         });
         tryScrollToHash();
