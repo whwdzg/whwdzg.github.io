@@ -249,10 +249,15 @@
     }
 
     function normalizeRecipe(raw, fileName) {
+        var resultId = raw.result && raw.result.id ? raw.result.id : raw.result;
+        if (typeof resultId === "string" && resultId.indexOf(":") === -1) {
+            resultId = "minecraft:" + resultId;
+        }
+
         var recipe = {
             file: fileName,
             type: raw.type,
-            resultId: raw.result && raw.result.id ? raw.result.id : raw.result,
+            resultId: resultId,
             resultCount: raw.result && raw.result.count ? raw.result.count : 1,
             pattern: Array.isArray(raw.pattern) ? raw.pattern : [],
             key: {},
@@ -268,6 +273,68 @@
             });
         }
         return recipe;
+    }
+
+    function buildAdvRelations() {
+        var map = {};
+        var rootId = "better-crafting-recipes:better-crafting-recipes";
+        var byResult = new Map();
+        state.recipes.forEach(function (r) {
+            if (!r || !r.resultId) return;
+            if (!byResult.has(r.resultId)) byResult.set(r.resultId, []);
+            byResult.get(r.resultId).push(r);
+        });
+
+        var ensureNs = function (id) {
+            if (!id) return null;
+            return id.indexOf(":") === -1 ? "minecraft:" + id : id;
+        };
+
+        // Manual mappings take precedence when matching recipes exist
+        Object.keys(manualAdvRelations).forEach(function (advId) {
+            var targets = manualAdvRelations[advId] || [];
+            var seen = new Set();
+            var rels = [];
+            targets.forEach(function (tid) {
+                var cid = ensureNs(tid);
+                if (!cid || seen.has(cid)) return;
+                if (byResult.has(cid)) {
+                    seen.add(cid);
+                    rels.push({ type: "recipe", id: cid });
+                }
+            });
+            if (rels.length) map[advId] = rels;
+        });
+
+        state.advancements.forEach(function (adv) {
+            if (!adv || adv.id === rootId) return;
+            if (map[adv.id]) return; // keep manual mapping
+            var candidates = [];
+            var shortId = adv.id.split(":")[1] || adv.id;
+            candidates.push(ensureNs(shortId));
+            if (adv.iconId) candidates.push(ensureNs(adv.iconId));
+            candidates = candidates.filter(Boolean);
+            var matches = [];
+            var seen = new Set();
+            candidates.forEach(function (cid) {
+                (byResult.get(cid) || []).forEach(function (r) {
+                    if (!r || !r.resultId || seen.has(r.resultId)) return;
+                    seen.add(r.resultId);
+                    matches.push(r);
+                });
+            });
+            if (matches.length) {
+                map[adv.id] = matches.map(function (r) { return { type: "recipe", id: r.resultId }; });
+            }
+        });
+        var defaultRecipes = state.recipes.slice(0, 3); // allow multiple fallbacks if available
+        state.advancements.forEach(function (adv) {
+            if (!adv || adv.id === rootId) return;
+            if (!map[adv.id] && defaultRecipes.length) {
+                map[adv.id] = defaultRecipes.map(function (r) { return { type: "recipe", id: r.resultId }; });
+            }
+        });
+        advRelations = map;
     }
 
     function loadRecipes(onProgress) {
@@ -391,6 +458,130 @@
         }).join(" ");
     }
 
+    var manualNames = {
+        "minecraft:white_wool": "白色羊毛",
+        "white_wool": "白色羊毛"
+    };
+
+    // Advancement → related targets (entity/recipe/enchant/dye)
+    var advRelations = {};
+    var manualAdvRelations = {
+        "better-crafting-recipes:bucket_block": [
+            "minecraft:water_bucket",
+            "minecraft:powder_snow_bucket",
+            "minecraft:lava_bucket"
+        ],
+        "better-crafting-recipes:break_it_down": [
+            "minecraft:brick",
+            "minecraft:nether_brick"
+        ],
+        "better-crafting-recipes:sculk_expand": [
+            "minecraft:sculk_sensor",
+            "minecraft:sculk_catalyst",
+            "minecraft:sculk_shrieker",
+            "minecraft:sculk_vein"
+        ],
+        "better-crafting-recipes:sculk": [
+            "minecraft:sculk",
+            "minecraft:echo_shard"
+        ],
+        "better-crafting-recipes:it_should_have_be": [
+            "minecraft:amethyst_shard",
+            "minecraft:quartz",
+            "minecraft:nether_wart",
+            "minecraft:magma_cream",
+            "minecraft:pointed_dripstone"
+        ],
+        "better-crafting-recipes:make_chainmail_armor": [
+            "minecraft:chainmail_helmet",
+            "minecraft:chainmail_chestplate",
+            "minecraft:chainmail_leggings",
+            "minecraft:chainmail_boots"
+        ],
+        "better-crafting-recipes:make_horse_armor": [
+            "minecraft:diamond_horse_armor",
+            "minecraft:golden_horse_armor",
+            "minecraft:iron_horse_armor"
+        ],
+        "better-crafting-recipes:mutisugar": [
+            "minecraft:sugar"
+        ],
+        "better-crafting-recipes:gunpowder": [
+            "minecraft:gunpowder"
+        ],
+        "better-crafting-recipes:head_head": [
+            "minecraft:creeper_head",
+            "minecraft:zombie_head",
+            "minecraft:wither_skeleton_skull",
+            "minecraft:piglin_head"
+        ],
+        "better-crafting-recipes:stonemade_tools": [
+            "minecraft:stone_pickaxe",
+            "minecraft:stone_shovel",
+            "minecraft:stone_axe",
+            "minecraft:stone_sword",
+            "minecraft:stone_hoe"
+        ],
+        "better-crafting-recipes:stonemade_blocks": [
+            "minecraft:furnace",
+            "minecraft:brewing_stand",
+            "minecraft:dispenser",
+            "minecraft:dropper",
+            "minecraft:observer",
+            "minecraft:piston"
+        ],
+        "better-crafting-recipes:cut_to_cobblestone": [
+            "minecraft:cobblestone",
+            "minecraft:cobbled_deepslate"
+        ],
+        "better-crafting-recipes:strip_the_woods": [
+            "minecraft:stripped_acacia_log",
+            "minecraft:stripped_acacia_wood",
+            "minecraft:stripped_bamboo_block",
+            "minecraft:stripped_birch_log",
+            "minecraft:stripped_birch_wood",
+            "minecraft:stripped_cherry_log",
+            "minecraft:stripped_cherry_wood",
+            "minecraft:stripped_crimson_hyphae",
+            "minecraft:stripped_crimson_stem",
+            "minecraft:stripped_dark_oak_log",
+            "minecraft:stripped_dark_oak_wood",
+            "minecraft:stripped_jungle_log",
+            "minecraft:stripped_jungle_wood",
+            "minecraft:stripped_mangrove_log",
+            "minecraft:stripped_mangrove_wood",
+            "minecraft:stripped_oak_log",
+            "minecraft:stripped_oak_wood",
+            "minecraft:stripped_spruce_log",
+            "minecraft:stripped_spruce_wood",
+            "minecraft:stripped_warped_hyphae",
+            "minecraft:stripped_warped_stem"
+        ],
+        "better-crafting-recipes:cut_to_glasspane": [
+            "minecraft:glass_pane",
+            "minecraft:black_stained_glass_pane",
+            "minecraft:blue_stained_glass_pane",
+            "minecraft:brown_stained_glass_pane",
+            "minecraft:cyan_stained_glass_pane",
+            "minecraft:gray_stained_glass_pane",
+            "minecraft:green_stained_glass_pane",
+            "minecraft:light_blue_stained_glass_pane",
+            "minecraft:light_gray_stained_glass_pane",
+            "minecraft:lime_stained_glass_pane",
+            "minecraft:magenta_stained_glass_pane",
+            "minecraft:orange_stained_glass_pane",
+            "minecraft:pink_stained_glass_pane",
+            "minecraft:purple_stained_glass_pane",
+            "minecraft:red_stained_glass_pane",
+            "minecraft:white_stained_glass_pane",
+            "minecraft:yellow_stained_glass_pane"
+        ],
+        "better-crafting-recipes:grine_to_sand": [
+            "minecraft:sand",
+            "minecraft:red_sand"
+        ]
+    };
+
     function getName(id) {
         if (!id) return "";
         var parts = id.split(":");
@@ -398,9 +589,36 @@
         var name = parts[1] || parts[0];
         var keyItem = "item." + ns + "." + name;
         var keyBlock = "block." + ns + "." + name;
+        if (manualNames[id]) return manualNames[id];
+        if (manualNames[name]) return manualNames[name];
         if (state.translations[keyItem]) return state.translations[keyItem];
         if (state.translations[keyBlock]) return state.translations[keyBlock];
         return titleCase(name.replace(/_/g, " "));
+    }
+
+    function anchorId(prefix, id) {
+        return prefix + "-" + (id || "").replace(/[^a-zA-Z0-9_-]/g, "-");
+    }
+
+    function scrollHighlight(targetId) {
+        if (!targetId) return;
+        var attempts = 0;
+        var tryFind = function () {
+            var target = document.getElementById(targetId);
+            if (target) {
+                target.classList.add("search-highlight");
+                target.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+                setTimeout(function () { target.classList.remove("search-highlight"); }, 3600);
+                return;
+            }
+            attempts += 1;
+            if (attempts < 5) {
+                setTimeout(tryFind, 120);
+            } else {
+                location.hash = "#" + targetId;
+            }
+        };
+        tryFind();
     }
 
     function wikiUrl(id) {
@@ -690,11 +908,12 @@
 
     function createSlot(req, count, opts) {
         opts = opts || {};
+        var bgTexture = opts.slotTexture || slotTexture;
         var hasOptions = req && Array.isArray(req.options) && req.options.length;
         if (!hasOptions) {
             var empty = document.createElement("div");
             empty.className = "mc-slot slot-empty";
-            empty.style.backgroundImage = "url('" + slotTexture + "')";
+            empty.style.backgroundImage = "url('" + bgTexture + "')";
             if (opts.isResult) empty.classList.add("result-slot");
             return empty;
         }
@@ -706,14 +925,14 @@
             slot = ItemSlot.createSlot(primaryId || "minecraft:barrier", {
                 translations: state.translations,
                 assetBase: assetBase,
-                slotTexture: slotTexture,
+                slotTexture: bgTexture,
                 customTextures: customTextureMap
             });
         }
         if (!slot) {
             slot = document.createElement("div");
             slot.className = "mc-slot";
-            slot.style.backgroundImage = "url('" + slotTexture + "')";
+            slot.style.backgroundImage = "url('" + bgTexture + "')";
             var img = document.createElement("img");
             img.src = assetBase + "/textures/item/barrier.png";
             img.alt = primaryId || "";
@@ -928,10 +1147,72 @@
         return list;
     }
 
+    function frameMeta(frame) {
+        var f = frame || "task";
+        if (f === "challenge") return {
+            cls: "adv-frame adv-frame-challenge",
+            iconClass: "icon-ic_fluent_trophy_20_regular",
+            text: "挑战",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/challenge_frame_unobtained.png"
+        };
+        if (f === "goal") return {
+            cls: "adv-frame adv-frame-goal",
+            iconClass: "icon-ic_fluent_target_20_regular",
+            text: "目标",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/goal_frame_unobtained.png"
+        };
+        return {
+            cls: "adv-frame adv-frame-task",
+            iconClass: "icon-ic_fluent_task_list_add_20_regular",
+            text: "进度",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/task_frame_unobtained.png"
+        };
+    }
+
+    function renderRelations(advId) {
+        var rels = advRelations[advId] || [];
+        if (!rels.length) return null;
+
+        var wrap = document.createElement("div");
+        wrap.className = "adv-relations";
+        var label = document.createElement("span");
+        label.className = "adv-rel-label";
+        label.textContent = "相关内容";
+        wrap.appendChild(label);
+
+        var chips = document.createElement("div");
+        chips.className = "ench-item-chips adv-rel-chips";
+
+        rels.forEach(function (rel) {
+            var chip = document.createElement("div");
+            chip.className = "ench-item-chip adv-rel-chip";
+            var slot = createSlot({ options: [{ id: rel.id, isTag: false, raw: rel.id }] }, 1);
+            slot.classList.add("ench-item-chip-slot");
+            chip.appendChild(slot);
+            var name = document.createElement("span");
+            name.textContent = getName(rel.id);
+            chip.appendChild(name);
+
+            var targetId = null;
+            if (rel.type === "recipe") targetId = anchorId("recipe", rel.id);
+            if (rel.type === "entity") targetId = anchorId("mobcard", rel.id);
+            if (rel.type === "enchant") targetId = anchorId("enchant", rel.id);
+            if (rel.type === "dye") targetId = anchorId("dye", rel.id);
+            if (targetId) {
+                chip.addEventListener("click", function () { scrollHighlight(targetId); });
+            }
+            chips.appendChild(chip);
+        });
+
+        wrap.appendChild(chips);
+        return wrap;
+    }
+
     function renderAdvancementCard(adv) {
         var card = document.createElement("article");
         card.className = "adv-card";
-        var iconSlot = createSlot({ options: [{ id: adv.iconId || "minecraft:barrier", isTag: false, raw: adv.iconId || "minecraft:barrier" }] }, 1);
+        var frameInfo = frameMeta(adv.frame);
+        var iconSlot = createSlot({ options: [{ id: adv.iconId || "minecraft:barrier", isTag: false, raw: adv.iconId || "minecraft:barrier" }] }, 1, { slotTexture: frameInfo.slotTexture });
         iconSlot.classList.add("adv-icon-slot");
         card.appendChild(iconSlot);
 
@@ -949,9 +1230,14 @@
         }
         var meta = document.createElement("div");
         meta.className = "adv-meta";
+        var frameInfo = frameMeta(adv.frame);
         var frame = document.createElement("span");
-        frame.className = "adv-frame adv-frame-" + (adv.frame || "task");
-        frame.textContent = adv.frame === "challenge" ? "挑战" : adv.frame === "goal" ? "目标" : "进度";
+        frame.className = frameInfo.cls;
+        var icon = document.createElement("span");
+        icon.className = "adv-frame-icon fluent-font " + frameInfo.iconClass;
+        icon.setAttribute("aria-hidden", "true");
+        frame.appendChild(icon);
+        frame.appendChild(document.createTextNode(frameInfo.text));
         meta.appendChild(frame);
         if (adv.parent) {
             var parent = document.createElement("span");
@@ -960,6 +1246,9 @@
             meta.appendChild(parent);
         }
         body.appendChild(meta);
+
+        var advRelationsNode = renderRelations(adv.id);
+        if (advRelationsNode) body.appendChild(advRelationsNode);
 
         card.appendChild(body);
         return card;
@@ -971,7 +1260,8 @@
 
         var row = document.createElement("div");
         row.className = "adv-tree-row";
-        var iconSlot = createSlot({ options: [{ id: node.iconId || "minecraft:barrier", isTag: false, raw: node.iconId || "minecraft:barrier" }] }, 1);
+        var frameInfo = frameMeta(node.frame);
+        var iconSlot = createSlot({ options: [{ id: node.iconId || "minecraft:barrier", isTag: false, raw: node.iconId || "minecraft:barrier" }] }, 1, { slotTexture: frameInfo.slotTexture });
         iconSlot.classList.add("adv-icon-slot");
         row.appendChild(iconSlot);
 
@@ -987,10 +1277,17 @@
             desc.textContent = node.description;
             info.appendChild(desc);
         }
+        var frameInfo = frameMeta(node.frame);
         var frame = document.createElement("span");
-        frame.className = "adv-frame adv-frame-" + (node.frame || "task");
-        frame.textContent = node.frame === "challenge" ? "挑战" : node.frame === "goal" ? "目标" : "进度";
+        frame.className = frameInfo.cls;
+        var icon = document.createElement("span");
+        icon.className = "adv-frame-icon fluent-font " + frameInfo.iconClass;
+        icon.setAttribute("aria-hidden", "true");
+        frame.appendChild(icon);
+        frame.appendChild(document.createTextNode(frameInfo.text));
         info.appendChild(frame);
+        var relations = renderRelations(node.id);
+        if (relations) info.appendChild(relations);
         row.appendChild(info);
         li.appendChild(row);
 
@@ -1080,6 +1377,7 @@
     function renderRecipe(recipe) {
         var card = document.createElement("article");
         card.className = "recipe-card";
+        card.id = anchorId("recipe", recipe.resultId || "recipe");
 
         var head = document.createElement("div");
         head.className = "recipe-head";
@@ -1221,6 +1519,7 @@
         }).then(function (payload) {
             state.recipes = payload.recipes;
             state.advancements = payload.advancements;
+            buildAdvRelations();
             updateStats(state.recipes);
             applyFilter(state.filter || "all");
             setStatus("加载完成");

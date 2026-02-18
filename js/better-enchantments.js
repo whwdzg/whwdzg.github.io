@@ -62,6 +62,22 @@
         ]
     };
 
+    var advRelations = {};
+    var manualAdvRelations = {
+        "better-enchantments:horse_armor": [
+            "minecraft:protection",
+            "minecraft:fire_protection",
+            "minecraft:projectile_protection",
+            "minecraft:blast_protection"
+        ],
+        "better-enchantments:wolf_armor": [
+            "minecraft:protection",
+            "minecraft:fire_protection",
+            "minecraft:projectile_protection",
+            "minecraft:blast_protection"
+        ]
+    };
+
     var state = {
         enchantments: [],
         advancements: [],
@@ -126,6 +142,41 @@
         if (state.translations[keyBlock]) return state.translations[keyBlock];
         if (state.translations[keyEntity]) return state.translations[keyEntity];
         return titleCase(name.replace(/_/g, " "));
+    }
+
+    function getEnchantName(id) {
+        if (!id) return "";
+        var parts = id.split(":");
+        var ns = parts[0] || "minecraft";
+        var name = parts[1] || parts[0];
+        var keyEnchant = "enchantment." + ns + "." + name;
+        if (state.translations[keyEnchant]) return state.translations[keyEnchant];
+        return getName(id);
+    }
+
+    function anchorId(prefix, id) {
+        return prefix + "-" + (id || "").replace(/[^a-zA-Z0-9_-]/g, "-");
+    }
+
+    function scrollHighlight(targetId) {
+        if (!targetId) return;
+        var attempts = 0;
+        var tryFind = function () {
+            var target = document.getElementById(targetId);
+            if (target) {
+                target.classList.add("search-highlight");
+                target.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+                setTimeout(function () { target.classList.remove("search-highlight"); }, 3600);
+                return;
+            }
+            attempts += 1;
+            if (attempts < 5) {
+                setTimeout(tryFind, 120);
+            } else {
+                location.hash = "#" + targetId;
+            }
+        };
+        tryFind();
     }
 
     function wikiUrl(id) {
@@ -380,6 +431,7 @@
     function renderEnchantment(enchant) {
         var card = document.createElement("div");
         card.className = "loot-card";
+        card.id = anchorId("enchant", enchant.id);
 
         var head = document.createElement("div");
         head.className = "loot-head";
@@ -497,13 +549,142 @@
         return roots;
     }
 
+    function frameMeta(frame) {
+        var f = frame || "task";
+        if (f === "challenge") return {
+            cls: "adv-frame adv-frame-challenge",
+            iconClass: "icon-ic_fluent_trophy_20_regular",
+            text: "挑战",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/challenge_frame_unobtained.png"
+        };
+        if (f === "goal") return {
+            cls: "adv-frame adv-frame-goal",
+            iconClass: "icon-ic_fluent_target_20_regular",
+            text: "目标",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/goal_frame_unobtained.png"
+        };
+        return {
+            cls: "adv-frame adv-frame-task",
+            iconClass: "icon-ic_fluent_task_list_add_20_regular",
+            text: "进度",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/task_frame_unobtained.png"
+        };
+    }
+
+    function renderRelations(advId) {
+        var rels = advRelations[advId] || [];
+        if (!rels.length) return null;
+
+        var wrap = document.createElement("div");
+        wrap.className = "adv-relations";
+        var label = document.createElement("span");
+        label.className = "adv-rel-label";
+        label.textContent = "相关内容";
+        wrap.appendChild(label);
+
+        var chips = document.createElement("div");
+        chips.className = "ench-item-chips adv-rel-chips";
+
+        rels.forEach(function (rel) {
+            var chip = document.createElement("div");
+            chip.className = "ench-item-chip adv-rel-chip";
+            var slot;
+            if (rel.type === "enchant") {
+                slot = createSlotForId("minecraft:enchanted_book");
+                slot.title = getEnchantName(rel.id);
+            } else {
+                slot = createSlotForId(rel.id);
+            }
+            slot.classList.add("ench-item-chip-slot");
+            chip.appendChild(slot);
+            var name = document.createElement("span");
+            name.textContent = rel.type === "enchant" ? getEnchantName(rel.id) : getName(rel.id);
+            chip.appendChild(name);
+
+            var targetId = null;
+            if (rel.type === "enchant") targetId = anchorId("enchant", rel.id);
+            if (rel.type === "recipe") targetId = anchorId("recipe", rel.id);
+            if (rel.type === "entity") targetId = anchorId("mobcard", rel.id);
+            if (rel.type === "dye") targetId = anchorId("dye", rel.id);
+            if (targetId) {
+                chip.addEventListener("click", function () { scrollHighlight(targetId); });
+            }
+            chips.appendChild(chip);
+        });
+
+        wrap.appendChild(chips);
+        return wrap;
+    }
+
+    function buildAdvRelations() {
+        var map = {};
+        var rootId = "better-enchantments:better-enchantments";
+        var enchantIds = new Set(state.enchantments.map(function (e) { return e.id; }));
+
+        var ensureNs = function (id) {
+            if (!id) return null;
+            return id.indexOf(":") === -1 ? "minecraft:" + id : id;
+        };
+
+        Object.keys(manualAdvRelations).forEach(function (advId) {
+            var list = manualAdvRelations[advId] || [];
+            var filtered = list.map(ensureNs).filter(function (id) { return id && enchantIds.has(id); });
+            if (filtered.length) {
+                map[advId] = filtered.map(function (id) { return { type: "enchant", id: id }; });
+            }
+        });
+
+        state.advancements.forEach(function (adv) {
+            if (!adv || adv.id === rootId) return;
+            if (map[adv.id]) return; // respect manual mapping
+            var shortId = adv.id.split(":")[1] || adv.id;
+            var candidate = ensureNs(shortId);
+            if (candidate && enchantIds.has(candidate)) {
+                map[adv.id] = [{ type: "enchant", id: candidate }];
+            }
+        });
+        if (!map[rootId] && enchantIds.size) {
+            map[rootId] = Array.from(enchantIds).map(function (id) { return { type: "enchant", id: id }; });
+        }
+        // Fallback: non-root advancements without matches link to the first few enchantments
+        var defaults = Array.from(enchantIds).slice(0, 3);
+        state.advancements.forEach(function (adv) {
+            if (!adv || adv.id === rootId) return;
+            if (!map[adv.id] && defaults.length) {
+                map[adv.id] = defaults.map(function (id) { return { type: "enchant", id: id }; });
+            }
+        });
+        advRelations = map;
+    }
+
+    function createAdvSlot(id, frame) {
+        var meta = frameMeta(frame);
+        if (window.ItemSlot && typeof window.ItemSlot.createSlot === "function") {
+            return ItemSlot.createSlot(id || "minecraft:barrier", {
+                translations: state.translations,
+                assetBase: assetBase,
+                slotTexture: meta.slotTexture
+            });
+        }
+        var slot = document.createElement("div");
+        slot.className = "mc-slot";
+        slot.style.backgroundImage = "url('" + meta.slotTexture + "')";
+        var img = document.createElement("img");
+        img.src = assetBase + "/textures/item/barrier.png";
+        img.alt = getName(id);
+        img.loading = "lazy";
+        img.decoding = "async";
+        slot.appendChild(img);
+        return slot;
+    }
+
     function renderAdvTreeNode(node) {
         var li = document.createElement("li");
         li.className = "adv-tree-node";
 
         var row = document.createElement("div");
         row.className = "adv-tree-row";
-        var iconSlot = createSlotForId(node.iconId || "minecraft:barrier");
+        var iconSlot = createAdvSlot(node.iconId || "minecraft:barrier", node.frame);
         iconSlot.classList.add("adv-icon-slot");
         row.appendChild(iconSlot);
 
@@ -519,10 +700,17 @@
             desc.textContent = node.description;
             info.appendChild(desc);
         }
+        var meta = frameMeta(node.frame);
         var frame = document.createElement("span");
-        frame.className = "adv-frame adv-frame-" + (node.frame || "task");
-        frame.textContent = node.frame === "challenge" ? "挑战" : node.frame === "goal" ? "目标" : "进度";
+        frame.className = meta.cls;
+        var icon = document.createElement("span");
+        icon.className = "adv-frame-icon fluent-font " + meta.iconClass;
+        icon.setAttribute("aria-hidden", "true");
+        frame.appendChild(icon);
+        frame.appendChild(document.createTextNode(meta.text));
         info.appendChild(frame);
+        var relations = renderRelations(node.id);
+        if (relations) info.appendChild(relations);
         row.appendChild(info);
         li.appendChild(row);
 
@@ -581,6 +769,7 @@
             return resolveSupportedLists(enchants).then(function (resolved) {
                 state.enchantments = resolved;
                 state.advancements = advancements;
+                buildAdvRelations();
             });
         }).then(function () {
             state.loaded = true;

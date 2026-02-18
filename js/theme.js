@@ -25,6 +25,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		const themeBtn = document.querySelector('.theme-toggle-btn');
 		const settingsBtn = document.querySelector('.theme-settings-btn');
 		const settingsMenu = document.querySelector('.theme-settings-menu');
+
+		function closeAllMenus() {
+			if (settingsMenu) settingsMenu.classList.remove('active');
+		}
 		const followSystemRadios = document.querySelectorAll('input[name="theme-follow"]');
 		const THEME_KEY = 'theme';
 		const FOLLOW_SYSTEM_KEY = 'follow-system';

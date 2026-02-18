@@ -33,6 +33,23 @@
     var translationFallbackUrl = assetBase + "/lang/en_us.json";
     var slotTexture = assetBase + "/textures/gui/sprites/container/slot.png";
 
+    var advRelations = {};
+    var manualAdvRelations = {
+        "magical_dye:mineral_block": [
+            "minecraft:coal_block",
+            "minecraft:iron_block",
+            "minecraft:copper_block",
+            "minecraft:gold_block",
+            "minecraft:lapis_block",
+            "minecraft:redstone_block",
+            "minecraft:diamond_block",
+            "minecraft:quartz_block",
+            "minecraft:amethyst_block",
+            "minecraft:netherite_block",
+            "minecraft:emerald_block"
+        ]
+    };
+
     var stationMeta = {
         "minecraft:crafting_shaped": {
             label: "工作台",
@@ -121,6 +138,31 @@
         if (state.translations[keyBlock]) return state.translations[keyBlock];
         if (state.translations[keyEntity]) return state.translations[keyEntity];
         return titleCase(name.replace(/_/g, " "));
+    }
+
+    function anchorId(prefix, id) {
+        return prefix + "-" + (id || "").replace(/[^a-zA-Z0-9_-]/g, "-");
+    }
+
+    function scrollHighlight(targetId) {
+        if (!targetId) return;
+        var attempts = 0;
+        var tryFind = function () {
+            var target = document.getElementById(targetId);
+            if (target) {
+                target.classList.add("search-highlight");
+                target.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+                setTimeout(function () { target.classList.remove("search-highlight"); }, 3600);
+                return;
+            }
+            attempts += 1;
+            if (attempts < 5) {
+                setTimeout(tryFind, 120);
+            } else {
+                location.hash = "#" + targetId;
+            }
+        };
+        tryFind();
     }
 
     function wikiUrl(id) {
@@ -438,13 +480,178 @@
         return roots;
     }
 
+    function frameMeta(frame) {
+        var f = frame || "task";
+        if (f === "challenge") return {
+            cls: "adv-frame adv-frame-challenge",
+            iconClass: "icon-ic_fluent_trophy_20_regular",
+            text: "挑战",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/challenge_frame_unobtained.png"
+        };
+        if (f === "goal") return {
+            cls: "adv-frame adv-frame-goal",
+            iconClass: "icon-ic_fluent_target_20_regular",
+            text: "目标",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/goal_frame_unobtained.png"
+        };
+        return {
+            cls: "adv-frame adv-frame-task",
+            iconClass: "icon-ic_fluent_task_list_add_20_regular",
+            text: "进度",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/task_frame_unobtained.png"
+        };
+    }
+
+    function renderRelations(advId) {
+        var rels = advRelations[advId] || [];
+        if (!rels.length) return null;
+
+        var wrap = document.createElement("div");
+        wrap.className = "adv-relations";
+        var label = document.createElement("span");
+        label.className = "adv-rel-label";
+        label.textContent = "相关内容";
+        wrap.appendChild(label);
+
+        var chips = document.createElement("div");
+        chips.className = "ench-item-chips adv-rel-chips";
+
+        rels.forEach(function (rel) {
+            var chip = document.createElement("div");
+            chip.className = "ench-item-chip adv-rel-chip";
+            var slot = createGridSlot([rel.id], 1);
+            slot.classList.add("ench-item-chip-slot");
+            chip.appendChild(slot);
+            var name = document.createElement("span");
+            name.textContent = rel.displayName || getName(rel.id);
+            chip.appendChild(name);
+
+            var targetId = null;
+            if (rel.type === "dye" || rel.type === "recipe") targetId = anchorId("recipe", rel.anchorId || rel.id);
+            if (rel.type === "entity") targetId = anchorId("mobcard", rel.id);
+            if (rel.type === "enchant") targetId = anchorId("enchant", rel.id);
+            if (targetId) {
+                chip.addEventListener("click", function () { scrollHighlight(targetId); });
+            }
+            chips.appendChild(chip);
+        });
+
+        wrap.appendChild(chips);
+        return wrap;
+    }
+
+    function buildAdvRelations() {
+        var map = {};
+        var rootId = "magical_dye:magical_dye";
+        var recipeByPrefix = new Map();
+        var recipeByResult = new Map();
+        state.recipes.forEach(function (r) {
+            if (!r || !r.id) return;
+            var shortId = r.id.split(":")[1] || r.id;
+            if (!recipeByPrefix.has(shortId)) recipeByPrefix.set(shortId, []);
+            recipeByPrefix.get(shortId).push(r);
+            if (r.resultId) {
+                var rid = r.resultId.indexOf(":") === -1 ? "minecraft:" + r.resultId : r.resultId;
+                if (!recipeByResult.has(rid)) recipeByResult.set(rid, []);
+                recipeByResult.get(rid).push(r);
+            }
+        });
+        // Manual mappings first
+        Object.keys(manualAdvRelations).forEach(function (advId) {
+            var targets = manualAdvRelations[advId] || [];
+            var rels = [];
+            var seen = new Set();
+            targets.forEach(function (tid) {
+                var rid = tid.indexOf(":") === -1 ? "minecraft:" + tid : tid;
+                if (seen.has(rid)) return;
+                seen.add(rid);
+                rels.push({ type: "recipe", id: rid, anchorId: rid, displayName: getName(rid) || titleCase(rid.split(":")[1].replace(/_/g, " ")) });
+            });
+            if (rels.length) map[advId] = rels;
+        });
+
+        state.advancements.forEach(function (adv) {
+            if (!adv || adv.id === rootId) return;
+            if (map[adv.id]) return; // keep manual mapping
+            var shortAdv = adv.id.split(":")[1] || adv.id;
+            var altAdv = shortAdv.replace(/^(dust_|mineral_)/, "");
+            var keysToTry = Array.from(new Set([shortAdv, altAdv].filter(Boolean)));
+            var matches = [];
+            keysToTry.forEach(function (keyTry) {
+                if (recipeByPrefix.has(keyTry)) {
+                    matches = matches.concat(recipeByPrefix.get(keyTry));
+                }
+                recipeByPrefix.forEach(function (list, key) {
+                    if (key.indexOf(keyTry + "_") === 0) {
+                        matches = matches.concat(list);
+                    }
+                });
+            });
+            if (!matches.length && adv.iconId) {
+                var iconCandidate = adv.iconId.indexOf(":") === -1 ? "minecraft:" + adv.iconId : adv.iconId;
+                if (recipeByResult.has(iconCandidate)) {
+                    matches = matches.concat(recipeByResult.get(iconCandidate));
+                }
+            }
+            var seen = new Set();
+            matches = matches.filter(function (r) {
+                if (!r || !r.id || seen.has(r.id)) return false;
+                seen.add(r.id);
+                return true;
+            });
+            if (matches.length) {
+                map[adv.id] = matches.map(function (r) {
+                    var rid = r.resultId && r.resultId.indexOf(":") === -1 ? "minecraft:" + r.resultId : r.resultId;
+                    var clean = (r.resultId || "").replace(/^.*:/, "").replace(/^(dust_|mineral_)/, "");
+                    var display = getName(rid) || titleCase(clean.replace(/_/g, " "));
+                    return { type: "recipe", id: rid || r.id, anchorId: rid || r.id, displayName: display };
+                });
+            }
+        });
+        // Fallback: attach up to 3 default recipes for unmatched non-root advancements
+        var defaults = state.recipes.slice(0, 3);
+        state.advancements.forEach(function (adv) {
+            if (!adv || adv.id === rootId) return;
+            if (!map[adv.id] && defaults.length) {
+                map[adv.id] = defaults.map(function (r) {
+                    var rid = r.resultId && r.resultId.indexOf(":") === -1 ? "minecraft:" + r.resultId : r.resultId;
+                    var clean = (r.resultId || "").replace(/^.*:/, "").replace(/^(dust_|mineral_)/, "");
+                    var display = getName(rid) || titleCase(clean.replace(/_/g, " "));
+                    return { type: "recipe", id: rid || r.id, anchorId: rid || r.id, displayName: display };
+                });
+            }
+        });
+        advRelations = map;
+    }
+
+    function createAdvSlot(id, frame) {
+        var meta = frameMeta(frame);
+        if (window.ItemSlot && typeof window.ItemSlot.createSlot === "function") {
+            return ItemSlot.createSlot(id || "minecraft:barrier", {
+                translations: state.translations,
+                assetBase: assetBase,
+                slotTexture: meta.slotTexture
+            });
+        }
+        var slot = document.createElement("div");
+        slot.className = "mc-slot";
+        slot.style.backgroundImage = "url('" + meta.slotTexture + "')";
+        var img = document.createElement("img");
+        img.src = assetBase + "/textures/item/barrier.png";
+        img.alt = getName(id);
+        img.loading = "lazy";
+        img.decoding = "async";
+        slot.appendChild(img);
+        return slot;
+    }
+
     function renderAdvTreeNode(node) {
         var li = document.createElement("li");
         li.className = "adv-tree-node";
 
         var row = document.createElement("div");
         row.className = "adv-tree-row";
-        var iconSlot = createSlotForId(node.iconId || "minecraft:barrier");
+        var iconSlot = createAdvSlot(node.iconId || "minecraft:barrier", node.frame);
         iconSlot.classList.add("adv-icon-slot");
         row.appendChild(iconSlot);
 
@@ -460,10 +667,17 @@
             desc.textContent = node.description;
             info.appendChild(desc);
         }
+        var meta = frameMeta(node.frame);
         var frame = document.createElement("span");
-        frame.className = "adv-frame adv-frame-" + (node.frame || "task");
-        frame.textContent = node.frame === "challenge" ? "挑战" : node.frame === "goal" ? "目标" : "进度";
+        frame.className = meta.cls;
+        var icon = document.createElement("span");
+        icon.className = "adv-frame-icon fluent-font " + meta.iconClass;
+        icon.setAttribute("aria-hidden", "true");
+        frame.appendChild(icon);
+        frame.appendChild(document.createTextNode(meta.text));
         info.appendChild(frame);
+        var relations = renderRelations(node.id);
+        if (relations) info.appendChild(relations);
         row.appendChild(info);
         li.appendChild(row);
 
@@ -499,6 +713,18 @@
         var advTotal = document.getElementById("mdye-stat-adv");
         if (advTotal) advTotal.textContent = state.advancements.length;
         tryScrollToHash();
+    }
+
+    function tryScrollToHash() {
+        if (!state.hashPending) return;
+        if (!location.hash) { state.hashPending = false; return; }
+        var target = document.getElementById(location.hash.replace(/^#/, ""));
+        if (target) {
+            state.hashPending = false;
+            setTimeout(function () {
+                target.scrollIntoView({ behavior: "auto", block: "start", inline: "nearest" });
+            }, 0);
+        }
     }
 
     function updateStats() {
@@ -620,6 +846,7 @@
     function renderRecipe(recipe) {
         var card = document.createElement("article");
         card.className = "recipe-card";
+        card.id = anchorId("recipe", recipe.resultId || "recipe");
 
         var head = document.createElement("div");
         head.className = "recipe-head";
@@ -705,18 +932,6 @@
         });
     }
 
-    function tryScrollToHash() {
-        if (!state.hashPending) return;
-        if (!location.hash) { state.hashPending = false; return; }
-        var target = document.getElementById(location.hash.replace(/^#/, ""));
-        if (target) {
-            state.hashPending = false;
-            setTimeout(function () {
-                target.scrollIntoView({ behavior: "auto", block: "start", inline: "nearest" });
-            }, 0);
-        }
-    }
-
     function init() {
         bindFilters();
         if (state.loaded) {
@@ -739,6 +954,7 @@
         }).then(function (results) {
             state.recipes = results[0] || [];
             state.advancements = results[1] || [];
+            buildAdvRelations();
             state.loaded = true;
             updateStats();
             applyFilter(state.filter || "all");

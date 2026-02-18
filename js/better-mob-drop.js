@@ -152,6 +152,41 @@
         return titleCase(name);
     }
 
+    function getEntityName(id) {
+        if (!id) return "";
+        var shortId = id.split(":")[1] || id;
+        var key = "entity.minecraft." + shortId;
+        if (state.translations && state.translations[key]) {
+            return state.translations[key];
+        }
+        return getName(id);
+    }
+
+    function anchorId(prefix, id) {
+        return prefix + "-" + (id || "").replace(/[^a-zA-Z0-9_-]/g, "-");
+    }
+
+    function scrollHighlight(targetId) {
+        if (!targetId) return;
+        var attempts = 0;
+        var tryFind = function () {
+            var target = document.getElementById(targetId);
+            if (target) {
+                target.classList.add("search-highlight");
+                target.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+                setTimeout(function () { target.classList.remove("search-highlight"); }, 3600);
+                return;
+            }
+            attempts += 1;
+            if (attempts < 5) {
+                setTimeout(tryFind, 120);
+            } else {
+                location.hash = "#" + targetId;
+            }
+        };
+        tryFind();
+    }
+
     function init() {
         bindFilters();
         if (state.loaded) {
@@ -174,6 +209,7 @@
         }).then(function (results) {
             state.loot = results[0] || [];
             state.advancements = results[1] || [];
+            buildAdvRelations();
             state.loaded = true;
             updateStats();
             applyFilter(state.filter || "all");
@@ -206,7 +242,7 @@
         "minecraft:wandering_trader": "minecraft:wandering_trader_spawn_egg"
     };
 
-    // Custom texture fallbacks for entities/items missing bundled sprites
+    // Custom texture fallbacks for items (kept separate from entities to avoid id clashes like chicken)
     var customTextureMap = {
         "minecraft:dragon_head": ["https://zh.minecraft.wiki/images/Dragon_Head_JE1_BE1.png"],
         "minecraft:tipped_arrow": ["https://zh.minecraft.wiki/images/Invicon_Arrow_of_Poison.png"],
@@ -236,10 +272,12 @@
         "minecraft:crossbow": [
             "https://zh.minecraft.wiki/images/Crossbow_JE1_BE1.png",
             assetBase + "/textures/item/crossbow.png"
-        ],
-        "minecraft:allay": [
-            "https://zh.minecraft.wiki/images/Allay_JE2.gif"
-        ],
+        ]
+    };
+
+    // Entity-only texture fallbacks (used for showcase slots)
+    var entityTextureMap = {
+        "minecraft:allay": ["https://zh.minecraft.wiki/images/Allay_JE2.gif"],
         "minecraft:armadillo": ["https://zh.minecraft.wiki/images/Armadillo_JE2_BE2.png"],
         "minecraft:axolotl": ["https://zh.minecraft.wiki/images/Lucy_Axolotl_JE2_BE2.png"],
         "minecraft:bat": ["https://zh.minecraft.wiki/images/Bat_JE4_BE3.gif"],
@@ -259,6 +297,9 @@
         "minecraft:wandering_trader": ["https://zh.minecraft.wiki/images/Wandering_Trader_JE1_BE1.png"]
     };
 
+    // Advancement → related targets (entity/recipe/enchant/dye)
+    var advRelations = {};
+
     function spawnEggId(entityId) {
         return spawnEggMap[entityId] || null;
     }
@@ -266,11 +307,24 @@
     function createSlotForId(id, opts) {
         opts = opts || {};
         if (!window.ItemSlot || typeof window.ItemSlot.createSlot !== "function") return document.createTextNode("");
+        var textures = customTextureMap;
+        var translations = state.translations;
+        if (opts.isEntity) {
+            textures = Object.assign({}, customTextureMap, entityTextureMap);
+            var parts = (id || "").split(":");
+            var shortId = parts[1] || parts[0];
+            var keyItem = "item.minecraft." + shortId;
+            // Remove item translation to force entity name (and wiki link) for entity display
+            if (translations && Object.prototype.hasOwnProperty.call(translations, keyItem)) {
+                translations = Object.assign({}, translations);
+                delete translations[keyItem];
+            }
+        }
         var slot = ItemSlot.createSlot(id, {
-            translations: state.translations,
+            translations: translations,
             assetBase: assetBase,
             slotTexture: slotTexture,
-            customTextures: customTextureMap
+            customTextures: textures
         });
         // For entity showcases, drop the frame; keep frames for normal item drops
         if (opts.isEntity) {
@@ -278,6 +332,81 @@
             slot.classList.add("slot-no-frame");
         }
         return slot;
+    }
+
+    function renderRelations(advId) {
+        var rels = advRelations[advId] || [];
+        if (!rels.length) return null;
+
+        var wrap = document.createElement("div");
+        wrap.className = "adv-relations";
+        var label = document.createElement("span");
+        label.className = "adv-rel-label";
+        label.textContent = "相关内容";
+        wrap.appendChild(label);
+
+        var chips = document.createElement("div");
+        chips.className = "ench-item-chips adv-rel-chips";
+
+        rels.forEach(function (rel) {
+            var chip = document.createElement("div");
+            chip.className = "ench-item-chip adv-rel-chip";
+            var slot;
+            if (rel.type === "entity") {
+                slot = createSlotForId(rel.id, { isEntity: true });
+            } else {
+                slot = createSlotForId(rel.id);
+            }
+            slot.classList.add("ench-item-chip-slot");
+            chip.appendChild(slot);
+            var name = document.createElement("span");
+            name.textContent = getName(rel.id);
+            chip.appendChild(name);
+
+            var targetId = null;
+            if (rel.type === "entity") targetId = anchorId("mobcard", rel.id);
+            if (rel.type === "recipe") targetId = anchorId("recipe", rel.id);
+            if (rel.type === "enchant") targetId = anchorId("enchant", rel.id);
+            if (rel.type === "dye") targetId = anchorId("dye", rel.id);
+            if (targetId) {
+                chip.addEventListener("click", function () { scrollHighlight(targetId); });
+            }
+            chips.appendChild(chip);
+        });
+
+        wrap.appendChild(chips);
+        return wrap;
+    }
+
+    function buildAdvRelations() {
+        var map = {};
+        var rootId = "better-mob-drop:better-mob-drop";
+        var typoFix = {
+            "better-mob-drop:kill_armadilo": "minecraft:armadillo",
+            "better-mob-drop:kill_vilager": "minecraft:villager"
+        };
+        var lootIds = new Set(state.loot.map(function (m) { return m.entityId; }));
+        state.advancements.forEach(function (adv) {
+            if (!adv || adv.id === rootId) return;
+            var entityId = typoFix[adv.id];
+            if (!entityId) {
+                var shortId = adv.id.split(":")[1] || adv.id;
+                var clean = shortId.replace(/^kill_/, "");
+                entityId = "minecraft:" + clean;
+            }
+            if (lootIds.has(entityId)) {
+                map[adv.id] = [{ type: "entity", id: entityId }];
+            }
+        });
+        // Fallback: any remaining non-root advancement points to the first loot entity to avoid empty relations
+        var defaultEntity = state.loot.length ? state.loot[0].entityId : null;
+        state.advancements.forEach(function (adv) {
+            if (!adv || adv.id === rootId || !defaultEntity) return;
+            if (!map[adv.id]) {
+                map[adv.id] = [{ type: "entity", id: defaultEntity }];
+            }
+        });
+        advRelations = map;
     }
 
     function normalizeRange(count) {
@@ -461,13 +590,57 @@
         return roots;
     }
 
+    function frameMeta(frame) {
+        var f = frame || "task";
+        if (f === "challenge") return {
+            cls: "adv-frame adv-frame-challenge",
+            iconClass: "icon-ic_fluent_trophy_20_regular",
+            text: "挑战",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/challenge_frame_unobtained.png"
+        };
+        if (f === "goal") return {
+            cls: "adv-frame adv-frame-goal",
+            iconClass: "icon-ic_fluent_target_20_regular",
+            text: "目标",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/goal_frame_unobtained.png"
+        };
+        return {
+            cls: "adv-frame adv-frame-task",
+            iconClass: "icon-ic_fluent_task_list_add_20_regular",
+            text: "进度",
+            slotTexture: assetBase + "/textures/gui/sprites/advancements/task_frame_unobtained.png"
+        };
+    }
+
+    function createAdvSlot(id, frame) {
+        var meta = frameMeta(frame);
+        if (window.ItemSlot && typeof window.ItemSlot.createSlot === "function") {
+            return ItemSlot.createSlot(id || "minecraft:barrier", {
+                translations: state.translations,
+                assetBase: assetBase,
+                slotTexture: meta.slotTexture,
+                customTextures: customTextureMap
+            });
+        }
+        var slot = document.createElement("div");
+        slot.className = "mc-slot";
+        slot.style.backgroundImage = "url('" + meta.slotTexture + "')";
+        var img = document.createElement("img");
+        img.src = fallbackTexture;
+        img.alt = getName(id);
+        img.loading = "lazy";
+        img.decoding = "async";
+        slot.appendChild(img);
+        return slot;
+    }
+
     function renderAdvTreeNode(node) {
         var li = document.createElement("li");
         li.className = "adv-tree-node";
 
         var row = document.createElement("div");
         row.className = "adv-tree-row";
-        var iconSlot = createSlotForId(node.iconId || "minecraft:barrier");
+        var iconSlot = createAdvSlot(node.iconId || "minecraft:barrier", node.frame);
         iconSlot.classList.add("adv-icon-slot");
         row.appendChild(iconSlot);
 
@@ -483,10 +656,17 @@
             desc.textContent = node.description;
             info.appendChild(desc);
         }
+        var meta = frameMeta(node.frame);
         var frame = document.createElement("span");
-        frame.className = "adv-frame adv-frame-" + (node.frame || "task");
-        frame.textContent = node.frame === "challenge" ? "挑战" : node.frame === "goal" ? "目标" : "进度";
+        frame.className = meta.cls;
+        var icon = document.createElement("span");
+        icon.className = "adv-frame-icon fluent-font " + meta.iconClass;
+        icon.setAttribute("aria-hidden", "true");
+        frame.appendChild(icon);
+        frame.appendChild(document.createTextNode(meta.text));
         info.appendChild(frame);
+        var relations = renderRelations(node.id);
+        if (relations) info.appendChild(relations);
         row.appendChild(info);
         li.appendChild(row);
 
@@ -548,7 +728,7 @@
             var title = document.createElement("div");
             title.className = "loot-title-row";
             var nameEl = document.createElement("h3");
-            nameEl.textContent = getName(mob.entityId) || mob.entityId;
+            nameEl.textContent = getEntityName(mob.entityId) || mob.entityId;
             title.appendChild(nameEl);
             head.appendChild(title);
             var meta = document.createElement("span");
@@ -592,6 +772,7 @@
                 });
                 body.appendChild(ul);
                 card.appendChild(body);
+                card.id = anchorId("mobcard", mob.entityId);
             list.appendChild(card);
         });
         tryScrollToHash();

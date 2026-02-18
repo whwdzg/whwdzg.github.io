@@ -222,7 +222,7 @@
   box-shadow: none !important;
 }
 .slot-no-frame img {
-  filter: none !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4)) !important;
 }
 .mc-slot.slot-empty::after {
   content: "";
@@ -481,6 +481,13 @@
 .adv-icon-slot {
   --slot-size: 56px;
   flex-shrink: 0;
+  box-shadow: none;
+  image-rendering: pixelated;
+  background-size: 100% 100%;
+}
+.adv-icon-slot img {
+  width: 60%;
+  height: 60%;
 }
 .adv-body {
   flex: 1;
@@ -512,6 +519,11 @@
   font-size: 0.9rem;
   font-weight: 600;
 }
+.adv-frame-icon {
+  margin-right: 0.35rem;
+  font-size: 1rem;
+  line-height: 1;
+}
 .adv-frame-goal {
   background: rgba(37, 99, 235, 0.1);
   border-color: rgba(37, 99, 235, 0.45);
@@ -523,6 +535,34 @@
 .adv-parent {
   color: var(--muted-color, #94a3b8);
   font-size: 0.9rem;
+}
+.adv-relations {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.35rem;
+}
+.adv-rel-label {
+  font-weight: 700;
+  color: var(--text-color);
+}
+.adv-rel-empty {
+  color: var(--muted-color, #94a3b8);
+  font-size: 0.9rem;
+}
+.adv-rel-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.adv-rel-chip {
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.adv-rel-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 .material-title {
   margin: 0 0 0.25rem;

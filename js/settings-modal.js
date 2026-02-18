@@ -166,6 +166,10 @@ const ABOUT_ENTRY_DEFINITIONS = [
 ];
 
 let __settingsCurrentTimeIntervalId = null;
+// 优先使用浏览器语言，回退到文档 lang 或中文
+const locale = (typeof navigator !== 'undefined' && (navigator.language || navigator.userLanguage)) ||
+  (typeof document !== 'undefined' && document.documentElement && document.documentElement.lang) ||
+  'zh-CN';
 
 function formatCurrentTime() {
   const now = new Date();
