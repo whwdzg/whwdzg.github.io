@@ -116,10 +116,18 @@
                 var sep = url.indexOf('?') === -1 ? '?' : '&';
                 return url + sep + 'ts=' + Date.now();
             }
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', bust('/includes/shell.html'), false);
+                xhr.send(null);
+                if (xhr.status === 200 || xhr.status === 0) {
+                    attachShell(xhr.responseText);
+                    return;
+                }
+            } catch (e) {}
             fetch(bust('/includes/shell.html'), { cache: 'no-store' })
                 .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
-                .then(function(html){ attachShell(html); })
-                .catch(function(err){ console.warn('load shell failed', err); });
+                .then(function(html){ attachShell(html); });
         })();
     </script>
 

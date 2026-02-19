@@ -69,31 +69,6 @@
   font-size: 0.95rem;
 }
 
-.mcproj-actions {
-  margin-top: 0.5rem;
-}
-
-.mcproj-actions button {
-  border: 1px solid var(--border-color, rgba(0,0,0,0.14));
-  border-radius: 10px;
-  padding: 0.5rem 0.9rem;
-  background: var(--primary-color, #3b82f6);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  cursor: pointer;
-  transition: transform 0.12s ease, opacity 0.2s ease;
-}
-
-.mcproj-actions button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.mcproj-actions button:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
 
 .mcproj-progress {
   margin-top: 0.6rem;
@@ -181,6 +156,33 @@
 
 .mcproj-canvas-wrap canvas { width: 100%; height: 100%; display: block; }
 
+.mcproj-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.mcproj-crosshair::before,
+.mcproj-crosshair::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: rgba(15,23,42,0.85);
+  transform: translate(-50%, -50%);
+}
+.mcproj-crosshair::before {
+  width: 1px;
+  height: 18px;
+}
+.mcproj-crosshair::after {
+  width: 18px;
+  height: 1px;
+}
+
 .mcproj-hud {
   position: absolute;
   top: 10px;
@@ -197,7 +199,34 @@
 }
 .mcproj-hud div { white-space: nowrap; }
 
+.mcproj-speed {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0.9rem 1rem;
+  color: var(--text-muted, #6b7280);
+  font-size: 0.95rem;
+}
+.mcproj-speed input[type="number"] {
+  flex: 0 0 120px;
+  max-width: 160px;
+}
+.mcproj-speed .styled-input {
+  text-align: center;
+}
+.mcproj-speed label {
+  white-space: nowrap;
+  color: var(--text-color, #111827);
+}
+
 .mcproj-hints { padding: 0.65rem 0.9rem 0.9rem; color: var(--text-muted, #6b7280); font-size: 0.95rem; }
+.mcproj-focus {
+  padding: 0.4rem 0.9rem 0.2rem;
+  text-align: center;
+  color: var(--text-color, #111827);
+  font-weight: 600;
+  min-height: 1.4rem;
+}
 
 .pill-light {
   background: var(--hover-bg, rgba(0,0,0,0.03));

@@ -1,6 +1,6 @@
 (() => {
     window.mcprojBooted = true;
-    console.info('[mcproj] script loaded v20260219-7');
+           console.info('[mcproj] script loaded v20260219-23');
     let THREE = null;
     let PointerLockControls = null;
     let BufferCtor = null;
@@ -21,13 +21,16 @@
     let uniqueEl = null;
     let tableBody = null;
     let fullscreenBtn = null;
-    let parseBtn = null;
     let progressWrap = null;
     let progressBar = null;
     let hud = null;
     let hudFps = null;
     let hudPos = null;
-    let hudZoom = null;
+    let hudBlocks = null;
+    let speedInput = null;
+    let focusEl = null;
+    // legacy placeholder to avoid ReferenceError if old cached code paths call it
+    const speedSlider = null;
 
     const toast = window.globalCopyToast || { show () {} };
 
@@ -47,13 +50,17 @@
     let boundDropNode = null;
     let langMap = null;
     let targetCenter = null;
-    let baseZoomDist = null;
     let fpsAccum = 0;
     let fpsFrames = 0;
+    let lastRenderCounts = { parsed: 0, rendered: 0, types: 0 };
     let textureLoader = null;
+    let moveSpeed = 50;
     const textureCache = new Map();
-    const MIN_ZOOM_DIST = 2;
-    const MAX_ZOOM_DIST = 400;
+    let raycaster = null;
+    const focusOrigin = { v: null };
+    const focusDir = { v: null };
+    let focusCooldown = 0;
+    let outlineMesh = null;
 
     async function loadDeps() {
         if (depsLoaded) return;
@@ -133,14 +140,15 @@
         uniqueEl = document.getElementById('mcproj-unique');
         tableBody = document.getElementById('mcproj-table-body');
         fullscreenBtn = document.getElementById('mcproj-fullscreen');
-        parseBtn = document.getElementById('mcproj-parse');
         progressWrap = document.getElementById('mcproj-progress');
         progressBar = document.getElementById('mcproj-progress-bar');
         hud = document.getElementById('mcproj-hud');
         hudFps = document.getElementById('mcproj-hud-fps');
         hudPos = document.getElementById('mcproj-hud-pos');
-        hudZoom = document.getElementById('mcproj-hud-zoom');
-        return !!(canvas && canvasWrap && drop && fileInput && fileMeta && statusPill && totalEl && sizeEl && uniqueEl && tableBody && fullscreenBtn && parseBtn);
+        hudBlocks = document.getElementById('mcproj-hud-blocks');
+        speedInput = document.getElementById('mcproj-speed-input');
+        focusEl = document.getElementById('mcproj-focus');
+        return !!(canvas && canvasWrap && drop && fileInput && fileMeta && statusPill && totalEl && sizeEl && uniqueEl && tableBody && fullscreenBtn);
     }
 
     async function ensureReady() {
@@ -190,6 +198,8 @@
 
     function resetScene() {
         if (animationId) cancelAnimationFrame(animationId);
+        animationId = null;
+        disposeMeshes();
         if (renderer) renderer.dispose();
         const { w, h } = getWrapSize();
         renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -199,7 +209,7 @@
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0f172a);
 
-        camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 2000);
+        camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 20000);
         camera.position.set(10, 10, 10);
 
         controls = new PointerLockControls(camera, canvasWrap);
@@ -212,8 +222,15 @@
         dir.position.set(5, 10, 7);
         scene.add(ambient, dir);
 
+        if (!raycaster) raycaster = new THREE.Raycaster();
+        if (!focusOrigin.v) focusOrigin.v = new THREE.Vector3();
+        if (!focusDir.v) focusDir.v = new THREE.Vector3();
+        setupOutlineHelper();
+
         window.addEventListener('resize', handleResize);
-        bindZoom();
+        bindSpeedControl();
+        // restart loop after rebuild
+        animate();
     }
 
     function getWrapSize() {
@@ -239,7 +256,7 @@
         }
         const delta = clock.getDelta();
         if (controls && controls.isLocked) {
-            const speed = 18;
+            const speed = moveSpeed;
             velocity.x -= velocity.x * 8.0 * delta;
             velocity.z -= velocity.z * 8.0 * delta;
             velocity.y -= velocity.y * 8.0 * delta;
@@ -261,6 +278,7 @@
             renderer.render(scene, camera);
         }
         updateHud(delta);
+        updateFocus(delta);
         animationId = requestAnimationFrame(animate);
     }
 
@@ -297,14 +315,68 @@
             const p = obj.position;
             hudPos.textContent = `${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)}`;
         }
-        if (hudZoom && obj && targetCenter) {
-            const dist = obj.position.distanceTo(targetCenter);
-            const base = baseZoomDist || dist || 1;
-            const factor = dist > 0 ? base / dist : 1;
-            hudZoom.textContent = `${factor.toFixed(2)}x · 距离 ${dist.toFixed(1)}`;
-        } else if (hudZoom) {
-            hudZoom.textContent = '-';
+        if (hudBlocks) {
+            const { parsed, rendered, types } = lastRenderCounts;
+            hudBlocks.textContent = parsed ? `${rendered}/${parsed} · 种类 ${types}` : '-';
         }
+    }
+
+    function updateFocus(delta) {
+        if (!focusEl || !raycaster || !camera || !instancedMeshes.length) return;
+        focusCooldown += delta;
+        if (focusCooldown < 0.1) return; // throttle to ~10 fps
+        focusCooldown = 0;
+        const origin = focusOrigin.v || (focusOrigin.v = new THREE.Vector3());
+        const dir = focusDir.v || (focusDir.v = new THREE.Vector3());
+        camera.getWorldPosition(origin);
+        camera.getWorldDirection(dir);
+        raycaster.set(origin, dir);
+        raycaster.far = 400;
+        const hits = raycaster.intersectObjects(instancedMeshes, false);
+        if (hits && hits.length) {
+            const hit = hits[0];
+            const meta = hit.object && hit.object.userData ? hit.object.userData.mcprojMeta : null;
+            const label = meta && (meta.label || meta.name || meta.itemId);
+            focusEl.textContent = label || '-';
+            updateOutline(hit);
+        } else {
+            focusEl.textContent = '-';
+            hideOutline();
+        }
+    }
+
+    function setupOutlineHelper() {
+        if (!THREE || !scene) return;
+        if (outlineMesh && scene.children.includes(outlineMesh)) {
+            outlineMesh.visible = false;
+            return;
+        }
+        const geo = new THREE.EdgesGeometry(new THREE.BoxGeometry(1.002, 1.002, 1.002));
+        const mat = new THREE.LineBasicMaterial({ color: 0x111111, linewidth: 2 });
+        outlineMesh = new THREE.LineSegments(geo, mat);
+        outlineMesh.visible = false;
+        outlineMesh.renderOrder = 999;
+        scene.add(outlineMesh);
+    }
+
+    function updateOutline(hit) {
+        if (!outlineMesh || !hit || hit.instanceId === undefined || hit.instanceId === null) return;
+        const mesh = hit.object;
+        if (!mesh || typeof mesh.getMatrixAt !== 'function') return;
+        const mat = new THREE.Matrix4();
+        mesh.getMatrixAt(hit.instanceId, mat);
+        const pos = new THREE.Vector3();
+        const quat = new THREE.Quaternion();
+        const scale = new THREE.Vector3();
+        mat.decompose(pos, quat, scale);
+        outlineMesh.position.copy(pos);
+        outlineMesh.quaternion.copy(quat);
+        outlineMesh.scale.copy(scale);
+        outlineMesh.visible = true;
+    }
+
+    function hideOutline() {
+        if (outlineMesh) outlineMesh.visible = false;
     }
 
     function readFile(file, onProgress) {
@@ -376,8 +448,9 @@
         let acc = 0n;
         let accBits = 0;
         let idx = 0;
+        const asUint = (v) => BigInt.asUintN(64, BigInt(v));
         for (let i = 0; i < states.length; i += 1) {
-            acc |= BigInt(states[i]) << BigInt(accBits);
+            acc |= asUint(states[i]) << BigInt(accBits);
             accBits += 64;
             while (accBits >= bits && idx < total) {
                 out[idx] = Number(acc & mask);
@@ -464,6 +537,14 @@
         return [];
     }
 
+    function decodeStates(states, bits, total) {
+        const isByteLike = states.length > 0 && states.every((v) => typeof v === 'number' && v >= 0 && v < 256);
+        if (isByteLike) {
+            return unpackBitArray(states, bits, total);
+        }
+        return unpackPalette(states, bits, total);
+    }
+
     async function loadLang() {
         if (langMap) return langMap;
         const tryFetch = async (url) => fetch(url).then((r) => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))));
@@ -521,9 +602,12 @@
             const bits = Math.max(1, Math.ceil(Math.log2(palette.length)));
             const total = sx * sy * sz;
             if (!total) throw new Error('Region 尺寸为 0');
-            const indices = unpackPalette(states, bits, total);
+            const indices = decodeStates(states, bits, total);
             if (!indices.length) throw new Error('Region BlockStates 为空');
-            console.info('[mcproj] region', key, 'size', [sx, sy, sz], 'palette', palette.length, 'states', states.length, 'bits', bits);
+            if (indices.length < total) {
+                console.warn('[mcproj] region states decoded less than expected', indices.length, 'vs', total);
+            }
+            console.info('[mcproj] region', key, 'size', [sx, sy, sz], 'palette', palette.length, 'states', states.length, 'bits', bits, 'decoder', (states.length && typeof states[0] === 'bigint') ? 'long' : 'bytes');
             for (let y = 0; y < sy; y += 1) {
                 for (let z = 0; z < sz; z += 1) {
                     for (let x = 0; x < sx; x += 1) {
@@ -682,6 +766,10 @@
                 try {
                     const tex = await textureLoader.loadAsync(url);
                     tex.colorSpace = THREE.SRGBColorSpace || THREE.sRGBEncoding;
+                    tex.magFilter = THREE.NearestFilter;
+                    tex.minFilter = THREE.NearestFilter;
+                    tex.generateMipmaps = false;
+                    tex.needsUpdate = true;
                     return tex;
                 } catch (e) {
                     // try next
@@ -708,18 +796,20 @@
             const key = b.name;
             if (!paletteMap.has(key)) {
                 const colorKey = b.itemId || b.name;
-                paletteMap.set(key, { positions: [], colorKey, itemId: b.itemId || null });
+                paletteMap.set(key, { positions: [], colorKey, itemId: b.itemId || null, label: b.name });
             }
             paletteMap.get(key).positions.push([b.x, b.y, b.z]);
         });
 
         const geom = new THREE.BoxGeometry(1, 1, 1);
         const paletteArray = Array.from(paletteMap.entries());
+        let renderedCount = 0;
         for (const [name, meta] of paletteArray) {
             const tex = await loadTextureFor(meta.itemId || name);
             const mat = tex ? new THREE.MeshStandardMaterial({ map: tex }) : new THREE.MeshStandardMaterial({ color: colorFromName(meta.colorKey) });
             const mesh = new THREE.InstancedMesh(geom, mat, meta.positions.length);
             mesh.frustumCulled = false;
+            mesh.userData.mcprojMeta = { name, label: meta.label || name, itemId: meta.itemId || null, positions: meta.positions };
             const dummy = new THREE.Object3D();
             meta.positions.forEach((pos, idx) => {
                 dummy.position.set(pos[0], pos[1], pos[2]);
@@ -729,7 +819,9 @@
             mesh.instanceMatrix.needsUpdate = true;
             instancedMeshes.push(mesh);
             scene.add(mesh);
+            renderedCount += meta.positions.length;
         }
+        lastRenderCounts = { parsed: total, rendered: renderedCount, types: paletteArray.length };
 
         // center camera
         const [sx, sy, sz] = parsed.size;
@@ -742,7 +834,6 @@
         targetCenter = center.clone();
         controls.getObject().position.copy(center.clone().add(new THREE.Vector3(0, Math.max(6, sy * 0.6), Math.max(6, sz * 0.8))));
         camera.lookAt(center);
-        baseZoomDist = controls.getObject().position.distanceTo(center);
 
         const statsPalette = paletteArray.map(([n, meta]) => [n, { count: meta.positions.length, color: colorFromName(meta.colorKey), itemId: meta.itemId }]);
         updateStats(blocks, statsPalette, parsed.size);
@@ -791,7 +882,6 @@
 
     async function handleFile(file) {
         setStatus('读取中...', 'info');
-        if (parseBtn) parseBtn.disabled = true;
         fileMeta.textContent = `${file.name} · ${(file.size / 1024).toFixed(1)} KB`;
         try {
             await ensureReady();
@@ -808,7 +898,6 @@
             await buildGeometry(parsed);
             handleResize();
             pendingFile = null;
-            if (parseBtn) parseBtn.disabled = true;
             setProgress(100);
             hideProgress(500);
             console.info('[mcproj] parse success');
@@ -816,7 +905,6 @@
             console.error(err);
             setStatus('解析失败：' + (err && err.message ? err.message : '未知错误'), 'error');
             toast.show('解析失败', 'error', 'icon-ic_fluent_error_circle_24_regular');
-            if (parseBtn) parseBtn.disabled = false;
             hideProgress(800);
             if (fileMeta) fileMeta.textContent = '解析失败：' + (err && err.message ? err.message : '未知错误');
         }
@@ -829,7 +917,7 @@
 
         console.info('[mcproj] bindDrop on node', boundDropNode.id || boundDropNode.className);
 
-        const onDrop = (ev) => {
+        const onDrop = async (ev) => {
             ev.preventDefault();
             drop.classList.remove('dragover');
             const file = ev.dataTransfer.files && ev.dataTransfer.files[0];
@@ -837,11 +925,9 @@
                 console.info('[mcproj] drop file', file.name);
                 pendingFile = file;
                 fileMeta.textContent = `${pendingFile.name} · ${(pendingFile.size / 1024).toFixed(1)} KB`;
-                setStatus('已选择，点击“开始解析”', 'info');
-                if (parseBtn) parseBtn.disabled = false;
+                setStatus('读取中...', 'info');
                 setProgress(0);
-                // 自动解析，减少“无反应”疑惑
-                handleFile(pendingFile);
+                await handleFile(pendingFile);
             }
         };
         ['dragover', 'dragenter'].forEach((evt) => {
@@ -851,30 +937,54 @@
             drop.addEventListener(evt, () => drop.classList.remove('dragover'));
         });
         drop.addEventListener('drop', onDrop);
-        drop.addEventListener('click', () => fileInput.click());
-        drop.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files && e.target.files[0]) {
-                pendingFile = e.target.files[0];
-                console.info('[mcproj] choose file', pendingFile.name);
-                fileMeta.textContent = `${pendingFile.name} · ${(pendingFile.size / 1024).toFixed(1)} KB`;
-                setStatus('已选择，点击“开始解析”', 'info');
-                if (parseBtn) parseBtn.disabled = false;
-                setProgress(0);
-                fileInput.value = '';
-                handleFile(pendingFile);
+        const resetPicker = () => { fileInput.value = ''; fileInput.value = null; };
+        drop.addEventListener('click', () => { resetPicker(); fileInput.click(); });
+        drop.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); resetPicker(); fileInput.click(); } });
+        fileInput.addEventListener('mousedown', resetPicker);
+        fileInput.addEventListener('click', resetPicker);
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            pendingFile = file;
+            console.info('[mcproj] choose file', pendingFile.name);
+            fileMeta.textContent = `${pendingFile.name} · ${(pendingFile.size / 1024).toFixed(1)} KB`;
+            setStatus('读取中...', 'info');
+            setProgress(0);
+            resetPicker();
+            await handleFile(pendingFile);
+        });
+    }
+
+    function bindSpeedControl() {
+        if (!speedInput) return;
+        const MIN_SPEED = 2;
+        const MAX_SPEED = 100;
+        const clamp = (val) => {
+            const n = Number(val);
+            if (!Number.isFinite(n)) return moveSpeed;
+            return Math.min(Math.max(n, MIN_SPEED), MAX_SPEED);
+        };
+        const commit = (raw) => {
+            const next = clamp(raw);
+            moveSpeed = next;
+            speedInput.value = String(Math.round(next * 100) / 100);
+        };
+        commit(speedInput.value || moveSpeed);
+        speedInput.addEventListener('input', (e) => {
+            const n = Number(e.target.value);
+            if (Number.isFinite(n)) {
+                moveSpeed = clamp(n);
             }
         });
-
-        if (parseBtn) {
-            parseBtn.addEventListener('click', () => {
-                if (!pendingFile) {
-                    setStatus('请先选择文件', 'error');
-                    return;
-                }
-                handleFile(pendingFile);
-            });
-        }
+        ['change', 'blur'].forEach((evt) => {
+            speedInput.addEventListener(evt, (e) => commit(e.target.value));
+        });
+        speedInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                commit(e.target.value);
+                e.target.blur();
+            }
+        });
     }
 
     function bindFullscreen() {
@@ -889,50 +999,6 @@
             }
         });
         document.addEventListener('fullscreenchange', handleResize);
-    }
-
-    function zoomCamera(delta) {
-        if (!camera || !controls || !targetCenter) return;
-        const obj = controls.getObject();
-        const dir = new THREE.Vector3().subVectors(obj.position, targetCenter);
-        const dist = dir.length();
-        const next = Math.min(Math.max(dist + delta, MIN_ZOOM_DIST), MAX_ZOOM_DIST);
-        if (dist === 0) dir.set(0, 0, 1);
-        dir.setLength(next);
-        obj.position.copy(targetCenter.clone().add(dir));
-        camera.lookAt(targetCenter);
-        if (baseZoomDist === null) baseZoomDist = next;
-    }
-
-    function bindZoom() {
-        if (!canvasWrap) return;
-        canvasWrap.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const delta = e.deltaY > 0 ? 2 : -2;
-            zoomCamera(delta);
-        }, { passive: false });
-
-        let pinchStart = null;
-        const getDist = (t1, t2) => {
-            const dx = t1.clientX - t2.clientX;
-            const dy = t1.clientY - t2.clientY;
-            return Math.sqrt(dx * dx + dy * dy);
-        };
-        canvasWrap.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 2) {
-                pinchStart = getDist(e.touches[0], e.touches[1]);
-            }
-        }, { passive: true });
-        canvasWrap.addEventListener('touchmove', (e) => {
-            if (e.touches.length === 2 && pinchStart) {
-                const now = getDist(e.touches[0], e.touches[1]);
-                const diff = pinchStart - now;
-                zoomCamera(diff * 0.02);
-                pinchStart = now;
-            }
-        }, { passive: true });
-        canvasWrap.addEventListener('touchend', () => { pinchStart = null; });
-        canvasWrap.addEventListener('touchcancel', () => { pinchStart = null; });
     }
 
     async function init() {

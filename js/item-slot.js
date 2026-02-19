@@ -9,6 +9,30 @@
     };
 
     var DEFAULT_CUSTOM_TEXTURES = {
+        "minecraft:snow_block": [
+            DEFAULT_ASSET_BASE + "/textures/block/snow_block.png",
+            DEFAULT_ASSET_BASE + "/textures/item/snow.png"
+        ],
+        "snow_block": [
+            DEFAULT_ASSET_BASE + "/textures/block/snow_block.png",
+            DEFAULT_ASSET_BASE + "/textures/item/snow.png"
+        ],
+        "minecraft:smooth_quartz": [
+            DEFAULT_ASSET_BASE + "/textures/block/quartz_block_bottom.png",
+            DEFAULT_ASSET_BASE + "/textures/block/quartz_block_top.png"
+        ],
+        "smooth_quartz": [
+            DEFAULT_ASSET_BASE + "/textures/block/quartz_block_bottom.png",
+            DEFAULT_ASSET_BASE + "/textures/block/quartz_block_top.png"
+        ],
+        "minecraft:smooth_quartz_stairs": [
+            DEFAULT_ASSET_BASE + "/textures/block/quartz_block_bottom.png",
+            DEFAULT_ASSET_BASE + "/textures/block/quartz_block_top.png"
+        ],
+        "smooth_quartz_stairs": [
+            DEFAULT_ASSET_BASE + "/textures/block/quartz_block_bottom.png",
+            DEFAULT_ASSET_BASE + "/textures/block/quartz_block_top.png"
+        ],
         "minecraft:dragon_head": ["https://zh.minecraft.wiki/images/Dragon_Head_JE1_BE1.png"],
         "minecraft:tipped_arrow": ["https://zh.minecraft.wiki/images/Invicon_Arrow_of_Poison.png"],
         "minecraft:dragon_egg": ["https://zh.minecraft.wiki/images/Dragon_Egg_JE3.png"],
@@ -191,6 +215,41 @@
         };
 
         var bases = [name];
+        var pushUnique = function (arr, v) { if (arr.indexOf(v) === -1) arr.push(v); };
+
+        var addBaseVariants = function (baseName) {
+            if (!baseName) return;
+            pushUnique(bases, baseName);
+            if (/_brick$/.test(baseName)) pushUnique(bases, baseName + "s");
+            if (/_stone_brick$/.test(baseName)) pushUnique(bases, baseName.replace(/_stone_brick$/, "_stone_bricks"));
+            if (/_stone_bricks$/.test(baseName)) pushUnique(bases, baseName.replace(/_stone_bricks$/, "_stone_brick"));
+            pushUnique(bases, baseName + "_block");
+            pushUnique(bases, baseName + "_blocks");
+            if (/(oak|spruce|birch|jungle|acacia|dark_oak|mangrove|cherry|bamboo|crimson|warped|pale_oak)$/.test(baseName)) {
+                pushUnique(bases, baseName + "_planks");
+            }
+            if (/quartz$/.test(baseName)) {
+                pushUnique(bases, baseName + "_block");
+                pushUnique(bases, "quartz_block");
+                pushUnique(bases, "smooth_quartz");
+            }
+            if (/sandstone$/.test(baseName)) {
+                pushUnique(bases, "cut_" + baseName);
+                pushUnique(bases, "smooth_" + baseName);
+            }
+        };
+
+        // Stairs/slabs: also try their base block textures
+        if (/_stairs$/.test(name)) {
+            var baseStair = name.replace(/_stairs$/, "");
+            addBaseVariants(baseStair);
+        }
+        if (/_slab$/.test(name)) {
+            var baseSlab = name.replace(/_slab$/, "");
+            addBaseVariants(baseSlab);
+            if (baseSlab.indexOf("_double_") !== -1) addBaseVariants(baseSlab.replace("_double_", "_"));
+            if (baseSlab.indexOf("_smooth_") !== -1) addBaseVariants(baseSlab.replace("_smooth_", "_"));
+        }
 
         // Glass panes: try side/top variants commonly used by MC assets
         if (name.indexOf("pane") !== -1) {

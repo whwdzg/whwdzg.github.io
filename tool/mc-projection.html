@@ -128,10 +128,18 @@
                 var sep = url.indexOf('?') === -1 ? '?' : '&';
                 return url + sep + 'ts=' + Date.now();
             }
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', bust('/includes/shell.html'), false);
+                xhr.send(null);
+                if (xhr.status === 200 || xhr.status === 0) {
+                    attachShell(xhr.responseText);
+                    return;
+                }
+            } catch (e) {}
             fetch(bust('/includes/shell.html'), { cache: 'no-store' })
                 .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
-                .then(function(html){ attachShell(html); })
-                .catch(function(err){ console.warn('load shell failed', err); });
+                .then(function(html){ attachShell(html); });
         })();
     </script>
 
@@ -169,12 +177,6 @@
                             </div>
                         </div>
                         <div class="mcproj-file-meta" id="mcproj-file-meta">未选择文件</div>
-                        <div class="mcproj-actions">
-                            <button type="button" id="mcproj-parse" disabled>
-                                <i class="icon-ic_fluent_play_circle_24_regular" aria-hidden="true"></i>
-                                <span>开始解析</span>
-                            </button>
-                        </div>
                         <div class="mcproj-progress" id="mcproj-progress" aria-label="上传进度" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
                             <div class="mcproj-progress-bar" id="mcproj-progress-bar"></div>
                         </div>
@@ -222,15 +224,21 @@
                             </div>
                             <div class="mcproj-canvas-wrap" id="mcproj-canvas-wrap">
                                 <canvas id="mcproj-canvas" aria-label="3D 预览"></canvas>
+                                <div class="mcproj-crosshair" aria-hidden="true"></div>
                                 <div class="mcproj-hud" id="mcproj-hud" aria-hidden="true">
+                                    <div>方块：<span id="mcproj-focus">-</span></div>
                                     <div>FPS：<span id="mcproj-hud-fps">-</span></div>
+                                    <div>方块：<span id="mcproj-hud-blocks">-</span></div>
                                     <div>位置：<span id="mcproj-hud-pos">-, -, -</span></div>
-                                    <div>缩放：<span id="mcproj-hud-zoom">-</span></div>
                                 </div>
                             </div>
                             <div class="mcproj-hints">
                                 <p><strong>操作：</strong>点击画面获取鼠标锁定，W/A/S/D 移动，空格上升，Shift 下降，鼠标移动视角，Esc 退出锁定。</p>
                                 <p><strong>提示：</strong>仅渲染方块外形，不含碰撞；文件越大越耗资源。</p>
+                            </div>
+                            <div class="mcproj-speed">
+                                <label for="mcproj-speed-input">移动速度</label>
+                                <input type="number" id="mcproj-speed-input" class="styled-input" min="2" max="100" step="1" value="50" aria-label="移动速度，可输入数值">
                             </div>
                         </div>
                     </div>
@@ -257,8 +265,8 @@
             </section>
 
         </div>
-        <script src="/js/item-slot.js" defer></script>
-        <script type="module" src="/js/tool/mc-projection.js?v=20260219-7" defer></script>
+        <script src="/js/item-slot.js?v=20260219-17" defer></script>
+        <script type="module" src="/js/tool/mc-projection.js?v=20260219-23" defer></script>
     </main>
     </body>
 
