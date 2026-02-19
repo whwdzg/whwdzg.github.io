@@ -7,43 +7,37 @@
     return;
   }
 
-  const SCRIPT_ROOT = (() => {
-    const src = (document.currentScript && document.currentScript.src) || window.location.href;
-    // use full href (with origin) so URL() base is always valid
-    return new URL('..', src);
-  })();
+  const resolve = (p) => new URL(p, window.location.origin + '/').href;
 
-  const resolve = (p) => new URL(p, SCRIPT_ROOT).href;
-
-  const SHELL_URL = resolve('includes/shell.html');
-  const SETTINGS_URL = resolve('includes/setting.html');
+  const SHELL_URL = resolve('/includes/shell.html');
+  const SETTINGS_URL = resolve('/includes/setting.html');
   const ROOT_CONTAINER_ID = 'app-root';
   const CONTENT_CONTAINER_ID = 'page-root';
   const CACHE_BUST = () => Date.now().toString();
 
   const sharedCss = [
-    resolve('css/variables.css'),
-    resolve('css/input.css'),
-    resolve('css/header.css'),
-    resolve('css/sidebar.css'),
-    resolve('css/main-content.css'),
-    resolve('css/footer.css'),
-    resolve('css/lightbox.css'),
-    resolve('css/settings-modal.css'),
-    resolve('css/scroll-to-top.css'),
-    resolve('css/videoplay.css'),
-    resolve('font/FluentSystemIcons-Regular.css')
+    resolve('/css/variables.css'),
+    resolve('/css/input.css'),
+    resolve('/css/header.css'),
+    resolve('/css/sidebar.css'),
+    resolve('/css/main-content.css'),
+    resolve('/css/footer.css'),
+    resolve('/css/lightbox.css'),
+    resolve('/css/settings-modal.css'),
+    resolve('/css/scroll-to-top.css'),
+    resolve('/css/videoplay.css'),
+    resolve('/resource/font/FluentSystemIcons-Regular.css')
   ];
 
   const sharedJs = [
-    resolve('js/theme.js'),
-    resolve('js/sidebar.js'),
-    resolve('js/lightbox.js'),
-    resolve('js/avatar.js'),
-    resolve('js/scroll-to-top.js'),
-    resolve('js/search.js'),
-    resolve('js/settings-modal.js'),
-    resolve('js/code.js')
+    resolve('/js/theme.js'),
+    resolve('/js/sidebar.js'),
+    resolve('/js/lightbox.js'),
+    resolve('/js/avatar.js'),
+    resolve('/js/scroll-to-top.js'),
+    resolve('/js/search.js'),
+    resolve('/js/settings-modal.js'),
+    resolve('/js/code.js')
   ];
 
   let shellLoaded = false;

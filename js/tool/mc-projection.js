@@ -1,4 +1,6 @@
 (() => {
+    window.mcprojBooted = true;
+    console.info('[mcproj] script loaded v20260219-7');
     let THREE = null;
     let PointerLockControls = null;
     let BufferCtor = null;
@@ -8,33 +10,32 @@
     let depsLoaded = false;
 
     const MAX_BLOCKS = 200000; // soft limit to prevent lockups
-    const canvas = document.getElementById('mcproj-canvas');
-    const canvasWrap = document.getElementById('mcproj-canvas-wrap');
-    const drop = document.getElementById('mcproj-drop');
-    const fileInput = document.getElementById('mcproj-file');
-    const fileMeta = document.getElementById('mcproj-file-meta');
-    const statusPill = document.getElementById('mcproj-status');
-    const totalEl = document.getElementById('mcproj-total');
-    const sizeEl = document.getElementById('mcproj-size');
-    const uniqueEl = document.getElementById('mcproj-unique');
-    const tableBody = document.getElementById('mcproj-table-body');
-    const fullscreenBtn = document.getElementById('mcproj-fullscreen');
-    const parseBtn = document.getElementById('mcproj-parse');
-    const progressWrap = document.getElementById('mcproj-progress');
-    const progressBar = document.getElementById('mcproj-progress-bar');
+    let canvas = null;
+    let canvasWrap = null;
+    let drop = null;
+    let fileInput = null;
+    let fileMeta = null;
+    let statusPill = null;
+    let totalEl = null;
+    let sizeEl = null;
+    let uniqueEl = null;
+    let tableBody = null;
+    let fullscreenBtn = null;
+    let parseBtn = null;
+    let progressWrap = null;
+    let progressBar = null;
+    let hud = null;
+    let hudFps = null;
+    let hudPos = null;
+    let hudZoom = null;
 
     const toast = window.globalCopyToast || { show () {} };
-
-    if (!canvas || !drop || !fileInput) {
-        console.warn('MC projection init skipped: missing elements');
-        return;
-    }
 
     let renderer = null;
     let scene = null;
     let camera = null;
     let controls = null;
-    let instancedMesh = null;
+    let instancedMeshes = [];
     let animationId = null;
     let clock = null;
     let initialized = false;
@@ -43,6 +44,16 @@
     let velocity = null;
     let direction = null;
     const moveState = { forward: false, back: false, left: false, right: false, up: false, down: false };
+    let boundDropNode = null;
+    let langMap = null;
+    let targetCenter = null;
+    let baseZoomDist = null;
+    let fpsAccum = 0;
+    let fpsFrames = 0;
+    let textureLoader = null;
+    const textureCache = new Map();
+    const MIN_ZOOM_DIST = 2;
+    const MAX_ZOOM_DIST = 400;
 
     async function loadDeps() {
         if (depsLoaded) return;
@@ -64,11 +75,13 @@
         try {
             const threeMod = await tryImport('three', [
                 'https://unpkg.com/three@0.159.0/build/three.module.js',
-                'https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js'
+                'https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js',
+                'https://esm.sh/three@0.159.0'
             ]);
             const plcMod = await tryImport('PointerLockControls', [
                 'https://unpkg.com/three@0.159.0/examples/jsm/controls/PointerLockControls.js',
-                'https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/controls/PointerLockControls.js'
+                'https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/controls/PointerLockControls.js',
+                'https://esm.sh/three@0.159.0/examples/jsm/controls/PointerLockControls?deps=three@0.159.0'
             ]);
             const bufferMod = await tryImport('buffer', [
                 'https://cdn.jsdelivr.net/npm/buffer@6.0.3/+esm',
@@ -97,6 +110,7 @@
             clock = new THREE.Clock();
             velocity = new THREE.Vector3();
             direction = new THREE.Vector3();
+            textureLoader = new THREE.TextureLoader();
             depsLoaded = true;
             setStatus('依赖加载完成，选择文件开始', 'success');
         } catch (err) {
@@ -107,7 +121,48 @@
         }
     }
 
+    function refreshElements() {
+        canvas = document.getElementById('mcproj-canvas');
+        canvasWrap = document.getElementById('mcproj-canvas-wrap');
+        drop = document.getElementById('mcproj-drop');
+        fileInput = document.getElementById('mcproj-file');
+        fileMeta = document.getElementById('mcproj-file-meta');
+        statusPill = document.getElementById('mcproj-status');
+        totalEl = document.getElementById('mcproj-total');
+        sizeEl = document.getElementById('mcproj-size');
+        uniqueEl = document.getElementById('mcproj-unique');
+        tableBody = document.getElementById('mcproj-table-body');
+        fullscreenBtn = document.getElementById('mcproj-fullscreen');
+        parseBtn = document.getElementById('mcproj-parse');
+        progressWrap = document.getElementById('mcproj-progress');
+        progressBar = document.getElementById('mcproj-progress-bar');
+        hud = document.getElementById('mcproj-hud');
+        hudFps = document.getElementById('mcproj-hud-fps');
+        hudPos = document.getElementById('mcproj-hud-pos');
+        hudZoom = document.getElementById('mcproj-hud-zoom');
+        return !!(canvas && canvasWrap && drop && fileInput && fileMeta && statusPill && totalEl && sizeEl && uniqueEl && tableBody && fullscreenBtn && parseBtn);
+    }
+
+    async function ensureReady() {
+        if (!depsLoaded) {
+            await loadDeps();
+        }
+        if (!initialized) {
+            if (!refreshElements()) {
+                console.warn('[mcproj] elements missing during ensureReady');
+                return;
+            }
+            resetScene();
+            bindKeys();
+            bindFullscreen();
+            animate();
+            initialized = true;
+            console.info('[mcproj] init completed');
+        }
+    }
+
     function setStatus(text, tone) {
+        if (!statusPill) return;
         statusPill.textContent = text;
         statusPill.dataset.state = tone || 'info';
     }
@@ -136,14 +191,15 @@
     function resetScene() {
         if (animationId) cancelAnimationFrame(animationId);
         if (renderer) renderer.dispose();
+        const { w, h } = getWrapSize();
         renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio || 1);
-        renderer.setSize(canvasWrap.clientWidth, canvasWrap.clientHeight, false);
+        renderer.setSize(w, h, false);
 
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0f172a);
 
-        camera = new THREE.PerspectiveCamera(60, canvasWrap.clientWidth / canvasWrap.clientHeight, 0.1, 2000);
+        camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 2000);
         camera.position.set(10, 10, 10);
 
         controls = new PointerLockControls(camera, canvasWrap);
@@ -157,18 +213,30 @@
         scene.add(ambient, dir);
 
         window.addEventListener('resize', handleResize);
+        bindZoom();
+    }
+
+    function getWrapSize() {
+        const w = canvasWrap ? canvasWrap.clientWidth : 0;
+        const h = canvasWrap ? canvasWrap.clientHeight : 0;
+        const safeW = w > 0 ? w : 960;
+        const safeH = h > 0 ? h : 540;
+        return { w: safeW, h: safeH };
     }
 
     function handleResize() {
         if (!renderer || !camera) return;
-        const w = canvasWrap.clientWidth;
-        const h = canvasWrap.clientHeight;
+        const { w, h } = getWrapSize();
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h, false);
     }
 
     function animate() {
+        if (!clock) {
+            animationId = requestAnimationFrame(animate);
+            return;
+        }
         const delta = clock.getDelta();
         if (controls && controls.isLocked) {
             const speed = 18;
@@ -192,6 +260,7 @@
         if (renderer && scene && camera) {
             renderer.render(scene, camera);
         }
+        updateHud(delta);
         animationId = requestAnimationFrame(animate);
     }
 
@@ -211,6 +280,31 @@
         };
         window.addEventListener('keydown', (e) => onKey(e, true));
         window.addEventListener('keyup', (e) => onKey(e, false));
+    }
+
+    function updateHud(delta) {
+        if (!hud) return;
+        fpsAccum += delta;
+        fpsFrames += 1;
+        if (hudFps && fpsAccum >= 0.25) {
+            const fps = fpsFrames / fpsAccum;
+            hudFps.textContent = fps.toFixed(1);
+            fpsAccum = 0;
+            fpsFrames = 0;
+        }
+        const obj = controls ? controls.getObject() : camera;
+        if (hudPos && obj && obj.position) {
+            const p = obj.position;
+            hudPos.textContent = `${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)}`;
+        }
+        if (hudZoom && obj && targetCenter) {
+            const dist = obj.position.distanceTo(targetCenter);
+            const base = baseZoomDist || dist || 1;
+            const factor = dist > 0 ? base / dist : 1;
+            hudZoom.textContent = `${factor.toFixed(2)}x · 距离 ${dist.toFixed(1)}`;
+        } else if (hudZoom) {
+            hudZoom.textContent = '-';
+        }
     }
 
     function readFile(file, onProgress) {
@@ -295,38 +389,170 @@
         return out;
     }
 
+    function toVec3(v) {
+        if (Array.isArray(v) && v.length >= 3) return [Number(v[0]) || 0, Number(v[1]) || 0, Number(v[2]) || 0];
+        if (v && typeof v === 'object') {
+            const x = Number(v.x ?? v.X ?? v[0]) || 0;
+            const y = Number(v.y ?? v.Y ?? v[1]) || 0;
+            const z = Number(v.z ?? v.Z ?? v[2]) || 0;
+            return [x, y, z];
+        }
+        return [0, 0, 0];
+    }
+
+    function normalizePalette(raw) {
+        if (!raw) return [];
+        if (Array.isArray(raw)) return raw;
+        if (typeof raw === 'object') {
+            const entries = Object.entries(raw).sort((a, b) => Number(a[0]) - Number(b[0]));
+            return entries.map(([, v]) => v);
+        }
+        return [];
+    }
+
+    function localizeBlockId(nameKey) {
+        if (!nameKey) return '';
+        const colon = nameKey.indexOf(':');
+        const ns = colon !== -1 ? nameKey.slice(0, colon) : 'minecraft';
+        const id = colon !== -1 ? nameKey.slice(colon + 1) : nameKey;
+        const key = `block.${ns}.${id}`;
+        if (langMap && langMap[key]) return langMap[key];
+        return nameKey;
+    }
+
+    function paletteName(entry) {
+        if (typeof entry === 'string') return localizeBlockId(entry);
+        if (entry && typeof entry === 'object') {
+            if (entry.Name) {
+                const props = entry.Properties || entry.properties;
+                const base = localizeBlockId(entry.Name);
+                if (props && typeof props === 'object' && Object.keys(props).length) {
+                    const kv = Object.keys(props).sort().map((k) => `${k}=${props[k]}`);
+                    return `${base}[${kv.join(',')}]`;
+                }
+                return base;
+            }
+            return JSON.stringify(entry);
+        }
+        return String(entry);
+    }
+
+    function blockInfo(entry) {
+        const label = paletteName(entry);
+        if (entry && typeof entry === 'object') {
+            const id = entry.Name || entry.name || label;
+            return { id, label };
+        }
+        if (typeof entry === 'string') {
+            return { id: entry, label };
+        }
+        return { id: label, label };
+    }
+
+    function isAir(rawName) {
+        if (!rawName) return true;
+        const s = String(rawName).toLowerCase();
+        return s === 'air' || s === 'minecraft:air' || s.endsWith(':air') || s.includes('void_air') || s.includes('cave_air') || s === 'id:0:0';
+    }
+
+    function normalizeStates(raw) {
+        if (!raw) return [];
+        if (Array.isArray(raw)) return raw;
+        if (ArrayBuffer.isView(raw)) return Array.from(raw);
+        if (raw.data) return normalizeStates(raw.data);
+        if (raw.value) return normalizeStates(raw.value);
+        return [];
+    }
+
+    async function loadLang() {
+        if (langMap) return langMap;
+        const tryFetch = async (url) => fetch(url).then((r) => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))));
+        const merge = (a, b) => ({ ...(a || {}), ...(b || {}) });
+        try {
+            const [zh, en] = await Promise.allSettled([
+                tryFetch('/resource/minecraft/zh_ch.json'),
+                tryFetch('/resource/minecraft/en_us.json')
+            ]);
+            const zhObj = zh.status === 'fulfilled' ? zh.value : {};
+            const enObj = en.status === 'fulfilled' ? en.value : {};
+            langMap = merge(enObj, zhObj); // zh 覆盖英文
+        } catch (e) {
+            langMap = {};
+        }
+        return langMap;
+    }
+
+    function unpackBitArray(bytes, bits, total) {
+        const mask = (1n << BigInt(bits)) - 1n;
+        const out = new Uint32Array(total);
+        let acc = 0n;
+        let accBits = 0;
+        let idx = 0;
+        for (let i = 0; i < bytes.length; i += 1) {
+            acc |= BigInt(bytes[i]) << BigInt(accBits);
+            accBits += 8;
+            while (accBits >= bits && idx < total) {
+                out[idx] = Number(acc & mask);
+                acc >>= BigInt(bits);
+                accBits -= bits;
+                idx += 1;
+            }
+        }
+        return out;
+    }
+
     function buildFromLitematic(root) {
         const regions = root.Regions || root.regions;
         if (!regions) throw new Error('未找到 Regions');
         const blocks = [];
-        let sizeX = 0, sizeY = 0, sizeZ = 0;
+        let minX = Infinity, minY = Infinity, minZ = Infinity;
+        let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
         Object.keys(regions).forEach((key) => {
             const reg = regions[key];
-            const sx = reg.Size[0];
-            const sy = reg.Size[1];
-            const sz = reg.Size[2];
-            const origin = reg.Position || reg.position || [0, 0, 0];
-            const palette = reg.BlockStatePalette || reg.palette;
-            const states = reg.BlockStates || reg.block_states;
-            if (!palette || !states) return;
+            const [sxRaw, syRaw, szRaw] = toVec3(reg.Size || reg.size || reg.regionSize || [0, 0, 0]);
+            const sx = Math.abs(sxRaw);
+            const sy = Math.abs(syRaw);
+            const sz = Math.abs(szRaw);
+            const origin = toVec3(reg.Position || reg.position || reg.origin || [0, 0, 0]);
+            const palette = normalizePalette(reg.BlockStatePalette || reg.palette);
+            const states = normalizeStates(reg.BlockStates || reg.block_states);
+            if (!palette || !states) throw new Error('Region palette 或 BlockStates 缺失');
+            if (!palette.length) throw new Error('Region palette 为空');
             const bits = Math.max(1, Math.ceil(Math.log2(palette.length)));
             const total = sx * sy * sz;
+            if (!total) throw new Error('Region 尺寸为 0');
             const indices = unpackPalette(states, bits, total);
+            if (!indices.length) throw new Error('Region BlockStates 为空');
+            console.info('[mcproj] region', key, 'size', [sx, sy, sz], 'palette', palette.length, 'states', states.length, 'bits', bits);
             for (let y = 0; y < sy; y += 1) {
                 for (let z = 0; z < sz; z += 1) {
                     for (let x = 0; x < sx; x += 1) {
                         const idx = (y * sz + z) * sx + x;
                         const pid = indices[idx];
                         if (pid >= palette.length) continue;
-                        blocks.push({ x: origin[0] + x, y: origin[1] + y, z: origin[2] + z, name: palette[pid] });
+                        const info = blockInfo(palette[pid]);
+                        const rawName = info.id || (typeof palette[pid] === 'object' ? palette[pid].Name : palette[pid]);
+                        if (isAir(rawName)) continue;
+                        const wx = origin[0] + x;
+                        const wy = origin[1] + y;
+                        const wz = origin[2] + z;
+                        blocks.push({ x: wx, y: wy, z: wz, name: info.label, itemId: info.id });
+                        if (wx < minX) minX = wx;
+                        if (wy < minY) minY = wy;
+                        if (wz < minZ) minZ = wz;
+                        if (wx > maxX) maxX = wx;
+                        if (wy > maxY) maxY = wy;
+                        if (wz > maxZ) maxZ = wz;
                     }
                 }
             }
-            sizeX = Math.max(sizeX, origin[0] + sx);
-            sizeY = Math.max(sizeY, origin[1] + sy);
-            sizeZ = Math.max(sizeZ, origin[2] + sz);
         });
-        return { blocks, size: [sizeX, sizeY, sizeZ] };
+        if (!blocks.length) return { blocks, size: [0, 0, 0], bounds: null };
+        return {
+            blocks,
+            size: [maxX - minX + 1, maxY - minY + 1, maxZ - minZ + 1],
+            bounds: { min: [minX, minY, minZ], max: [maxX, maxY, maxZ] }
+        };
     }
 
     function buildFromSchematic(root) {
@@ -338,6 +564,7 @@
         if (!width || !height || !length || !blocksTag) throw new Error('无效的 schematic');
         const blocks = [];
         const total = width * height * length;
+        if (!blocksTag.length) throw new Error('schematic Blocks 为空');
         const palette = {};
         for (let i = 0; i < total; i += 1) {
             const id = blocksTag[i];
@@ -351,70 +578,174 @@
                     const idx = (y * length + z) * width + x;
                     const id = blocksTag[idx];
                     const data = dataTag[idx] || 0;
+                    if (id === 0) continue; // treat id 0 as air
                     const name = `id:${id}:${data}`;
-                    blocks.push({ x, y, z, name });
+                    blocks.push({ x, y, z, name, itemId: name });
                 }
             }
         }
-        return { blocks, size: [width, height, length] };
+        return { blocks, size: [width, height, length], bounds: { min: [0, 0, 0], max: [width - 1, height - 1, length - 1] } };
     }
 
-    function detectType(name) {
-        const lower = name.toLowerCase();
-        if (lower.endsWith('.litematic') || lower.endsWith('.litematica') || lower.endsWith('.litamatica')) return 'litematic';
-        if (lower.endsWith('.schematic')) return 'schematic';
-        return 'nbt';
-    }
-
-    function buildGeometry(parsed) {
-        if (!scene) return;
-        if (instancedMesh) {
-            instancedMesh.geometry.dispose();
-            instancedMesh.material.dispose();
-            scene.remove(instancedMesh);
-            instancedMesh = null;
+    function buildFromSpongeSchem(root) {
+        const width = root.Width || root.width;
+        const height = root.Height || root.height;
+        const length = root.Length || root.length;
+        const palette = root.Palette || root.palette;
+        const data = root.BlockData || root.blockdata || root.blockData;
+        if (!width || !height || !length || !palette || !data) {
+            throw new Error('无效的 schem (缺少尺寸或 Palette/BlockData)');
         }
+        const paletteEntries = Object.entries(palette);
+        if (!paletteEntries.length) throw new Error('schem Palette 为空');
+        const invPalette = new Map();
+        paletteEntries.forEach(([name, id]) => {
+            invPalette.set(Number(id), name);
+        });
+        const total = width * height * length;
+        const bits = Math.max(1, Math.ceil(Math.log2(paletteEntries.length)));
+        const indices = unpackBitArray(data, bits, total);
+        const blocks = [];
+        for (let y = 0; y < height; y += 1) {
+            for (let z = 0; z < length; z += 1) {
+                for (let x = 0; x < width; x += 1) {
+                    const idx = (y * length + z) * width + x;
+                    const pid = indices[idx];
+                    const rawName = invPalette.get(pid) || `id:${pid}`;
+                    const info = blockInfo(rawName);
+                    if (isAir(info.id || rawName)) continue;
+                    blocks.push({ x, y, z, name: info.label, itemId: info.id });
+                }
+            }
+        }
+        return { blocks, size: [width, height, length], bounds: { min: [0, 0, 0], max: [width - 1, height - 1, length - 1] } };
+    }
+
+    function chooseParser(nbt) {
+        const errors = [];
+        const tryBuild = (label, builder) => {
+            try {
+                const parsed = builder(nbt);
+                console.info('[mcproj] parsed as', label, 'blocks', parsed.blocks.length);
+                return parsed;
+            } catch (e) {
+                errors.push(label + ': ' + e.message);
+                return null;
+            }
+        };
+
+        const hasRegions = !!(nbt && (nbt.Regions || nbt.regions));
+        const hasClassic = !!(nbt && (nbt.Blocks || nbt.blocks) && (nbt.Width || nbt.width));
+        const hasSponge = !!(nbt && (nbt.Palette || nbt.palette) && (nbt.BlockData || nbt.blockdata || nbt.blockData));
+
+        let parsed = null;
+        if (hasRegions) parsed = tryBuild('litematic', buildFromLitematic);
+        if (!parsed && hasSponge) parsed = tryBuild('sponge-schem', buildFromSpongeSchem);
+        if (!parsed && hasClassic) parsed = tryBuild('schematic', buildFromSchematic);
+
+        if (!parsed && hasSponge) parsed = tryBuild('sponge-schem', buildFromSpongeSchem);
+        if (!parsed) parsed = tryBuild('litematic', buildFromLitematic);
+        if (!parsed) parsed = tryBuild('schematic', buildFromSchematic);
+
+            if (!parsed) {
+                throw new Error('未识别的 NBT 格式：' + errors.join('; '));
+            }
+        if (!parsed.blocks || !parsed.blocks.length) {
+                throw new Error('未找到方块数据，文件可能为空或格式不兼容');
+        }
+        return parsed;
+    }
+
+    function disposeMeshes() {
+        if (!instancedMeshes || !instancedMeshes.length) return;
+        instancedMeshes.forEach((m) => {
+            if (m.geometry) m.geometry.dispose();
+            if (m.material) {
+                if (Array.isArray(m.material)) {
+                    m.material.forEach((mat) => mat && mat.dispose());
+                } else {
+                    m.material.dispose();
+                }
+            }
+            scene.remove(m);
+        });
+        instancedMeshes = [];
+    }
+
+    async function loadTextureFor(id) {
+        if (!textureLoader || !window.ItemSlot || !id) return null;
+        if (textureCache.has(id)) return textureCache.get(id);
+        const translations = langMap || {};
+        const candidates = window.ItemSlot.pickTextures(id, { translations, includeSpawnEgg: false });
+        const promise = (async () => {
+            for (const url of candidates) {
+                try {
+                    const tex = await textureLoader.loadAsync(url);
+                    tex.colorSpace = THREE.SRGBColorSpace || THREE.sRGBEncoding;
+                    return tex;
+                } catch (e) {
+                    // try next
+                }
+            }
+            return null;
+        })();
+        textureCache.set(id, promise);
+        return promise;
+    }
+
+    async function buildGeometry(parsed) {
+        if (!scene) return;
+        disposeMeshes();
         const blocks = parsed.blocks;
         const total = blocks.length;
         if (!total) throw new Error('未找到方块数据');
         if (total > MAX_BLOCKS) {
             throw new Error('方块数量超过限制，请使用更小的模型');
         }
+
         const paletteMap = new Map();
         blocks.forEach((b) => {
-            if (!paletteMap.has(b.name)) {
-                paletteMap.set(b.name, { count: 0, color: colorFromName(b.name) });
+            const key = b.name;
+            if (!paletteMap.has(key)) {
+                const colorKey = b.itemId || b.name;
+                paletteMap.set(key, { positions: [], colorKey, itemId: b.itemId || null });
             }
-            paletteMap.get(b.name).count += 1;
+            paletteMap.get(key).positions.push([b.x, b.y, b.z]);
         });
 
-        const paletteArray = Array.from(paletteMap.entries());
         const geom = new THREE.BoxGeometry(1, 1, 1);
-        const mat = new THREE.MeshStandardMaterial({ vertexColors: true });
-        instancedMesh = new THREE.InstancedMesh(geom, mat, total);
-        const dummy = new THREE.Object3D();
-        const color = new THREE.Color();
-
-        let i = 0;
-        blocks.forEach((b) => {
-            dummy.position.set(b.x, b.y, b.z);
-            dummy.updateMatrix();
-            instancedMesh.setMatrixAt(i, dummy.matrix);
-            const paletteItem = paletteMap.get(b.name);
-            color.copy(paletteItem.color);
-            instancedMesh.setColorAt(i, color);
-            i += 1;
-        });
-        instancedMesh.instanceColor.needsUpdate = true;
-        scene.add(instancedMesh);
+        const paletteArray = Array.from(paletteMap.entries());
+        for (const [name, meta] of paletteArray) {
+            const tex = await loadTextureFor(meta.itemId || name);
+            const mat = tex ? new THREE.MeshStandardMaterial({ map: tex }) : new THREE.MeshStandardMaterial({ color: colorFromName(meta.colorKey) });
+            const mesh = new THREE.InstancedMesh(geom, mat, meta.positions.length);
+            mesh.frustumCulled = false;
+            const dummy = new THREE.Object3D();
+            meta.positions.forEach((pos, idx) => {
+                dummy.position.set(pos[0], pos[1], pos[2]);
+                dummy.updateMatrix();
+                mesh.setMatrixAt(idx, dummy.matrix);
+            });
+            mesh.instanceMatrix.needsUpdate = true;
+            instancedMeshes.push(mesh);
+            scene.add(mesh);
+        }
 
         // center camera
         const [sx, sy, sz] = parsed.size;
-        const center = new THREE.Vector3(sx / 2, sy / 2, sz / 2);
+        const bounds = parsed.bounds;
+        if (bounds) console.info('[mcproj] bounds', bounds);
+        const cx = bounds ? (bounds.min[0] + bounds.max[0]) / 2 : sx / 2;
+        const cy = bounds ? (bounds.min[1] + bounds.max[1]) / 2 : sy / 2;
+        const cz = bounds ? (bounds.min[2] + bounds.max[2]) / 2 : sz / 2;
+        const center = new THREE.Vector3(cx, cy, cz);
+        targetCenter = center.clone();
         controls.getObject().position.copy(center.clone().add(new THREE.Vector3(0, Math.max(6, sy * 0.6), Math.max(6, sz * 0.8))));
         camera.lookAt(center);
+        baseZoomDist = controls.getObject().position.distanceTo(center);
 
-        updateStats(blocks, paletteArray, parsed.size);
+        const statsPalette = paletteArray.map(([n, meta]) => [n, { count: meta.positions.length, color: colorFromName(meta.colorKey), itemId: meta.itemId }]);
+        updateStats(blocks, statsPalette, parsed.size);
         setStatus('渲染完成，点击画面获取鼠标锁定', 'success');
     }
 
@@ -427,10 +758,29 @@
             tableBody.innerHTML = '<tr><td colspan="2">无数据</td></tr>';
             return;
         }
+        const translations = langMap || {};
         paletteArray.sort((a, b) => b[1].count - a[1].count).forEach(([name, meta]) => {
             const tr = document.createElement('tr');
             const nameTd = document.createElement('td');
-            nameTd.textContent = name;
+            const cell = document.createElement('div');
+            cell.className = 'mcproj-block-cell';
+
+            if (window.ItemSlot) {
+                try {
+                    const slot = window.ItemSlot.createSlot(meta.itemId || name, { translations });
+                    slot.classList.add('mcproj-block-slot');
+                    cell.appendChild(slot);
+                } catch (e) {
+                    console.warn('[mcproj] createSlot failed', e);
+                }
+            }
+
+            const label = document.createElement('span');
+            label.className = 'mcproj-block-label';
+            label.textContent = name;
+            cell.appendChild(label);
+
+            nameTd.appendChild(cell);
             const countTd = document.createElement('td');
             countTd.textContent = meta.count.toLocaleString('zh-CN');
             tr.appendChild(nameTd);
@@ -444,55 +794,54 @@
         if (parseBtn) parseBtn.disabled = true;
         fileMeta.textContent = `${file.name} · ${(file.size / 1024).toFixed(1)} KB`;
         try {
-            if (!depsLoaded) {
-                setStatus('正在补充依赖...', 'info');
-                await loadDeps();
-            }
+            await ensureReady();
+            await loadLang();
+            console.info('[mcproj] start parse', file.name, 'size', file.size);
             const buf = await readFile(file, (pct) => setProgress(pct));
             const uint8 = new Uint8Array(buf);
             const inflated = maybeDecompress(uint8);
             const nbt = await parseNbt(inflated);
-            const type = detectType(file.name);
-            let parsed;
-            if (type === 'litematic') {
-                parsed = buildFromLitematic(nbt);
-            } else if (type === 'schematic') {
-                parsed = buildFromSchematic(nbt);
-            } else {
-                // try litematic first, fallback to schematic
-                try {
-                    parsed = buildFromLitematic(nbt);
-                } catch (e) {
-                    parsed = buildFromSchematic(nbt);
-                }
-            }
+            console.info('[mcproj] nbt keys', Object.keys(nbt || {}));
+            const parsed = chooseParser(nbt);
+            console.info('[mcproj] parsed size', parsed.size, 'blocks', parsed.blocks.length);
             resetScene();
-            buildGeometry(parsed);
+            await buildGeometry(parsed);
             handleResize();
             pendingFile = null;
             if (parseBtn) parseBtn.disabled = true;
             setProgress(100);
             hideProgress(500);
+            console.info('[mcproj] parse success');
         } catch (err) {
             console.error(err);
             setStatus('解析失败：' + (err && err.message ? err.message : '未知错误'), 'error');
             toast.show('解析失败', 'error', 'icon-ic_fluent_error_circle_24_regular');
             if (parseBtn) parseBtn.disabled = false;
             hideProgress(800);
+            if (fileMeta) fileMeta.textContent = '解析失败：' + (err && err.message ? err.message : '未知错误');
         }
     }
 
     function bindDrop() {
+        if (!drop || !fileInput) return;
+        if (boundDropNode === drop) return; // already bound for current DOM node
+        boundDropNode = drop;
+
+        console.info('[mcproj] bindDrop on node', boundDropNode.id || boundDropNode.className);
+
         const onDrop = (ev) => {
             ev.preventDefault();
             drop.classList.remove('dragover');
             const file = ev.dataTransfer.files && ev.dataTransfer.files[0];
             if (file) {
+                console.info('[mcproj] drop file', file.name);
                 pendingFile = file;
                 fileMeta.textContent = `${pendingFile.name} · ${(pendingFile.size / 1024).toFixed(1)} KB`;
                 setStatus('已选择，点击“开始解析”', 'info');
                 if (parseBtn) parseBtn.disabled = false;
                 setProgress(0);
+                // 自动解析，减少“无反应”疑惑
+                handleFile(pendingFile);
             }
         };
         ['dragover', 'dragenter'].forEach((evt) => {
@@ -507,11 +856,13 @@
         fileInput.addEventListener('change', (e) => {
             if (e.target.files && e.target.files[0]) {
                 pendingFile = e.target.files[0];
+                console.info('[mcproj] choose file', pendingFile.name);
                 fileMeta.textContent = `${pendingFile.name} · ${(pendingFile.size / 1024).toFixed(1)} KB`;
                 setStatus('已选择，点击“开始解析”', 'info');
                 if (parseBtn) parseBtn.disabled = false;
                 setProgress(0);
                 fileInput.value = '';
+                handleFile(pendingFile);
             }
         });
 
@@ -527,8 +878,10 @@
     }
 
     function bindFullscreen() {
+        if (!fullscreenBtn) return;
         fullscreenBtn.addEventListener('click', () => {
             const wrap = canvasWrap;
+            if (!wrap) return;
             if (!document.fullscreenElement) {
                 wrap.requestFullscreen().catch(() => {});
             } else {
@@ -538,27 +891,64 @@
         document.addEventListener('fullscreenchange', handleResize);
     }
 
+    function zoomCamera(delta) {
+        if (!camera || !controls || !targetCenter) return;
+        const obj = controls.getObject();
+        const dir = new THREE.Vector3().subVectors(obj.position, targetCenter);
+        const dist = dir.length();
+        const next = Math.min(Math.max(dist + delta, MIN_ZOOM_DIST), MAX_ZOOM_DIST);
+        if (dist === 0) dir.set(0, 0, 1);
+        dir.setLength(next);
+        obj.position.copy(targetCenter.clone().add(dir));
+        camera.lookAt(targetCenter);
+        if (baseZoomDist === null) baseZoomDist = next;
+    }
+
+    function bindZoom() {
+        if (!canvasWrap) return;
+        canvasWrap.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 2 : -2;
+            zoomCamera(delta);
+        }, { passive: false });
+
+        let pinchStart = null;
+        const getDist = (t1, t2) => {
+            const dx = t1.clientX - t2.clientX;
+            const dy = t1.clientY - t2.clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        };
+        canvasWrap.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                pinchStart = getDist(e.touches[0], e.touches[1]);
+            }
+        }, { passive: true });
+        canvasWrap.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && pinchStart) {
+                const now = getDist(e.touches[0], e.touches[1]);
+                const diff = pinchStart - now;
+                zoomCamera(diff * 0.02);
+                pinchStart = now;
+            }
+        }, { passive: true });
+        canvasWrap.addEventListener('touchend', () => { pinchStart = null; });
+        canvasWrap.addEventListener('touchcancel', () => { pinchStart = null; });
+    }
+
     async function init() {
-        if (initialized) {
-            setStatus('未载入，选择或拖放文件', 'info');
+        refreshElements();
+        if (!canvas || !drop || !fileInput) {
+            console.warn('[mcproj] elements not found during init');
             return;
         }
-
-        try {
-            await loadDeps();
-        } catch (err) {
-            // loadDeps already set status; keep disabled state to prevent user confusion
-            return;
-        }
-
-        resetScene();
-        bindKeys();
         bindDrop();
-        bindFullscreen();
-        animate();
-        initialized = true;
-        setStatus('未载入，选择或拖放文件', 'info');
-        console.info('[mcproj] init completed');
+        if (statusPill) setStatus('未载入，选择或拖放文件', 'info');
+        if (fileMeta) fileMeta.textContent = '等待选择文件';
+        console.info('[mcproj] init: bound listeners');
+        // 后台加载依赖，完成后确保场景就绪
+        loadDeps()
+            .then(() => ensureReady())
+            .catch(() => {});
     }
 
     if (document.readyState === 'loading') {

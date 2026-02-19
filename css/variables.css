@@ -8,7 +8,7 @@
 	--shadow-color: rgba(15, 23, 42, 0.12);
 	--overlay-bg: rgba(255, 255, 255, 0.5);
 	--card-bg: rgba(255, 255, 255, 0.95);
-	--wallpaper-image: url('/resource/img/shell/bg/bg.jpg');
+	--wallpaper-image: url('/resource/img/shell/bg/bg-light-1.png');
 	--view-switch-bg: #f4f7fa;
 	--view-switch-active-bg: var(--card-bg);
 	--view-switch-hover-bg: #e5eaf1;
@@ -209,7 +209,7 @@ html {
 	background-color: var(--bg-color);
 	color: var(--text-color);
 	/* 页面背景：底层图片 + 顶层半透明覆盖层，提升正文可读性 */
-	background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), var(--wallpaper-image, url('/resource/img/shell/bg/bg.jpg'));
+	background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), var(--wallpaper-image, url('/resource/img/shell/bg/bg-light-1.png'));
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;

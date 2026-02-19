@@ -6,7 +6,13 @@ let __settingsClearTimeoutId = null; // timeout id used when closing
 const DEFAULT_THEME_COLOR = '#33CC99';
 const CUSTOM_DEFAULT_COLOR = '#b6b6b6';
 const CACHE_BUST = () => 'ts=' + Date.now();
-const SETTINGS_URL_CANDIDATES = ['includes/setting.html', '../includes/setting.html', '../../includes/setting.html', '../../../includes/setting.html'];
+const SETTINGS_URL_CANDIDATES = [
+  '/includes/setting.html',
+  'includes/setting.html',
+  '../includes/setting.html',
+  '../../includes/setting.html',
+  '../../../includes/setting.html'
+];
 let __settingsTemplateHtml = null; // in-memory cache of fetched template
 let __settingsTemplatePromise = null; // inflight promise to avoid duplicate fetches
 
@@ -208,8 +214,9 @@ function startCurrentTimeTicker(valueEl) {
 }
 
 function buildSettingUrls() {
+  const base = window.location.origin + '/';
   const resolved = SETTINGS_URL_CANDIDATES.map(p => {
-    try { return new URL(p, location.href).href; } catch (_) { return null; }
+    try { return new URL(p, base).href; } catch (_) { return null; }
   }).filter(Boolean);
   return [...new Set(resolved)];
 }
@@ -488,6 +495,8 @@ function buildSection(sec){
         hueLabel.textContent = (customStrings && customStrings.hue) || '色相';
         hueSlider = document.createElement('input');
         hueSlider.type = 'range';
+        hueSlider.name = 'theme-hue-slider';
+        hueSlider.id = 'theme-hue-slider';
         hueSlider.className = 'color-slider color-hue';
         hueSlider.min = '0';
         hueSlider.max = '360';
@@ -498,6 +507,8 @@ function buildSection(sec){
         satLabel.textContent = (customStrings && customStrings.saturation) || '饱和';
         satSlider = document.createElement('input');
         satSlider.type = 'range';
+        satSlider.name = 'theme-sat-slider';
+        satSlider.id = 'theme-sat-slider';
         satSlider.className = 'color-slider color-sat';
         satSlider.min = '0';
         satSlider.max = '100';
@@ -508,6 +519,8 @@ function buildSection(sec){
         lightLabel.textContent = (customStrings && customStrings.lightness) || '明度';
         lightSlider = document.createElement('input');
         lightSlider.type = 'range';
+        lightSlider.name = 'theme-light-slider';
+        lightSlider.id = 'theme-light-slider';
         lightSlider.className = 'color-slider color-light';
         lightSlider.min = '0';
         lightSlider.max = '100';
@@ -602,6 +615,8 @@ function buildSection(sec){
         actions.className = 'color-custom-actions';
         hexInput = document.createElement('input');
         hexInput.type = 'text';
+        hexInput.name = 'theme-hex-input';
+        hexInput.id = 'theme-hex-input';
         hexInput.className = 'color-hex-input';
         hexInput.placeholder = (customStrings && customStrings.hexPlaceholder) || '#RRGGBB 或 #RGB';
         hexInput.value = currentThemeColor;
@@ -1535,7 +1550,7 @@ document.addEventListener('setting-changed', (e) => {
       const ensureParticles = (cb) => {
         if (window.Particles) return cb();
         const s = document.createElement('script');
-        s.src = 'js/particles.js';
+        s.src = '/js/particles.js';
         s.defer = true;
         s.onload = cb;
         s.onerror = () => cb();
@@ -1558,7 +1573,7 @@ try {
       const idx = Number(localStorage.getItem('setting-particleanimation')) || 0;
       if (idx && idx > 0) {
         const s = document.createElement('script');
-        s.src = 'js/particles.js';
+        s.src = '/js/particles.js';
         s.defer = true;
         s.onload = () => { try{ if (window.Particles) window.Particles.enable(idx); } catch(e){} };
         s.onerror = () => {};

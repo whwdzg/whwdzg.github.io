@@ -490,7 +490,8 @@
             "minecraft:quartz",
             "minecraft:nether_wart",
             "minecraft:magma_cream",
-            "minecraft:pointed_dripstone"
+            "minecraft:pointed_dripstone",
+            "minecraft:clay_ball"
         ],
         "better-crafting-recipes:make_chainmail_armor": [
             "minecraft:chainmail_helmet",
@@ -732,7 +733,9 @@
             assetBase + "/textures/block/oak_slab_side.png"
         ],
         "snow_block": [
+            assetBase + "/textures/block/snow_block.png",
             assetBase + "/textures/block/snow.png",
+            assetBase + "/textures/block/snow_block_top.png",
             assetBase + "/textures/item/snowball.png"
         ],
         "piglin_head": [
@@ -1537,7 +1540,7 @@
         });
     }
 
-    var wallpaperUrl = "/resource/img/shell/bg/bg.jpg";
+    var wallpaperUrl = "/resource/img/shell/bg/bg-light-1.png";
     var wallpaperPromise = null;
     function waitForWallpaper() {
         if (wallpaperPromise) return wallpaperPromise;

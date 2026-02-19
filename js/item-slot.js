@@ -78,6 +78,11 @@
         "minecraft:experience_bottle": [
             "https://zh.minecraft.wiki/images/Bottle_o%27_Enchanting.gif"
         ],
+        "minecraft:snow_block": [
+            DEFAULT_ASSET_BASE + "/textures/block/snow_block.png",
+            DEFAULT_ASSET_BASE + "/textures/block/snow.png",
+            DEFAULT_ASSET_BASE + "/textures/item/snowball.png"
+        ],
         "dragon_head": ["https://zh.minecraft.wiki/images/Dragon_Head_JE1_BE1.png"],
         "tipped_arrow": ["https://zh.minecraft.wiki/images/Invicon_Arrow_of_Poison.png"],
         "dragon_egg": ["https://zh.minecraft.wiki/images/Dragon_Egg_JE3.png"],
@@ -213,10 +218,15 @@
             bases = bases.concat(specialBlockVariants[name]);
         }
 
+        if (name === "snow_block") {
+            bases.push("snow");
+            bases.push("snow_block_top");
+        }
+
         bases.forEach(function (n) {
             [
-                base + "/textures/item/" + n + ".png",
                 base + "/textures/block/" + n + ".png",
+                base + "/textures/item/" + n + ".png",
                 base + "/textures/entity/" + n + ".png"
             ].forEach(function (p) { if (list.indexOf(p) === -1) list.push(p); });
         });
@@ -258,7 +268,28 @@
         img.referrerPolicy = "no-referrer";
         img.crossOrigin = "anonymous";
         var texIndex = 0;
-        img.src = textures[texIndex];
+        var croppedToSquare = false;
+        img.onload = function () {
+            if (croppedToSquare) return;
+            var w = img.naturalWidth || 0;
+            var h = img.naturalHeight || 0;
+            if (!w || !h || w === h) return;
+            var cropSize = Math.min(16, w, h);
+            try {
+                var canvas = document.createElement("canvas");
+                canvas.width = cropSize;
+                canvas.height = cropSize;
+                var ctx = canvas.getContext("2d");
+                if (ctx) {
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.drawImage(img, 0, 0, cropSize, cropSize, 0, 0, cropSize, cropSize);
+                    croppedToSquare = true;
+                    img.src = canvas.toDataURL("image/png");
+                }
+            } catch (e) {
+                // Ignore CORS errors when textures disallow canvas reads
+            }
+        };
         img.alt = name;
         img.loading = "lazy";
         img.decoding = "async";
@@ -270,6 +301,7 @@
                 img.onerror = null;
             }
         };
+        img.src = textures[texIndex];
         slot.title = title;
         slot.appendChild(img);
 

@@ -16,9 +16,9 @@ const PRECACHE_URLS = [
   OFFLINE_URL,
   '/manifest.json',
   '/css/variables.css',
-  '/img/logo/logo.png',
-  '/img/logo/logo-192.png',
-  '/img/shell/favicon.ico'
+  '/resource/img/logo/logo.png',
+  '/resource/img/logo/logo-192.png',
+  '/resource/img/shell/favicon.ico'
 ];
 
 self.addEventListener('message', (event) => {

@@ -354,8 +354,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		})();
 
-		// 在窄屏或者 unload 时移除 body padding-top，以防止影响页面外观
-		window.addEventListener('unload', function () { document.body.style.paddingTop = ''; });
+		// 在窄屏或者 pagehide 时移除 body padding-top，避免卸载事件的弃用警告
+		window.addEventListener('pagehide', function () { document.body.style.paddingTop = ''; });
 	});
 });
 

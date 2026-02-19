@@ -13,7 +13,7 @@
     <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
     <link rel="preload" href="/resource/img/shell/favicon.ico" as="image" type="image/x-icon">
     <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
-    <link rel="preload" href="/resource/img/shell/bg/bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
     <link rel="preload" href="/css/variables.css" as="style">
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
@@ -41,9 +41,13 @@
     <script src="/js/search.js" defer></script>
     <script src="/js/spa-router.js" defer></script>
     <script src="/js/settings-modal.js" defer></script>
-    <script src="https://unpkg.com/pako@2.1.0/dist/pako.min.js" defer></script>
-    <script src="https://unpkg.com/buffer@6.0.3/index.js" defer></script>
-    <script src="https://unpkg.com/prismarine-nbt@2.2.1/dist/prismarine-nbt.min.js" defer></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js"
+            }
+        }
+    </script>
 
 </head>
 
@@ -124,18 +128,10 @@
                 var sep = url.indexOf('?') === -1 ? '?' : '&';
                 return url + sep + 'ts=' + Date.now();
             }
-            try {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', bust('/includes/shell.html'), false);
-                xhr.send(null);
-                if (xhr.status === 200 || xhr.status === 0) {
-                    attachShell(xhr.responseText);
-                    return;
-                }
-            } catch (e) { }
             fetch(bust('/includes/shell.html'), { cache: 'no-store' })
-                .then(function (resp) { return resp.ok ? resp.text() : Promise.reject(new Error('HTTP ' + resp.status)); })
-                .then(function (html) { attachShell(html); });
+                .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
+                .then(function(html){ attachShell(html); })
+                .catch(function(err){ console.warn('load shell failed', err); });
         })();
     </script>
 
@@ -163,7 +159,7 @@
                         <h2>上传投影文件</h2>
                         <p class="article-subtitle">支持 .litematic / .nbt / .schematic，解析后会显示 3D 预览与统计。</p>
                         <div class="mcproj-drop" id="mcproj-drop" tabindex="0" aria-label="拖放或点击选择文件">
-                            <input type="file" id="mcproj-file" accept=".litematic,.litamatica,.litematica,.nbt,.schematic" aria-label="选择投影文件">
+                            <input type="file" id="mcproj-file" accept=".litematic,.nbt,.schematic,.schem" aria-label="选择投影文件">
                             <div class="mcproj-drop-inner">
                                 <i class="icon-ic_fluent_cloud_arrow_up_24_regular" aria-hidden="true"></i>
                                 <div>
@@ -226,6 +222,11 @@
                             </div>
                             <div class="mcproj-canvas-wrap" id="mcproj-canvas-wrap">
                                 <canvas id="mcproj-canvas" aria-label="3D 预览"></canvas>
+                                <div class="mcproj-hud" id="mcproj-hud" aria-hidden="true">
+                                    <div>FPS：<span id="mcproj-hud-fps">-</span></div>
+                                    <div>位置：<span id="mcproj-hud-pos">-, -, -</span></div>
+                                    <div>缩放：<span id="mcproj-hud-zoom">-</span></div>
+                                </div>
                             </div>
                             <div class="mcproj-hints">
                                 <p><strong>操作：</strong>点击画面获取鼠标锁定，W/A/S/D 移动，空格上升，Shift 下降，鼠标移动视角，Esc 退出锁定。</p>
@@ -256,7 +257,8 @@
             </section>
 
         </div>
-        <script type="module" src="/js/tool/mc-projection.js" defer></script>
+        <script src="/js/item-slot.js" defer></script>
+        <script type="module" src="/js/tool/mc-projection.js?v=20260219-7" defer></script>
     </main>
     </body>
 
