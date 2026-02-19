@@ -1,7 +1,12 @@
-import * as THREE from 'https://unpkg.com/three@0.159.0/build/three.module.js';
-import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/jsm/controls/PointerLockControls.js';
-
 (() => {
+    let THREE = null;
+    let PointerLockControls = null;
+    let BufferCtor = null;
+    let pakoLib = null;
+    let nbtParse = null;
+    let nbtSimplify = null;
+    let depsLoaded = false;
+
     const MAX_BLOCKS = 200000; // soft limit to prevent lockups
     const canvas = document.getElementById('mcproj-canvas');
     const canvasWrap = document.getElementById('mcproj-canvas-wrap');
@@ -15,11 +20,10 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
     const tableBody = document.getElementById('mcproj-table-body');
     const fullscreenBtn = document.getElementById('mcproj-fullscreen');
     const parseBtn = document.getElementById('mcproj-parse');
+    const progressWrap = document.getElementById('mcproj-progress');
+    const progressBar = document.getElementById('mcproj-progress-bar');
 
     const toast = window.globalCopyToast || { show () {} };
-    const Buffer = () => window.Buffer || (window.buffer && window.buffer.Buffer) || null;
-    const nbtLib = () => window.prismarineNbt || null;
-    const pako = () => window.pako || null;
 
     if (!canvas || !drop || !fileInput) {
         console.warn('MC projection init skipped: missing elements');
@@ -32,16 +36,101 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
     let controls = null;
     let instancedMesh = null;
     let animationId = null;
-    let clock = new THREE.Clock();
+    let clock = null;
     let initialized = false;
     let pendingFile = null;
-    const velocity = new THREE.Vector3();
-    const direction = new THREE.Vector3();
+    let hideProgressTimer = null;
+    let velocity = null;
+    let direction = null;
     const moveState = { forward: false, back: false, left: false, right: false, up: false, down: false };
+
+    async function loadDeps() {
+        if (depsLoaded) return;
+
+        const tryImport = async (label, candidates) => {
+            let lastErr = null;
+            for (const url of candidates) {
+                try {
+                    console.info('[mcproj] import', label, url);
+                    return await import(url);
+                } catch (err) {
+                    lastErr = err;
+                }
+            }
+            throw new Error(label + ' 加载失败: ' + (lastErr ? lastErr.message : '未知错误'));
+        };
+
+        setStatus('加载依赖中...', 'info');
+        try {
+            const threeMod = await tryImport('three', [
+                'https://unpkg.com/three@0.159.0/build/three.module.js',
+                'https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js'
+            ]);
+            const plcMod = await tryImport('PointerLockControls', [
+                'https://unpkg.com/three@0.159.0/examples/jsm/controls/PointerLockControls.js',
+                'https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/controls/PointerLockControls.js'
+            ]);
+            const bufferMod = await tryImport('buffer', [
+                'https://cdn.jsdelivr.net/npm/buffer@6.0.3/+esm',
+                'https://unpkg.com/buffer@6.0.3/index-esm.js',
+                'https://esm.sh/buffer@6.0.3'
+            ]);
+            const pakoMod = await tryImport('pako', [
+                'https://cdn.jsdelivr.net/npm/pako@2.1.0/+esm',
+                'https://unpkg.com/pako@2.1.0/dist/pako.esm.mjs',
+                'https://esm.sh/pako@2.1.0'
+            ]);
+            const nbtMod = await tryImport('prismarine-nbt', [
+                'https://cdn.jsdelivr.net/npm/prismarine-nbt@2.2.1/+esm',
+                'https://esm.sh/prismarine-nbt@2.2.1'
+            ]);
+
+            THREE = threeMod;
+            PointerLockControls = plcMod.PointerLockControls;
+            BufferCtor = bufferMod.Buffer || bufferMod.default?.Buffer;
+            pakoLib = pakoMod.default || pakoMod;
+            nbtParse = nbtMod.parse;
+            nbtSimplify = nbtMod.simplify;
+            if (!THREE || !PointerLockControls || !BufferCtor || !pakoLib || !nbtParse || !nbtSimplify) {
+                throw new Error('依赖导出缺失');
+            }
+            clock = new THREE.Clock();
+            velocity = new THREE.Vector3();
+            direction = new THREE.Vector3();
+            depsLoaded = true;
+            setStatus('依赖加载完成，选择文件开始', 'success');
+        } catch (err) {
+            console.error('依赖加载失败', err);
+            setStatus('依赖加载失败，请检查网络/CDN', 'error');
+            fileMeta.textContent = '初始化失败：' + err.message;
+            throw err;
+        }
+    }
 
     function setStatus(text, tone) {
         statusPill.textContent = text;
         statusPill.dataset.state = tone || 'info';
+    }
+
+    function setProgress(pct) {
+        if (!progressWrap || !progressBar) return;
+        progressWrap.hidden = false;
+        const clamped = Math.max(0, Math.min(100, pct));
+        progressBar.style.width = clamped + '%';
+        progressWrap.setAttribute('aria-valuenow', String(Math.round(clamped)));
+        if (hideProgressTimer) {
+            clearTimeout(hideProgressTimer);
+            hideProgressTimer = null;
+        }
+    }
+
+    function hideProgress(delay) {
+        if (!progressWrap) return;
+        const d = delay || 400;
+        hideProgressTimer = setTimeout(() => {
+            progressWrap.hidden = true;
+            progressBar.style.width = '0%';
+        }, d);
     }
 
     function resetScene() {
@@ -124,19 +213,30 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
         window.addEventListener('keyup', (e) => onKey(e, false));
     }
 
-    function readFile(file) {
+    function readFile(file, onProgress) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onerror = () => reject(new Error('文件读取失败'));
+            reader.onprogress = (evt) => {
+                if (evt.lengthComputable && onProgress) {
+                    const pct = (evt.loaded / evt.total) * 100;
+                    onProgress(pct);
+                }
+            };
+            reader.onloadstart = () => {
+                if (onProgress) onProgress(0);
+            };
+            reader.onloadend = () => {
+                if (onProgress) onProgress(100);
+            };
             reader.onload = () => resolve(reader.result);
             reader.readAsArrayBuffer(file);
         });
     }
 
     function maybeDecompress(uint8) {
-        const p = pako();
-        if (uint8.length >= 2 && uint8[0] === 0x1f && uint8[1] === 0x8b && p) {
-            return p.ungzip(uint8);
+        if (uint8.length >= 2 && uint8[0] === 0x1f && uint8[1] === 0x8b) {
+            return pakoLib.ungzip(uint8);
         }
         return uint8;
     }
@@ -144,11 +244,10 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
     function parseNbt(uint8) {
         return new Promise((resolve, reject) => {
             try {
-                const buf = Buffer().from(uint8);
-                const nbt = nbtLib();
-                nbt.parse(buf, (err, data) => {
+                const buf = BufferCtor.from(uint8);
+                nbtParse(buf, (err, data) => {
                     if (err) return reject(err);
-                    resolve(nbt.simplify(data));
+                    resolve(nbtSimplify(data));
                 });
             } catch (e) {
                 reject(e);
@@ -345,7 +444,11 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
         if (parseBtn) parseBtn.disabled = true;
         fileMeta.textContent = `${file.name} · ${(file.size / 1024).toFixed(1)} KB`;
         try {
-            const buf = await readFile(file);
+            if (!depsLoaded) {
+                setStatus('正在补充依赖...', 'info');
+                await loadDeps();
+            }
+            const buf = await readFile(file, (pct) => setProgress(pct));
             const uint8 = new Uint8Array(buf);
             const inflated = maybeDecompress(uint8);
             const nbt = await parseNbt(inflated);
@@ -368,11 +471,14 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
             handleResize();
             pendingFile = null;
             if (parseBtn) parseBtn.disabled = true;
+            setProgress(100);
+            hideProgress(500);
         } catch (err) {
             console.error(err);
             setStatus('解析失败：' + (err && err.message ? err.message : '未知错误'), 'error');
             toast.show('解析失败', 'error', 'icon-ic_fluent_error_circle_24_regular');
             if (parseBtn) parseBtn.disabled = false;
+            hideProgress(800);
         }
     }
 
@@ -381,7 +487,13 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
             ev.preventDefault();
             drop.classList.remove('dragover');
             const file = ev.dataTransfer.files && ev.dataTransfer.files[0];
-            if (file) handleFile(file);
+            if (file) {
+                pendingFile = file;
+                fileMeta.textContent = `${pendingFile.name} · ${(pendingFile.size / 1024).toFixed(1)} KB`;
+                setStatus('已选择，点击“开始解析”', 'info');
+                if (parseBtn) parseBtn.disabled = false;
+                setProgress(0);
+            }
         };
         ['dragover', 'dragenter'].forEach((evt) => {
             drop.addEventListener(evt, (e) => { e.preventDefault(); drop.classList.add('dragover'); });
@@ -398,6 +510,7 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
                 fileMeta.textContent = `${pendingFile.name} · ${(pendingFile.size / 1024).toFixed(1)} KB`;
                 setStatus('已选择，点击“开始解析”', 'info');
                 if (parseBtn) parseBtn.disabled = false;
+                setProgress(0);
                 fileInput.value = '';
             }
         });
@@ -425,34 +538,33 @@ import { PointerLockControls } from 'https://unpkg.com/three@0.159.0/examples/js
         document.addEventListener('fullscreenchange', handleResize);
     }
 
-    async function waitDeps() {
-        const start = performance.now();
-        while (performance.now() - start < 8000) {
-            if (Buffer() && nbtLib()) return true;
-            await new Promise((r) => setTimeout(r, 120));
-        }
-        return false;
-    }
-
     async function init() {
-        setStatus('加载依赖...', 'info');
-        const ok = await waitDeps();
-        if (!ok) {
-            setStatus('依赖未加载，请检查网络后刷新', 'error');
-            console.warn('MC projection deps unavailable after wait');
+        if (initialized) {
+            setStatus('未载入，选择或拖放文件', 'info');
             return;
         }
-        if (!initialized) {
-            resetScene();
-            bindKeys();
-            bindDrop();
-            bindFullscreen();
-            animate();
-            initialized = true;
+
+        try {
+            await loadDeps();
+        } catch (err) {
+            // loadDeps already set status; keep disabled state to prevent user confusion
+            return;
         }
+
+        resetScene();
+        bindKeys();
+        bindDrop();
+        bindFullscreen();
+        animate();
+        initialized = true;
         setStatus('未载入，选择或拖放文件', 'info');
+        console.info('[mcproj] init completed');
     }
 
-    window.addEventListener('load', init);
-    window.addEventListener('spa:page:loaded', init);
+    if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', () => { init(); }, { once: true });
+    } else {
+        init();
+    }
+    window.addEventListener('spa:page:loaded', () => { init(); });
 })();
