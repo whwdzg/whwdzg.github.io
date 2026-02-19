@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base64 编解码</title>
+    <title>MC 投影查看器</title>
     <meta name="author" content="滄海水魚">
-    <meta name="description" content="在浏览器中完成 Unicode 与 Base64 的互转，方便调试与数据交换。">
+    <meta name="description" content="上传 Minecraft 投影文件 (.litematic / .nbt / .schematic)，浏览 3D 投影并统计方块数量。">
     <meta name="theme-color" content="#ffffff">
 
     <link rel="manifest" href="/manifest.json">
@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="/css/videoplay.css">
     <link rel="stylesheet" href="/css/column.css">
     <link rel="stylesheet" href="/css/project.css">
-    <link rel="stylesheet" href="/css/tool-base64.css">
+    <link rel="stylesheet" href="/css/tool-mc-projection.css">
     <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
 
     <script src="/js/pwa/register-sw.js" defer></script>
@@ -41,6 +41,9 @@
     <script src="/js/search.js" defer></script>
     <script src="/js/spa-router.js" defer></script>
     <script src="/js/settings-modal.js" defer></script>
+    <script src="https://unpkg.com/pako@2.1.0/dist/pako.min.js" defer></script>
+    <script src="https://unpkg.com/buffer@6.0.3/index.js" defer></script>
+    <script src="https://unpkg.com/prismarine-nbt@2.2.1/dist/prismarine-nbt.min.js" defer></script>
 
 </head>
 
@@ -140,77 +143,117 @@
         <div class="column-stack">
             <section class="article-card">
                 <p class="eyebrow">工具</p>
-                <h1>Base64 编解码</h1>
-                <p class="article-subtitle">实时在浏览器中把 Unicode 文本与 Base64 字符串互转，方便调试 API、调色板配置或调试数据。</p>
+                <h1>MC 投影查看器</h1>
+                <p class="article-subtitle">上传 .litematic / .nbt / .schematic，浏览 3D 投影、统计方块数量，支持 WASD + 鼠标查看。</p>
                 <div class="article-meta">
-                    <span class="pill"><i class="icon-ic_fluent_arrow_sync_24_regular" aria-hidden="true"></i> 双向转换</span>
-                    <span class="pill"><i class="icon-ic_fluent_globe_24_regular" aria-hidden="true"></i> UTF-8
-                        支持</span>
+                    <span class="pill"><i class="icon-ic_fluent_shape_exclude_24_regular" aria-hidden="true"></i> 体素渲染</span>
+                    <span class="pill"><i class="icon-ic_fluent_full_screen_maximize_24_regular" aria-hidden="true"></i> 全屏查看</span>
+                    <span class="pill"><i class="icon-ic_fluent_data_usage_24_regular" aria-hidden="true"></i> 方块统计</span>
                 </div>
                 <div class="article-actions">
                     <a href="#tool-panel">立即使用</a>
-                    <a href="#howto">如何使用</a>
+                    <a href="#howto">使用说明</a>
                 </div>
             </section>
 
-            <section class="article-card base64-tool-card" id="tool-panel">
-                <div class="base64-tool-panel">
-                    <p class="eyebrow">工具面板</p>
-                    <h2>Base64 编解码器</h2>
-                    <p class="article-subtitle">在搜索框风格的面板里输入内容或 Base64，点击按钮即可相互转换。</p>
-                    <div class="tool-panel-grid">
-                        <div>
-                            <label for="base64-input">输入区</label>
-                            <p class="field-hint">支持 UTF-8 文本、Base64 文本或自定义格式变体。</p>
-                            <div class="base64-textarea-wrapper">
-                                <textarea id="base64-input" spellcheck="false" rows="6"
-                                    placeholder="粘贴文本或 Base64 字符串，选择操作后查看输出。"></textarea>
-                                <button type="button" class="copy-btn base64-copy-btn" data-copy-target="base64-input"
-                                    aria-label="复制输入内容">
-                                    <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
-                                </button>
+            <section class="article-card mcproj-tool-card" id="tool-panel">
+                <div class="mcproj-grid">
+                    <div>
+                        <p class="eyebrow">文件</p>
+                        <h2>上传投影文件</h2>
+                        <p class="article-subtitle">支持 .litematic / .nbt / .schematic，解析后会显示 3D 预览与统计。</p>
+                        <div class="mcproj-drop" id="mcproj-drop" tabindex="0" aria-label="拖放或点击选择文件">
+                            <input type="file" id="mcproj-file" accept=".litematic,.litamatica,.litematica,.nbt,.schematic" aria-label="选择投影文件">
+                            <div class="mcproj-drop-inner">
+                                <i class="icon-ic_fluent_cloud_arrow_up_24_regular" aria-hidden="true"></i>
+                                <div>
+                                    <p class="drop-title">拖放文件到此，或点击选择</p>
+                                    <p class="drop-hint">建议文件体量 < 5 万方块以内；更大模型渲染可能卡顿。</p>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <label for="base64-output">输出区</label>
-                            <p class="field-hint">按钮操作完成后会自动填充此处，方便复制或再处理。</p>
-                            <div class="base64-textarea-wrapper">
-                                <textarea id="base64-output" rows="6" readonly spellcheck="false"></textarea>
-                                <button type="button" class="copy-btn base64-copy-btn" data-copy-target="base64-output"
-                                    aria-label="复制输出内容">
-                                    <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
-                                </button>
+                        <div class="mcproj-file-meta" id="mcproj-file-meta">未选择文件</div>
+                        <div class="mcproj-actions">
+                            <button type="button" id="mcproj-parse" disabled>
+                                <i class="icon-ic_fluent_play_circle_24_regular" aria-hidden="true"></i>
+                                <span>开始解析</span>
+                            </button>
+                        </div>
+                        <div class="mcproj-stats" id="mcproj-stats">
+                            <div class="stat">
+                                <p class="stat-label">总方块</p>
+                                <p class="stat-value" id="mcproj-total">-</p>
+                            </div>
+                            <div class="stat">
+                                <p class="stat-label">尺寸</p>
+                                <p class="stat-value" id="mcproj-size">-</p>
+                            </div>
+                            <div class="stat">
+                                <p class="stat-label">方块种类</p>
+                                <p class="stat-value" id="mcproj-unique">-</p>
+                            </div>
+                        </div>
+                        <div class="mcproj-table-wrapper">
+                            <table class="mcproj-table" aria-label="方块统计表">
+                                <thead>
+                                    <tr>
+                                        <th>方块</th>
+                                        <th>数量</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mcproj-table-body">
+                                    <tr><td colspan="2">等待解析...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="eyebrow">渲染</p>
+                        <div class="mcproj-viewer">
+                            <div class="mcproj-viewer-toolbar">
+                                <div>
+                                    <span class="pill pill-light" id="mcproj-status">未载入</span>
+                                </div>
+                                <div class="mcproj-viewer-actions">
+                                    <button type="button" id="mcproj-fullscreen" aria-label="全屏切换">
+                                        <i class="icon-ic_fluent_full_screen_maximize_24_regular" aria-hidden="true"></i>
+                                        <span>全屏</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mcproj-canvas-wrap" id="mcproj-canvas-wrap">
+                                <canvas id="mcproj-canvas" aria-label="3D 预览"></canvas>
+                            </div>
+                            <div class="mcproj-hints">
+                                <p><strong>操作：</strong>点击画面获取鼠标锁定，W/A/S/D 移动，空格上升，Shift 下降，鼠标移动视角，Esc 退出锁定。</p>
+                                <p><strong>提示：</strong>仅渲染方块外形，不含碰撞；文件越大越耗资源。</p>
                             </div>
                         </div>
                     </div>
-                    <div class="base64-tool-actions">
-                        <button type="button" data-base64-action="encode">编码为 Base64</button>
-                        <button type="button" data-base64-action="decode">解码为文本</button>
-                        <button type="button" data-base64-action="clear">清空</button>
-                    </div>
-                    <div id="base64-feedback" class="base64-tool-feedback" aria-live="polite" data-state="info">等待操作</div>
                 </div>
             </section>
-
 
             <section class="article-card" id="howto">
-                <h2>如何使用</h2>
+                <h2>使用说明</h2>
                 <ul>
-                    <li>编码：填入任意文字后点击「编码为 Base64」，结果会基于 UTF-8 重新编码。</li>
-                    <li>解码：粘贴或键入合法的 Base64 字符串（可带换行或空格），点击「解码为文本」。</li>
-                    <li>清空：重置输入与输出，快速切换场景或重新整理内容。</li>
+                    <li>上传文件后会自动解析，支持 .litematic / .nbt / .schematic。若模型过大，渲染前会提示风险。</li>
+                    <li>点击预览区域进入鼠标锁定，用 WASD/空格/Shift 移动，Esc 退出锁定。</li>
+                    <li>全屏：点击“全屏”按钮进入/退出全屏，可在更大视野下查看。</li>
+                    <li>方块统计：面板会列出总方块数、尺寸以及每种方块的数量分布。</li>
                 </ul>
             </section>
 
             <section class="article-card">
-                <h2>安全提示</h2>
-                <p>Base64 仅对数据做可逆的字符映射，并不提供任何加密保护；编码后的内容可被任何人还原，因此不要用它来保护密码或敏感信息。</p>
-                <p>如果需要防止未授权访问，请选择具备密钥管理与抗篡改能力的加密方案。</p>
+                <h2>兼容性与限制</h2>
+                <ul>
+                    <li>解析依赖浏览器内存与显卡性能，建议先用较小模型测试，避免一次性加载超大工程。</li>
+                    <li>.litematic 解析基于标准 BlockStatePalette；如文件包含特殊数据或极大 region，可能渲染不完整。</li>
+                    <li>.schematic 以经典格式解析；若为 1.13+ palette 格式，可能存在颜色/方块名偏差。</li>
+                </ul>
             </section>
 
-           
         </div>
-        <script src="/js/tool/base64.js" defer></script>
+        <script type="module" src="/js/tool/mc-projection.js" defer></script>
     </main>
     </body>
 
