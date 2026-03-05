@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  [站点注释 Site Note]
+  文件: D:\Documents\GitHub\whwdzg.github.io\projects\better-enchantments.html
+  作用: 页面结构与内容容器，具体交互由对应 JS/CSS 增强。
+  English: Defines page markup; behavior and styling are enhanced by JS/CSS.
+-->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -12,6 +18,7 @@
     <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
     <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
     <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/includes/shell.html?v=2.0.3.6-20260305" as="fetch" crossorigin>
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="/css/variables.css">
@@ -20,15 +27,19 @@
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/main-content.css">
     <link rel="stylesheet" href="/css/footer.css">
-    <link rel="stylesheet" href="/css/lightbox.css">
-    <link rel="stylesheet" href="/css/settings-modal.css">
-    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="preload" href="/css/lightbox.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/settings-modal.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/scroll-to-top.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/videoplay.css">
-    <link rel="stylesheet" href="/css/column.css">
+    <link rel="preload" href="/css/column.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/project.css">
     <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+    <noscript><link rel="stylesheet" href="/css/lightbox.css"></noscript>
+    <noscript><link rel="stylesheet" href="/css/settings-modal.css"></noscript>
+    <noscript><link rel="stylesheet" href="/css/scroll-to-top.css"></noscript>
+    <noscript><link rel="stylesheet" href="/css/column.css"></noscript>
 
-    <script src="/js/pwa/register-sw.js" defer></script>
+    <script src="/js/pwa/register-sw.js" async></script>
     <script src="/js/theme.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="/js/lightbox.js" defer></script>
@@ -112,23 +123,23 @@
                     move();
                 }
             }
-            function bust(url) {
+            var SHELL_VERSION = '2.0.3.6-20260305';
+            var SHELL_CACHE_KEY = 'shell-html:' + SHELL_VERSION;
+            function withVersion(url) {
                 if (location.protocol === 'file:') return url;
                 var sep = url.indexOf('?') === -1 ? '?' : '&';
-                return url + sep + 'ts=' + Date.now();
+                return url + sep + 'v=' + SHELL_VERSION;
             }
-            try {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', bust('/includes/shell.html'), false);
-                xhr.send(null);
-                if (xhr.status === 200 || xhr.status === 0) {
-                    attachShell(xhr.responseText);
-                    return;
-                }
-            } catch (e) {}
-            fetch(bust('/includes/shell.html'), { cache: 'no-store' })
-                .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
-                .then(function(html){ attachShell(html); });
+            var cachedShell = '';
+            try { cachedShell = sessionStorage.getItem(SHELL_CACHE_KEY) || ''; } catch (e) {}
+            if (cachedShell) attachShell(cachedShell);
+            fetch(withVersion('/includes/shell.html'), { cache: 'force-cache' })
+                .then(function (resp) { return resp.ok ? resp.text() : Promise.reject(new Error('HTTP ' + resp.status)); })
+                .then(function (html) {
+                    if (!html) return;
+                    try { sessionStorage.setItem(SHELL_CACHE_KEY, html); } catch (e) {}
+                    if (!cachedShell) attachShell(html);
+                });
         })();
     </script>
 

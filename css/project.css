@@ -1,3 +1,9 @@
+/*
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\css\project.css
+ * 作用: 页面样式与布局规则，按模块拆分维护。
+ * English: Module-level styles for layout and presentation.
+ */
 /* 视频归档列表布局重构：仅支持 grid/list 两种布局 */
 .project-grid.grid-view {
   display: grid !important;
@@ -194,6 +200,8 @@
   height: var(--slot-size, 48px);
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
   border-radius: 0;
   position: relative;
   display: flex;

@@ -1,3 +1,9 @@
+/*
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\css\input.css
+ * 作用: 页面样式与布局规则，按模块拆分维护。
+ * English: Module-level styles for layout and presentation.
+ */
 /* 通用输入框样式 */
 .styled-input {
 	background: rgba(255, 255, 255, 0.04);

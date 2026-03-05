@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\avatar-loader.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // avatar-loader.js
 // 提供带百分比的头像加载器，导出 initAvatarLoader
 export function initAvatarLoader(){

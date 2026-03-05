@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\spa-router.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // SPA router: load shell once, keep shared assets, swap only <main>.
 // Flow: render shell, inject shared CSS/JS once, preload setting.html, then PJAX fetch for page mains.
 

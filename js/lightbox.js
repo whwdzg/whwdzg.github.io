@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\lightbox.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // 模块：图片放大预览 / Lightbox overlay with zoom, captions, and filmstrip.
 document.addEventListener('DOMContentLoaded', function () {
 	let candidates = [];

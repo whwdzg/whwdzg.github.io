@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\theme.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // 模块：主题切换 / Theme detection, persistence, and toggle UI.
 document.addEventListener('DOMContentLoaded', function () {
 	try {
@@ -29,9 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		function closeAllMenus() {
 			if (settingsMenu) settingsMenu.classList.remove('active');
 		}
-		const followSystemRadios = document.querySelectorAll('input[name="theme-follow"]');
 		const THEME_KEY = 'theme';
 		const FOLLOW_SYSTEM_KEY = 'follow-system';
+		const THEME_MODE_KEY = 'setting-lightdarktoggle'; // 0:follow system, 1:light, 2:dark
 		const THEME_COLOR_KEY = 'theme-color';
 		const DEFAULT_THEME_COLOR = '#33CC99';
 		let followSystem = localStorage.getItem(FOLLOW_SYSTEM_KEY) !== 'false';
@@ -51,19 +57,228 @@ document.addEventListener('DOMContentLoaded', function () {
 			]
 		};
 
+		const WALLPAPER_SELECTION_KEY = 'setting-wallpaperselection';
+		const WALLPAPER_ROTATION_KEY = 'setting-wallpaperrotation';
+		const WALLPAPER_DAILY_STATE_KEY = 'wallpaper-daily-state-v1';
+		const WALLPAPER_LOCKED_INDEX_KEY = 'wallpaper-locked-index-v1';
+		const WALLPAPER_CACHE_HINT_KEY = 'wallpaper-cache-hint-v1';
+		const WALLPAPER_FIXED_MAX_SELECTION = (WALLPAPER_POOLS.light.length || 0) + (WALLPAPER_POOLS.dark.length || 0);
+
 		let wallpaperTheme = null;
 		let wallpaperLoadId = 0;
 
-		function setWallpaperLoading(active) {
-			document.body.classList.toggle('wallpaper-loading', !!active);
+		function loadWallpaperCacheHints() {
+			try {
+				const raw = localStorage.getItem(WALLPAPER_CACHE_HINT_KEY);
+				if (!raw) return new Set();
+				const parsed = JSON.parse(raw);
+				if (!Array.isArray(parsed)) return new Set();
+				return new Set(parsed.filter((v) => typeof v === 'string' && v));
+			} catch (_) {
+				return new Set();
+			}
 		}
 
-		function pickWallpaper(isDark) {
-			const key = isDark ? 'dark' : 'light';
-			const pool = WALLPAPER_POOLS[key];
-			if (!Array.isArray(pool) || pool.length === 0) return null;
-			const idx = Math.floor(Math.random() * pool.length);
-			return pool[idx] || null;
+		let wallpaperCacheHints = loadWallpaperCacheHints();
+
+		function saveWallpaperCacheHints() {
+			try {
+				const arr = Array.from(wallpaperCacheHints);
+				localStorage.setItem(WALLPAPER_CACHE_HINT_KEY, JSON.stringify(arr.slice(-24)));
+			} catch (_) {}
+		}
+
+		function rememberWallpaperCached(src) {
+			if (!src) return;
+			if (!wallpaperCacheHints.has(src)) {
+				wallpaperCacheHints.add(src);
+				saveWallpaperCacheHints();
+			}
+		}
+
+		function buildWallpaperPairs() {
+			const lightPool = Array.isArray(WALLPAPER_POOLS.light) ? WALLPAPER_POOLS.light : [];
+			const darkPool = Array.isArray(WALLPAPER_POOLS.dark) ? WALLPAPER_POOLS.dark : [];
+			const pairCount = Math.max(lightPool.length, darkPool.length);
+			const pairs = [];
+			for (let i = 0; i < pairCount; i += 1) {
+				pairs.push({
+					light: lightPool.length ? lightPool[i % lightPool.length] : null,
+					dark: darkPool.length ? darkPool[i % darkPool.length] : null
+				});
+			}
+			return pairs.filter((p) => !!(p.light || p.dark));
+		}
+
+		const WALLPAPER_PAIRS = buildWallpaperPairs();
+
+		function parseStoredInt(value) {
+			const n = parseInt(value, 10);
+			return Number.isNaN(n) ? null : n;
+		}
+
+		function isValidPairIndex(idx) {
+			return typeof idx === 'number' && idx >= 0 && idx < WALLPAPER_PAIRS.length;
+		}
+
+		function getTodayKey() {
+			const now = new Date();
+			const y = now.getFullYear();
+			const m = String(now.getMonth() + 1).padStart(2, '0');
+			const d = String(now.getDate()).padStart(2, '0');
+			return `${y}-${m}-${d}`;
+		}
+
+		function ensureWallpaperSettingsDefaults() {
+			if (localStorage.getItem(THEME_MODE_KEY) === null) {
+				const legacyFollow = localStorage.getItem(FOLLOW_SYSTEM_KEY) !== 'false';
+				const legacyTheme = localStorage.getItem(THEME_KEY);
+				let modeIndex = 0;
+				if (!legacyFollow) {
+					modeIndex = legacyTheme === 'dark' ? 2 : 1;
+				}
+				localStorage.setItem(THEME_MODE_KEY, String(modeIndex));
+			}
+			if (localStorage.getItem(WALLPAPER_SELECTION_KEY) === null) {
+				localStorage.setItem(WALLPAPER_SELECTION_KEY, '0');
+			}
+			if (localStorage.getItem(WALLPAPER_ROTATION_KEY) === null) {
+				localStorage.setItem(WALLPAPER_ROTATION_KEY, 'true');
+			}
+		}
+
+		function getThemeMode() {
+			const idx = parseStoredInt(localStorage.getItem(THEME_MODE_KEY));
+			if (idx === 1 || idx === 2) return idx;
+			return 0;
+		}
+
+		function setThemeMode(modeIndex) {
+			const mode = modeIndex === 1 || modeIndex === 2 ? modeIndex : 0;
+			localStorage.setItem(THEME_MODE_KEY, String(mode));
+			followSystem = mode === 0;
+			localStorage.setItem(FOLLOW_SYSTEM_KEY, followSystem ? 'true' : 'false');
+			document.dispatchEvent(new CustomEvent('theme-mode-changed', { detail: { mode } }));
+		}
+
+		function getSelectedWallpaperOption() {
+			const idx = parseStoredInt(localStorage.getItem(WALLPAPER_SELECTION_KEY));
+			if (idx === null || idx < 0 || idx > WALLPAPER_FIXED_MAX_SELECTION) return 0;
+			return idx;
+		}
+
+		function getFixedWallpaperBySelection(selectedOption) {
+			if (!selectedOption || selectedOption <= 0) return null;
+			const lightPool = WALLPAPER_POOLS.light || [];
+			const darkPool = WALLPAPER_POOLS.dark || [];
+			if (selectedOption <= lightPool.length) {
+				return lightPool[selectedOption - 1] || null;
+			}
+			const darkIndex = selectedOption - lightPool.length - 1;
+			if (darkIndex >= 0 && darkIndex < darkPool.length) {
+				return darkPool[darkIndex] || null;
+			}
+			return null;
+		}
+
+		function getWallpaperRotationEnabled() {
+			return localStorage.getItem(WALLPAPER_ROTATION_KEY) !== 'false';
+		}
+
+		function readDailyWallpaperState() {
+			try {
+				const raw = localStorage.getItem(WALLPAPER_DAILY_STATE_KEY);
+				if (!raw) return null;
+				const parsed = JSON.parse(raw);
+				if (!parsed || typeof parsed.date !== 'string') return null;
+				if (!isValidPairIndex(parsed.index)) return null;
+				return parsed;
+			} catch (_) {
+				return null;
+			}
+		}
+
+		function writeDailyWallpaperState(date, index) {
+			if (!isValidPairIndex(index)) return;
+			try {
+				localStorage.setItem(WALLPAPER_DAILY_STATE_KEY, JSON.stringify({ date, index }));
+			} catch (_) {}
+		}
+
+		function clearWallpaperRotationState() {
+			localStorage.removeItem(WALLPAPER_DAILY_STATE_KEY);
+			localStorage.removeItem(WALLPAPER_LOCKED_INDEX_KEY);
+		}
+
+		function randomWallpaperPairIndex(options) {
+			const opts = options || {};
+			if (!WALLPAPER_PAIRS.length) return null;
+
+			const allIndexes = WALLPAPER_PAIRS.map((_, i) => i);
+			if (!opts.preferCached) {
+				return allIndexes[Math.floor(Math.random() * allIndexes.length)] || 0;
+			}
+
+			const scored = allIndexes.map((i) => {
+				const pair = WALLPAPER_PAIRS[i] || {};
+				let score = 0;
+				if (pair.light && wallpaperCacheHints.has(pair.light)) score += 1;
+				if (pair.dark && wallpaperCacheHints.has(pair.dark)) score += 1;
+				return { i, score };
+			});
+
+			const maxScore = scored.reduce((m, s) => Math.max(m, s.score), 0);
+			if (maxScore <= 0) {
+				return allIndexes[Math.floor(Math.random() * allIndexes.length)] || 0;
+			}
+
+			const preferred = scored.filter((s) => s.score === maxScore).map((s) => s.i);
+			return preferred[Math.floor(Math.random() * preferred.length)] || allIndexes[0] || 0;
+		}
+
+		function resolveWallpaperPairIndex(options) {
+			const opts = options || {};
+			const selected = getSelectedWallpaperOption();
+			if (selected > 0) return null;
+
+			if (!WALLPAPER_PAIRS.length) return null;
+
+			const rotationEnabled = getWallpaperRotationEnabled();
+			const today = getTodayKey();
+
+			if (rotationEnabled) {
+				const daily = readDailyWallpaperState();
+				if (!opts.forceNewDaily && daily && daily.date === today) return daily.index;
+				const nextIndex = randomWallpaperPairIndex({ preferCached: true });
+				if (!isValidPairIndex(nextIndex)) return null;
+				writeDailyWallpaperState(today, nextIndex);
+				localStorage.removeItem(WALLPAPER_LOCKED_INDEX_KEY);
+				return nextIndex;
+			}
+
+			const locked = parseStoredInt(localStorage.getItem(WALLPAPER_LOCKED_INDEX_KEY));
+			if (isValidPairIndex(locked)) return locked;
+
+			const daily = readDailyWallpaperState();
+			const nextIndex = daily && isValidPairIndex(daily.index) ? daily.index : randomWallpaperPairIndex({ preferCached: true });
+			if (!isValidPairIndex(nextIndex)) return null;
+			localStorage.setItem(WALLPAPER_LOCKED_INDEX_KEY, String(nextIndex));
+			return nextIndex;
+		}
+
+		function getWallpaperForTheme(isDark, options) {
+			const selected = getSelectedWallpaperOption();
+			const fixed = getFixedWallpaperBySelection(selected);
+			if (fixed) return fixed;
+			const idx = resolveWallpaperPairIndex(options);
+			if (!isValidPairIndex(idx)) return null;
+			const pair = WALLPAPER_PAIRS[idx];
+			if (!pair) return null;
+			return isDark ? (pair.dark || pair.light) : (pair.light || pair.dark);
+		}
+
+		function setWallpaperLoading(active) {
+			document.body.classList.toggle('wallpaper-loading', !!active);
 		}
 
 		function preloadImage(src) {
@@ -84,16 +299,18 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 		}
 
-		function applyWallpaper(isDark) {
+		function applyWallpaper(isDark, options) {
+			const opts = options || {};
 			const key = isDark ? 'dark' : 'light';
 			const current = document.documentElement.style.getPropertyValue('--wallpaper-image');
-			if (wallpaperTheme === key && current) return;
-			const picked = pickWallpaper(isDark);
+			if (!opts.force && wallpaperTheme === key && current) return;
+			const picked = getWallpaperForTheme(isDark, { forceNewDaily: !!opts.forceNewDaily });
 			if (!picked) return;
 			const loadId = ++wallpaperLoadId;
 			setWallpaperLoading(true);
-			preloadImage(picked).then(() => {
+			preloadImage(picked).then((ok) => {
 				if (loadId !== wallpaperLoadId) return;
+				if (ok) rememberWallpaperCached(picked);
 				document.documentElement.style.setProperty('--wallpaper-image', `url('${picked}')`);
 				wallpaperTheme = key;
 				setWallpaperLoading(false);
@@ -125,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		localStorage.setItem(FOLLOW_SYSTEM_KEY, 'true');
 		followSystem = true;
 	}
+	ensureWallpaperSettingsDefaults();
 	const initialColor = localStorage.getItem(THEME_COLOR_KEY) || DEFAULT_THEME_COLOR;
 	localStorage.setItem(THEME_COLOR_KEY, initialColor);
 	applyThemeColor(initialColor);
@@ -143,29 +361,16 @@ document.addEventListener('DOMContentLoaded', function () {
 		return window.matchMedia('(prefers-color-scheme: dark)').matches;
 	}
 
-	function updateRadioState() {
-		followSystemRadios.forEach(radio => {
-			if (followSystem && radio.value === 'follow') {
-				radio.checked = true;
-			} else if (!followSystem && radio.value === 'manual') {
-				radio.checked = true;
-			}
-		});
-	}
-
-	// 初始化主题：优先使用保存的偏好，否则检测系统主题
-	const savedTheme = localStorage.getItem(THEME_KEY);
-	if (followSystem) {
-		// 跟随系统模式
+	// 初始化主题三态：0 跟随系统，1 浅色，2 深色
+	const initialThemeMode = getThemeMode();
+	followSystem = initialThemeMode === 0;
+	localStorage.setItem(FOLLOW_SYSTEM_KEY, followSystem ? 'true' : 'false');
+	if (initialThemeMode === 0) {
 		setTheme(getSystemTheme());
+	} else if (initialThemeMode === 1) {
+		setTheme(false);
 	} else {
-		// 手动模式：使用保存的主题
-		if (savedTheme) {
-			setTheme(savedTheme === 'dark');
-		} else {
-			// 正常不会垫到这一步，但为了安全起见
-			setTheme(getSystemTheme());
-		}
+		setTheme(true);
 	}
 
 	// 主题设置按钮：打开设置弹窗
@@ -183,29 +388,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 
-	// 沉菜单选项处理
-	followSystemRadios.forEach(radio => {
-		radio.addEventListener('change', () => {
-			if (radio.value === 'follow') {
-				followSystem = true;
-				localStorage.setItem(FOLLOW_SYSTEM_KEY, 'true');
-				// 立即应用系统主题
-				setTheme(getSystemTheme());
-			} else {
-				followSystem = false;
-				localStorage.setItem(FOLLOW_SYSTEM_KEY, 'false');
-				// 保持当前主题
-			}
-			// 通知设置弹窗更新
-			document.dispatchEvent(new CustomEvent('follow-system-changed'));
-			if (settingsMenu) settingsMenu.classList.remove('active');
-		});
-	});
-
 	// 监听系统主题变化（仅在跟随系统模式下）
 	const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
 	darkModeQuery.addListener((e) => {
-		if (followSystem) {
+		if (getThemeMode() === 0) {
 			setTheme(e.matches);
 		}
 	});
@@ -267,29 +453,79 @@ document.addEventListener('DOMContentLoaded', function () {
 	// 月亮序列切换按钮
 	if (themeBtn) {
 		themeBtn.addEventListener('click', function () {
-			// 当用户手动一次月亮序列开关时，也转换为manual模式
-			if (followSystem) {
-				followSystem = false;
-				localStorage.setItem(FOLLOW_SYSTEM_KEY, 'false');
-				updateRadioState();
-				// 通知设置弹窗更新
-				document.dispatchEvent(new CustomEvent('follow-system-changed'));
-			}
 			const isDark = !document.body.classList.contains('dark-mode');
+			setThemeMode(isDark ? 2 : 1);
 			setTheme(isDark);
 		});
 	}
 
-	// 监听来自设置弹窗的 follow-system 变化
-	document.addEventListener('follow-system-changed', () => {
-		// 同步 followSystem 变量
-		const newValue = localStorage.getItem(FOLLOW_SYSTEM_KEY);
-		followSystem = newValue !== 'false';
-		updateRadioState();
-		// 如果切换到跟随系统，立即应用系统主题
-		if (followSystem) {
-			setTheme(getSystemTheme());
+	function applyWallpaperForCurrentTheme(options) {
+		const isDark = document.body.classList.contains('dark-mode');
+		applyWallpaper(isDark, options || {});
+	}
+
+	document.addEventListener('setting-changed', (e) => {
+		const detail = e && e.detail ? e.detail : null;
+		if (!detail) return;
+
+		if (detail.id === 'lightdarktoggle') {
+			const idx = Number(detail.index);
+			if (idx === 0) {
+				setThemeMode(0);
+				setTheme(getSystemTheme());
+			} else if (idx === 1) {
+				setThemeMode(1);
+				setTheme(false);
+			} else if (idx === 2) {
+				setThemeMode(2);
+				setTheme(true);
+			}
+			if (settingsMenu) settingsMenu.classList.remove('active');
 		}
+
+		if (detail.id === 'wallpaperselection') {
+			const idx = parseStoredInt(detail.index);
+			if (idx !== null) {
+				localStorage.setItem(WALLPAPER_SELECTION_KEY, String(idx));
+				if (idx > 0) {
+					localStorage.setItem(WALLPAPER_ROTATION_KEY, 'false');
+					localStorage.removeItem(WALLPAPER_LOCKED_INDEX_KEY);
+				}
+				if (idx === 0) {
+					localStorage.removeItem(WALLPAPER_LOCKED_INDEX_KEY);
+				}
+				wallpaperTheme = null;
+				applyWallpaperForCurrentTheme({ force: true });
+				document.dispatchEvent(new CustomEvent('wallpaper-settings-synced', {
+					detail: { fromModal: true, id: 'wallpaperselection' }
+				}));
+			}
+		}
+
+		if (detail.id === 'wallpaperrotation') {
+			const enabled = Number(detail.index) === 1;
+			localStorage.setItem(WALLPAPER_ROTATION_KEY, enabled ? 'true' : 'false');
+			if (enabled) {
+				localStorage.setItem(WALLPAPER_SELECTION_KEY, '0');
+				localStorage.removeItem(WALLPAPER_LOCKED_INDEX_KEY);
+			} else {
+				const currentIndex = resolveWallpaperPairIndex({ forceNewDaily: false });
+				if (isValidPairIndex(currentIndex)) {
+					localStorage.setItem(WALLPAPER_LOCKED_INDEX_KEY, String(currentIndex));
+				}
+			}
+			wallpaperTheme = null;
+			applyWallpaperForCurrentTheme({ force: true });
+			document.dispatchEvent(new CustomEvent('wallpaper-settings-synced', {
+				detail: { fromModal: true, id: 'wallpaperrotation' }
+			}));
+		}
+	});
+
+	document.addEventListener('wallpaper-rotation-reset', () => {
+		clearWallpaperRotationState();
+		wallpaperTheme = null;
+		applyWallpaperForCurrentTheme({ force: true, forceNewDaily: true });
 	});
 	} catch (err) {
 		console.error('[theme.js] init error', err);

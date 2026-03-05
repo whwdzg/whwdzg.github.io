@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\particles.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 /* Lightweight particle effects for settings: sakura, leaf-a, leaf-b, snow
    API: window.Particles.enable(index)  -- 0 = off, 1..n = effects
 */

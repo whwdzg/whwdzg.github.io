@@ -1,3 +1,7 @@
+# [站点注释 Site Note]
+# 文件: D:\Documents\GitHub\whwdzg.github.io\scripts\find_asset_refs.py
+# 作用: 站点辅助脚本（本地开发/资源检查等）。
+# English: Utility script for local serving or asset checks.
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent

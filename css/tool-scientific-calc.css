@@ -1,0 +1,264 @@
+/*
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\css\tool-scientific-calc.css
+ * 作用: 页面样式与布局规则，按模块拆分维护。
+ * English: Module-level styles for layout and presentation.
+ */
+.calc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.calc-ans {
+  font-weight: 700;
+  color: var(--text-color, #111827);
+}
+
+#calc-input,
+#calc-latex {
+  width: 100%;
+  max-width: 100%;
+  font-family: var(--font-mono, "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif);
+  font-size: 1rem;
+  border-radius: 10px;
+  padding: 0.95rem;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  background: var(--card-bg, #ffffff);
+  color: var(--text-color, #111827);
+  resize: vertical;
+  box-shadow: 0 10px 30px var(--shadow-color, rgba(15, 23, 42, 0.18));
+  backdrop-filter: blur(6px);
+  transition: border 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  box-sizing: border-box;
+  min-height: 110px;
+}
+
+#calc-latex {
+  min-height: 88px;
+}
+
+#calc-input:focus,
+#calc-latex:focus {
+  outline: none;
+  border-color: var(--border-color);
+  background: var(--input-focus-bg);
+  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
+}
+
+#calc-latex[readonly] {
+  opacity: 0.96;
+}
+
+.calc-result {
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  color: var(--text-color, #111827);
+  box-shadow: 0 6px 16px var(--shadow-color, rgba(15, 23, 42, 0.12));
+}
+
+.calc-result[data-state="error"] {
+  color: var(--color-danger, #ef4444);
+  border-color: color-mix(in srgb, var(--color-danger, #ef4444) 45%, var(--border-color, rgba(0, 0, 0, 0.1)));
+  background: color-mix(in srgb, var(--color-danger, #ef4444) 8%, var(--card-bg, #ffffff));
+}
+
+.calc-result[data-state="success"] {
+  color: var(--color-secondary, #10b981);
+  border-color: color-mix(in srgb, var(--color-secondary, #10b981) 45%, var(--border-color, rgba(0, 0, 0, 0.1)));
+  background: color-mix(in srgb, var(--color-secondary, #10b981) 8%, var(--card-bg, #ffffff));
+}
+
+.calc-point-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem 0.65rem;
+}
+
+.calc-point-row label {
+  font-weight: 700;
+  color: var(--text-color, #111827);
+}
+
+.calc-point-row input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  background: var(--card-bg, #ffffff);
+  color: var(--text-color, #111827);
+  padding: 0.5rem 0.65rem;
+  box-shadow: 0 6px 18px var(--shadow-color, rgba(15, 23, 42, 0.12));
+  box-sizing: border-box;
+}
+
+.calc-point-row input:focus {
+  outline: none;
+  border-color: var(--border-color);
+  background: var(--input-focus-bg);
+  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
+}
+
+body.dark-mode .calc-result {
+  color: var(--text-color, #f3f4f6);
+  border-color: var(--border-color, rgba(255, 255, 255, 0.12));
+  background: color-mix(in srgb, var(--card-bg, #111827) 88%, #000 12%);
+}
+
+body.dark-mode .calc-result[data-state="error"] {
+  color: #fca5a5;
+  border-color: color-mix(in srgb, #ef4444 55%, var(--border-color, rgba(255, 255, 255, 0.12)));
+  background: color-mix(in srgb, #ef4444 14%, var(--card-bg, #111827));
+}
+
+body.dark-mode .calc-result[data-state="success"] {
+  color: #6ee7b7;
+  border-color: color-mix(in srgb, #10b981 55%, var(--border-color, rgba(255, 255, 255, 0.12)));
+  background: color-mix(in srgb, #10b981 14%, var(--card-bg, #111827));
+}
+
+body.dark-mode .calc-point-row label {
+  color: var(--text-color, #f3f4f6);
+}
+
+body.dark-mode .calc-point-row input {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--input-bg, #1f2937);
+  color: var(--text-color, #f3f4f6);
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.calc-grid button {
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.15));
+  background: var(--card-bg, #ffffff);
+  color: var(--text-color, #111827);
+  border-radius: 10px;
+  padding: 0.55rem 0.35rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calc-grid .calc-math {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.08rem;
+  font-family: "Times New Roman", "Noto Serif SC", serif;
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.calc-grid .calc-math-fn,
+.calc-grid .calc-math-var,
+.calc-grid .calc-math-symbol {
+  font-style: italic;
+}
+
+.calc-grid .calc-math sup {
+  font-size: 0.72em;
+  line-height: 1;
+  margin-left: 1px;
+}
+
+.calc-grid .calc-math-root {
+  display: inline-flex;
+  align-items: flex-start;
+}
+
+.calc-grid .calc-math-root-body {
+  display: inline-flex;
+  padding-left: 0.08rem;
+  border-top: 1px solid currentColor;
+  line-height: 0.95;
+}
+
+.calc-grid .calc-math-binom {
+  display: inline-grid;
+  grid-template-rows: 1fr 1fr;
+  line-height: 0.9;
+  border-left: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  padding: 0 0.2rem;
+  font-size: 0.86em;
+}
+
+.calc-grid button:hover {
+  filter: brightness(1.06);
+}
+
+.calc-grid button[data-action="eval"] {
+  background: var(--color-accent, #3b82f6);
+  color: #fff;
+}
+
+.calc-grid button[data-action="clear"] {
+  background: var(--color-danger, #ef4444);
+  color: #fff;
+}
+
+.calc-grid button[data-action="latex"],
+.calc-grid button[data-action="plot"] {
+  background: var(--color-secondary, #10b981);
+  color: #fff;
+}
+
+.calc-grid .span2 {
+  grid-column: span 2;
+}
+
+.calc-steps-card,
+.calc-graph-card {
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  border-radius: 12px;
+  padding: 0.8rem 0.9rem;
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+}
+
+.calc-steps-card h3,
+.calc-graph-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+#calc-steps {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+#calc-graph-canvas {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.12));
+  background: #fff;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .calc-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .calc-point-row {
+    grid-template-columns: auto 1fr;
+  }
+
+  .calc-grid .span2 {
+    grid-column: span 2;
+  }
+}

@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\search.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // 模块：站内搜索 / Header search overlay and highlighting across pages.
 document.addEventListener('DOMContentLoaded', () => {
 	const searchBtn = document.getElementById('header-search-btn');

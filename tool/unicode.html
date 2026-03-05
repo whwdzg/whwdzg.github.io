@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!--
+  [站点注释 Site Note]
+  文件: D:\Documents\GitHub\whwdzg.github.io\tool\unicode.html
+  作用: 页面结构与内容容器，具体交互由对应 JS/CSS 增强。
+  English: Defines page markup; behavior and styling are enhanced by JS/CSS.
+-->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unicode 转换</title>
+    <meta name="author" content="滄海水魚">
+    <meta name="description" content="在浏览器中完成文本与 Unicode 转义、码点格式的互转，适合调试文案与转义字符串。">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/includes/shell.html?v=2.0.3.6-20260305" as="fetch" crossorigin>
+    <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="preload" href="/css/lightbox.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/settings-modal.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/scroll-to-top.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/videoplay.css">
+    <link rel="preload" href="/css/column.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/column.css"></noscript>
+    <link rel="stylesheet" href="/css/project.css">
+    <link rel="stylesheet" href="/css/tool-basex.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+    <noscript><link rel="stylesheet" href="/css/lightbox.css"></noscript>
+    <noscript><link rel="stylesheet" href="/css/settings-modal.css"></noscript>
+    <noscript><link rel="stylesheet" href="/css/scroll-to-top.css"></noscript>
+
+    <script src="/js/pwa/register-sw.js" async></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/lightbox.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+
+</head>
+
+<body>
+    <div id="shell-root"></div>
+    <script>
+        (function () {
+            var container = document.getElementById('shell-root');
+            function normalize(pathname) {
+                var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
+                return p === '' ? '/' : p;
+            }
+            function markCurrentNav() {
+                var current = normalize(location.pathname);
+                var sidebar = document.getElementById('sidebar');
+                if (!sidebar) return;
+                sidebar.querySelectorAll('.current, .selected').forEach(function (el) {
+                    el.classList.remove('current', 'selected');
+                    if (el.tagName === 'A') el.removeAttribute('aria-current');
+                });
+                document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
+                    var href = a.getAttribute('href');
+                    if (!href) return;
+                    var target = normalize(new URL(href, location.origin).pathname);
+                    if (target === current) {
+                        var parent = a.closest('.has-children');
+                        var toggle = parent ? parent.querySelector('.toggle') : null;
+                        var submenu = parent ? parent.querySelector('.submenu') : null;
+                        var parentOpen = !!(parent && parent.classList.contains('open'));
+
+                        if (parent && !parentOpen) {
+                            parent.classList.add('current');
+                            if (toggle) toggle.classList.add('current');
+                            return;
+                        }
+
+                        a.classList.add('current', 'selected');
+                        a.setAttribute('aria-current', 'page');
+                        if (parent) {
+                            if (toggle) {
+                                toggle.classList.add('current');
+                                toggle.setAttribute('aria-expanded', 'true');
+                            }
+                            if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                        }
+                    }
+                });
+            }
+            function attachShell(html) {
+                if (!container || !html) return;
+                container.innerHTML = html;
+                var move = function () {
+                    var main = document.querySelector('main');
+                    if (!main) return;
+                    var aside = container.querySelector('aside');
+                    var footer = container.querySelector('footer');
+                    if (aside && !main.contains(aside)) {
+                        aside.setAttribute('data-shell-moved', '1');
+                        main.appendChild(aside);
+                    }
+                    if (footer && footer.parentNode !== main.parentNode) {
+                        footer.setAttribute('data-shell-moved', '1');
+                        main.insertAdjacentElement('afterend', footer);
+                    }
+                    if (window.refreshAsideStack) {
+                        window.refreshAsideStack();
+                    }
+                    markCurrentNav();
+                };
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', move, { once: true });
+                } else {
+                    move();
+                }
+            }
+            function withVersion(url){
+                if (location.protocol === 'file:') return url;
+                var sep = url.indexOf('?') === -1 ? '?' : '&';
+                return url + sep + 'v=2.0.3.6-20260305';
+            }
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', withVersion('/includes/shell.html'), false);
+                xhr.send(null);
+                if ((xhr.status === 200 || xhr.status === 304 || xhr.status === 0) && xhr.responseText) {
+                        try { sessionStorage.setItem(SHELL_CACHE_KEY, xhr.responseText); } catch (e) {}
+                        if (!container.firstElementChild) attachShell(xhr.responseText);
+                        return;
+                    }
+            } catch (e) {}
+            fetch(withVersion('/includes/shell.html'), { cache: 'force-cache' })
+                .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
+                .then(function(html){ attachShell(html); });
+        })();
+    </script>
+
+    <main>
+        <div class="column-stack">
+            <section class="article-card">
+                <p class="eyebrow">工具</p>
+                <h1>Unicode 转换</h1>
+                <p class="article-subtitle">在同一面板完成文本与 Unicode 格式字符串互转，适合调试 JSON、前端文案转义和接口日志。</p>
+                <div class="article-meta">
+                    <span class="pill"><i class="icon-ic_fluent_arrow_sync_24_regular" aria-hidden="true"></i> 双向转换</span>
+                    <span class="pill"><i class="icon-ic_fluent_globe_24_regular" aria-hidden="true"></i> 码点支持</span>
+                    <span class="pill"><i class="icon-ic_fluent_code_24_regular" aria-hidden="true"></i> 多格式输出</span>
+                </div>
+                <div class="article-actions">
+                    <a href="#tool-panel">立即使用</a>
+                    <a href="#howto">如何使用</a>
+                </div>
+            </section>
+
+            <section class="article-card basex-tool-card" id="tool-panel">
+                <div class="basex-tool-panel">
+                    <p class="eyebrow">工具面板</p>
+                    <h2>Unicode 转换器</h2>
+                    <p class="article-subtitle">支持 `\\uXXXX`、`U+XXXX`、`&#xXXXX;` 三种常见格式，统一在浏览器端离线处理。</p>
+                    <div class="basex-mode-row">
+                        <div>
+                            <label for="unicode-mode">输出格式</label>
+                            <p class="field-hint">编码为文本时使用的目标格式</p>
+                        </div>
+                        <input type="hidden" id="unicode-mode" value="codepoint">
+                        <div class="settings-dropdown basex-dropdown" data-open="false">
+                            <button type="button" class="settings-dropdown-toggle" id="unicode-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                                <span class="toggle-label" id="unicode-mode-label">U+XXXX（码点）</span>
+                                <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
+                            </button>
+                            <div class="settings-dropdown-list" id="unicode-mode-list" role="listbox">
+                                <div class="dropdown-item" role="option" data-value="escape">\\uXXXX（转义）</div>
+                                <div class="dropdown-item selected" role="option" data-value="codepoint" aria-selected="true">U+XXXX（码点）</div>
+                                <div class="dropdown-item" role="option" data-value="html">&#xXXXX;（HTML 实体）</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tool-panel-grid">
+                        <div>
+                            <label for="unicode-input">输入区</label>
+                            <p class="field-hint">字符转 Unicode 使用此输入框。</p>
+                            <div class="basex-textarea-wrapper">
+                                <textarea id="unicode-input" spellcheck="false" rows="6" placeholder="输入普通文本后点击“字符转 Unicode”。"></textarea>
+                                <button type="button" class="copy-btn basex-copy-btn" data-copy-target="unicode-input" aria-label="复制输入内容">
+                                    <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div class="unicode-decode-row">
+                                <label for="unicode-decode-input">Unicode 转字符（独立输入）</label>
+                                <input id="unicode-decode-input" type="text" placeholder="输入 \\uXXXX / U+XXXX / &#xXXXX; 后点击“Unicode 转字符”" spellcheck="false">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="unicode-output-table">输出表格</label>
+                            <p class="field-hint">处理结果按表格展示，便于逐字符核对。</p>
+                            <div class="basex-list-wrapper">
+                                <table id="unicode-output-table" class="basex-result-table" aria-live="polite">
+                                    <thead id="unicode-output-head"></thead>
+                                    <tbody id="unicode-output-body"></tbody>
+                                </table>
+                                <button type="button" class="copy-btn basex-copy-btn" data-copy-target="unicode-output-table" aria-label="复制输出内容">
+                                    <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="basex-tool-actions">
+                        <button type="button" data-unicode-action="encode" data-basex-action="encode">字符转 Unicode</button>
+                        <button type="button" data-unicode-action="decode" data-basex-action="decode">Unicode 转字符</button>
+                        <button type="button" data-unicode-action="clear" data-basex-action="clear">清空</button>
+                    </div>
+                    <div id="unicode-feedback" class="basex-tool-feedback" aria-live="polite" data-state="info">等待操作</div>
+                </div>
+            </section>
+
+            <section class="article-card" id="howto">
+                <h2>如何使用</h2>
+                <ul>
+                    <li>字符转 Unicode：输入文本，选择输出格式后点击「字符转 Unicode」。</li>
+                    <li>Unicode 转字符：输入 `\\uXXXX`、`U+XXXX` 或实体格式，点击「Unicode 转字符」。</li>
+                    <li>清空：一键重置输入输出，快速切换下一组数据。</li>
+                </ul>
+            </section>
+        </div>
+        <script src="/js/tool/unicode.js" defer></script>
+    </main>
+</body>
+
+</html>

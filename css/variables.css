@@ -1,5 +1,13 @@
+/*
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\css\variables.css
+ * 作用: 页面样式与布局规则，按模块拆分维护。
+ * English: Module-level styles for layout and presentation.
+ */
 /* 模块：主题变量与全局设置 / Theme variables and global resets. */
 :root {
+	--font-sans: 'HARMONYOS_SANS_SC_REGULAR', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+	--font-mono: 'HARMONYOS_SANS_SC_REGULAR', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Segoe UI', sans-serif;
 	--bg-color: #ffffff;
 	--text-color: #111111;
 	--text-muted: #6b7280;
@@ -27,6 +35,14 @@
 	--sidebar-button-space: 0.75rem; /* 侧栏顶部内边距，保持轻微间隔 */
 	--icon-size: 32px;     /* 默认：页眉/Logo 图标大小 */
 	--icon-small: 20px;    /* 页脚/地址等小图标的较小尺寸 */
+}
+
+@font-face {
+	font-family: 'HARMONYOS_SANS_SC_REGULAR';
+	src: url('/resource/font/HARMONYOS_SANS_SC_REGULAR.TTF') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
 }
 
 /* particle image overlay: makes per-image overlay canvas align and ignore pointer events */
@@ -215,6 +231,14 @@ html {
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	transition: background-color 0.3s ease, color 0.3s ease;
+	font-family: var(--font-sans), 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji';
+}
+
+button,
+input,
+textarea,
+select {
+	font-family: inherit;
 }
 
 /* 自定义滚动条，贴合浅/深色主题 */

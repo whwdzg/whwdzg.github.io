@@ -1,3 +1,9 @@
+/*
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\css\tool-mc-projection.css
+ * 作用: 页面样式与布局规则，按模块拆分维护。
+ * English: Module-level styles for layout and presentation.
+ */
 .mcproj-tool-card {
   background: var(--card-bg, #ffffff);
   border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));

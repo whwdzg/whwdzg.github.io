@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!--
+  [站点注释 Site Note]
+  文件: D:\Documents\GitHub\whwdzg.github.io\tool\scientific-calculator.html
+  作用: 页面结构与内容容器，具体交互由对应 JS/CSS 增强。
+  English: Defines page markup; behavior and styling are enhanced by JS/CSS.
+-->
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科学计算器</title>
+    <meta name="author" content="滄海水魚">
+    <meta name="description" content="类 CASIO CN CW 999 的科学计算器，支持表达式、方程求解步骤、函数图像与 LaTeX 导出。">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
+    <link rel="stylesheet" href="/css/settings-modal.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="/css/videoplay.css">
+    <link rel="stylesheet" href="/css/column.css">
+    <link rel="stylesheet" href="/css/project.css">
+    <link rel="stylesheet" href="/css/tool-basex.css">
+    <link rel="stylesheet" href="/css/tool-scientific-calc.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+
+    <script src="/js/pwa/register-sw.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/lightbox.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+</head>
+
+<body>
+    <div id="shell-root"></div>
+    <script>
+        (function () {
+            var container = document.getElementById('shell-root');
+            function normalize(pathname) {
+                var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
+                return p === '' ? '/' : p;
+            }
+            function markCurrentNav() {
+                var current = normalize(location.pathname);
+                var sidebar = document.getElementById('sidebar');
+                if (!sidebar) return;
+                sidebar.querySelectorAll('.current, .selected').forEach(function (el) {
+                    el.classList.remove('current', 'selected');
+                    if (el.tagName === 'A') el.removeAttribute('aria-current');
+                });
+                document.querySelectorAll('#sidebar a[href]').forEach(function (a) {
+                    var href = a.getAttribute('href');
+                    if (!href) return;
+                    var target = normalize(new URL(href, location.origin).pathname);
+                    if (target === current) {
+                        var parent = a.closest('.has-children');
+                        var toggle = parent ? parent.querySelector('.toggle') : null;
+                        var submenu = parent ? parent.querySelector('.submenu') : null;
+                        var parentOpen = !!(parent && parent.classList.contains('open'));
+                        if (parent && !parentOpen) {
+                            parent.classList.add('current');
+                            if (toggle) toggle.classList.add('current');
+                            return;
+                        }
+                        a.classList.add('current', 'selected');
+                        a.setAttribute('aria-current', 'page');
+                        if (parent) {
+                            if (toggle) {
+                                toggle.classList.add('current');
+                                toggle.setAttribute('aria-expanded', 'true');
+                            }
+                            if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                        }
+                    }
+                });
+            }
+            function attachShell(html) {
+                if (!container || !html) return;
+                container.innerHTML = html;
+                var move = function () {
+                    var main = document.querySelector('main');
+                    if (!main) return;
+                    var aside = container.querySelector('aside');
+                    var footer = container.querySelector('footer');
+                    if (aside && !main.contains(aside)) {
+                        aside.setAttribute('data-shell-moved', '1');
+                        main.appendChild(aside);
+                    }
+                    if (footer && footer.parentNode !== main.parentNode) {
+                        footer.setAttribute('data-shell-moved', '1');
+                        main.insertAdjacentElement('afterend', footer);
+                    }
+                    if (window.refreshAsideStack) window.refreshAsideStack();
+                    markCurrentNav();
+                };
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', move, { once: true });
+                } else {
+                    move();
+                }
+            }
+            function bust(url) {
+                if (location.protocol === 'file:') return url;
+                var sep = url.indexOf('?') === -1 ? '?' : '&';
+                return url + sep + 'ts=' + Date.now();
+            }
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', bust('/includes/shell.html'), false);
+                xhr.send(null);
+                if (xhr.status === 200 || xhr.status === 0) {
+                    attachShell(xhr.responseText);
+                    return;
+                }
+            } catch (e) {}
+            fetch(bust('/includes/shell.html'), { cache: 'no-store' })
+                .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
+                .then(function(html){ attachShell(html); });
+        })();
+    </script>
+
+    <main>
+        <div class="column-stack">
+            <section class="article-card">
+                <p class="eyebrow">工具</p>
+                <h1>科学计算器</h1>
+                <p class="article-subtitle">类 CASIO CN CW 999 的科学计算器体验，支持表达式计算、方程求解步骤、可选虚数解与函数图像。</p>
+                <div class="article-actions">
+                    <a href="#tool-panel">立即使用</a>
+                    <a href="#howto">使用说明</a>
+                </div>
+            </section>
+
+            <section class="article-card basex-tool-card basex-tool-panel calc-card" id="tool-panel">
+                <div class="basex-mode-row">
+                    <div>
+                        <label for="calc-work-mode">工作模式</label>
+                        <p class="field-hint">表达式 / 解方程 / 函数图像</p>
+                    </div>
+                    <input type="hidden" id="calc-work-mode" value="expr">
+                    <div class="settings-dropdown basex-dropdown" data-open="false" data-calc-dropdown="mode">
+                        <button type="button" class="settings-dropdown-toggle" id="calc-work-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="toggle-label" id="calc-work-mode-label">表达式</span>
+                            <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
+                        </button>
+                        <div class="settings-dropdown-list" id="calc-work-mode-list" role="listbox">
+                            <div class="dropdown-item selected" role="option" data-value="expr" aria-selected="true">表达式</div>
+                            <div class="dropdown-item" role="option" data-value="equation">解方程</div>
+                            <div class="dropdown-item" role="option" data-value="graph">函数图像</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="basex-mode-row">
+                    <div>
+                        <label for="calc-angle-mode">角度模式</label>
+                        <p class="field-hint">三角函数计算角度</p>
+                    </div>
+                    <input type="hidden" id="calc-angle-mode" value="deg">
+                    <div class="settings-dropdown basex-dropdown" data-open="false" data-calc-dropdown="angle">
+                        <button type="button" class="settings-dropdown-toggle" id="calc-angle-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="toggle-label" id="calc-angle-mode-label">DEG</span>
+                            <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
+                        </button>
+                        <div class="settings-dropdown-list" id="calc-angle-mode-list" role="listbox">
+                            <div class="dropdown-item selected" role="option" data-value="deg" aria-selected="true">DEG</div>
+                            <div class="dropdown-item" role="option" data-value="rad">RAD</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="basex-mode-row">
+                    <div>
+                        <label for="calc-complex-mode">方程解</label>
+                        <p class="field-hint">是否包含虚数解（仅解方程模式有效）</p>
+                    </div>
+                    <input type="hidden" id="calc-complex-mode" value="real">
+                    <div class="settings-dropdown basex-dropdown" data-open="false" data-calc-dropdown="complex">
+                        <button type="button" class="settings-dropdown-toggle" id="calc-complex-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="toggle-label" id="calc-complex-mode-label">仅实数解</span>
+                            <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
+                        </button>
+                        <div class="settings-dropdown-list" id="calc-complex-mode-list" role="listbox">
+                            <div class="dropdown-item selected" role="option" data-value="real" aria-selected="true">仅实数解</div>
+                            <div class="dropdown-item" role="option" data-value="complex">包含虚数解</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-ans">Ans: <span id="calc-ans">0</span></div>
+
+                <label for="calc-input">输入</label>
+                <textarea id="calc-input" rows="4" spellcheck="false" placeholder="表达式：sin(30)+2^3；方程：x^2+2x+5=0；图像：sin(x)+x/3"></textarea>
+
+                <div class="calc-point-row" aria-label="导数取值点">
+                    <label for="calc-point-x1">X1</label>
+                    <input id="calc-point-x1" type="number" step="any" placeholder="例如 1.5">
+                    <label for="calc-point-x2">X2</label>
+                    <input id="calc-point-x2" type="number" step="any" placeholder="例如 3">
+                </div>
+
+                <div id="calc-result" class="calc-result" aria-live="polite">结果: -</div>
+
+                <div class="calc-grid" id="calc-grid">
+                    <button type="button" data-insert="sin(" title="\\sin">\sin</button>
+                    <button type="button" data-insert="cos(" title="\\cos">\cos</button>
+                    <button type="button" data-insert="tan(" title="\\tan">\tan</button>
+                    <button type="button" data-insert="asin(" title="\\arcsin">\arcsin</button>
+                    <button type="button" data-insert="acos(" title="\\arccos">\arccos</button>
+                    <button type="button" data-insert="atan(" title="\\arctan">\arctan</button>
+
+                    <button type="button" data-insert="log(" title="\\log">\log</button>
+                    <button type="button" data-insert="ln(" title="\\ln">\ln</button>
+                    <button type="button" data-insert="sqrt(" title="\\sqrt{x}">\sqrt{x}</button>
+                    <button type="button" data-insert="abs(" title="|x|">|x|</button>
+                    <button type="button" data-insert="C(" title="C(n,r)">C(n,r)</button>
+                    <button type="button" data-insert="P(" title="P(n,r)">P(n,r)</button>
+
+                    <button type="button" data-insert="(">(</button>
+                    <button type="button" data-insert=")">)</button>
+                    <button type="button" data-insert="^" title="x^{y}">x^{y}</button>
+                    <button type="button" data-insert="!" title="x!">x!</button>
+                    <button type="button" data-insert="pi" title="\\pi">\pi</button>
+                    <button type="button" data-insert="x" title="x">x</button>
+
+                    <button type="button" data-insert="7">7</button>
+                    <button type="button" data-insert="8">8</button>
+                    <button type="button" data-insert="9">9</button>
+                    <button type="button" data-insert="/">/</button>
+                    <button type="button" data-insert="%">%</button>
+                    <button type="button" data-action="del">DEL</button>
+
+                    <button type="button" data-insert="4">4</button>
+                    <button type="button" data-insert="5">5</button>
+                    <button type="button" data-insert="6">6</button>
+                    <button type="button" data-insert="*">*</button>
+                    <button type="button" data-insert=",">,</button>
+                    <button type="button" data-action="clear">AC</button>
+
+                    <button type="button" data-insert="1">1</button>
+                    <button type="button" data-insert="2">2</button>
+                    <button type="button" data-insert="3">3</button>
+                    <button type="button" data-insert="-">-</button>
+                    <button type="button" data-insert="Ans">Ans</button>
+                    <button type="button" data-action="eval">=</button>
+
+                    <button type="button" data-insert="0">0</button>
+                    <button type="button" data-insert=".">.</button>
+                    <button type="button" data-insert="+">+</button>
+                    <button type="button" class="span2" data-action="derivative">导数@X1,X2</button>
+                    <button type="button" class="span2" data-action="plot">绘制图像</button>
+                    <button type="button" class="span2" data-action="latex">导出 LaTeX</button>
+                </div>
+
+                <label for="calc-latex">LaTeX</label>
+                <textarea id="calc-latex" rows="3" readonly></textarea>
+
+                <div class="calc-steps-card">
+                    <h3>求解步骤</h3>
+                    <ol id="calc-steps">
+                        <li>等待计算</li>
+                    </ol>
+                </div>
+
+                <div class="calc-graph-card">
+                    <h3>函数图像</h3>
+                    <canvas id="calc-graph-canvas" width="900" height="380" aria-label="函数图像"></canvas>
+                </div>
+            </section>
+
+            <section class="article-card" id="howto">
+                <h2>使用说明</h2>
+                <ul>
+                    <li>工作模式可选：表达式计算、解方程、函数图像。</li>
+                    <li>解方程模式支持一元一次/一元二次，自动列出步骤；可选是否包含虚数解。</li>
+                    <li>函数图像模式输入含 `x` 的表达式后点击「绘制图像」。</li>
+                    <li>任意模式下都可将输入表达式导出为 LaTeX 文本。</li>
+                </ul>
+            </section>
+        </div>
+        <script src="/js/tool/scientific-calculator.js" defer></script>
+    </main>
+</body>
+
+</html>

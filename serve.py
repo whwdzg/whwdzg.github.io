@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# [站点注释 Site Note]
+# 文件: D:\Documents\GitHub\whwdzg.github.io\serve.py
+# 作用: 站点辅助脚本（本地开发/资源检查等）。
+# English: Utility script for local serving or asset checks.
 # -*- coding: utf-8 -*-
 """
 本地开发服务器启动脚本 / Local development server launcher

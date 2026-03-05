@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\sidebar.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // 左侧导航折叠/展开逻辑
 document.addEventListener('DOMContentLoaded', function () {
 	// 将文档中的 aside 收集到右下角浮动栈容器，避免重叠纵向排列
