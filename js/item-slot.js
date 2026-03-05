@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\item-slot.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 (function () {
     var DEFAULT_ASSET_BASE = "/resource/minecraft/assests/minecraft";
     var DEFAULT_SLOT_TEXTURE = DEFAULT_ASSET_BASE + "/textures/gui/sprites/container/slot.png";

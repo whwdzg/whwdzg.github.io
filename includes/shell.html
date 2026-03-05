@@ -1,3 +1,9 @@
+<!--
+  [站点注释 Site Note]
+  文件: D:\Documents\GitHub\whwdzg.github.io\includes\shell.html
+  作用: 页面结构与内容容器，具体交互由对应 JS/CSS 增强。
+  English: Defines page markup; behavior and styling are enhanced by JS/CSS.
+-->
 <!-- Shared shell: header, sidebar, aside, footer -->
 <!-- 模块：全站壳层 / Shared shell (header, sidebar, footer). 保留导航与动画。 -->
 <header>
@@ -100,6 +106,24 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/tool/unicode.html">
+                        <i class="icon-ic_fluent_code_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">Unicode 转换</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/tool/base-convert.html">
+                        <i class="icon-ic_fluent_data_bar_vertical_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">进制转换</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/tool/scientific-calculator.html">
+                        <i class="icon-ic_fluent_calculator_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">科学计算器</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/tool/mc-projection.html">
                         <i class="icon-ic_fluent_cube_24_regular item-icon" aria-hidden="true"></i>
                         <span class="label">MC 投影查看器</span>
@@ -125,12 +149,24 @@
         <li class="has-children">
             <button class="toggle" aria-expanded="false">
                 <i class="icon-ic_fluent_movies_and_tv_24_regular item-icon" aria-hidden="true"></i>
-                <span class="toggle-label">视频存档</span>
+                <span class="toggle-label">媒体</span>
                 <span class="toggle-icon fluent-font" aria-hidden="true">&#xF2B1;</span>
             </button>
             <ul class="submenu">
                 <li>
-                    <a href="/video-archive/list-bilivideo.html">
+                    <a href="/media/video.html">
+                        <i class="icon-ic_fluent_video_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">视频</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/media/music.html">
+                        <i class="icon-ic_fluent_music_note_2_24_regular item-icon" aria-hidden="true"></i>
+                        <span class="label">音乐</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/media/bilibili.html">
                         <i class="icon-ic_fluent_tv_24_regular item-icon" aria-hidden="true"></i>
                         <span class="label">哔哩哔哩</span>
                     </a>
@@ -150,7 +186,7 @@
 </button>
 <footer>
     <p>2022-2026 滄海水魚</p>
-    <p>当前版本：<strong>2.0.3.5-20260218</strong></p>
+    <p>当前版本：<strong>2.0.3.6-20260305</strong></p>
 </footer>
 <div id="global-copy-toast" class="global-copy-toast" role="status" aria-live="assertive">
     <span class="global-toast-icon fluent-icon icon-ic_fluent_checkmark_circle_24_regular" aria-hidden="true"></span>

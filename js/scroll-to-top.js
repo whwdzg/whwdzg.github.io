@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\scroll-to-top.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // 模块：返回顶部按钮 / Scroll-to-top interactions with previous-position recall.
 document.addEventListener('DOMContentLoaded', function () {
 	const scrollToTopBtn = document.getElementById('scroll-to-top');

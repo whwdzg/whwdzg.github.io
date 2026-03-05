@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--
+  [站点注释 Site Note]
+  文件: D:\Documents\GitHub\whwdzg.github.io\media\music.html
+  作用: 页面结构与内容容器，具体交互由对应 JS/CSS 增强。
+  English: Defines page markup; behavior and styling are enhanced by JS/CSS.
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媒体 - 音乐</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/media-player.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+    <script src="/js/pwa/register-sw.js" defer></script>
+</head>
+<body class="media-page music-page">
+    <div class="dynamic-bg" aria-hidden="true"></div>
+
+    <header class="top-nav">
+        <a class="back-link" href="/">返回主站</a>
+    </header>
+
+    <main class="content-area">
+        <section class="music-layout">
+            <article class="album-panel">
+                <img id="cover-image" alt="歌曲封面">
+                <div id="quality-tip" class="quality">音质信息：-</div>
+            </article>
+
+            <article class="lyrics-panel">
+                <div class="lyrics-head" aria-hidden="true"></div>
+                <div id="lyrics-list" class="lyrics-list"></div>
+            </article>
+        </section>
+    </main>
+
+    <audio id="main-media"></audio>
+
+    <section class="player-dock">
+        <div class="progress-zone">
+            <input id="seek-range" class="progress-input" type="range" min="0" max="0" step="0.01" value="0">
+            <div id="progress-preview" class="progress-preview">
+                <img id="preview-image" src="" alt="预览图">
+                <div class="time-line">
+                    <span id="preview-time">00:00</span>
+                    <span id="preview-total">00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="player-row">
+            <div class="info-left">
+                <img id="left-cover" alt="封面缩略图">
+                <div class="track-meta">
+                    <div id="track-title" class="track-title">未导入音乐</div>
+                    <div id="track-author" class="track-author">作者：-</div>
+                    <div class="track-time"><span id="running-time">00:00</span> / <span id="total-time">00:00</span></div>
+                </div>
+            </div>
+
+            <div class="controls-mid">
+                <button class="control-btn icon-only" id="prev-btn" type="button" title="上一项" aria-label="上一项">
+                    <i class="fluent-icon icon-ic_fluent_previous_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="control-btn icon-only" id="back10-btn" type="button" title="快退 10 秒" aria-label="快退 10 秒">
+                    <i class="fluent-icon icon-ic_fluent_rewind_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="control-btn primary icon-only" id="play-btn" type="button" title="播放/暂停" aria-label="播放">
+                    <i id="play-icon" class="fluent-icon icon-ic_fluent_play_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="control-btn icon-only" id="fwd10-btn" type="button" title="快进 10 秒" aria-label="快进 10 秒">
+                    <i class="fluent-icon icon-ic_fluent_fast_forward_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="control-btn icon-only" id="next-btn" type="button" title="下一项" aria-label="下一项">
+                    <i class="fluent-icon icon-ic_fluent_next_24_regular" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="controls-right">
+                <button class="control-btn icon-only" id="import-btn" type="button" title="导入" aria-label="导入">
+                    <i class="fluent-icon icon-ic_fluent_cloud_arrow_up_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="control-btn icon-only" id="settings-btn" type="button" title="设置" aria-label="设置">
+                    <i class="fluent-icon icon-ic_fluent_settings_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="control-btn icon-only" id="volume-btn" type="button" title="音量" aria-label="音量">
+                    <i class="fluent-icon icon-ic_fluent_speaker_2_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="control-btn icon-only" id="playlist-btn" type="button" title="播放列表" aria-label="播放列表">
+                    <i class="fluent-icon icon-ic_fluent_apps_list_24_regular" aria-hidden="true"></i>
+                </button>
+                <button class="control-btn icon-only" id="fullscreen-btn" type="button" title="全屏页面" aria-label="全屏页面">
+                    <i class="fluent-icon icon-ic_fluent_full_screen_maximize_24_regular" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="import-panel" class="floating-panel" aria-label="导入方式面板">
+            <div class="setting-row setting-row-title">选择导入方式</div>
+            <div class="import-panel-actions">
+                <button id="import-folder-btn" class="panel-action-btn" type="button">
+                    <i class="fluent-icon icon-ic_fluent_folder_open_24_regular" aria-hidden="true"></i>
+                    <span>导入文件夹（推荐）</span>
+                </button>
+                <button id="import-file-btn" class="panel-action-btn" type="button">
+                    <i class="fluent-icon icon-ic_fluent_document_24_regular" aria-hidden="true"></i>
+                    <span>导入音乐文件</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="settings-panel" class="floating-panel" aria-label="设置面板">
+            <div class="setting-row">
+                <label for="speed-range">倍速</label>
+                <div class="setting-control">
+                    <input id="speed-range" class="setting-slider" type="range" min="0.5" max="2" step="0.05" value="1">
+                    <span class="setting-value" id="speed-value">1.00x</span>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label for="toggle-dynamic-bg">动态背景</label>
+                <input id="toggle-dynamic-bg" type="checkbox" checked>
+            </div>
+            <div class="setting-row">
+                <label for="toggle-karaoke">逐字歌词</label>
+                <input id="toggle-karaoke" type="checkbox" checked>
+            </div>
+            <div class="setting-row">
+                <label for="toggle-lyric-blur">歌词模糊</label>
+                <input id="toggle-lyric-blur" type="checkbox" checked>
+            </div>
+            <div class="setting-row">
+                <label for="lyric-size">歌词大小</label>
+                <div class="setting-control">
+                    <input id="lyric-size" class="setting-slider" type="range" min="24" max="84" step="1" value="36">
+                    <span class="setting-value" id="lyric-size-value">36 px</span>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label for="lyric-weight">歌词粗细</label>
+                <div class="setting-control">
+                    <input id="lyric-weight" class="setting-slider" type="range" min="500" max="900" step="100" value="600">
+                    <span class="setting-value" id="lyric-weight-value">600 wt</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="volume-panel" class="floating-panel" aria-label="音量面板">
+            <div class="setting-row">
+                <label for="volume-range">音量</label>
+                <div class="setting-control">
+                    <input id="volume-range" class="setting-slider" type="range" min="0" max="1" step="0.01" value="1">
+                    <span class="setting-value" id="volume-value">100%</span>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label for="eq-low">低频</label>
+                <div class="setting-control">
+                    <input id="eq-low" class="setting-slider" type="range" min="-12" max="12" value="0">
+                    <span class="setting-value" id="eq-low-value">0 dB</span>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label for="eq-mid">中频</label>
+                <div class="setting-control">
+                    <input id="eq-mid" class="setting-slider" type="range" min="-12" max="12" value="0">
+                    <span class="setting-value" id="eq-mid-value">0 dB</span>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label for="eq-high">高频</label>
+                <div class="setting-control">
+                    <input id="eq-high" class="setting-slider" type="range" min="-12" max="12" value="0">
+                    <span class="setting-value" id="eq-high-value">0 dB</span>
+                </div>
+            </div>
+        </div>
+
+        <input id="import-file-input" class="hidden" type="file" multiple accept="audio/*,.mp3,.flac,.m4a,.wav,.ogg,.lrc,.txt">
+        <input id="import-folder-input" class="hidden" type="file" multiple webkitdirectory directory>
+    </section>
+
+    <div class="status-tip" id="status-tip">点击导入按钮后选择“文件”或“文件夹”</div>
+
+    <aside class="playlist-drawer" id="playlist-drawer" aria-label="播放列表">
+        <div class="playlist-head">
+            <button class="playlist-close-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
+                <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+            </button>
+            <div class="loop-row">
+                <button class="loop-btn active" data-loop="none" type="button">不循环</button>
+                <button class="loop-btn" data-loop="all" type="button">全部循环</button>
+                <button class="loop-btn" data-loop="one" type="button">单项循环</button>
+                <button class="loop-btn" data-loop="shuffle" type="button">随机播放</button>
+            </div>
+            <input id="playlist-search" class="playlist-search" type="search" placeholder="搜索列表">
+        </div>
+        <ul id="playlist-list" class="playlist-list"></ul>
+    </aside>
+
+    <script type="module" src="/js/media/music.js"></script>
+</body>
+</html>

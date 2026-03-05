@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\settings-modal.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // 模块：设置弹窗与主题 / Settings modal lifecycle, theme controls, custom colors.
 // load control to avoid race when opening/closing rapidly
 let __settingsLoadToken = 0; // incrementing token for each open
@@ -87,7 +93,8 @@ const SETTINGS_FALLBACK_HTML = `
     <h2>浅色/深色模式切换</h2>
     <h4>切换浅色模式/深色模式的行为</h4>
     <p>跟随系统</p>
-    <p>手动设置</p>
+    <p>浅色模式</p>
+    <p>深色模式</p>
   </section>
   <section id="maincolorpicker">
     <h2>切换主题色</h2>
@@ -96,6 +103,25 @@ const SETTINGS_FALLBACK_HTML = `
     <p data-color="#33CC99">#33CC99</p>
     <p data-color="#F50000">#F50000</p>
     <p data-color="自定义">自定义</p>
+  </section>
+  <section id="wallpaperselection">
+    <h2>选择壁纸</h2>
+    <h4>手动选择浅色/深色对应壁纸</h4>
+    <p>自动（每日轮换）</p>
+    <p>浅色壁纸1</p>
+    <p>浅色壁纸2</p>
+    <p>浅色壁纸3</p>
+    <p>浅色壁纸4</p>
+    <p>浅色壁纸5</p>
+    <p>浅色壁纸6</p>
+    <p>深色壁纸1</p>
+    <p>深色壁纸2</p>
+  </section>
+  <section id="wallpaperrotation" data-setting="wallpaper-rotation">
+    <h2>壁纸轮换</h2>
+    <h4>开启后每天自动切换，关闭后固定当前壁纸</h4>
+    <p>关闭</p>
+    <p>开启</p>
   </section>
   <section id="pageprogress" data-setting="page-progress">
     <h2>页面进度条</h2>
@@ -117,21 +143,29 @@ const SETTINGS_FALLBACK_HTML = `
     <h4>清除本地页面缓存，以确保页面为最新，一般情况不建议使用</h4>
     <button type="button">清除</button>
   </section>
+  <section id="reset-wallpaper-rotation">
+    <h2>重置壁纸轮换</h2>
+    <h4>清除今日壁纸记录并重新生成随机壁纸</h4>
+    <button type="button">重置</button>
+  </section>
 `;
 
 const DEFAULT_CATEGORY_TITLES = {
   personalization: '个性化',
-  technical: '技术性',
+  technical: '高级',
   about: '关于'
 };
 
 const SECTION_ICON_MAP = {
   lightdarktoggle: 'icon-ic_fluent_brightness_high_24_regular',
   maincolorpicker: 'icon-ic_fluent_color_line_24_regular',
+  wallpaperselection: 'icon-ic_fluent_image_24_regular',
+  wallpaperrotation: 'icon-ic_fluent_arrow_sync_24_regular',
   pageprogress: 'icon-ic_fluent_chart_multiple_24_regular',
   'page-progress': 'icon-ic_fluent_chart_multiple_24_regular',
   particleanimation: 'icon-ic_fluent_sparkle_24_regular',
   'clear-page-cache': 'icon-ic_fluent_delete_24_regular',
+  'reset-wallpaper-rotation': 'icon-ic_fluent_arrow_reset_24_regular',
   'settings-about-browserUA': 'icon-ic_fluent_window_24_regular',
   'settings-about-currentTime': 'icon-ic_fluent_timer_24_regular',
   'settings-about-siteVersion': 'icon-ic_fluent_code_24_regular',
@@ -192,7 +226,7 @@ function formatCurrentTime() {
 }
 
 function getSiteVersionMarkup() {
-  return '当前版本：<strong>未知</strong>';
+  return '当前版本：<strong>2.0.3.6-20260305</strong>';
 }
 
 function stopCurrentTimeTicker() {
@@ -280,7 +314,8 @@ function applySettingsTranslations(container) {
     if (h2 && t.lightdark.title) h2.textContent = t.lightdark.title;
     if (h4 && t.lightdark.subtitle) h4.textContent = t.lightdark.subtitle;
     if (ps[0] && t.lightdark.follow) ps[0].textContent = t.lightdark.follow;
-    if (ps[1] && t.lightdark.manual) ps[1].textContent = t.lightdark.manual;
+    if (ps[1]) ps[1].textContent = t.lightdark.light || t.lightdark.manual || '浅色模式';
+    if (ps[2]) ps[2].textContent = t.lightdark.dark || '深色模式';
   }
 
   const color = container.querySelector('#maincolorpicker');
@@ -387,43 +422,6 @@ function buildSection(sec){
   }
 
   const ps = Array.from(sec.querySelectorAll('p'));
-
-  // 专门处理：浅色/深色切换（使用 follow-system 存储键）
-  if (sec.id === 'lightdarktoggle') {
-    const row = document.createElement('div');
-    row.className = 'settings-toggle-row';
-    const pContainer = document.createElement('div');
-    pContainer.style.margin = '0';
-    const pFollow = document.createElement('p');
-    const pManual = document.createElement('p');
-    // ps[0] / ps[1] 文本来自模板，保持原样
-    pFollow.innerHTML = ps[0] ? ps[0].innerHTML : '跟随系统';
-    pManual.innerHTML = ps[1] ? ps[1].innerHTML : '手动设置';
-    pFollow.style.margin = '0';
-    pManual.style.margin = '0';
-    pContainer.appendChild(pFollow);
-    pContainer.appendChild(pManual);
-
-    const followSystemStr = localStorage.getItem('follow-system');
-    const initialActive = followSystemStr === null ? true : followSystemStr === 'true';
-
-    // initialActive === true 表示跟随系统（显示 pFollow）
-    pFollow.style.display = initialActive ? '' : 'none';
-    pManual.style.display = initialActive ? 'none' : '';
-
-    const toggle = buildToggle((on) => {
-      // on 表示跟随系统
-      pFollow.style.display = on ? '' : 'none';
-      pManual.style.display = on ? 'none' : '';
-      try { localStorage.setItem('follow-system', on ? 'true' : 'false'); } catch(e) {}
-      document.dispatchEvent(new CustomEvent('follow-system-changed', { detail: { fromModal: true } }));
-    }, initialActive);
-
-    row.appendChild(pContainer);
-    row.appendChild(toggle);
-    wrapper.appendChild(row);
-    return wrapper;
-  }
 
   if (sec.id === 'maincolorpicker') {
     try {
@@ -826,6 +824,35 @@ function buildSection(sec){
     row.appendChild(status);
     row.appendChild(btn);
     wrapper.appendChild(row);
+  } else if (sec.id === 'reset-wallpaper-rotation') {
+    const row = document.createElement('div');
+    row.className = 'settings-action-row';
+
+    const status = document.createElement('span');
+    status.className = 'settings-action-status';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'settings-action-btn';
+    const sourceBtn = sec.querySelector('button');
+    btn.textContent = (sourceBtn && sourceBtn.textContent ? sourceBtn.textContent.trim() : '重置') || '重置';
+
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      btn.classList.add('loading');
+      status.textContent = '已重置，正在应用';
+      status.classList.remove('error', 'muted');
+      status.classList.add('ok');
+      document.dispatchEvent(new CustomEvent('wallpaper-rotation-reset', { detail: { fromModal: true } }));
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.classList.remove('loading');
+      }, 280);
+    });
+
+    row.appendChild(status);
+    row.appendChild(btn);
+    wrapper.appendChild(row);
   } else if (ps.length === 1) {
     const row = document.createElement('div');
     row.className = 'settings-toggle-row';
@@ -944,50 +971,64 @@ function buildSection(sec){
       });
 
       function positionPortal(e){
-        // position portal under the toggleBtn (align left by default)
         const rect = toggleBtn.getBoundingClientRect();
-        const viewportW = window.innerWidth;
-        const viewportH = window.innerHeight;
-        const minW = 160, maxW = 520; // allow wider portal for long labels
+        const vv = window.visualViewport;
+        const viewportW = vv ? vv.width : window.innerWidth;
+        const viewportH = vv ? vv.height : window.innerHeight;
+        const viewportLeft = vv ? vv.offsetLeft : 0;
+        const viewportTop = vv ? vv.offsetTop : 0;
+        const minW = 160;
+        const maxW = 520;
+        const gap = 8;
+        const edge = 8;
+        const portalPadding = 12;
+        const minVisibleListHeight = 36;
 
-        // Only recompute width on first layout or on resize events.
-        // Avoid recomputing on scroll to prevent scroll-triggered width/jump.
+        // Recompute width when opening or resizing so long labels do not overflow.
         const isResizeEvent = e && e.type === 'resize';
         if (isResizeEvent || !portal.dataset.widthComputed) {
-          // Compute content width conservatively: find max scrollWidth of items
           const items = list.querySelectorAll('.dropdown-item');
           let maxItemW = rect.width;
           items.forEach(it => {
             try { maxItemW = Math.max(maxItemW, Math.ceil(it.scrollWidth)); } catch (err) {}
           });
-          // Add padding so text has breathing room
           const contentW = maxItemW + 24;
-          // clamp to min/max and viewport to avoid single long token stretching panel
           let portalW = Math.min(maxW, Math.max(minW, contentW));
-          portalW = Math.min(portalW, viewportW - 16);
+          portalW = Math.min(portalW, viewportW - edge * 2);
           portal.style.width = portalW + 'px';
           portal.dataset.widthComputed = '1';
         }
 
-        // measure portal height after width applied
-        const portalH = portal.offsetHeight || 240;
-        const gap = 8;
-        const spaceBelow = viewportH - rect.bottom;
-        const preferBelow = spaceBelow > portalH + gap || rect.top < 120;
-
-        // compute left: prefer aligning with toggle left, but clamp to viewport
-        // read computed width to clamp left correctly
-        const portalWcur = parseInt(portal.style.width, 10) || Math.min(Math.max(160, Math.ceil(list.scrollWidth || rect.width) + 24), viewportW - 16);
+        // Clamp horizontal position first.
+        const portalWcur = parseInt(portal.style.width, 10) || Math.min(Math.max(minW, Math.ceil(list.scrollWidth || rect.width) + 24), viewportW - edge * 2);
         let left = rect.left;
-        const maxLeft = Math.max(8, viewportW - portalWcur - 8);
-        left = Math.min(Math.max(8, left), maxLeft);
+        const minLeft = viewportLeft + edge;
+        const maxLeft = Math.max(minLeft, viewportLeft + viewportW - portalWcur - edge);
+        left = Math.min(Math.max(minLeft, left), maxLeft);
         portal.style.left = left + 'px';
 
-        if (preferBelow) {
-          portal.style.top = Math.min(viewportH - portalH - 8, rect.bottom + gap) + 'px';
-        } else {
-          portal.style.top = Math.max(8, rect.top - portalH - gap) + 'px';
-        }
+        // Decide opening direction by available space and cap list height to stay in viewport.
+        const spaceBelow = Math.max(0, viewportTop + viewportH - rect.bottom - gap - edge - portalPadding);
+        const spaceAbove = Math.max(0, rect.top - viewportTop - gap - edge - portalPadding);
+        const openBelow = spaceBelow >= spaceAbove;
+        const available = Math.max(0, openBelow ? spaceBelow : spaceAbove);
+        const targetH = Math.max(0, Math.min(list.scrollHeight, available));
+        list.style.maxHeight = targetH + 'px';
+        if (list.scrollHeight > targetH) list.classList.add('scrollable');
+        else list.classList.remove('scrollable');
+
+        // Use expected final height (not transitional offsetHeight) to avoid animation overflow.
+        const listStyles = getComputedStyle(list);
+        const listMarginTop = parseFloat(listStyles.marginTop || '0') || 0;
+        const expectedListHeight = Math.max(minVisibleListHeight, targetH);
+        const expectedPortalH = expectedListHeight + portalPadding + listMarginTop + 2;
+
+        // Position portal and clamp vertically to viewport to avoid clipping outside page.
+        let top = openBelow ? (rect.bottom + gap) : (rect.top - expectedPortalH - gap);
+        const minTop = viewportTop + edge;
+        const maxTop = Math.max(minTop, viewportTop + viewportH - expectedPortalH - edge);
+        top = Math.min(Math.max(minTop, top), maxTop);
+        portal.style.top = top + 'px';
       }
 
       function expandDropdown(){
@@ -1000,28 +1041,18 @@ function buildSection(sec){
         delete portal.dataset.widthComputed;
         // let portal width adapt to content before measurement
         portal.style.width = '';
-        // compute available height to avoid portal bottom overflow; if limited, allow scrolling
-        const rect = toggleBtn.getBoundingClientRect();
-        const gap = 8;
-        const portalPadding = 12; // portal vertical padding
-        const viewportH = window.innerHeight;
-        const preferBelow = (viewportH - rect.bottom) > 120 || rect.top < 120;
-        let availableHeight = 0;
-        if (preferBelow) {
-          availableHeight = Math.max(80, viewportH - rect.bottom - gap - portalPadding - 16);
-        } else {
-          availableHeight = Math.max(80, rect.top - gap - portalPadding - 16);
-        }
-        const targetH = Math.min(list.scrollHeight, availableHeight);
-        list.style.maxHeight = targetH + 'px';
-        if (list.scrollHeight > targetH) {
-          list.classList.add('scrollable');
-        } else {
-          list.classList.remove('scrollable');
-        }
         // set CSS variable to control rotation only (keep translateY from CSS)
         toggleBtn.style.setProperty('--toggle-rotate', '90deg');
         positionPortal();
+        // Reposition after open transition starts to prevent edge overflow on small viewports.
+        requestAnimationFrame(() => {
+          if (!opened && !row.classList.contains('open')) return;
+          positionPortal();
+          requestAnimationFrame(() => {
+            if (!opened && !row.classList.contains('open')) return;
+            positionPortal();
+          });
+        });
         // bind outside click and resize/scroll handlers
         window.addEventListener('click', outsideClickHandler);
         window.addEventListener('resize', outsideCloseHandler);
@@ -1143,16 +1174,17 @@ function buildSection(sec){
 
 function getSettingsCategoryDefinitions(strings) {
   const categories = strings && strings.categories;
+  const advancedTitle = (categories && (categories.advanced || categories.technical)) || DEFAULT_CATEGORY_TITLES.technical;
   return [
     {
       key: 'personalization',
       title: (categories && categories.personalization) || DEFAULT_CATEGORY_TITLES.personalization,
-      sectionIds: ['lightdarktoggle', 'maincolorpicker', 'pageprogress', 'particleanimation']
+      sectionIds: ['lightdarktoggle', 'maincolorpicker', 'wallpaperselection', 'wallpaperrotation', 'pageprogress', 'particleanimation']
     },
     {
       key: 'technical',
-      title: (categories && categories.technical) || DEFAULT_CATEGORY_TITLES.technical,
-      sectionIds: ['clear-page-cache']
+      title: advancedTitle,
+      sectionIds: ['clear-page-cache', 'reset-wallpaper-rotation']
     },
     {
       key: 'about',
@@ -1583,8 +1615,7 @@ try {
   });
 } catch (e) {}
 
-document.addEventListener('follow-system-changed', (e) => {
-  if (e.detail && e.detail.fromModal) return;
+function refreshOpenSettingsModal(reasonLabel) {
   const modal = document.getElementById('settings-modal');
   if (!modal || !modal.classList.contains('show')) return;
   const body = modal.querySelector('.modal-body');
@@ -1599,8 +1630,21 @@ document.addEventListener('follow-system-changed', (e) => {
   try {
     renderSettingsSections(tmp, body, getSettingsStrings());
   } catch (err) {
-    console.error('[Settings Modal] follow-system re-render failed', err);
+    console.error(`[Settings Modal] ${reasonLabel || 'state'} re-render failed`, err);
   }
+}
+
+document.addEventListener('follow-system-changed', (e) => {
+  if (e.detail && e.detail.fromModal) return;
+  refreshOpenSettingsModal('follow-system');
+});
+
+document.addEventListener('theme-mode-changed', () => {
+  refreshOpenSettingsModal('theme-mode');
+});
+
+document.addEventListener('wallpaper-settings-synced', () => {
+  refreshOpenSettingsModal('wallpaper-sync');
 });
 
 window.closeSettingsModal = closeModal;

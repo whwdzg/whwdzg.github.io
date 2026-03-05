@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\better-mob-drop.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 (function () {
     var lootFiles = [
         "allay.json",
@@ -58,6 +64,9 @@
         hashPending: true,
         filter: "all"
     };
+    var JSON_CACHE_VERSION = "2.0.3.6-20260305";
+    var JSON_CACHE_PREFIX = "pack-json:" + JSON_CACHE_VERSION + ":";
+    var fetchTextCache = new Map();
 
     var filtersBound = false;
 
@@ -83,9 +92,24 @@
     };
 
     function fetchJson(url) {
-        return fetch(url).then(function (resp) {
+        var key = JSON_CACHE_PREFIX + url;
+        if (fetchTextCache.has(url)) {
+            return Promise.resolve(JSON.parse(fetchTextCache.get(url)));
+        }
+        try {
+            var cached = sessionStorage.getItem(key);
+            if (cached) {
+                fetchTextCache.set(url, cached);
+                return Promise.resolve(JSON.parse(cached));
+            }
+        } catch (_) {}
+        return fetch(url, { cache: "force-cache" }).then(function (resp) {
             if (!resp.ok) throw new Error("Failed to load " + url + " (" + resp.status + ")");
-            return resp.json();
+            return resp.text();
+        }).then(function (text) {
+            fetchTextCache.set(url, text);
+            try { sessionStorage.setItem(key, text); } catch (_) {}
+            return JSON.parse(text);
         });
     }
 

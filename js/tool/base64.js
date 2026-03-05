@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\tool\base64.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 (() => {
     const encoder = window.TextEncoder ? new TextEncoder() : null;
     const decoder = window.TextDecoder ? new TextDecoder('utf-8') : null;

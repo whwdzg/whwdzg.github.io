@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\image-loader.nomodule.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // image-loader.nomodule.js - non-module fallback
 (function(){
     if(window.__imageLoaderInitialized) return;

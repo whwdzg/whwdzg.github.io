@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  [站点注释 Site Note]
+  文件: D:\Documents\GitHub\whwdzg.github.io\includes\setting.html
+  作用: 页面结构与内容容器，具体交互由对应 JS/CSS 增强。
+  English: Defines page markup; behavior and styling are enhanced by JS/CSS.
+-->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +16,8 @@
         <h2>浅色/深色模式切换</h2>
         <h4>切换浅色模式/深色模式的行为</h4>
         <p>跟随系统</p>
-        <p>手动设置</p>
+        <p>浅色模式</p>
+        <p>深色模式</p>
     </section>
     <section id="maincolorpicker">
         <h2>切换主题色</h2>
@@ -19,6 +26,25 @@
         <p data-color="#33CC99">#33CC99</p>
         <p data-color="#F50000">#F50000</p>
         <p data-color="自定义">自定义</p>
+    </section>
+    <section id="wallpaperselection">
+        <h2>选择壁纸</h2>
+        <h4>手动选择浅色/深色对应壁纸</h4>
+        <p>自动（每日轮换）</p>
+        <p>浅色壁纸1</p>
+        <p>浅色壁纸2</p>
+        <p>浅色壁纸3</p>
+        <p>浅色壁纸4</p>
+        <p>浅色壁纸5</p>
+        <p>浅色壁纸6</p>
+        <p>深色壁纸1</p>
+        <p>深色壁纸2</p>
+    </section>
+    <section id="wallpaperrotation" data-setting="wallpaper-rotation">
+        <h2>壁纸轮换</h2>
+        <h4>开启后每天自动切换，关闭后固定当前壁纸</h4>
+        <p>关闭</p>
+        <p>开启</p>
     </section>
     <section id="pageprogress" data-setting="page-progress">
         <h2>页面进度条</h2>
@@ -39,6 +65,11 @@
         <h2>清除页面缓存</h2>
         <h4>清除本地页面缓存，以确保页面为最新，一般情况不建议使用</h4>
         <button type="button">清除</button>
+    </section>
+    <section id="reset-wallpaper-rotation">
+        <h2>重置壁纸轮换</h2>
+        <h4>清除今日壁纸记录并重新生成随机壁纸</h4>
+        <button type="button">重置</button>
     </section>
 </body>
 </html>

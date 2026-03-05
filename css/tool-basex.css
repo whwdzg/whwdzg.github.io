@@ -1,3 +1,9 @@
+/*
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\css\tool-basex.css
+ * 作用: 页面样式与布局规则，按模块拆分维护。
+ * English: Module-level styles for layout and presentation.
+ */
 .basex-tool-card {
   background: var(--card-bg, #ffffff);
   border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
@@ -73,6 +79,7 @@ body.dark-mode .basex-dropdown .settings-dropdown-toggle {
 .basex-dropdown .settings-dropdown-list { display: none; }
 
 .basex-dropdown-portal {
+  z-index: 1400;
   min-width: 220px;
   border: none;
   background: transparent;
@@ -130,6 +137,81 @@ body.dark-mode .basex-dropdown-portal .settings-dropdown-list {
 
 .basex-textarea-wrapper {
   position: relative;
+}
+
+.basex-list-wrapper {
+  position: relative;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  background: var(--card-bg, #ffffff);
+  border-radius: 10px;
+  min-height: 140px;
+  padding: 0.85rem 0.95rem;
+  box-shadow: 0 10px 30px var(--shadow-color, rgba(15, 23, 42, 0.18));
+}
+
+.basex-result-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: var(--font-mono, "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif);
+  font-size: 0.93rem;
+  line-height: 1.4;
+  display: block;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.basex-result-table thead,
+.basex-result-table tbody,
+.basex-result-table tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.basex-result-table th,
+.basex-result-table td {
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+  word-break: break-word;
+}
+
+.basex-result-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--input-bg, #f9fafb);
+  font-weight: 700;
+}
+
+.basex-result-table tr:last-child td {
+  border-bottom: none;
+}
+
+.unicode-decode-row {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.unicode-decode-row input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  background: var(--card-bg, #ffffff);
+  color: var(--text-color, #111827);
+  padding: 0.65rem 0.8rem;
+  box-shadow: 0 6px 18px var(--shadow-color, rgba(15, 23, 42, 0.12));
+}
+
+.unicode-decode-row input:focus {
+  outline: none;
+  border-color: var(--border-color);
+  background: var(--input-focus-bg);
+  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
 }
 
 .basex-copy-btn {

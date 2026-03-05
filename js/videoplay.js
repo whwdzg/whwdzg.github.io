@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\videoplay.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 document.addEventListener('DOMContentLoaded', function(){
   // create overlay markup
   if (!document.getElementById('videoplay-overlay')){

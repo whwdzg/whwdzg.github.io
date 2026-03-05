@@ -1,8 +1,14 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\pwa\service-worker.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // Service worker for offline-first navigation and light asset caching
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
-const CACHE_VERSION = 'shuiyu-pwa-v1';
+const CACHE_VERSION = 'shuiyu-pwa-v3';
 const OFFLINE_URL = '/offline.html';
 const CACHE_NAMES = {
   precache: `${CACHE_VERSION}-precache`,
@@ -11,15 +17,52 @@ const CACHE_NAMES = {
   images: `${CACHE_VERSION}-images`
 };
 
-const PRECACHE_URLS = [
+const RECORDED_PAGES = [
+  '/',
+  '/index.html',
+  '/about.html',
+  '/readme.html',
+  '/404.html',
+  OFFLINE_URL,
+  '/column/comments.html',
+  '/media/music.html',
+  '/media/video.html',
+  '/media/bilibili.html',
+  '/projects/better-crafting-recipes.html',
+  '/projects/better-enchantments.html',
+  '/projects/better-mob-drop.html',
+  '/projects/github.html',
+  '/projects/magical-dye.html',
+  '/projects/modrinth.html',
+  '/tool/base-convert.html',
+  '/tool/base64.html',
+  '/tool/basex.html',
+  '/tool/mc-projection.html',
+  '/tool/scientific-calculator.html',
+  '/tool/unicode.html',
+  '/media/bilibili.html',
+  '/includes/shell.html',
+  '/includes/setting.html'
+];
+
+const PRECACHE_URLS = Array.from(new Set([
   '/',
   OFFLINE_URL,
   '/manifest.json',
+  ...RECORDED_PAGES,
   '/css/variables.css',
+  '/css/media-player.css',
+  '/css/video-archive.css',
+  '/js/media/common.js',
+  '/js/media/music.js',
+  '/js/media/video.js',
+  '/js/video-archive.js',
+  '/resource/font/FluentSystemIcons-Regular.css',
+  '/resource/font/FluentSystemIcons-Regular.woff2',
   '/resource/img/logo/logo.png',
   '/resource/img/logo/logo-192.png',
   '/resource/img/shell/favicon.ico'
-];
+]));
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
@@ -50,8 +93,10 @@ if (workbox.navigationPreload.isSupported()) {
 
 const pageStrategy = new workbox.strategies.NetworkFirst({
   cacheName: CACHE_NAMES.pages,
+  networkTimeoutSeconds: 3,
   plugins: [
-    new workbox.expiration.ExpirationPlugin({ maxEntries: 30, maxAgeSeconds: 7 * 24 * 60 * 60 })
+    new workbox.cacheableResponse.CacheableResponsePlugin({ statuses: [0, 200] }),
+    new workbox.expiration.ExpirationPlugin({ maxEntries: 200, maxAgeSeconds: 60 * 24 * 60 * 60 })
   ]
 });
 
@@ -80,6 +125,22 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   ({ request }) => request.destination === 'style' || request.destination === 'script',
   new workbox.strategies.StaleWhileRevalidate({ cacheName: CACHE_NAMES.assets })
+);
+
+workbox.routing.registerRoute(
+  ({ url, request }) => {
+    if (request.method !== 'GET' || url.origin !== self.location.origin) {
+      return false;
+    }
+    return url.pathname.endsWith('.html') || url.pathname.startsWith('/includes/');
+  },
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: CACHE_NAMES.pages,
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({ statuses: [0, 200] }),
+      new workbox.expiration.ExpirationPlugin({ maxEntries: 240, maxAgeSeconds: 60 * 24 * 60 * 60 })
+    ]
+  })
 );
 
 workbox.routing.registerRoute(

@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\copy-toast.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 (function () {
     const toastId = 'global-copy-toast';
     const successIcon = 'icon-ic_fluent_checkmark_circle_24_regular';

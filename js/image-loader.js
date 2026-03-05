@@ -1,3 +1,9 @@
+/**
+ * [站点注释 Site Note]
+ * 文件: D:\Documents\GitHub\whwdzg.github.io\js\image-loader.js
+ * 作用: 前端交互逻辑与功能模块实现。
+ * English: Implements client-side interactions and feature logic.
+ */
 // image-loader.js (ES module)
 // 提供全站图片加载进度/动画，导出 initImageLoader()
 export function initImageLoader(){
