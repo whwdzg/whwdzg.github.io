@@ -208,11 +208,11 @@
                 <label for="calc-input">输入</label>
                 <textarea id="calc-input" rows="4" spellcheck="false" placeholder="表达式：sin(30)+2^3；方程：x^2+2x+5=0；图像：sin(x)+x/3"></textarea>
 
-                <div class="calc-point-row" aria-label="导数取值点">
-                    <label for="calc-point-x1">X1</label>
-                    <input id="calc-point-x1" type="number" step="any" placeholder="例如 1.5">
-                    <label for="calc-point-x2">X2</label>
-                    <input id="calc-point-x2" type="number" step="any" placeholder="例如 3">
+                <div class="calc-func-row" aria-label="自定义函数">
+                    <label for="calc-fx">f(x)</label>
+                    <input id="calc-fx" type="text" spellcheck="false" placeholder="例如：x^2+1">
+                    <label for="calc-gx">g(x)</label>
+                    <input id="calc-gx" type="text" spellcheck="false" placeholder="例如：sin(x)">
                 </div>
 
                 <div id="calc-result" class="calc-result" aria-live="polite">结果: -</div>
@@ -239,6 +239,9 @@
                     <button type="button" data-insert="pi" title="\\pi">\pi</button>
                     <button type="button" data-insert="x" title="x">x</button>
 
+                    <button type="button" data-insert="f(x)" title="f(x)">f(x)</button>
+                    <button type="button" data-insert="g(x)" title="g(x)">g(x)</button>
+
                     <button type="button" data-insert="7">7</button>
                     <button type="button" data-insert="8">8</button>
                     <button type="button" data-insert="9">9</button>
@@ -258,18 +261,25 @@
                     <button type="button" data-insert="3">3</button>
                     <button type="button" data-insert="-">-</button>
                     <button type="button" data-insert="Ans">Ans</button>
-                    <button type="button" data-action="eval">=</button>
+                    <button type="button" data-insert="=">=</button>
 
                     <button type="button" data-insert="0">0</button>
                     <button type="button" data-insert=".">.</button>
                     <button type="button" data-insert="+">+</button>
-                    <button type="button" class="span2" data-action="derivative">导数@X1,X2</button>
+                    <button type="button" class="span2" data-action="solve">求解</button>
                     <button type="button" class="span2" data-action="plot">绘制图像</button>
                     <button type="button" class="span2" data-action="latex">导出 LaTeX</button>
                 </div>
 
-                <label for="calc-latex">LaTeX</label>
-                <textarea id="calc-latex" rows="3" readonly></textarea>
+                <label for="calc-latex-raw">LaTeX</label>
+                <div class="basex-textarea-wrapper calc-latex-wrapper">
+                    <button type="button" class="basex-copy-btn" data-copy-target="calc-latex-raw" title="复制 LaTeX 文本">
+                        <span class="fluent-icon"></span>
+                        <span>复制</span>
+                    </button>
+                    <div id="calc-latex-render" class="calc-latex-render" aria-live="polite">\text{等待生成}</div>
+                </div>
+                <textarea id="calc-latex-raw" rows="3" readonly hidden></textarea>
 
                 <div class="calc-steps-card">
                     <h3>求解步骤</h3>

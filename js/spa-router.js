@@ -20,6 +20,7 @@
   const ROOT_CONTAINER_ID = 'app-root';
   const CONTENT_CONTAINER_ID = 'page-root';
   const CACHE_BUST = () => Date.now().toString();
+  const SPA_BYPASS_PATHS = new Set(['/media/video.html', '/media/music.html']);
 
   const sharedCss = [
     resolve('/css/variables.css'),
@@ -309,6 +310,15 @@
     }
   }
 
+  function shouldBypassSpaForUrl(urlObj){
+    if (!urlObj) return false;
+    const normalized = normalizePathname(urlObj.pathname);
+    if (SPA_BYPASS_PATHS.has(normalized)) return true;
+    // Also bypass extensionless URLs that might be rewritten to these files.
+    if (normalized === '/media/video' || normalized === '/media/music') return true;
+    return false;
+  }
+
   function enteringLegacy(targetPath){
     if (!targetPath) return false;
     const current = window.location.pathname;
@@ -363,6 +373,7 @@
       if (!link) return;
       const href = link.getAttribute('href');
       if (!href) return;
+      if (link.hasAttribute('data-no-spa') || link.dataset.noSpa === 'true') return;
       if (link.target && link.target !== '_self') return;
       if (link.hasAttribute('download')) return;
       if (/^(mailto:|tel:|javascript:)/i.test(href)) return;
@@ -373,6 +384,7 @@
       } catch (_) {
         return;
       }
+      if (shouldBypassSpaForUrl(targetUrl)) return;
 
       if (targetUrl.origin === window.location.origin && targetUrl.hash && isSameDocumentUrl(targetUrl)) {
         e.preventDefault();

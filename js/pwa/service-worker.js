@@ -129,6 +129,22 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   ({ url, request }) => {
+    if (request.method !== 'GET') return false;
+    if (!(request.destination === 'script' || request.destination === 'style')) return false;
+    if (url.origin !== 'https://cdn.jsdelivr.net') return false;
+    return /\/npm\/.+@\d/.test(url.pathname);
+  },
+  new workbox.strategies.CacheFirst({
+    cacheName: `${CACHE_NAMES.assets}-cdn-versioned`,
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({ statuses: [0, 200] }),
+      new workbox.expiration.ExpirationPlugin({ maxEntries: 80, maxAgeSeconds: 30 * 24 * 60 * 60 })
+    ]
+  })
+);
+
+workbox.routing.registerRoute(
+  ({ url, request }) => {
     if (request.method !== 'GET' || url.origin !== self.location.origin) {
       return false;
     }

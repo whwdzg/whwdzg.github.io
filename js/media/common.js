@@ -149,9 +149,9 @@ function parseWordTaggedLine(text) {
     const words = [];
     for (const match of wordMatches) {
         const time = Number(match[1]) * 60 + Number(match[2]);
-        words.push({ time, text: (match[3] || "").trim() });
+        words.push({ time, text: String(match[3] || "").replace(/\n+/g, " ") });
     }
-    const plain = words.map((w) => w.text).join("").trim();
+    const plain = words.map((w) => w.text).join("").replace(/\s{2,}/g, " ").trim();
     return { plain, words };
 }
 
@@ -171,11 +171,11 @@ function parseInlineTimedWords(line) {
         const next = matches[i + 1];
         const start = cur.index + cur[0].length;
         const end = next ? next.index : line.length;
-        const txt = normalizeLyricText(line.slice(start, end));
+        const txt = normalizeLyricText(line.slice(start, end)).replace(/\n+/g, " ");
         if (txt && txt.trim()) {
             chunks.push({
                 time: Number(cur[1]) * 60 + Number(cur[2]),
-                text: txt,
+                text: txt.trim(),
             });
         }
     }
@@ -192,10 +192,28 @@ function parseInlineTimedWords(line) {
     };
 }
 
+function parseLrcTextWithThirdParty(rawLrc) {
+    const LyricCtor = window.Lyric;
+    if (typeof LyricCtor !== "function") return [];
+    try {
+        const parser = new LyricCtor(String(rawLrc || ""), () => {});
+        const lines = Array.isArray(parser?.lines) ? parser.lines : [];
+        return lines.map((line) => ({
+            time: Number(line?.time || 0) / 1000,
+            text: String(line?.txt || "").trim(),
+            words: null,
+            translations: [],
+        })).filter((line) => line.text || Number.isFinite(line.time));
+    } catch (error) {
+        return [];
+    }
+}
+
 function parseLrcText(rawLrc) {
     if (!rawLrc) return [];
     const lines = rawLrc.split(/\r?\n/);
     const entries = [];
+
     for (const line of lines) {
         const inlineTimed = parseInlineTimedWords(line);
         if (inlineTimed) {
@@ -203,6 +221,7 @@ function parseLrcText(rawLrc) {
                 time: inlineTimed.time,
                 text: inlineTimed.text,
                 words: inlineTimed.words,
+                translations: [],
             });
             continue;
         }
@@ -210,14 +229,25 @@ function parseLrcText(rawLrc) {
         const matches = [...line.matchAll(/\[(\d{1,2}):(\d{1,2}(?:\.\d{1,3})?)\]/g)];
         if (!matches.length) continue;
         const textRaw = normalizeLyricText(line.replace(/\[(\d{1,2}):(\d{1,2}(?:\.\d{1,3})?)\]/g, ""));
-        const text = textRaw.trim();
         const wordTagged = parseWordTaggedLine(textRaw);
+        const compactText = textRaw.replace(/\n+/g, " ").replace(/\s{2,}/g, " ").trim();
+        const mainText = wordTagged
+            ? String(wordTagged.plain || "").replace(/\n+/g, " ").trim()
+            : compactText;
+        const wordList = wordTagged
+            ? wordTagged.words.map((w) => ({
+                time: Number(w.time || 0),
+                text: String(w.text || "").replace(/\n+/g, " ").trim(),
+            })).filter((w) => w.text)
+            : null;
+
         for (const match of matches) {
             const sec = Number(match[1]) * 60 + Number(match[2]);
             entries.push({
                 time: sec,
-                text: wordTagged ? wordTagged.plain : text,
-                words: wordTagged ? wordTagged.words : null,
+                text: mainText,
+                words: wordList,
+                translations: [],
             });
         }
     }
@@ -227,19 +257,32 @@ function parseLrcText(rawLrc) {
     for (const item of entries) {
         const last = grouped[grouped.length - 1];
         if (last && Math.abs(last.time - item.time) < 0.001) {
-            if (item.text && item.text !== last.text && !last.translations.includes(item.text)) {
+            if (!last.text && item.text) {
+                last.text = item.text;
+            } else if (item.text && item.text !== last.text && !last.translations.includes(item.text)) {
                 last.translations.push(item.text);
             }
+            if (!last.words && item.words && item.words.length) {
+                last.words = item.words;
+            }
+            (item.translations || []).forEach((trans) => {
+                const text = String(trans || "").trim();
+                if (text && text !== last.text && !last.translations.includes(text)) {
+                    last.translations.push(text);
+                }
+            });
         } else {
             grouped.push({
                 time: item.time,
                 text: item.text,
                 words: item.words,
-                translations: [],
+                translations: [...(item.translations || [])],
             });
         }
     }
-    return grouped;
+    const thirdParty = parseLrcTextWithThirdParty(rawLrc);
+    if (grouped.length) return grouped;
+    return thirdParty;
 }
 
 function parseSyncedLyrics(raw, encodingByte = 0) {
@@ -700,6 +743,7 @@ function parseId3Tag(buffer) {
     const result = {
         title: "",
         artist: "",
+        album: "",
         coverUrl: "",
         unsyncedLyrics: "",
         syncedLyrics: [],
@@ -737,6 +781,7 @@ function parseId3Tag(buffer) {
                 const text = decodeText(data.slice(1), data[0]);
                 if (frameId === "TIT2") result.title = text || result.title;
                 if (frameId === "TPE1") result.artist = text || result.artist;
+                if (frameId === "TALB") result.album = text || result.album;
             }
 
             if (frameId === "TXXX" && data.length > 1) {
@@ -817,11 +862,12 @@ function parseId3Tag(buffer) {
         result.unsyncedLyrics = txxxPlainTracks.join("\n");
     }
 
-    if ((!result.title || !result.artist) && bytes.length >= 128) {
+    if ((!result.title || !result.artist || !result.album) && bytes.length >= 128) {
         const start = bytes.length - 128;
         if (bytes[start] === 0x54 && bytes[start + 1] === 0x41 && bytes[start + 2] === 0x47) {
             if (!result.title) result.title = decodeText(bytes.slice(start + 3, start + 33), 0);
             if (!result.artist) result.artist = decodeText(bytes.slice(start + 33, start + 63), 0);
+            if (!result.album) result.album = decodeText(bytes.slice(start + 63, start + 93), 0);
         }
     }
 
@@ -833,6 +879,7 @@ function parseFlacMetadata(buffer) {
     const result = {
         title: "",
         artist: "",
+        album: "",
         coverUrl: "",
         unsyncedLyrics: "",
         syncedLyrics: [],
@@ -881,6 +928,7 @@ function parseFlacMetadata(buffer) {
                 if (!val) continue;
                 if ((key === "TITLE") && !result.title) result.title = val;
                 if ((key === "ARTIST" || key === "ALBUMARTIST") && !result.artist) result.artist = val;
+                if (key === "ALBUM" && !result.album) result.album = val;
                 if ((key === "LYRICS" || key === "UNSYNCEDLYRICS" || key === "UNSYNCED LYRICS") && !result.unsyncedLyrics) {
                     result.unsyncedLyrics = val;
                 }
@@ -1071,6 +1119,9 @@ export class MediaPlayerCore {
         this.currentLyrics = [];
         this.currentLineIndex = -1;
         this.lastLyricLookupIndex = 0;
+        this.lyricLineNodes = [];
+        this.karaokeLineNodes = [];
+        this.lastKaraokeProgress = -1;
         this.karaokeEnabled = true;
         this.lyricBlur = true;
         this.dynamicBg = true;
@@ -1090,6 +1141,9 @@ export class MediaPlayerCore {
             top: Array.from({ length: 4 }, () => 0),
             bottom: Array.from({ length: 4 }, () => 0),
         };
+        this.danmakuCursor = 0;
+        this.lastDanmakuTime = -1;
+        this.lastDanmakuRenderAt = 0;
 
         this.objectUrls = new Set();
         this.previewVideo = null;
@@ -1108,6 +1162,8 @@ export class MediaPlayerCore {
         this.lyricTextColor = "#ffffff";
         this.lyricGlowColor = "rgba(255, 255, 255, 0.48)";
         this.lastThemeColors = ["rgb(126, 220, 255)", "rgb(60, 120, 180)", "rgb(255, 159, 128)"];
+        this.artPlayer = null;
+        this.artDanmukuReady = false;
         this.systemThemeMedia = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
         this.onSystemThemeChanged = () => {
             if (this.getPreferredThemeMode() !== "auto") return;
@@ -1125,8 +1181,11 @@ export class MediaPlayerCore {
         this.statusHideTimer = null;
         this.brightnessLevel = 1;
         this.gestureState = null;
+        this.lyricScrollbarTimer = null;
+        this.lyricAutoScrollUntil = 0;
 
         this.bindDom();
+        this.tryInitArtDanmakuEngine();
         this.applyPreferredThemeMode();
         this.loadSettingsFromStorage();
         this.bindEvents();
@@ -1251,6 +1310,17 @@ export class MediaPlayerCore {
         this.ui.seek.addEventListener("mouseenter", (evt) => this.handlePreviewMove(evt));
         this.ui.seek.addEventListener("mouseleave", () => this.ui.preview.classList.remove("show"));
 
+        if (this.lyricsList) {
+            const markManualLyricScroll = () => {
+                if (Date.now() < this.lyricAutoScrollUntil) return;
+                this.showLyricsScrollbarTemporarily();
+            };
+            this.lyricsList.addEventListener("wheel", markManualLyricScroll, { passive: true });
+            this.lyricsList.addEventListener("touchstart", markManualLyricScroll, { passive: true });
+            this.lyricsList.addEventListener("pointerdown", markManualLyricScroll, { passive: true });
+            this.lyricsList.addEventListener("scroll", markManualLyricScroll, { passive: true });
+        }
+
         this.ui.play.addEventListener("click", () => this.togglePlay());
         this.ui.prev.addEventListener("click", () => this.playPrev());
         this.ui.next.addEventListener("click", () => this.playNext());
@@ -1353,6 +1423,7 @@ export class MediaPlayerCore {
                 this.danmakuEnabled = !this.danmakuEnabled;
                 this.ui.danmakuBtn.setAttribute("aria-pressed", this.danmakuEnabled ? "true" : "false");
                 if (!this.danmakuEnabled && this.danmakuLayer) this.danmakuLayer.innerHTML = "";
+                this.syncDanmakuRenderer();
                 this.saveSetting("danmakuEnabled", this.danmakuEnabled);
             });
         }
@@ -1360,6 +1431,7 @@ export class MediaPlayerCore {
         if (this.ui.danmakuSize) {
             this.ui.danmakuSize.addEventListener("input", () => {
                 this.danmakuSize = Number(this.ui.danmakuSize.value || 24);
+                this.syncDanmakuRenderer();
                 this.saveSetting("danmakuSize", this.danmakuSize);
                 this.refreshSettingValueBadges();
             });
@@ -1367,6 +1439,7 @@ export class MediaPlayerCore {
         if (this.ui.danmakuWeight) {
             this.ui.danmakuWeight.addEventListener("input", () => {
                 this.danmakuWeight = Number(this.ui.danmakuWeight.value || 700);
+                this.syncDanmakuRenderer();
                 this.saveSetting("danmakuWeight", this.danmakuWeight);
                 this.refreshSettingValueBadges();
             });
@@ -1374,30 +1447,35 @@ export class MediaPlayerCore {
         if (this.ui.blockScrollDanmaku) {
             this.ui.blockScrollDanmaku.addEventListener("change", () => {
                 this.blockScrollDanmaku = this.ui.blockScrollDanmaku.checked;
+                this.syncDanmakuRenderer();
                 this.saveSetting("blockScrollDanmaku", this.blockScrollDanmaku);
             });
         }
         if (this.ui.blockTopDanmaku) {
             this.ui.blockTopDanmaku.addEventListener("change", () => {
                 this.blockTopDanmaku = this.ui.blockTopDanmaku.checked;
+                this.syncDanmakuRenderer();
                 this.saveSetting("blockTopDanmaku", this.blockTopDanmaku);
             });
         }
         if (this.ui.blockBottomDanmaku) {
             this.ui.blockBottomDanmaku.addEventListener("change", () => {
                 this.blockBottomDanmaku = this.ui.blockBottomDanmaku.checked;
+                this.syncDanmakuRenderer();
                 this.saveSetting("blockBottomDanmaku", this.blockBottomDanmaku);
             });
         }
         if (this.ui.danmakuLayout) {
             this.ui.danmakuLayout.addEventListener("change", () => {
                 this.danmakuLayoutMode = this.ui.danmakuLayout.value || "all";
+                this.syncDanmakuRenderer();
                 this.saveSetting("danmakuLayoutMode", this.danmakuLayoutMode);
             });
         }
         if (this.ui.danmakuSpeed) {
             this.ui.danmakuSpeed.addEventListener("input", () => {
                 this.danmakuSpeed = Number(this.ui.danmakuSpeed.value || 0.8);
+                this.syncDanmakuRenderer();
                 this.saveSetting("danmakuSpeed", this.danmakuSpeed);
                 this.refreshSettingValueBadges();
             });
@@ -1405,6 +1483,7 @@ export class MediaPlayerCore {
         if (this.ui.danmakuOpacity) {
             this.ui.danmakuOpacity.addEventListener("input", () => {
                 this.danmakuOpacity = Number(this.ui.danmakuOpacity.value || 0.9);
+                this.syncDanmakuRenderer();
                 this.saveSetting("danmakuOpacity", this.danmakuOpacity);
                 this.refreshSettingValueBadges();
             });
@@ -1419,8 +1498,10 @@ export class MediaPlayerCore {
 
         this.media.addEventListener("timeupdate", () => {
             if (!this.progressAnimId) this.refreshTime();
-            this.refreshLyrics();
-            this.renderDanmaku();
+            if (!this.progressAnimId) {
+                this.refreshLyrics();
+                this.renderDanmaku();
+            }
         });
 
         this.media.addEventListener("play", () => {
@@ -1550,8 +1631,13 @@ export class MediaPlayerCore {
 
     startProgressAnimation() {
         if (this.progressAnimId) return;
-        const tick = () => {
+        const tick = (ts) => {
             this.refreshTime();
+            this.refreshLyrics();
+            if (this.type === "video" && (ts - this.lastDanmakuRenderAt >= 50)) {
+                this.renderDanmaku();
+                this.lastDanmakuRenderAt = ts;
+            }
             if (!this.media.paused && !this.media.ended) {
                 this.progressAnimId = requestAnimationFrame(tick);
             } else {
@@ -1831,6 +1917,7 @@ export class MediaPlayerCore {
             const meta = {
                 title: id3Meta.title || flacMeta?.title || "",
                 artist: id3Meta.artist || flacMeta?.artist || "",
+                album: id3Meta.album || flacMeta?.album || "",
                 coverUrl: id3Meta.coverUrl || flacMeta?.coverUrl || "",
                 unsyncedLyrics: id3Meta.unsyncedLyrics || flacMeta?.unsyncedLyrics || "",
                 syncedLyrics: id3Meta.syncedLyrics || [],
@@ -1855,6 +1942,7 @@ export class MediaPlayerCore {
                 type: "music",
                 title: meta.title || file.name.replace(/\.[^.]+$/, ""),
                 author: meta.artist || "未知作者",
+                album: meta.album || "",
                 coverUrl: meta.coverUrl || "",
                 sourceUrl: url,
                 lyrics: mergedLyrics,
@@ -1914,14 +2002,24 @@ export class MediaPlayerCore {
         this.danmakuLaneEndTime.scroll.fill(0);
         this.danmakuLaneEndTime.top.fill(0);
         this.danmakuLaneEndTime.bottom.fill(0);
+        this.danmakuCursor = 0;
+        this.lastDanmakuTime = -1;
+        this.lastDanmakuTick = -1;
         const track = this.tracks[index];
+        if (this.type === "video" && this.artPlayer) {
+            try {
+                this.artPlayer.url = track.sourceUrl;
+            } catch (error) {
+                // fallback below uses native media source assignment
+            }
+        }
         this.media.src = track.sourceUrl;
         this.media.load();
         if (this.ui.speedRange) {
             this.media.playbackRate = Number(this.ui.speedRange.value || 1);
         }
         this.ui.title.textContent = track.title;
-        this.ui.author.textContent = track.author;
+        this.ui.author.textContent = this.formatTrackAuthorText(track);
         this.ui.runningTime.textContent = "00:00";
         this.ui.totalTime.textContent = "00:00";
 
@@ -1947,16 +2045,19 @@ export class MediaPlayerCore {
                     const xml = decodeDanmakuXmlBuffer(danmakuBuffer);
                     this.danmakuList = parseDanmakuXml(xml);
                     track.author = `本地导入 · 弹幕 ${this.danmakuList.length} 条`;
-                    this.ui.author.textContent = track.author;
+                    this.ui.author.textContent = this.formatTrackAuthorText(track);
                     this.setStatus(`检测到 ${this.danmakuList.length} 条弹幕`);
+                    this.syncDanmakuRenderer();
                 } catch (error) {
                     track.author = "本地导入 · 弹幕读取失败";
-                    this.ui.author.textContent = track.author;
+                    this.ui.author.textContent = this.formatTrackAuthorText(track);
                     this.setStatus("弹幕读取失败");
+                    this.syncDanmakuRenderer();
                 }
             } else {
                 track.author = "本地导入 · 无弹幕";
-                this.ui.author.textContent = track.author;
+                this.ui.author.textContent = this.formatTrackAuthorText(track);
+                this.syncDanmakuRenderer();
             }
         }
 
@@ -1976,6 +2077,14 @@ export class MediaPlayerCore {
         if (this.type === "music" && !track.sampleRate && track.sourceFile) {
             this.resolveTrackSampleRate(track);
         }
+    }
+
+    formatTrackAuthorText(track) {
+        const authorRaw = String(track?.author || "").trim() || "未知作者";
+        if (track?.type !== "music") return authorRaw;
+        const albumRaw = String(track?.album || "").trim();
+        if (!albumRaw) return `作者：${authorRaw}`;
+        return `作者：${authorRaw} · 专辑：${albumRaw}`;
     }
 
     async resolveTrackSampleRate(track) {
@@ -2323,6 +2432,9 @@ export class MediaPlayerCore {
         if (!this.lyricsList) return;
         this.lyricsList.innerHTML = "";
         this.currentLineIndex = -1;
+        this.lastKaraokeProgress = -1;
+        this.lyricLineNodes = [];
+        this.karaokeLineNodes = [];
         this.applyLyricTypography();
         if (!this.currentLyrics.length) {
             this.lyricsList.innerHTML = '<div class="lyric-line">暂无歌词</div>';
@@ -2335,14 +2447,19 @@ export class MediaPlayerCore {
             if (line.words && line.words.length) {
                 const karaoke = document.createElement("div");
                 karaoke.className = "lyric-karaoke";
-                karaoke.innerHTML = [...line.text].map((ch) => {
-                    if (ch === "\n") return "<br>";
-                    if (ch === " ") return '<span class="char">&nbsp;</span>';
-                    return `<span class="char">${ch}</span>`;
-                }).join("");
+                const base = document.createElement("span");
+                base.className = "karaoke-base";
+                base.textContent = line.text || "...";
+                const fill = document.createElement("span");
+                fill.className = "karaoke-fill";
+                fill.textContent = line.text || "...";
+                karaoke.style.setProperty("--karaoke-progress", "0%");
+                karaoke.append(base, fill);
                 div.appendChild(karaoke);
+                this.karaokeLineNodes.push(karaoke);
             } else {
                 div.textContent = line.text || "...";
+                this.karaokeLineNodes.push(null);
             }
             line.translations?.forEach((trans) => {
                 const t = document.createElement("div");
@@ -2357,13 +2474,55 @@ export class MediaPlayerCore {
                 this.centerLyricLine(div);
             });
             this.lyricsList.appendChild(div);
+            this.lyricLineNodes.push(div);
         });
     }
 
     centerLyricLine(node) {
         if (!node || !this.lyricsList) return;
-        const top = node.offsetTop - (this.lyricsList.clientHeight / 2) + (node.clientHeight / 2);
+        const isNarrowMusic = this.type === "music" && window.matchMedia("(max-width: 640px)").matches;
+        const focusRatio = isNarrowMusic ? 0.45 : 0.5;
+        const top = node.offsetTop - (this.lyricsList.clientHeight * focusRatio) + (node.clientHeight / 2);
+        this.lyricAutoScrollUntil = Date.now() + 1100;
         this.lyricsList.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    }
+
+    showLyricsScrollbarTemporarily() {
+        if (!this.lyricsList) return;
+        this.lyricsList.classList.add("show-scrollbar");
+        if (this.lyricScrollbarTimer) clearTimeout(this.lyricScrollbarTimer);
+        this.lyricScrollbarTimer = setTimeout(() => {
+            if (!this.lyricsList) return;
+            this.lyricsList.classList.remove("show-scrollbar");
+        }, 1200);
+    }
+
+    computeKaraokeProgress(line, now, lineIndex) {
+        const textLen = [...String(line?.text || "")].length;
+        if (!line || textLen <= 0) return 0;
+        if (line.words && line.words.length) {
+            const starts = line.words.map((w) => Number(w.time || 0));
+            const nextLineTime = this.currentLyrics[lineIndex + 1]?.time ?? (line.time + 4);
+            let doneCount = 0;
+            for (let i = 0; i < line.words.length; i += 1) {
+                const wordStart = starts[i];
+                const wordEnd = starts[i + 1] ?? nextLineTime;
+                const wordLen = [...String(line.words[i].text || "")].length;
+                if (now >= wordEnd) {
+                    doneCount += wordLen;
+                    continue;
+                }
+                if (now > wordStart && now < wordEnd) {
+                    const ratio = clamp((now - wordStart) / Math.max(0.08, wordEnd - wordStart), 0, 1);
+                    doneCount += wordLen * ratio;
+                }
+                break;
+            }
+            return clamp(doneCount / Math.max(textLen, 1), 0, 1);
+        }
+        const start = Number(line.time || 0);
+        const end = this.currentLyrics[lineIndex + 1]?.time ?? (start + 4);
+        return clamp((now - start) / Math.max(0.2, end - start), 0, 1);
     }
 
     refreshLyrics() {
@@ -2372,56 +2531,37 @@ export class MediaPlayerCore {
         const active = this.findActiveLyricIndex(now);
 
         if (active !== this.currentLineIndex) {
+            const previousActive = this.currentLineIndex;
             this.currentLineIndex = active;
-            const nodes = [...this.lyricsList.querySelectorAll(".lyric-line")];
             const activeLine = this.currentLyrics[active];
             const plainActive = !this.karaokeEnabled || !(activeLine?.words && activeLine.words.length);
-            nodes.forEach((node, idx) => {
+            this.lyricLineNodes.forEach((node, idx) => {
                 node.classList.toggle("active", idx === active);
                 node.classList.toggle("near", Math.abs(idx - active) <= 2 && idx !== active);
                 node.classList.toggle("far", this.lyricBlur && Math.abs(idx - active) > 2);
                 node.classList.toggle("active-plain", idx === active && plainActive);
             });
-            const activeNode = this.lyricsList.querySelector(`.lyric-line[data-index="${active}"]`);
+            const activeNode = this.lyricLineNodes[active];
             if (activeNode) this.centerLyricLine(activeNode);
+
+            // Sync karaoke masks only when active line changes.
+            for (let i = 0; i < this.karaokeLineNodes.length; i += 1) {
+                const node = this.karaokeLineNodes[i];
+                if (!node) continue;
+                const progress = this.karaokeEnabled ? (i < active ? 100 : 0) : 0;
+                node.style.setProperty("--karaoke-progress", `${progress}%`);
+            }
+            if (previousActive !== active) this.lastKaraokeProgress = -1;
         }
 
-        if (!this.karaokeEnabled) return;
-        const line = this.currentLyrics[active];
-        const activeNode = this.lyricsList.querySelector(`.lyric-line[data-index="${active}"] .lyric-karaoke`);
-        if (!line || !activeNode) return;
-        const chars = [...activeNode.querySelectorAll(".char")];
-        const visualCharLen = (txt) => String(txt || "").replace(/\n/g, "").length;
-        let doneCount = 0;
-        if (line.words && line.words.length) {
-            const starts = line.words.map((w) => Number(w.time || 0));
-            const nextLineTime = this.currentLyrics[active + 1]?.time ?? (line.time + 4);
-            for (let i = 0; i < line.words.length; i += 1) {
-                const wordStart = starts[i];
-                const wordEnd = starts[i + 1] ?? nextLineTime;
-                if (now >= wordEnd) {
-                    doneCount += visualCharLen(line.words[i].text);
-                    continue;
-                }
-                if (now > wordStart && now < wordEnd) {
-                    const ratio = clamp((now - wordStart) / Math.max(0.08, wordEnd - wordStart), 0, 1);
-                    doneCount += visualCharLen(line.words[i].text) * ratio;
-                }
-                break;
-            }
-        } else {
-            const start = line.time;
-            const end = this.currentLyrics[active + 1]?.time ?? (start + 4);
-            const ratio = clamp((now - start) / Math.max(0.2, end - start), 0, 1);
-            doneCount = chars.length * ratio;
-        }
-        doneCount = clamp(doneCount, 0, chars.length);
-        const rgb = hexToRgb(this.lyricTextColor) || [255, 255, 255];
-        chars.forEach((ch, idx) => {
-            const progress = clamp(doneCount - idx, 0, 1);
-            ch.classList.toggle("done", progress >= 0.999);
-            ch.style.color = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${(0.42 + (0.58 * progress)).toFixed(3)})`;
-        });
+        const activeKaraoke = this.karaokeLineNodes[active];
+        if (!activeKaraoke) return;
+        const progress = this.karaokeEnabled
+            ? this.computeKaraokeProgress(this.currentLyrics[active], now, active)
+            : 0;
+        if (Math.abs(progress - this.lastKaraokeProgress) < 0.002) return;
+        this.lastKaraokeProgress = progress;
+        activeKaraoke.style.setProperty("--karaoke-progress", `${(progress * 100).toFixed(2)}%`);
     }
 
     findActiveLyricIndex(now) {
@@ -2517,18 +2657,164 @@ export class MediaPlayerCore {
         }, 1000);
     }
 
+    tryInitArtDanmakuEngine() {
+        if (this.type !== "video") return;
+        const Artplayer = window.Artplayer;
+        const danmukuFactory = window.artplayerPluginDanmuku;
+        const stage = this.ui?.videoStage;
+        if (!Artplayer || !danmukuFactory || !stage) return;
+
+        try {
+            const sourceMedia = this.media;
+            const plugin = danmukuFactory({
+                danmuku: [],
+                speed: Math.max(1, Number((8 / Math.max(0.5, this.danmakuSpeed)).toFixed(2))),
+                opacity: this.danmakuOpacity,
+                fontSize: this.danmakuSize,
+                antiOverlap: this.danmakuLayoutMode === "no-overlap",
+                synchronousPlayback: true,
+            });
+            this.artPlayer = new Artplayer({
+                container: stage,
+                url: sourceMedia?.currentSrc || sourceMedia?.src || "",
+                autoplay: false,
+                autoMini: false,
+                pip: false,
+                setting: false,
+                hotkey: false,
+                fullscreen: false,
+                fullscreenWeb: false,
+                miniProgressBar: false,
+                mutex: false,
+                backdrop: false,
+                controls: [],
+                plugins: [plugin],
+            });
+            if (sourceMedia) {
+                sourceMedia.pause?.();
+                sourceMedia.style.display = "none";
+            }
+            this.media = this.artPlayer.video;
+            this.artDanmukuReady = true;
+            if (this.ui.danmakuLayer) {
+                this.ui.danmakuLayer.style.display = "none";
+            }
+        } catch (error) {
+            this.artPlayer = null;
+            this.artDanmukuReady = false;
+        }
+    }
+
+    getArtDanmakuPlugin() {
+        if (!this.artDanmukuReady || !this.artPlayer?.plugins) return null;
+        return this.artPlayer.plugins.artplayerPluginDanmuku || null;
+    }
+
+    getFilteredDanmakuItems() {
+        const list = (this.danmakuList || []).filter((item) => item && item.text);
+        return list.filter((item) => {
+            const mode = item.mode || "scroll";
+            if (mode === "scroll" && this.blockScrollDanmaku) return false;
+            if (mode === "top" && this.blockTopDanmaku) return false;
+            if (mode === "bottom" && this.blockBottomDanmaku) return false;
+            return true;
+        }).map((item) => ({
+            text: item.text,
+            time: Number(item.time || 0),
+            color: item.color || "#ffffff",
+            mode: item.mode === "top" ? 1 : (item.mode === "bottom" ? 2 : 0),
+        }));
+    }
+
+    syncDanmakuRenderer() {
+        if (this.type !== "video") return;
+        const plugin = this.getArtDanmakuPlugin();
+        if (plugin) {
+            try {
+                if (!this.danmakuEnabled) {
+                    if (typeof plugin.hide === "function") plugin.hide();
+                    return;
+                }
+                if (typeof plugin.show === "function") plugin.show();
+                if (typeof plugin.config === "function") {
+                    plugin.config({
+                        speed: Math.max(1, Number((8 / Math.max(0.5, this.danmakuSpeed)).toFixed(2))),
+                        opacity: this.danmakuOpacity,
+                        fontSize: this.danmakuSize,
+                        antiOverlap: this.danmakuLayoutMode === "no-overlap",
+                    });
+                }
+                const items = this.getFilteredDanmakuItems();
+                if (typeof plugin.load === "function") {
+                    plugin.load(items);
+                }
+            } catch (error) {
+                // fallback to legacy renderer below
+            }
+            return;
+        }
+
+        if (!this.danmakuEnabled && this.danmakuLayer) {
+            this.danmakuLayer.innerHTML = "";
+            this.danmakuCursor = 0;
+            this.lastDanmakuTime = -1;
+        }
+    }
+
+    findDanmakuStartIndex(timeSec) {
+        const list = this.danmakuList || [];
+        let left = 0;
+        let right = list.length - 1;
+        let answer = list.length;
+        while (left <= right) {
+            const mid = (left + right) >> 1;
+            if (Number(list[mid]?.time || 0) >= timeSec) {
+                answer = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return answer;
+    }
+
     renderDanmaku() {
+        if (this.artDanmukuReady) return;
         if (this.type !== "video" || !this.danmakuEnabled || !this.danmakuLayer || !this.danmakuList.length) return;
         const nowTick = Math.floor((this.media.currentTime || 0) * 10);
         if (nowTick === this.lastDanmakuTick) return;
         this.lastDanmakuTick = nowTick;
         const currentTime = this.media.currentTime || 0;
-        const incoming = this.danmakuList.filter((item) => Math.abs(item.time - currentTime) < 0.15);
-        incoming.forEach((item) => {
+        const windowStart = currentTime - 0.15;
+        const windowEnd = currentTime + 0.15;
+
+        if (this.lastDanmakuTime < 0 || currentTime < this.lastDanmakuTime - 0.2) {
+            this.danmakuCursor = this.findDanmakuStartIndex(windowStart);
+        }
+        this.lastDanmakuTime = currentTime;
+
+        while (this.danmakuCursor < this.danmakuList.length && Number(this.danmakuList[this.danmakuCursor].time || 0) < windowStart) {
+            this.danmakuCursor += 1;
+        }
+
+        let idx = this.danmakuCursor;
+        while (idx < this.danmakuList.length) {
+            const item = this.danmakuList[idx];
+            const time = Number(item?.time || 0);
+            if (time > windowEnd) break;
             const mode = item.mode || "scroll";
-            if (mode === "scroll" && this.blockScrollDanmaku) return;
-            if (mode === "top" && this.blockTopDanmaku) return;
-            if (mode === "bottom" && this.blockBottomDanmaku) return;
+            if (mode === "scroll" && this.blockScrollDanmaku) {
+                idx += 1;
+                continue;
+            }
+            if (mode === "top" && this.blockTopDanmaku) {
+                idx += 1;
+                continue;
+            }
+            if (mode === "bottom" && this.blockBottomDanmaku) {
+                idx += 1;
+                continue;
+            }
 
             const span = document.createElement("span");
             span.className = `danmaku-item mode-${mode}`;
@@ -2553,7 +2839,9 @@ export class MediaPlayerCore {
             span.style.animationPlayState = this.media.paused ? "paused" : "running";
             this.danmakuLayer.appendChild(span);
             setTimeout(() => span.remove(), Math.ceil(duration * 1000) + 200);
-        });
+            idx += 1;
+        }
+        this.danmakuCursor = idx;
     }
 
     ensureEq() {
@@ -2603,26 +2891,18 @@ export class MediaPlayerCore {
     }
 
     applyAutoLyricColor(colors) {
-        const mode = this.resolveEffectiveThemeMode();
-        if (mode === "light") {
-            this.lyricTextColor = "#111111";
-            this.lyricGlowColor = "rgba(0, 0, 0, 0.34)";
-            this.applyLyricTypography();
-            return;
-        }
-        if (mode === "dark") {
+        const rgb = parseRgbText(colors?.[0] || "");
+        if (!rgb) {
             this.lyricTextColor = "#ffffff";
             this.lyricGlowColor = "rgba(255, 255, 255, 0.52)";
             this.applyLyricTypography();
             return;
         }
-        const rgb = parseRgbText(colors?.[0] || "");
-        if (!rgb) return;
         const r = rgb[0] / 255;
         const g = rgb[1] / 255;
         const b = rgb[2] / 255;
         const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        if (luma > 0.58) {
+        if (luma > 0.82) {
             this.lyricTextColor = "#111111";
             this.lyricGlowColor = "rgba(0, 0, 0, 0.34)";
         } else {
@@ -2633,19 +2913,11 @@ export class MediaPlayerCore {
     }
 
     applyMusicReadableTheme(colors) {
-        if (this.type !== "music") return;
-        const mode = this.resolveEffectiveThemeMode();
         const root = document.documentElement;
-        if (mode === "light") {
-            root.style.setProperty("--music-text-main", "#111111");
-            root.style.setProperty("--music-text-muted", "rgba(17, 17, 17, 0.72)");
-            root.style.setProperty("--music-control-bg", "rgba(255, 255, 255, 0.22)");
-            root.style.setProperty("--music-control-border", "rgba(0, 0, 0, 0.2)");
-            root.style.setProperty("--icon-color-main", "#111111");
-            root.style.setProperty("--icon-color-contrast", "#07101f");
-            return;
-        }
-        if (mode === "dark") {
+        const rgb = parseRgbText(colors?.[0] || "");
+        if (!rgb) {
+            root.style.setProperty("--text-main", "#ffffff");
+            root.style.setProperty("--text-muted", "rgba(255, 255, 255, 0.72)");
             root.style.setProperty("--music-text-main", "#ffffff");
             root.style.setProperty("--music-text-muted", "rgba(255, 255, 255, 0.72)");
             root.style.setProperty("--music-control-bg", "rgba(255, 255, 255, 0.06)");
@@ -2654,14 +2926,14 @@ export class MediaPlayerCore {
             root.style.setProperty("--icon-color-contrast", "#07101f");
             return;
         }
-        const rgb = parseRgbText(colors?.[0] || "");
-        if (!rgb) return;
         const r = rgb[0] / 255;
         const g = rgb[1] / 255;
         const b = rgb[2] / 255;
         const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        const isBrightBg = luma > 0.58;
+        const isBrightBg = luma > 0.82;
         if (isBrightBg) {
+            root.style.setProperty("--text-main", "#111111");
+            root.style.setProperty("--text-muted", "rgba(17, 17, 17, 0.72)");
             root.style.setProperty("--music-text-main", "#111111");
             root.style.setProperty("--music-text-muted", "rgba(17, 17, 17, 0.72)");
             root.style.setProperty("--music-control-bg", "rgba(255, 255, 255, 0.22)");
@@ -2669,6 +2941,8 @@ export class MediaPlayerCore {
             root.style.setProperty("--icon-color-main", "#111111");
             root.style.setProperty("--icon-color-contrast", "#07101f");
         } else {
+            root.style.setProperty("--text-main", "#ffffff");
+            root.style.setProperty("--text-muted", "rgba(255, 255, 255, 0.72)");
             root.style.setProperty("--music-text-main", "#ffffff");
             root.style.setProperty("--music-text-muted", "rgba(255, 255, 255, 0.72)");
             root.style.setProperty("--music-control-bg", "rgba(255, 255, 255, 0.06)");
@@ -2680,7 +2954,8 @@ export class MediaPlayerCore {
 
     applyThemeFromCover(colors) {
         this.lastThemeColors = Array.isArray(colors) && colors.length ? [...colors] : this.lastThemeColors;
-        const primary = parseRgbText(colors?.[0]) || [126, 220, 255];
+        const primaryParsed = parseRgbText(colors?.[0]);
+        const primary = primaryParsed || [126, 220, 255];
         const accent = parseRgbText(colors?.[2]) || [255, 159, 128];
         const root = document.documentElement;
         const accentHex = rgbToHex(primary[0], primary[1], primary[2]);
@@ -2688,10 +2963,7 @@ export class MediaPlayerCore {
         root.style.setProperty("--accent-rgb", `${primary[0]}, ${primary[1]}, ${primary[2]}`);
         root.style.setProperty("--accent-2", rgbToHex(accent[0], accent[1], accent[2]));
         root.style.setProperty("--accent-2-rgb", `${accent[0]}, ${accent[1]}, ${accent[2]}`);
-        if (!root.style.getPropertyValue("--icon-color-main")) {
-            root.style.setProperty("--icon-color-main", "#ffffff");
-            root.style.setProperty("--icon-color-contrast", "#07101f");
-        }
+        this.applyMusicReadableTheme(colors);
         this.publishBrowserThemeColor(accentHex);
     }
 
@@ -2731,14 +3003,6 @@ export class MediaPlayerCore {
         const effective = this.resolveEffectiveThemeMode();
         document.body.classList.toggle("theme-light", effective === "light");
         document.body.classList.toggle("theme-dark", effective === "dark");
-        const root = document.documentElement;
-        if (effective === "light") {
-            root.style.setProperty("--icon-color-main", "#111111");
-            root.style.setProperty("--icon-color-contrast", "#07101f");
-        } else {
-            root.style.setProperty("--icon-color-main", "#ffffff");
-            root.style.setProperty("--icon-color-contrast", "#07101f");
-        }
     }
 
     refreshThemeAwareColors() {
@@ -2798,6 +3062,9 @@ export class MediaPlayerCore {
         this.stopProgressAnimation();
         if (this.fullscreenDockHideTimer) clearTimeout(this.fullscreenDockHideTimer);
         if (this.statusHideTimer) clearTimeout(this.statusHideTimer);
+        if (this.artPlayer && typeof this.artPlayer.destroy === "function") {
+            this.artPlayer.destroy(false);
+        }
         window.removeEventListener("storage", this.onThemeStorageChanged);
         if (this.systemThemeMedia) {
             if (this.systemThemeMedia.removeEventListener) {

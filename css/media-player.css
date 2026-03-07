@@ -12,8 +12,8 @@
     --bg-a: #1e2a4a;
     --bg-b: #15303a;
     --bg-c: #2d1f45;
-    --text-main: #f7f9ff;
-    --text-muted: rgba(247, 249, 255, 0.72);
+    --text-main: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.72);
     --glass: rgba(10, 14, 26, 0.72);
     --glass-strong: rgba(8, 10, 20, 0.88);
     --line: rgba(255, 255, 255, 0.18);
@@ -40,6 +40,9 @@ body {
     background: radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.1), transparent 36%),
         linear-gradient(130deg, var(--bg-a), var(--bg-b), var(--bg-c));
     overflow: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -114,7 +117,7 @@ body {
     position: fixed;
     top: 1.2rem;
     left: 1.2rem;
-    z-index: 15;
+    z-index: 30;
 }
 
 .back-link {
@@ -129,6 +132,29 @@ body {
     text-decoration: none;
     font-weight: 600;
     backdrop-filter: blur(10px);
+    color: #ffffff;
+}
+
+.progress-preview .time-line,
+.progress-preview .time-line span,
+.playlist-drawer,
+.playlist-drawer .play-name,
+.playlist-drawer .play-author,
+.playlist-search,
+.playlist-close-btn,
+.loop-btn,
+.floating-panel,
+.floating-panel .setting-row,
+.floating-panel .setting-row label,
+.floating-panel .setting-row-title,
+.floating-panel .setting-value,
+.floating-panel .panel-action-btn,
+.floating-panel .setting-row select {
+    color: #ffffff !important;
+}
+
+.playlist-search::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .content-area {
@@ -159,11 +185,22 @@ body {
     background: #000;
 }
 
+.video-stage .art-controls,
+.video-stage .art-bottom,
+.video-stage .art-top,
+.video-stage .art-contextmenus,
+.video-stage .art-setting,
+.video-stage .art-info,
+.video-stage .art-loading {
+    display: none !important;
+}
+
 .danmaku-layer {
     position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    contain: layout paint;
 }
 
 .danmaku-item {
@@ -174,9 +211,11 @@ body {
     color: #fff;
     font-weight: 700;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.86);
+    text-rendering: geometricPrecision;
     animation-name: danmaku-move;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
+    will-change: transform;
 }
 
 .danmaku-item.mode-top,
@@ -291,6 +330,22 @@ body {
     padding: 1.2rem 1rem 2.2rem;
     overflow-y: auto;
     text-align: left;
+    scrollbar-width: none;
+    contain: content;
+}
+
+.lyrics-list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.lyrics-list.show-scrollbar {
+    scrollbar-width: thin;
+}
+
+.lyrics-list.show-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
 }
 
 .lyric-line {
@@ -301,11 +356,20 @@ body {
     font-size: var(--line-font-size);
     font-weight: calc(var(--lyric-weight) - 120);
     line-height: 1.5;
-    transition: all 0.25s ease;
+    transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
     filter: blur(0px);
     cursor: pointer;
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
     white-space: pre-wrap;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.lyric-line:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
 }
 
 .lyric-line.active {
@@ -314,7 +378,7 @@ body {
     font-size: var(--line-font-size);
     font-weight: var(--lyric-weight);
     transform: translateX(2px);
-    text-shadow: 0 0 14px var(--lyric-glow), 0 0 32px var(--lyric-glow);
+    text-shadow: 0 0 10px var(--lyric-glow);
 }
 
 .lyric-line.active.active-plain {
@@ -341,13 +405,36 @@ body {
     white-space: pre-wrap;
 }
 
-.lyric-karaoke .char {
-    color: var(--lyric-karaoke-pending, rgba(255, 255, 255, 0.42));
-    transition: color 120ms linear;
+.lyric-karaoke {
+    position: relative;
+    line-height: inherit;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
-.lyric-karaoke .char.done {
+.lyric-karaoke .karaoke-base,
+.lyric-karaoke .karaoke-fill {
+    display: block;
+    line-height: inherit;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.lyric-karaoke .karaoke-base {
+    color: var(--lyric-karaoke-pending, rgba(255, 255, 255, 0.42));
+}
+
+.lyric-karaoke .karaoke-fill {
+    position: absolute;
+    inset: 0;
     color: var(--lyric-karaoke-done, #fff);
+    clip-path: inset(0 calc(100% - var(--karaoke-progress, 0%)) 0 0);
+    -webkit-clip-path: inset(0 calc(100% - var(--karaoke-progress, 0%)) 0 0);
+    transition: clip-path 90ms linear, -webkit-clip-path 90ms linear;
+    text-shadow: none;
+    pointer-events: none;
 }
 
 .player-dock {
@@ -409,11 +496,11 @@ body {
 }
 
 .music-page .progress-input {
-    box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.48), 0 0 24px rgba(var(--accent-rgb), 0.28);
+    box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.58), 0 0 30px rgba(var(--accent-rgb), 0.36);
 }
 
 .music-page .control-btn.primary {
-    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.56), 0 0 34px rgba(var(--accent-rgb), 0.32);
+    box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.68), 0 0 38px rgba(var(--accent-rgb), 0.38), 0 0 0 1px rgba(255, 255, 255, 0.22) inset;
 }
 
 .progress-zone {
@@ -428,11 +515,17 @@ body {
 .progress-input {
     appearance: none;
     width: 100%;
-    height: 3px;
+    height: 5px;
     border-radius: 0;
-    background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.95) 0, rgba(var(--accent-rgb), 0.95) var(--progress-percent, 0%), rgba(255, 255, 255, 0.2) var(--progress-percent, 0%), rgba(255, 255, 255, 0.2) 100%);
+    background: linear-gradient(90deg,
+        rgba(var(--accent-rgb), 0.38) 0%,
+        rgba(var(--accent-rgb), 0.62) calc(var(--progress-percent, 0%) * 0.75),
+        rgba(var(--accent-rgb), 1) var(--progress-percent, 0%),
+        rgba(255, 255, 255, 0.16) var(--progress-percent, 0%),
+        rgba(255, 255, 255, 0.16) 100%);
     outline: none;
-    box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.36);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.5), 0 0 0 1px rgba(0, 0, 0, 0.24) inset;
 }
 
 .progress-input::-webkit-slider-thumb {
@@ -450,6 +543,7 @@ body {
     height: 0;
     border: 0;
     background: transparent;
+    box-shadow: none;
 }
 
 .progress-preview {
@@ -597,9 +691,9 @@ body {
 .control-btn.primary {
     background: linear-gradient(110deg, var(--accent), rgba(var(--accent-rgb), 0.72) 70%);
     color: #07101f;
-    border-color: transparent;
+    border-color: rgba(255, 255, 255, 0.28);
     font-weight: 700;
-    box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.42), 0 0 30px rgba(var(--accent-rgb), 0.22);
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.56), 0 0 34px rgba(var(--accent-rgb), 0.34), 0 0 0 1px rgba(255, 255, 255, 0.18) inset;
 }
 
 .control-btn.primary .fluent-icon {
@@ -630,6 +724,7 @@ body {
     transform-origin: bottom right;
     transition: opacity 220ms ease, transform 220ms ease, visibility 220ms ease;
     pointer-events: none;
+    contain: layout paint;
 }
 
 #danmaku-settings-panel {
@@ -795,20 +890,22 @@ body {
 .playlist-drawer {
     position: fixed;
     top: 0;
-    right: -380px;
+    right: 0;
     width: min(360px, 88vw);
     height: 100%;
-    z-index: 24;
+    z-index: 70;
     border-left: 1px solid rgba(255, 255, 255, 0.16);
     background: rgba(6, 9, 18, 0.95);
     backdrop-filter: blur(10px);
-    transition: right 0.24s ease;
+    transform: translateX(calc(100% + 2px));
+    transition: transform 0.24s ease;
     display: flex;
     flex-direction: column;
+    contain: layout paint;
 }
 
 .playlist-drawer.show {
-    right: 0;
+    transform: translateX(0);
 }
 
 .playlist-head {
@@ -1024,11 +1121,29 @@ body.dynamic-off .dynamic-bg {
         right: 0.6rem;
         max-width: calc(100vw - 1.2rem);
     }
+
+    .video-page .content-area {
+        padding-top: 8.1rem;
+    }
+
+    .video-page .info-left {
+        position: fixed;
+        top: calc(env(safe-area-inset-top, 0px) + 3.9rem);
+        left: 0.8rem;
+        right: 0.8rem;
+        z-index: 18;
+        padding: 0.5rem 0.65rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(8, 10, 18, 0.3);
+        backdrop-filter: blur(10px);
+        justify-content: flex-start;
+    }
 }
 
 @media (max-width: 640px) {
     .content-area {
-        padding: 3.2rem 0.6rem 0.8rem;
+        padding: 8.4rem 0.6rem 0.8rem;
         height: calc(100% - 196px);
     }
 
@@ -1048,6 +1163,17 @@ body.dynamic-off .dynamic-bg {
 
     .info-left {
         gap: 0.5rem;
+        position: fixed;
+        top: calc(env(safe-area-inset-top, 0px) + 3.9rem);
+        left: 0.6rem;
+        right: 0.6rem;
+        z-index: 18;
+        padding: 0.48rem 0.6rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(8, 10, 18, 0.28);
+        backdrop-filter: blur(10px);
+        justify-content: flex-start;
     }
 
     .track-title {
@@ -1062,13 +1188,14 @@ body.dynamic-off .dynamic-bg {
     .controls-mid,
     .controls-right {
         gap: 0.28rem;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     .controls-right {
         width: 100%;
-        justify-content: center;
+        justify-content: space-evenly;
         order: 3;
+        margin-left: 0;
     }
 
     .controls-mid {
@@ -1104,7 +1231,8 @@ body.dynamic-off .dynamic-bg {
     }
 
     .lyrics-list {
-        padding: 0.8rem 0.7rem 2rem;
+        padding: 0.7rem 0.55rem 2.4rem;
+        scroll-padding-top: 28%;
     }
 
     .lyric-line.active {
@@ -1132,7 +1260,8 @@ body.dynamic-off .dynamic-bg {
 
     .playlist-drawer {
         width: 100vw;
-        right: -100vw;
+        right: 0;
+        transform: translateX(100%);
         border-left: none;
     }
 
@@ -1143,11 +1272,29 @@ body.dynamic-off .dynamic-bg {
     .loop-row {
         margin-right: 2.2rem;
     }
+
+    .music-page .album-panel {
+        display: none;
+    }
+
+    .music-page .music-layout {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+    }
+
+    .music-page .lyrics-panel {
+        min-height: 0;
+    }
+
+    body.video-fullscreen .info-left {
+        opacity: 0;
+        pointer-events: none;
+    }
 }
 
 @media (max-width: 420px) {
     .content-area {
-        padding-top: 3rem;
+        padding-top: 8.7rem;
         height: calc(100% - 212px);
     }
 
@@ -1162,14 +1309,14 @@ body.dynamic-off .dynamic-bg {
     }
 
     .info-left {
-        width: 100%;
-        justify-content: center;
+        top: calc(env(safe-area-inset-top, 0px) + 3.6rem);
+        justify-content: flex-start;
     }
 
     .track-meta {
         min-width: 0;
         max-width: calc(100vw - 1.2rem);
-        text-align: center;
+        text-align: left;
     }
 
     .track-time {
