@@ -226,7 +226,7 @@ function formatCurrentTime() {
 }
 
 function getSiteVersionMarkup() {
-  return '当前版本：<strong>2.0.3.6-20260305</strong>';
+  return '当前版本：<strong>2.0.3.7-20260307</strong>';
 }
 
 function stopCurrentTimeTicker() {

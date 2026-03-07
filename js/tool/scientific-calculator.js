@@ -1,21 +1,16 @@
-/**
- * [站点注释 Site Note]
- * 文件: D:\Documents\GitHub\whwdzg.github.io\js\tool\scientific-calculator.js
- * 作用: 前端交互逻辑与功能模块实现。
- * English: Implements client-side interactions and feature logic.
- */
 (() => {
     const toastApi = window.globalCopyToast || { show () {} };
 
     let inputEl = null;
-    let latexEl = null;
+    let latexRawEl = null;
+    let latexRenderEl = null;
     let resultEl = null;
     let ansEl = null;
     let stepsEl = null;
     let canvasEl = null;
     let calcGridEl = null;
-    let pointX1El = null;
-    let pointX2El = null;
+    let fxEl = null;
+    let gxEl = null;
     let workModeEl = null;
     let angleModeEl = null;
     let complexModeEl = null;
@@ -24,25 +19,21 @@
     let modeListEl = null;
     let modeToggleEl = null;
     let modeLabelEl = null;
-    let modePortalEl = null;
-    let modePortalListEl = null;
 
     let angleDropdown = null;
     let angleListEl = null;
     let angleToggleEl = null;
     let angleLabelEl = null;
-    let anglePortalEl = null;
-    let anglePortalListEl = null;
 
     let complexDropdown = null;
     let complexListEl = null;
     let complexToggleEl = null;
     let complexLabelEl = null;
-    let complexPortalEl = null;
-    let complexPortalListEl = null;
 
     let ans = 0;
     let delegatedBound = false;
+    let copyBound = false;
+
     const graphState = {
         xMin: -10,
         xMax: 10,
@@ -54,19 +45,22 @@
         pad: 24,
         dragging: false,
         dragStartX: 0,
-        dragStartY: 0
+        dragStartY: 0,
+        cursorPoint: null,
+        keyPoints: { zeros: [], extrema: [] }
     };
 
     function captureElements() {
         inputEl = document.getElementById('calc-input');
-        latexEl = document.getElementById('calc-latex');
+        latexRawEl = document.getElementById('calc-latex-raw');
+        latexRenderEl = document.getElementById('calc-latex-render');
         resultEl = document.getElementById('calc-result');
         ansEl = document.getElementById('calc-ans');
         stepsEl = document.getElementById('calc-steps');
         canvasEl = document.getElementById('calc-graph-canvas');
         calcGridEl = document.getElementById('calc-grid');
-        pointX1El = document.getElementById('calc-point-x1');
-        pointX2El = document.getElementById('calc-point-x2');
+        fxEl = document.getElementById('calc-fx');
+        gxEl = document.getElementById('calc-gx');
         workModeEl = document.getElementById('calc-work-mode');
         angleModeEl = document.getElementById('calc-angle-mode');
         complexModeEl = document.getElementById('calc-complex-mode');
@@ -126,13 +120,8 @@
         return complexModeEl && complexModeEl.value === 'complex';
     }
 
-    function degToRad(v) {
-        return v * Math.PI / 180;
-    }
-
-    function radToDeg(v) {
-        return v * 180 / Math.PI;
-    }
+    function degToRad(v) { return v * Math.PI / 180; }
+    function radToDeg(v) { return v * 180 / Math.PI; }
 
     function factorial(n) {
         if (!Number.isFinite(n) || n < 0 || Math.floor(n) !== n) {
@@ -154,6 +143,29 @@
     }
 
     function normalizeExpr(raw) {
+        let expr = String(raw || '').trim();
+        expr = expr.replace(/×/g, '*').replace(/÷/g, '/');
+        expr = expr.replace(/\^/g, '**');
+        expr = expr.replace(/(\d+)\s*!/g, 'factorial($1)');
+        expr = expr.replace(/(\d)\s*(x|\()/gi, '$1*$2');
+        expr = expr.replace(/(\d)\s*(pi|e)\b/gi, '$1*$2');
+        expr = expr.replace(/(\d)\s*([A-Za-z]+)\s*\(/g, '$1*$2(');
+        expr = expr.replace(/\)\s*(\d|x|pi|e)/gi, ')*$1');
+        expr = expr.replace(/\)\s*\(/g, ')*(');
+        expr = expr.replace(/Ans/g, 'Ans');
+        expr = expr.replace(/\bpi\b/gi, 'pi');
+        expr = expr.replace(/\be\b/g, 'e');
+
+        const fx = fxEl && fxEl.value ? normalizeExprNoFG(fxEl.value) : '';
+        const gx = gxEl && gxEl.value ? normalizeExprNoFG(gxEl.value) : '';
+        if (fx) expr = expr.replace(/\bf\s*\(\s*x\s*\)/gi, '(' + fx + ')');
+        if (gx) expr = expr.replace(/\bg\s*\(\s*x\s*\)/gi, '(' + gx + ')');
+
+        return expr;
+    }
+
+    // Avoid recursive replacement when normalizing function definitions themselves.
+    function normalizeExprNoFG(raw) {
         let expr = String(raw || '').trim();
         expr = expr.replace(/×/g, '*').replace(/÷/g, '/');
         expr = expr.replace(/\^/g, '**');
@@ -205,6 +217,84 @@
         return fn(...values);
     }
 
+    function gcd(a, b) {
+        let x = Math.abs(a);
+        let y = Math.abs(b);
+        while (y > 1e-12) {
+            const t = y;
+            y = x % y;
+            x = t;
+        }
+        return x;
+    }
+
+    function approxFraction(x, maxDen) {
+        if (!Number.isFinite(x)) return null;
+        let bestN = 0;
+        let bestD = 1;
+        let bestErr = Infinity;
+        for (let d = 1; d <= maxDen; d += 1) {
+            const n = Math.round(x * d);
+            const err = Math.abs(x - n / d);
+            if (err < bestErr) {
+                bestErr = err;
+                bestN = n;
+                bestD = d;
+                if (err < 1e-10) break;
+            }
+        }
+        if (bestErr > 1e-8) return null;
+        const g = gcd(bestN, bestD);
+        return { n: bestN / g, d: bestD / g };
+    }
+
+    function approxMultipleOf(value, base, maxDen) {
+        const ratio = value / base;
+        const fr = approxFraction(ratio, maxDen);
+        if (!fr) return null;
+        return fr;
+    }
+
+    function fmtNum(n) {
+        if (Math.abs(n) < 1e-12) return '0';
+        return Number(n.toFixed(12)).toString();
+    }
+
+    function formatSmart(value) {
+        if (!Number.isFinite(value)) return String(value);
+
+        const piMul = approxMultipleOf(value, Math.PI, 64);
+        if (piMul) {
+            if (piMul.n === 0) return '0';
+            if (piMul.d === 1 && Math.abs(piMul.n) === 1) return (piMul.n < 0 ? '-' : '') + 'pi';
+            if (piMul.d === 1) return piMul.n + 'pi';
+            return (piMul.n < 0 ? '-' : '') + Math.abs(piMul.n) + 'pi/' + piMul.d;
+        }
+
+        const eMul = approxMultipleOf(value, Math.E, 64);
+        if (eMul) {
+            if (eMul.n === 0) return '0';
+            if (eMul.d === 1 && Math.abs(eMul.n) === 1) return (eMul.n < 0 ? '-' : '') + 'e';
+            if (eMul.d === 1) return eMul.n + 'e';
+            return (eMul.n < 0 ? '-' : '') + Math.abs(eMul.n) + 'e/' + eMul.d;
+        }
+
+        const sq = value * value;
+        const sqRound = Math.round(sq);
+        if (sqRound > 0 && Math.abs(sq - sqRound) < 1e-8) {
+            const sign = value < 0 ? '-' : '';
+            if (sqRound === 1) return sign + '1';
+            return sign + 'sqrt(' + sqRound + ')';
+        }
+
+        const frac = approxFraction(value, 200);
+        if (frac && frac.d !== 1) {
+            return frac.n + '/' + frac.d;
+        }
+
+        return fmtNum(value);
+    }
+
     function evaluateExpression(raw) {
         const expr = normalizeExpr(raw);
         if (!expr) throw new Error('请输入表达式');
@@ -213,73 +303,42 @@
         return value;
     }
 
-    function derivativeAt(expr, x0) {
-        const scale = Math.max(1, Math.abs(x0));
-        const h = 1e-5 * scale;
-        const y1 = evalWithScope(expr, x0 + h);
-        const y2 = evalWithScope(expr, x0 - h);
-        if (!Number.isFinite(y1) || !Number.isFinite(y2)) {
-            throw new Error('导数点附近函数不可计算');
-        }
-        return (y1 - y2) / (2 * h);
-    }
-
-    function computeDerivativeForXPoints(raw) {
-        const expr = normalizeExpr(raw);
-        if (!expr) throw new Error('请输入表达式');
-        const hasX1 = pointX1El && pointX1El.value !== '';
-        const hasX2 = pointX2El && pointX2El.value !== '';
-        if (!hasX1 && !hasX2) {
-            throw new Error('请至少填写 X1 或 X2 的值');
-        }
-
-        const lines = ['模式：数值导数（中心差分）'];
-        const messageParts = [];
-
-        if (hasX1) {
-            const x1Val = Number(pointX1El.value);
-            if (!Number.isFinite(x1Val)) throw new Error('X1 不是有效数字');
-            const d1 = derivativeAt(expr, x1Val);
-            lines.push("f'(X1=" + formatNum(x1Val) + ") = " + formatNum(d1));
-            messageParts.push("f'(X1)=" + formatNum(d1));
-        }
-
-        if (hasX2) {
-            const x2Val = Number(pointX2El.value);
-            if (!Number.isFinite(x2Val)) throw new Error('X2 不是有效数字');
-            const d2 = derivativeAt(expr, x2Val);
-            lines.push("f'(X2=" + formatNum(x2Val) + ") = " + formatNum(d2));
-            messageParts.push("f'(X2)=" + formatNum(d2));
-        }
-
-        return {
-            lines,
-            message: messageParts.join('，')
-        };
-    }
-
     function exportLatex(raw) {
         let s = String(raw || '').trim();
         if (!s) return '';
         s = s.replace(/\*/g, ' \\cdot ');
         s = s.replace(/\bpi\b/gi, '\\pi');
+        s = s.replace(/\be\b/g, 'e');
         s = s.replace(/\bsqrt\(([^)]+)\)/g, '\\sqrt{$1}');
         s = s.replace(/\blog\(([^)]+)\)/g, '\\log\\left($1\\right)');
         s = s.replace(/\bln\(([^)]+)\)/g, '\\ln\\left($1\\right)');
         s = s.replace(/\bsin\(([^)]+)\)/g, '\\sin\\left($1\\right)');
         s = s.replace(/\bcos\(([^)]+)\)/g, '\\cos\\left($1\\right)');
         s = s.replace(/\btan\(([^)]+)\)/g, '\\tan\\left($1\\right)');
-        s = s.replace(/nCr\(([^,]+),([^\)]+)\)/g, '\\binom{$1}{$2}');
-        s = s.replace(/nPr\(([^,]+),([^\)]+)\)/g, 'P\\left($1,$2\\right)');
         s = s.replace(/\bC\(([^,]+),([^\)]+)\)/g, '\\binom{$1}{$2}');
         s = s.replace(/\bP\(([^,]+),([^\)]+)\)/g, 'P\\left($1,$2\\right)');
         s = s.replace(/([A-Za-z0-9\)]+)\^([A-Za-z0-9\(\.]+)/g, '$1^{$2}');
         return s;
     }
 
-    function formatNum(n) {
-        if (Math.abs(n) < 1e-12) return '0';
-        return Number(n.toFixed(12)).toString();
+    function latexToHtml(s) {
+        if (!s) return '<span class="calc-math-word">等待生成</span>';
+        let out = s;
+        out = out.replace(/\\binom\{([^}]+)\}\{([^}]+)\}/g, '<span class="calc-math-binom"><span>$1</span><span>$2</span></span>');
+        out = out.replace(/\\sqrt\{([^}]+)\}/g, '<span class="calc-math-root">√<span class="calc-math-root-body">$1</span></span>');
+        out = out.replace(/\\pi/g, '<span class="calc-math-symbol">π</span>');
+        out = out.replace(/\\sin|\\cos|\\tan|\\ln|\\log/g, (m) => '<span class="calc-math-fn">' + m.slice(1) + '</span>');
+        out = out.replace(/\^\{([^}]+)\}/g, '<sup>$1</sup>');
+        out = out.replace(/\\cdot/g, '<span class="calc-math-op">·</span>');
+        out = out.replace(/\\left\(|\\right\)/g, '');
+        out = out.replace(/\n/g, '<br>');
+        return out;
+    }
+
+    function setLatex(rawExpr) {
+        const latex = exportLatex(rawExpr);
+        if (latexRawEl) latexRawEl.value = latex;
+        if (latexRenderEl) latexRenderEl.innerHTML = '<span class="calc-math">' + latexToHtml(latex || '\\text{等待生成}') + '</span>';
     }
 
     function splitEquation(raw) {
@@ -290,73 +349,6 @@
         const right = text.slice(idx + 1).trim();
         if (!left || !right) throw new Error('方程左右两边不能为空');
         return { left, right };
-    }
-
-    function bisectionRoot(f, left, right, maxIter) {
-        let a = left;
-        let b = right;
-        let fa = f(a);
-        let fb = f(b);
-        if (!Number.isFinite(fa) || !Number.isFinite(fb)) return null;
-        if (fa === 0) return a;
-        if (fb === 0) return b;
-        if (fa * fb > 0) return null;
-
-        for (let i = 0; i < maxIter; i += 1) {
-            const m = (a + b) / 2;
-            const fm = f(m);
-            if (!Number.isFinite(fm)) return null;
-            if (Math.abs(fm) < 1e-10 || Math.abs(b - a) < 1e-9) return m;
-            if (fa * fm <= 0) {
-                b = m;
-                fb = fm;
-            } else {
-                a = m;
-                fa = fm;
-            }
-        }
-        return (a + b) / 2;
-    }
-
-    function solveGeneralRealRoots(f) {
-        const roots = [];
-        const xMin = -100;
-        const xMax = 100;
-        const segments = 2000;
-        const dx = (xMax - xMin) / segments;
-        let px = xMin;
-        let py = f(px);
-
-        for (let i = 1; i <= segments; i += 1) {
-            const x = xMin + i * dx;
-            const y = f(x);
-            if (!Number.isFinite(py) || !Number.isFinite(y)) {
-                px = x;
-                py = y;
-                continue;
-            }
-
-            if (Math.abs(py) < 1e-8) {
-                roots.push(px);
-            }
-            if (py * y < 0) {
-                const r = bisectionRoot(f, px, x, 80);
-                if (Number.isFinite(r)) roots.push(r);
-            }
-
-            px = x;
-            py = y;
-        }
-
-        roots.sort((a, b) => a - b);
-        const uniq = [];
-        for (let i = 0; i < roots.length; i += 1) {
-            const r = roots[i];
-            if (!uniq.length || Math.abs(uniq[uniq.length - 1] - r) > 1e-5) {
-                uniq.push(r);
-            }
-        }
-        return uniq.slice(0, 8);
     }
 
     function solveEquation(raw) {
@@ -371,62 +363,48 @@
         const c = f(0);
         const v1 = f(1);
         const v2 = f(2);
-
         const a = (v2 - 2 * v1 + c) / 2;
         const b = v1 - c - a;
         const cc = c;
 
         const steps = [];
         steps.push('移项得到：(' + eq.left + ') - (' + eq.right + ') = 0');
-        steps.push('识别系数：a=' + formatNum(a) + ', b=' + formatNum(b) + ', c=' + formatNum(cc));
+        steps.push('识别系数：a=' + fmtNum(a) + ', b=' + fmtNum(b) + ', c=' + fmtNum(cc));
 
         const tol = 1e-8;
         if (Math.abs(a) < tol) {
-            if (Math.abs(b) < tol) {
-                const roots = solveGeneralRealRoots(f);
-                if (!roots.length) {
-                    if (allowComplex()) {
-                        throw new Error('未识别出代数型方程，且当前仅支持一元二次复数公式解');
-                    }
-                    throw new Error('未在 [-100,100] 找到实数根');
-                }
-                const lines = roots.map((r, idx) => 'x' + (idx + 1) + ' ≈ ' + formatNum(r));
-                steps.push('未识别为一次/二次，切换为数值法（区间扫描 + 二分）');
-                lines.forEach((line) => steps.push(line));
-                return { message: lines.join('，'), steps, roots };
-            }
+            if (Math.abs(b) < tol) throw new Error('无法识别为一元一次/二次方程');
             const root = -cc / b;
             steps.push('一元一次方程：bx + c = 0');
-            steps.push('x = -c / b = ' + formatNum(root));
-            return { message: 'x = ' + formatNum(root), steps, roots: [root] };
+            steps.push('x = -c / b = ' + formatSmart(root));
+            return { message: 'x = ' + formatSmart(root), steps };
         }
 
         const delta = b * b - 4 * a * cc;
-        steps.push('判别式：Δ = b^2 - 4ac = ' + formatNum(delta));
-
+        steps.push('判别式：Δ = b^2 - 4ac = ' + fmtNum(delta));
         if (delta >= -tol) {
             const safeDelta = delta < 0 ? 0 : delta;
             const sqrtDelta = Math.sqrt(safeDelta);
             const x1 = (-b + sqrtDelta) / (2 * a);
             const x2 = (-b - sqrtDelta) / (2 * a);
-            steps.push('x1 = (-b + √Δ)/(2a) = ' + formatNum(x1));
-            steps.push('x2 = (-b - √Δ)/(2a) = ' + formatNum(x2));
-            return { message: 'x1=' + formatNum(x1) + ', x2=' + formatNum(x2), steps, roots: [x1, x2] };
+            steps.push('x1 = (-b + √Δ)/(2a) = ' + formatSmart(x1));
+            steps.push('x2 = (-b - √Δ)/(2a) = ' + formatSmart(x2));
+            return { message: 'x1=' + formatSmart(x1) + ', x2=' + formatSmart(x2), steps };
         }
 
         if (!allowComplex()) {
             steps.push('Δ < 0，当前设置为仅实数解');
-            return { message: '无实数解', steps, roots: [] };
+            return { message: '无实数解', steps };
         }
 
         const imag = Math.sqrt(-delta) / (2 * a);
         const real = -b / (2 * a);
-        const x1 = formatNum(real) + (imag >= 0 ? ' + ' : ' - ') + formatNum(Math.abs(imag)) + 'i';
-        const x2 = formatNum(real) + (imag >= 0 ? ' - ' : ' + ') + formatNum(Math.abs(imag)) + 'i';
+        const x1 = formatSmart(real) + ' + ' + formatSmart(Math.abs(imag)) + 'i';
+        const x2 = formatSmart(real) + ' - ' + formatSmart(Math.abs(imag)) + 'i';
         steps.push('Δ < 0，按复数公式求解');
         steps.push('x1 = ' + x1);
         steps.push('x2 = ' + x2);
-        return { message: 'x1=' + x1 + ', x2=' + x2, steps, roots: [x1, x2] };
+        return { message: 'x1=' + x1 + ', x2=' + x2, steps };
     }
 
     function getCanvasSize() {
@@ -443,6 +421,14 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
+    function worldToPxX(x, w) {
+        return graphState.pad + (x - graphState.xMin) * (w - graphState.pad * 2) / (graphState.xMax - graphState.xMin);
+    }
+
+    function worldToPxY(y, h) {
+        return h - graphState.pad - (y - graphState.yMin) * (h - graphState.pad * 2) / (graphState.yMax - graphState.yMin);
+    }
+
     function pxToWorldX(px, w) {
         return graphState.xMin + (px - graphState.pad) * (graphState.xMax - graphState.xMin) / (w - graphState.pad * 2);
     }
@@ -454,47 +440,54 @@
     function extractGraphKeyPoints(pts) {
         const zeros = [];
         const extrema = [];
-
         for (let i = 1; i < pts.length; i += 1) {
-            const p0 = pts[i - 1];
-            const p1 = pts[i];
-            if (!p0 || !p1) continue;
-            if (Math.abs(p1.y) < 1e-7) {
-                zeros.push({ x: p1.x, y: 0 });
-                continue;
-            }
-            if (p0.y * p1.y < 0) {
-                const t = p0.y / (p0.y - p1.y);
-                const zx = p0.x + (p1.x - p0.x) * t;
-                zeros.push({ x: zx, y: 0 });
-            }
-        }
-
-        for (let i = 1; i < pts.length - 1; i += 1) {
             const a = pts[i - 1];
             const b = pts[i];
-            const c = pts[i + 1];
-            if (!a || !b || !c) continue;
-            const upThenDown = b.y >= a.y && b.y >= c.y;
-            const downThenUp = b.y <= a.y && b.y <= c.y;
-            if (upThenDown || downThenUp) {
-                extrema.push({ x: b.x, y: b.y, type: upThenDown ? 'max' : 'min' });
+            if (!a || !b) continue;
+            if (a.y * b.y < 0) {
+                const t = a.y / (a.y - b.y);
+                zeros.push({ x: a.x + (b.x - a.x) * t, y: 0 });
             }
         }
-
-        const dedupe = (arr) => {
-            const out = [];
-            for (let i = 0; i < arr.length; i += 1) {
-                const p = arr[i];
-                if (!out.length || Math.abs(out[out.length - 1].x - p.x) > 0.06) out.push(p);
+        for (let i = 1; i < pts.length - 1; i += 1) {
+            const p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1];
+            if (!p0 || !p1 || !p2) continue;
+            if ((p1.y >= p0.y && p1.y >= p2.y) || (p1.y <= p0.y && p1.y <= p2.y)) {
+                extrema.push({ x: p1.x, y: p1.y });
             }
-            return out;
-        };
+        }
+        return { zeros: zeros.slice(0, 5), extrema: extrema.slice(0, 5) };
+    }
 
-        return {
-            zeros: dedupe(zeros).slice(0, 5),
-            extrema: dedupe(extrema).slice(0, 5)
-        };
+    function applyCanvasTheme(ctx, w, h) {
+        const dark = document.body.classList.contains('dark-mode');
+        const bg = dark ? '#111827' : '#ffffff';
+        const grid = dark ? '#334155' : '#d1d5db';
+        const axis = dark ? '#9ca3af' : '#6b7280';
+        const curve = dark ? '#60a5fa' : '#2563eb';
+        const text = dark ? '#e5e7eb' : '#111827';
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, w, h);
+        return { grid, axis, curve, text };
+    }
+
+    function drawAxisLabels(ctx, w, h, color) {
+        ctx.fillStyle = color;
+        ctx.font = '12px Cambria Math, Times New Roman, serif';
+        const x0 = worldToPxX(0, w);
+        const y0 = worldToPxY(0, h);
+        const xTicks = [-10, -5, 0, 5, 10];
+        xTicks.forEach((v) => {
+            const px = worldToPxX(v, w);
+            ctx.fillText(String(v), px - 8, Math.min(h - 4, y0 + 14));
+        });
+        const yTicks = [graphState.yMin, 0, graphState.yMax];
+        yTicks.forEach((v) => {
+            const py = worldToPxY(v, h);
+            ctx.fillText(fmtNum(v), Math.min(w - 52, x0 + 6), py - 4);
+        });
     }
 
     function renderGraph(expr) {
@@ -505,7 +498,7 @@
         const { w, h } = getCanvasSize();
         fitCanvas(ctx, w, h);
 
-        const sample = 600;
+        const sample = 700;
         const pts = [];
         let autoYMin = Infinity;
         let autoYMax = -Infinity;
@@ -513,11 +506,7 @@
         for (let i = 0; i <= sample; i += 1) {
             const x = graphState.xMin + (graphState.xMax - graphState.xMin) * (i / sample);
             let y = NaN;
-            try {
-                y = evalWithScope(expr, x);
-            } catch (_) {
-                y = NaN;
-            }
+            try { y = evalWithScope(expr, x); } catch (_) { y = NaN; }
             if (Number.isFinite(y)) {
                 pts.push({ x, y });
                 autoYMin = Math.min(autoYMin, y);
@@ -540,54 +529,47 @@
             }
         }
 
-        const pad = graphState.pad;
-        const sx = (x) => pad + (x - graphState.xMin) * (w - pad * 2) / (graphState.xMax - graphState.xMin);
-        const sy = (y) => h - pad - (y - graphState.yMin) * (h - pad * 2) / (graphState.yMax - graphState.yMin);
+        const colors = applyCanvasTheme(ctx, w, h);
 
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, w, h);
-
-        ctx.strokeStyle = '#d1d5db';
+        ctx.strokeStyle = colors.grid;
         ctx.lineWidth = 1;
         ctx.beginPath();
         const xStep = Math.max(1, Math.round((graphState.xMax - graphState.xMin) / 12));
         const yStep = Math.max(1, Math.round((graphState.yMax - graphState.yMin) / 10));
         for (let gx = Math.floor(graphState.xMin); gx <= Math.ceil(graphState.xMax); gx += xStep) {
-            const px = sx(gx);
-            ctx.moveTo(px, pad);
-            ctx.lineTo(px, h - pad);
+            const px = worldToPxX(gx, w);
+            ctx.moveTo(px, graphState.pad);
+            ctx.lineTo(px, h - graphState.pad);
         }
         for (let gy = Math.floor(graphState.yMin); gy <= Math.ceil(graphState.yMax); gy += yStep) {
-            const py = sy(gy);
-            ctx.moveTo(pad, py);
-            ctx.lineTo(w - pad, py);
+            const py = worldToPxY(gy, h);
+            ctx.moveTo(graphState.pad, py);
+            ctx.lineTo(w - graphState.pad, py);
         }
         ctx.stroke();
 
-        ctx.strokeStyle = '#6b7280';
+        ctx.strokeStyle = colors.axis;
         ctx.lineWidth = 1.2;
-        const x0 = sy(0);
-        const y0 = sx(0);
+        const x0 = worldToPxY(0, h);
+        const y0 = worldToPxX(0, w);
         ctx.beginPath();
-        ctx.moveTo(pad, x0);
-        ctx.lineTo(w - pad, x0);
-        ctx.moveTo(y0, pad);
-        ctx.lineTo(y0, h - pad);
+        ctx.moveTo(graphState.pad, x0);
+        ctx.lineTo(w - graphState.pad, x0);
+        ctx.moveTo(y0, graphState.pad);
+        ctx.lineTo(y0, h - graphState.pad);
         ctx.stroke();
 
-        ctx.strokeStyle = '#2563eb';
+        drawAxisLabels(ctx, w, h, colors.text);
+
+        ctx.strokeStyle = colors.curve;
         ctx.lineWidth = 2;
         ctx.beginPath();
         let started = false;
         for (let i = 0; i < pts.length; i += 1) {
             const p = pts[i];
-            if (!p) {
-                started = false;
-                continue;
-            }
-            const px = sx(p.x);
-            const py = sy(p.y);
+            if (!p) { started = false; continue; }
+            const px = worldToPxX(p.x, w);
+            const py = worldToPxY(p.y, h);
             if (!started) {
                 ctx.moveTo(px, py);
                 started = true;
@@ -598,22 +580,47 @@
         ctx.stroke();
 
         const keys = extractGraphKeyPoints(pts);
+        graphState.keyPoints = keys;
+
         ctx.fillStyle = '#ef4444';
         keys.zeros.forEach((p) => {
             ctx.beginPath();
-            ctx.arc(sx(p.x), sy(0), 3, 0, Math.PI * 2);
+            ctx.arc(worldToPxX(p.x, w), worldToPxY(p.y, h), 3, 0, Math.PI * 2);
             ctx.fill();
         });
 
         ctx.fillStyle = '#f59e0b';
         keys.extrema.forEach((p) => {
             ctx.beginPath();
-            ctx.arc(sx(p.x), sy(p.y), 3, 0, Math.PI * 2);
+            ctx.arc(worldToPxX(p.x, w), worldToPxY(p.y, h), 3, 0, Math.PI * 2);
             ctx.fill();
         });
 
+        if (graphState.cursorPoint && Number.isFinite(graphState.cursorPoint.x) && Number.isFinite(graphState.cursorPoint.y)) {
+            const cx = worldToPxX(graphState.cursorPoint.x, w);
+            const cy = worldToPxY(graphState.cursorPoint.y, h);
+            ctx.strokeStyle = '#f43f5e';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(cx, graphState.pad);
+            ctx.lineTo(cx, h - graphState.pad);
+            ctx.moveTo(graphState.pad, cy);
+            ctx.lineTo(w - graphState.pad, cy);
+            ctx.stroke();
+
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath();
+            ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = colors.text;
+            ctx.font = '12px Cambria Math, Times New Roman, serif';
+            ctx.fillText('x=' + formatSmart(graphState.cursorPoint.x), cx + 8, Math.max(16, graphState.pad - 6));
+            ctx.fillText('y=' + formatSmart(graphState.cursorPoint.y), Math.max(graphState.pad + 4, worldToPxX(0, w) + 6), cy - 8);
+        }
+
         return {
-            text: '图像已绘制，x∈[' + formatNum(graphState.xMin) + ', ' + formatNum(graphState.xMax) + ']',
+            text: '图像已绘制，x∈[' + fmtNum(graphState.xMin) + ', ' + fmtNum(graphState.xMax) + ']',
             keyPoints: keys
         };
     }
@@ -622,30 +629,85 @@
         const expr = normalizeExpr(raw);
         if (!expr) throw new Error('请输入函数表达式');
         const keepView = !!(options && options.keepView);
-
         if (!keepView || graphState.lastExpr !== expr) {
             graphState.xMin = -10;
             graphState.xMax = 10;
             graphState.manualY = false;
+            graphState.cursorPoint = null;
         }
-
         graphState.lastExpr = expr;
         const rendered = renderGraph(expr);
         graphState.hasGraph = true;
         return rendered;
     }
 
+    function nearestPointOnExpr(expr, targetX) {
+        const sample = 1200;
+        let best = null;
+        for (let i = 0; i <= sample; i += 1) {
+            const x = graphState.xMin + (graphState.xMax - graphState.xMin) * (i / sample);
+            if (Math.abs(x - targetX) > (graphState.xMax - graphState.xMin) / 6) continue;
+            let y = NaN;
+            try { y = evalWithScope(expr, x); } catch (_) { y = NaN; }
+            if (!Number.isFinite(y)) continue;
+            const d = Math.abs(x - targetX);
+            if (!best || d < best.d) best = { x, y, d };
+        }
+        return best ? { x: best.x, y: best.y } : null;
+    }
+
+    function evalExprAtX(expr, x) {
+        try {
+            const y = evalWithScope(expr, x);
+            return Number.isFinite(y) ? y : NaN;
+        } catch (_) {
+            return NaN;
+        }
+    }
+
+    function snapClickPoint(expr, targetX) {
+        const rangeX = graphState.xMax - graphState.xMin;
+        const extremaTol = rangeX * 0.04;
+        const intTol = rangeX * 0.03;
+
+        // 1) Snap to nearby extrema first.
+        const extrema = graphState.keyPoints && graphState.keyPoints.extrema ? graphState.keyPoints.extrema : [];
+        let bestExt = null;
+        for (let i = 0; i < extrema.length; i += 1) {
+            const p = extrema[i];
+            if (!p || !Number.isFinite(p.x) || !Number.isFinite(p.y)) continue;
+            const d = Math.abs(p.x - targetX);
+            if (d <= extremaTol && (!bestExt || d < bestExt.d)) {
+                bestExt = { x: p.x, y: p.y, d };
+            }
+        }
+        if (bestExt) {
+            return { x: bestExt.x, y: bestExt.y, snapped: 'extrema' };
+        }
+
+        // 2) Then snap to nearby integer x-position on curve.
+        const intX = Math.round(targetX);
+        if (Math.abs(intX - targetX) <= intTol) {
+            const y = evalExprAtX(expr, intX);
+            if (Number.isFinite(y)) {
+                return { x: intX, y, snapped: 'integer' };
+            }
+        }
+
+        // 3) Fallback to nearest sampled point.
+        const nearest = nearestPointOnExpr(expr, targetX);
+        if (!nearest) return null;
+        return { x: nearest.x, y: nearest.y, snapped: 'nearest' };
+    }
+
     function buildGraphStepLines(graphResult) {
-        const lines = ['模式：函数图像', '支持滚轮缩放与拖拽平移'];
+        const lines = ['模式：函数图像', '支持滚轮缩放、拖拽平移、点击读值'];
         if (!graphResult || !graphResult.keyPoints) return lines;
         const zeros = graphResult.keyPoints.zeros || [];
         const extrema = graphResult.keyPoints.extrema || [];
-        if (zeros.length) {
-            lines.push('零点约：' + zeros.map((p) => '(' + formatNum(p.x) + ', 0)').join('，'));
-        }
-        if (extrema.length) {
-            lines.push('极值点约：' + extrema.map((p) => '(' + formatNum(p.x) + ', ' + formatNum(p.y) + ')').join('，'));
-        }
+        if (zeros.length) lines.push('零点约：' + zeros.map((p) => '(' + formatSmart(p.x) + ', 0)').join('，'));
+        if (extrema.length) lines.push('极值点约：' + extrema.map((p) => '(' + formatSmart(p.x) + ', ' + formatSmart(p.y) + ')').join('，'));
+        if (graphState.cursorPoint) lines.push('点击读值：x=' + formatSmart(graphState.cursorPoint.x) + ', y=' + formatSmart(graphState.cursorPoint.y));
         return lines;
     }
 
@@ -662,15 +724,12 @@
             const { w, h } = getCanvasSize();
             const xCenter = pxToWorldX(px, w);
             const yCenter = pxToWorldY(py, h);
-            const zoomIn = evt.deltaY < 0;
-            const factor = zoomIn ? 0.9 : 1.12;
-
+            const factor = evt.deltaY < 0 ? 0.9 : 1.12;
             graphState.xMin = xCenter + (graphState.xMin - xCenter) * factor;
             graphState.xMax = xCenter + (graphState.xMax - xCenter) * factor;
             graphState.yMin = yCenter + (graphState.yMin - yCenter) * factor;
             graphState.yMax = yCenter + (graphState.yMax - yCenter) * factor;
             graphState.manualY = true;
-
             try {
                 const rendered = renderGraph(graphState.lastExpr);
                 pushSteps(buildGraphStepLines(rendered));
@@ -705,12 +764,7 @@
             graphState.yMin += worldDy;
             graphState.yMax += worldDy;
             graphState.manualY = true;
-
-            try {
-                renderGraph(graphState.lastExpr);
-            } catch (_) {
-                // Ignore transient render issues while dragging.
-            }
+            try { renderGraph(graphState.lastExpr); } catch (_) {}
         });
 
         window.addEventListener('mouseup', () => {
@@ -726,6 +780,27 @@
             }
         });
 
+        canvasEl.addEventListener('click', (evt) => {
+            if (!graphState.hasGraph || !graphState.lastExpr) return;
+            const rect = canvasEl.getBoundingClientRect();
+            const px = evt.clientX - rect.left;
+            const { w } = getCanvasSize();
+            const targetX = pxToWorldX(px, w);
+            const hit = snapClickPoint(graphState.lastExpr, targetX);
+            if (!hit) return;
+            graphState.cursorPoint = { x: hit.x, y: hit.y };
+            try {
+                const rendered = renderGraph(graphState.lastExpr);
+                pushSteps(buildGraphStepLines(rendered));
+                const label = hit.snapped === 'extrema'
+                    ? '（吸附极值）'
+                    : (hit.snapped === 'integer' ? '（吸附整数 x）' : '（最近点）');
+                setResult('结果: x=' + formatSmart(hit.x) + ', y=' + formatSmart(hit.y) + ' ' + label, true);
+            } catch (err) {
+                setResult('结果: ' + (err && err.message ? err.message : '读取点值失败'), false);
+            }
+        });
+
         canvasEl.dataset.bound = '1';
     }
 
@@ -735,46 +810,79 @@
         if (mode === 'equation') {
             inputEl.placeholder = '示例：x^2+2x+5=0，或 2x+1=7';
         } else if (mode === 'graph') {
-            inputEl.placeholder = '示例：sin(x)+x/3 或 x^2-4';
+            inputEl.placeholder = '示例：f(x)-g(x) 或 sin(x)+x/3';
         } else {
-            inputEl.placeholder = '示例：sin(30)+2^3，nCr(10,3)，sqrt(2)+ln(5)';
+            inputEl.placeholder = '示例：sin(30)+2^3，C(10,3)，sqrt(2)+ln(5)';
         }
     }
 
-    function handleEval() {
+    function handleSolve() {
         const mode = getMode();
         const raw = inputEl ? inputEl.value : '';
-        if (!raw.trim()) {
-            throw new Error('请输入内容');
-        }
+        if (!raw.trim()) throw new Error('请输入内容');
+
         if (mode === 'equation') {
             const solved = solveEquation(raw);
             pushSteps(solved.steps);
             setResult('结果: ' + solved.message, true);
-            if (latexEl) latexEl.value = exportLatex(raw);
+            setLatex(raw);
             return;
         }
+
         if (mode === 'graph') {
             const rendered = drawGraph(raw);
             pushSteps(buildGraphStepLines(rendered));
             setResult('结果: ' + rendered.text, true);
-            if (latexEl) latexEl.value = exportLatex(raw);
+            setLatex(raw);
             return;
         }
+
         const value = evaluateExpression(raw);
         setAns(value);
-        pushSteps(['模式：表达式', '计算结果 = ' + formatNum(value)]);
-        setResult('结果: ' + formatNum(value), true);
-        if (latexEl) latexEl.value = exportLatex(raw);
+        pushSteps(['模式：表达式', '计算结果 = ' + formatSmart(value)]);
+        setResult('结果: ' + formatSmart(value), true);
+        setLatex(raw);
+    }
+
+    function handleCopyButton(button) {
+        if (!button) return;
+        const targetId = button.dataset.copyTarget;
+        if (!targetId) return;
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        const value = target.value || '';
+        if (!value) {
+            toastApi.show('没有可复制的 LaTeX 内容', 'error', 'icon-ic_fluent_error_circle_24_regular');
+            return;
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(value).then(() => {
+                toastApi.show('LaTeX 已复制', 'success', 'icon-ic_fluent_checkmark_circle_24_regular');
+            }).catch(() => {
+                toastApi.show('复制失败', 'error', 'icon-ic_fluent_error_circle_24_regular');
+            });
+            return;
+        }
+        const ta = document.createElement('textarea');
+        ta.value = value;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        toastApi.show('LaTeX 已复制', 'success', 'icon-ic_fluent_checkmark_circle_24_regular');
     }
 
     function handleAction(action) {
         if (!inputEl) return;
         if (action === 'clear') {
             inputEl.value = '';
-            if (latexEl) latexEl.value = '';
             graphState.lastExpr = '';
             graphState.hasGraph = false;
+            graphState.cursorPoint = null;
+            setLatex('');
             pushSteps([]);
             setResult('结果: -', true);
             return;
@@ -784,14 +892,8 @@
             return;
         }
         if (action === 'latex') {
-            const latex = exportLatex(inputEl.value);
-            if (latexEl) latexEl.value = latex;
-            if (!latex) {
-                setResult('结果: 请先输入表达式', false);
-                return;
-            }
-            setResult('结果: LaTeX 已生成', true);
-            toastApi.show('LaTeX 已生成', 'success', 'icon-ic_fluent_checkmark_circle_24_regular');
+            setLatex(inputEl.value);
+            setResult('结果: LaTeX 已更新', true);
             return;
         }
         if (action === 'plot') {
@@ -799,26 +901,17 @@
                 const rendered = drawGraph(inputEl.value, { keepView: true });
                 pushSteps(buildGraphStepLines(rendered));
                 setResult('结果: ' + rendered.text, true);
+                setLatex(inputEl.value);
             } catch (err) {
                 setResult('结果: ' + (err && err.message ? err.message : '绘图失败'), false);
             }
             return;
         }
-        if (action === 'derivative') {
+        if (action === 'solve') {
             try {
-                const deriv = computeDerivativeForXPoints(inputEl.value);
-                pushSteps(deriv.lines);
-                setResult('结果: ' + deriv.message, true);
+                handleSolve();
             } catch (err) {
-                setResult('结果: ' + (err && err.message ? err.message : '导数计算失败'), false);
-            }
-            return;
-        }
-        if (action === 'eval') {
-            try {
-                handleEval();
-            } catch (err) {
-                setResult('结果: ' + (err && err.message ? err.message : '计算失败'), false);
+                setResult('结果: ' + (err && err.message ? err.message : '求解失败'), false);
             }
         }
     }
@@ -835,26 +928,12 @@
         inputEl.setSelectionRange(next, next);
     }
 
-    function setDropdownValue(hiddenEl, labelEl, listEl, value, text) {
-        if (hiddenEl) hiddenEl.value = value;
-        if (labelEl) labelEl.textContent = text || value;
-        [listEl].forEach((currentList) => {
-            if (!currentList) return;
-            currentList.querySelectorAll('.dropdown-item').forEach((item) => {
-                const match = item.dataset.value === value;
-                item.classList.toggle('selected', match);
-                item.setAttribute('aria-selected', match ? 'true' : 'false');
-            });
-        });
-        applyModeUI();
-    }
-
     function setDropdownValueMulti(hiddenEl, labelEl, lists, value, text) {
         if (hiddenEl) hiddenEl.value = value;
         if (labelEl) labelEl.textContent = text || value;
-        (lists || []).forEach((currentList) => {
-            if (!currentList) return;
-            currentList.querySelectorAll('.dropdown-item').forEach((item) => {
+        (lists || []).forEach((listEl) => {
+            if (!listEl) return;
+            listEl.querySelectorAll('.dropdown-item').forEach((item) => {
                 const match = item.dataset.value === value;
                 item.classList.toggle('selected', match);
                 item.setAttribute('aria-selected', match ? 'true' : 'false');
@@ -868,10 +947,8 @@
         if (dropdown.dataset.bound === '1') return;
 
         const portalId = 'calc-dropdown-portal-' + portalKey;
-        const existing = document.getElementById(portalId);
-        if (existing && existing.parentNode) {
-            existing.parentNode.removeChild(existing);
-        }
+        const old = document.getElementById(portalId);
+        if (old && old.parentNode) old.parentNode.removeChild(old);
 
         const portalEl = document.createElement('div');
         portalEl.className = 'settings-dropdown-portal basex-dropdown-portal hidden';
@@ -881,46 +958,29 @@
         portalEl.appendChild(portalList);
         document.body.appendChild(portalEl);
 
-        if (portalKey === 'mode') {
-            modePortalEl = portalEl;
-            modePortalListEl = portalList;
-        } else if (portalKey === 'angle') {
-            anglePortalEl = portalEl;
-            anglePortalListEl = portalList;
-        } else if (portalKey === 'complex') {
-            complexPortalEl = portalEl;
-            complexPortalListEl = portalList;
-        }
-
         listEl.querySelectorAll('.dropdown-item').forEach((item) => {
             const clone = item.cloneNode(true);
             clone.addEventListener('click', () => {
-                const val = clone.dataset.value || '';
-                const labelText = clone.textContent || val;
-                setDropdownValueMulti(hiddenEl, labelEl, [listEl, portalList], val, labelText);
-                collapse();
+                setDropdownValueMulti(hiddenEl, labelEl, [listEl, portalList], clone.dataset.value || '', clone.textContent || '');
+                close();
             });
             portalList.appendChild(clone);
         });
 
         const positionPortal = () => {
             const rect = toggle.getBoundingClientRect();
-            const viewportW = window.innerWidth;
-            const viewportH = window.innerHeight;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
             const gap = 8;
-            const portalW = portalEl.offsetWidth || Math.min(Math.max(220, rect.width + 24), viewportW - 16);
+            const pw = portalEl.offsetWidth || Math.min(Math.max(220, rect.width + 24), vw - 16);
             let left = rect.left;
-            left = Math.min(Math.max(8, left), Math.max(8, viewportW - portalW - 8));
+            left = Math.min(Math.max(8, left), Math.max(8, vw - pw - 8));
             portalEl.style.left = left + 'px';
 
-            const portalH = portalEl.offsetHeight || 240;
-            const spaceBelow = viewportH - rect.bottom;
-            const preferBelow = spaceBelow > portalH + gap || rect.top < 120;
-            if (preferBelow) {
-                portalEl.style.top = Math.min(viewportH - portalH - 8, rect.bottom + gap) + 'px';
-            } else {
-                portalEl.style.top = Math.max(8, rect.top - portalH - gap) + 'px';
-            }
+            const ph = portalEl.offsetHeight || 240;
+            const below = vh - rect.bottom;
+            const preferBelow = below > ph + gap || rect.top < 120;
+            portalEl.style.top = (preferBelow ? Math.min(vh - ph - 8, rect.bottom + gap) : Math.max(8, rect.top - ph - gap)) + 'px';
         };
 
         const close = () => {
@@ -938,13 +998,9 @@
             portalEl.classList.remove('hidden');
             positionPortal();
         };
-        const collapse = () => {
-            close();
-        };
 
         toggle.addEventListener('click', () => {
-            const opened = dropdown.classList.contains('open');
-            if (opened) close(); else open();
+            if (dropdown.classList.contains('open')) close(); else open();
         });
 
         document.addEventListener('click', (evt) => {
@@ -954,16 +1010,16 @@
         window.addEventListener('resize', positionPortal);
         window.addEventListener('scroll', positionPortal, true);
 
-        const initialVal = hiddenEl.value || '';
-        const initialItem = listEl.querySelector('[data-value="' + initialVal + '"]') || listEl.querySelector('.dropdown-item');
-        if (initialItem) {
-            setDropdownValueMulti(hiddenEl, labelEl, [listEl, portalList], initialItem.dataset.value || initialVal, initialItem.textContent || initialVal);
+        const initVal = hiddenEl.value || '';
+        const initItem = listEl.querySelector('[data-value="' + initVal + '"]') || listEl.querySelector('.dropdown-item');
+        if (initItem) {
+            setDropdownValueMulti(hiddenEl, labelEl, [listEl, portalList], initItem.dataset.value || initVal, initItem.textContent || initVal);
         }
 
         dropdown.dataset.bound = '1';
     }
 
-    function renderButtonMath(token) {
+    function renderButtonMath(token, fallback) {
         const normalized = String(token || '').trim().replace(/^\\+/, '\\');
         const map = {
             '\\sin': '<span class="calc-math-fn">sin</span>',
@@ -977,21 +1033,43 @@
             '\\pi': '<span class="calc-math-symbol">π</span>',
             '\\sqrt{x}': '<span class="calc-math-root">√<span class="calc-math-root-body">x</span></span>',
             'x^{y}': '<span class="calc-math-var">x</span><sup>y</sup>',
-            '\\binom{n}{r}': '<span class="calc-math-binom"><span>n</span><span>r</span></span>'
+            'C(n,r)': '<span class="calc-math-word">C</span>(<span class="calc-math-var">n</span>,<span class="calc-math-var">r</span>)',
+            'P(n,r)': '<span class="calc-math-word">P</span>(<span class="calc-math-var">n</span>,<span class="calc-math-var">r</span>)',
+            'x': '<span class="calc-math-var">x</span>',
+            'f(x)': '<span class="calc-math-word">f</span>(<span class="calc-math-var">x</span>)',
+            'g(x)': '<span class="calc-math-word">g</span>(<span class="calc-math-var">x</span>)',
+            'Ans': '<span class="calc-math-word">Ans</span>',
+            '=': '<span class="calc-math-op">=</span>',
+            '+': '<span class="calc-math-op">+</span>',
+            '-': '<span class="calc-math-op">−</span>',
+            '*': '<span class="calc-math-op">×</span>',
+            '/': '<span class="calc-math-op">÷</span>',
+            '%': '<span class="calc-math-op">%</span>',
+            '(': '<span class="calc-math-op">(</span>',
+            ')': '<span class="calc-math-op">)</span>',
+            '.': '<span class="calc-math-op">.</span>',
+            ',': '<span class="calc-math-op">,</span>',
+            'DEL': '<span class="calc-math-word">DEL</span>',
+            'AC': '<span class="calc-math-word">AC</span>',
+            '导出 LaTeX': '<span class="calc-math-word">LaTeX</span>',
+            '绘制图像': '<span class="calc-math-word">Graph</span>',
+            '求解': '<span class="calc-math-word">Solve</span>'
         };
-        return map[normalized] || '';
+        if (map[normalized]) return map[normalized];
+        if (/^\d$/.test(normalized)) return '<span class="calc-math-num">' + normalized + '</span>';
+        if (fallback && map[fallback]) return map[fallback];
+        return '<span class="calc-math-word">' + String(fallback || normalized || '').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</span>';
     }
 
     function renderCalcButtonLatex() {
         if (!calcGridEl) return;
         if (calcGridEl.dataset.mathRendered === '1') return;
-        const buttons = calcGridEl.querySelectorAll('button[title]');
-        buttons.forEach((btn) => {
-            const token = (btn.getAttribute('title') || '').trim();
-            const html = renderButtonMath(token);
-            if (!html) return;
+        calcGridEl.querySelectorAll('button').forEach((btn) => {
+            const title = (btn.getAttribute('title') || '').trim();
+            const fallback = (btn.textContent || '').trim();
+            const html = renderButtonMath(title || fallback, fallback);
             btn.innerHTML = '<span class="calc-math">' + html + '</span>';
-            btn.setAttribute('aria-label', token);
+            btn.setAttribute('aria-label', fallback || title);
         });
         calcGridEl.dataset.mathRendered = '1';
     }
@@ -1000,20 +1078,26 @@
         if (delegatedBound) return;
         delegatedBound = true;
         document.addEventListener('click', (evt) => {
-            const btn = evt.target.closest('#calc-grid button');
-            if (!btn) return;
-            captureElements();
-            const insert = btn.dataset.insert;
-            const action = btn.dataset.action;
-            if (insert) insertToken(insert);
-            if (action) handleAction(action);
+            const calcBtn = evt.target.closest('#calc-grid button');
+            if (calcBtn) {
+                captureElements();
+                const insert = calcBtn.dataset.insert;
+                const action = calcBtn.dataset.action;
+                if (insert) insertToken(insert);
+                if (action) handleAction(action);
+                return;
+            }
+            const copyBtn = evt.target.closest('[data-copy-target="calc-latex-raw"]');
+            if (copyBtn) {
+                handleCopyButton(copyBtn);
+            }
         });
     }
 
     function init() {
         captureElements();
         bindDelegated();
-        if (!inputEl || !latexEl || !resultEl || !ansEl || !stepsEl || !canvasEl || !calcGridEl || !workModeEl || !angleModeEl || !complexModeEl || !pointX1El || !pointX2El) return false;
+        if (!inputEl || !latexRawEl || !latexRenderEl || !resultEl || !ansEl || !stepsEl || !canvasEl || !calcGridEl || !fxEl || !gxEl || !workModeEl || !angleModeEl || !complexModeEl) return false;
 
         bindPortalDropdown(modeDropdown, modeToggleEl, modeListEl, workModeEl, modeLabelEl, 'mode');
         bindPortalDropdown(angleDropdown, angleToggleEl, angleListEl, angleModeEl, angleLabelEl, 'angle');
@@ -1021,9 +1105,14 @@
         bindCanvasInteractions();
         renderCalcButtonLatex();
 
+        if (!copyBound) {
+            copyBound = true;
+        }
+
         setAns(0);
         setResult('结果: -', true);
         pushSteps([]);
+        setLatex('');
         applyModeUI();
         return true;
     }

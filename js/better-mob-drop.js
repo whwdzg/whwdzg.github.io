@@ -64,7 +64,7 @@
         hashPending: true,
         filter: "all"
     };
-    var JSON_CACHE_VERSION = "2.0.3.6-20260305";
+    var JSON_CACHE_VERSION = "2.0.3.7-20260307";
     var JSON_CACHE_PREFIX = "pack-json:" + JSON_CACHE_VERSION + ":";
     var fetchTextCache = new Map();
 

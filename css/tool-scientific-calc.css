@@ -16,7 +16,7 @@
 }
 
 #calc-input,
-#calc-latex {
+#calc-latex-raw {
   width: 100%;
   max-width: 100%;
   font-family: var(--font-mono, "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif);
@@ -34,19 +34,19 @@
   min-height: 110px;
 }
 
-#calc-latex {
+#calc-latex-raw {
   min-height: 88px;
 }
 
 #calc-input:focus,
-#calc-latex:focus {
+#calc-latex-raw:focus {
   outline: none;
   border-color: var(--border-color);
   background: var(--input-focus-bg);
   box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
 }
 
-#calc-latex[readonly] {
+#calc-latex-raw[readonly] {
   opacity: 0.96;
 }
 
@@ -71,19 +71,19 @@
   background: color-mix(in srgb, var(--color-secondary, #10b981) 8%, var(--card-bg, #ffffff));
 }
 
-.calc-point-row {
+.calc-func-row {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 0.5rem 0.65rem;
 }
 
-.calc-point-row label {
+.calc-func-row label {
   font-weight: 700;
   color: var(--text-color, #111827);
 }
 
-.calc-point-row input {
+.calc-func-row input {
   width: 100%;
   border-radius: 10px;
   border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
@@ -94,7 +94,7 @@
   box-sizing: border-box;
 }
 
-.calc-point-row input:focus {
+.calc-func-row input:focus {
   outline: none;
   border-color: var(--border-color);
   background: var(--input-focus-bg);
@@ -119,11 +119,11 @@ body.dark-mode .calc-result[data-state="success"] {
   background: color-mix(in srgb, #10b981 14%, var(--card-bg, #111827));
 }
 
-body.dark-mode .calc-point-row label {
+body.dark-mode .calc-func-row label {
   color: var(--text-color, #f3f4f6);
 }
 
-body.dark-mode .calc-point-row input {
+body.dark-mode .calc-func-row input {
   border-color: rgba(255, 255, 255, 0.1);
   background: var(--input-bg, #1f2937);
   color: var(--text-color, #f3f4f6);
@@ -153,7 +153,7 @@ body.dark-mode .calc-point-row input {
   align-items: center;
   justify-content: center;
   gap: 0.08rem;
-  font-family: "Times New Roman", "Noto Serif SC", serif;
+  font-family: "Cambria Math", "Times New Roman", "Noto Serif SC", serif;
   font-size: 1rem;
   line-height: 1;
   letter-spacing: 0.01em;
@@ -193,11 +193,24 @@ body.dark-mode .calc-point-row input {
   font-size: 0.86em;
 }
 
+.calc-grid .calc-math-num {
+  font-variant-numeric: oldstyle-nums tabular-nums;
+}
+
+.calc-grid .calc-math-op {
+  font-size: 1.04rem;
+}
+
+.calc-grid .calc-math-word {
+  letter-spacing: 0.02em;
+  font-style: italic;
+}
+
 .calc-grid button:hover {
   filter: brightness(1.06);
 }
 
-.calc-grid button[data-action="eval"] {
+.calc-grid button[data-action="solve"] {
   background: var(--color-accent, #3b82f6);
   color: #fff;
 }
@@ -211,6 +224,24 @@ body.dark-mode .calc-point-row input {
 .calc-grid button[data-action="plot"] {
   background: var(--color-secondary, #10b981);
   color: #fff;
+}
+
+body.dark-mode .calc-grid button {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: var(--card-bg, #1f2937);
+  color: var(--text-color, #f3f4f6);
+}
+
+body.dark-mode #calc-graph-canvas {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: var(--card-bg, #111827);
+}
+
+.calc-grid button[data-action="solve"] .calc-math,
+.calc-grid button[data-action="clear"] .calc-math,
+.calc-grid button[data-action="latex"] .calc-math,
+.calc-grid button[data-action="plot"] .calc-math {
+  color: inherit;
 }
 
 .calc-grid .span2 {
@@ -245,20 +276,34 @@ body.dark-mode .calc-point-row input {
   max-width: 100%;
   border-radius: 10px;
   border: 1px solid var(--border-color, rgba(0, 0, 0, 0.12));
-  background: #fff;
+  background: var(--card-bg, #ffffff);
   display: block;
 }
 
+.calc-latex-wrapper {
+  position: relative;
+}
+
+.calc-latex-render {
+  min-height: 88px;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  border-radius: 10px;
+  padding: 0.95rem;
+  background: var(--card-bg, #ffffff);
+  color: var(--text-color, #111827);
+  box-shadow: 0 10px 30px var(--shadow-color, rgba(15, 23, 42, 0.18));
+  font-family: "Cambria Math", "Times New Roman", "Noto Serif SC", serif;
+  overflow: auto;
+}
+
+body.dark-mode .calc-latex-render {
+  background: var(--input-bg, #1f2937);
+  color: var(--text-color, #f3f4f6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 @media (max-width: 900px) {
-  .calc-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .calc-point-row {
+  .calc-func-row {
     grid-template-columns: auto 1fr;
-  }
-
-  .calc-grid .span2 {
-    grid-column: span 2;
   }
 }
