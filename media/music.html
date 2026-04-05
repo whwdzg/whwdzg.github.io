@@ -21,6 +21,7 @@
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="modulepreload" href="/js/media/common.js">
     <link rel="modulepreload" href="/js/media/music.js">
+    <link rel="stylesheet" href="/css/component.css">
     <link rel="stylesheet" href="/css/media-player.css">
     <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
     <script src="/js/pwa/register-sw.js" defer></script>
@@ -50,7 +51,7 @@
 
     <section class="player-dock">
         <div class="progress-zone">
-            <input id="seek-range" class="progress-input" type="range" min="0" max="0" step="0.01" value="0">
+            <input id="seek-range" class="progress-input component-slider" type="range" min="0" max="0" step="0.01" value="0">
             <div id="progress-preview" class="progress-preview">
                 <img id="preview-image" src="" alt="预览图" decoding="async">
                 <div class="time-line">
@@ -109,12 +110,13 @@
 
         <div id="import-panel" class="floating-panel" aria-label="导入方式面板">
             <div class="setting-row setting-row-title">选择导入方式</div>
+            <div class="floating-panel-divider" aria-hidden="true"></div>
             <div class="import-panel-actions">
-                <button id="import-folder-btn" class="panel-action-btn" type="button">
+                <button id="import-folder-btn" class="panel-action-btn component-btn component-btn--flat" type="button">
                     <i class="fluent-icon icon-ic_fluent_folder_open_24_regular" aria-hidden="true"></i>
                     <span>导入文件夹（推荐）</span>
                 </button>
-                <button id="import-file-btn" class="panel-action-btn" type="button">
+                <button id="import-file-btn" class="panel-action-btn component-btn component-btn--flat" type="button">
                     <i class="fluent-icon icon-ic_fluent_document_24_regular" aria-hidden="true"></i>
                     <span>导入音乐文件</span>
                 </button>
@@ -122,68 +124,81 @@
         </div>
 
         <div id="settings-panel" class="floating-panel" aria-label="设置面板">
+            <div class="setting-row setting-row-title">设置</div>
+            <div class="floating-panel-divider" aria-hidden="true"></div>
             <div class="setting-row">
                 <label for="speed-range">倍速</label>
                 <div class="setting-control">
-                    <input id="speed-range" class="setting-slider" type="range" min="0.5" max="2" step="0.05" value="1">
-                    <span class="setting-value" id="speed-value">1.00x</span>
+                    <input id="speed-range" class="component-slider component-range-slider" type="range" min="0.5" max="2" step="0.05" value="1">
+                    <input class="setting-value-input component-dialog__input" id="speed-value" type="text" value="1.00x">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="toggle-dynamic-bg">动态背景</label>
-                <input id="toggle-dynamic-bg" type="checkbox" checked>
+                <label class="component-switch" aria-label="动态背景开关">
+                    <input id="toggle-dynamic-bg" class="component-switch__input" type="checkbox" checked>
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
             </div>
             <div class="setting-row">
                 <label for="toggle-karaoke">逐字歌词</label>
-                <input id="toggle-karaoke" type="checkbox" checked>
+                <label class="component-switch" aria-label="逐字歌词开关">
+                    <input id="toggle-karaoke" class="component-switch__input" type="checkbox" checked>
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
             </div>
             <div class="setting-row">
                 <label for="toggle-lyric-blur">歌词模糊</label>
-                <input id="toggle-lyric-blur" type="checkbox" checked>
+                <label class="component-switch" aria-label="歌词模糊开关">
+                    <input id="toggle-lyric-blur" class="component-switch__input" type="checkbox" checked>
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
             </div>
             <div class="setting-row">
                 <label for="lyric-size">歌词大小</label>
                 <div class="setting-control">
-                    <input id="lyric-size" class="setting-slider" type="range" min="24" max="84" step="1" value="36">
-                    <span class="setting-value" id="lyric-size-value">36 px</span>
+                    <input id="lyric-size" class="component-slider component-range-slider" type="range" min="24" max="84" step="1" value="36">
+                    <input class="setting-value-input component-dialog__input" id="lyric-size-value" type="text" value="36 px">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="lyric-weight">歌词粗细</label>
                 <div class="setting-control">
-                    <input id="lyric-weight" class="setting-slider" type="range" min="500" max="900" step="100" value="600">
-                    <span class="setting-value" id="lyric-weight-value">600 wt</span>
+                    <input id="lyric-weight" class="component-slider component-range-slider" type="range" min="500" max="900" step="100" value="600">
+                    <input class="setting-value-input component-dialog__input" id="lyric-weight-value" type="text" value="600 wt">
                 </div>
             </div>
         </div>
 
         <div id="volume-panel" class="floating-panel" aria-label="音量面板">
+            <div class="setting-row setting-row-title">音效</div>
+            <div class="floating-panel-divider" aria-hidden="true"></div>
             <div class="setting-row">
                 <label for="volume-range">音量</label>
                 <div class="setting-control">
-                    <input id="volume-range" class="setting-slider" type="range" min="0" max="1" step="0.01" value="1">
-                    <span class="setting-value" id="volume-value">100%</span>
+                    <input id="volume-range" class="component-slider component-range-slider" type="range" min="0" max="1" step="0.01" value="1">
+                    <input class="setting-value-input component-dialog__input" id="volume-value" type="text" value="100%">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-low">低频</label>
                 <div class="setting-control">
-                    <input id="eq-low" class="setting-slider" type="range" min="-12" max="12" value="0">
-                    <span class="setting-value" id="eq-low-value">0 dB</span>
+                    <input id="eq-low" class="component-slider component-range-slider" type="range" min="-12" max="12" value="0">
+                    <input class="setting-value-input component-dialog__input" id="eq-low-value" type="text" value="0 dB">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-mid">中频</label>
                 <div class="setting-control">
-                    <input id="eq-mid" class="setting-slider" type="range" min="-12" max="12" value="0">
-                    <span class="setting-value" id="eq-mid-value">0 dB</span>
+                    <input id="eq-mid" class="component-slider component-range-slider" type="range" min="-12" max="12" value="0">
+                    <input class="setting-value-input component-dialog__input" id="eq-mid-value" type="text" value="0 dB">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-high">高频</label>
                 <div class="setting-control">
-                    <input id="eq-high" class="setting-slider" type="range" min="-12" max="12" value="0">
-                    <span class="setting-value" id="eq-high-value">0 dB</span>
+                    <input id="eq-high" class="component-slider component-range-slider" type="range" min="-12" max="12" value="0">
+                    <input class="setting-value-input component-dialog__input" id="eq-high-value" type="text" value="0 dB">
                 </div>
             </div>
         </div>
@@ -196,16 +211,25 @@
 
     <aside class="playlist-drawer" id="playlist-drawer" aria-label="播放列表">
         <div class="playlist-head">
-            <button class="playlist-close-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
-                <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
-            </button>
-            <div class="loop-row">
-                <button class="loop-btn active" data-loop="none" type="button">不循环</button>
-                <button class="loop-btn" data-loop="all" type="button">全部循环</button>
-                <button class="loop-btn" data-loop="one" type="button">单项循环</button>
-                <button class="loop-btn" data-loop="shuffle" type="button">随机播放</button>
+            <div class="playlist-head-top">
+                <div class="playlist-title">播放列表</div>
+                <button class="playlist-close-btn component-btn component-btn--immersive component-icon-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
+                    <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+                </button>
             </div>
-            <input id="playlist-search" class="playlist-search" type="search" placeholder="搜索列表">
+            <div class="playlist-head-divider" aria-hidden="true"></div>
+            <div class="loop-row">
+                <button class="loop-btn component-filter-chip active" data-loop="none" type="button">不循环</button>
+                <button class="loop-btn component-filter-chip" data-loop="all" type="button">全部循环</button>
+                <button class="loop-btn component-filter-chip" data-loop="one" type="button">单项循环</button>
+                <button class="loop-btn component-filter-chip" data-loop="shuffle" type="button">随机播放</button>
+            </div>
+            <div class="component-search">
+                <input id="playlist-search" class="playlist-search component-search__input" type="search" placeholder="搜索列表">
+                <button id="playlist-search-clear" class="playlist-search-clear component-btn component-btn--immersive-tint component-icon-btn hidden" type="button" aria-label="清空搜索" title="清空搜索">
+                    <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
         <ul id="playlist-list" class="playlist-list"></ul>
     </aside>

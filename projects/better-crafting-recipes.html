@@ -18,7 +18,7 @@
     <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
     <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
     <link rel="preload" href="/css/variables.css" as="style">
-    <link rel="preload" href="/includes/shell.html?v=2.0.3.7-20260307" as="fetch" crossorigin>
+    <link rel="preload" href="/includes/shell.html?v=2.0.3.8-20260405" as="fetch" crossorigin>
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="/css/variables.css">
@@ -102,18 +102,10 @@
                 var move = function () {
                     var main = document.querySelector('main');
                     if (!main) return;
-                    var aside = container.querySelector('aside');
                     var footer = container.querySelector('footer');
-                    if (aside && !main.contains(aside)) {
-                        aside.setAttribute('data-shell-moved', '1');
-                        main.appendChild(aside);
-                    }
                     if (footer && footer.parentNode !== main.parentNode) {
                         footer.setAttribute('data-shell-moved', '1');
                         main.insertAdjacentElement('afterend', footer);
-                    }
-                    if (window.refreshAsideStack) {
-                        window.refreshAsideStack();
                     }
                     markCurrentNav();
                 };
@@ -123,7 +115,7 @@
                     move();
                 }
             }
-            var SHELL_VERSION = '2.0.3.7-20260307';
+            var SHELL_VERSION = '2.0.3.8-20260405';
             var SHELL_CACHE_KEY = 'shell-html:' + SHELL_VERSION;
             function withVersion(url) {
                 if (location.protocol === 'file:') return url;
@@ -147,7 +139,10 @@
         <div class="column-stack">
             <section class="article-card">
                 <p class="eyebrow">项目</p>
-                <h1>更好的合成配方 | Better Crafting Recipes</h1>
+                <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 0.25rem;">
+                    <img class="about-avatar" src="/resource/minecraft/pack/better-crafting-recipes/pack.png" alt="更好的合成配方图标" loading="lazy" fetchpriority="high">
+                    <h1 style="margin: 0;">更好的合成配方 | Better Crafting Recipes</h1>
+                </div>
                 <p class="article-subtitle">新增许多便捷的合成表，在不破坏难度下优化游玩流程。</p>
                 <p class="article-subtitle" style="color:#d92c2c;">加载数据包需要一定时间，请耐心等待。如出现加载失败或贴图未正确显示的问题，请尝试刷新网页。</p>
                 <div class="article-meta">

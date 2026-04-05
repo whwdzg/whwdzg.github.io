@@ -1146,6 +1146,9 @@ export class MediaPlayerCore {
         this.lastDanmakuRenderAt = 0;
 
         this.objectUrls = new Set();
+        this.playOrder = [];
+        this.playOrderCursor = -1;
+        this.draggedTrackIndex = -1;
         this.previewVideo = null;
         this.previewCanvas = document.createElement("canvas");
         this.previewCanvas.width = 220;
@@ -1178,7 +1181,12 @@ export class MediaPlayerCore {
         this.fullscreenDockHideTimer = null;
         this.fullscreenDockOriginalParent = null;
         this.fullscreenDockNextSibling = null;
+        this.fullscreenStatusOriginalParent = null;
+        this.fullscreenStatusNextSibling = null;
+        this.fullscreenGestureToastOriginalParent = null;
+        this.fullscreenGestureToastNextSibling = null;
         this.statusHideTimer = null;
+        this.gestureToastHideTimer = null;
         this.brightnessLevel = 1;
         this.gestureState = null;
         this.lyricScrollbarTimer = null;
@@ -1233,7 +1241,9 @@ export class MediaPlayerCore {
             playlistDrawer: document.getElementById("playlist-drawer"),
             playlistList: document.getElementById("playlist-list"),
             playlistSearch: document.getElementById("playlist-search"),
+            playlistSearchClear: document.getElementById("playlist-search-clear"),
             fullscreenBtn: document.getElementById("fullscreen-btn"),
+            fullscreenIcon: document.querySelector("#fullscreen-btn .fluent-icon"),
             danmakuBtn: document.getElementById("danmaku-btn"),
             danmakuSettingsBtn: document.getElementById("danmaku-settings-btn"),
             danmakuSettingsPanel: document.getElementById("danmaku-settings-panel"),
@@ -1245,6 +1255,8 @@ export class MediaPlayerCore {
             blockTopDanmaku: document.getElementById("block-top-danmaku"),
             blockBottomDanmaku: document.getElementById("block-bottom-danmaku"),
             danmakuLayout: document.getElementById("danmaku-layout"),
+            danmakuLayoutDropdown: document.getElementById("danmaku-layout-dropdown"),
+            danmakuLayoutLabel: document.getElementById("danmaku-layout-label"),
             danmakuSpeed: document.getElementById("danmaku-speed"),
             danmakuSpeedValue: document.getElementById("danmaku-speed-value"),
             danmakuOpacity: document.getElementById("danmaku-opacity"),
@@ -1259,12 +1271,17 @@ export class MediaPlayerCore {
             loopButtons: [...document.querySelectorAll("[data-loop]")],
             speedRange: document.getElementById("speed-range"),
             speedValue: document.getElementById("speed-value"),
+            brightnessRange: document.getElementById("brightness-range"),
+            brightnessValue: document.getElementById("brightness-value"),
             eqLow: document.getElementById("eq-low"),
             eqLowValue: document.getElementById("eq-low-value"),
             eqMid: document.getElementById("eq-mid"),
             eqMidValue: document.getElementById("eq-mid-value"),
             eqHigh: document.getElementById("eq-high"),
             eqHighValue: document.getElementById("eq-high-value"),
+            gestureToast: document.getElementById("gesture-toast"),
+            gestureToastIcon: document.getElementById("gesture-toast-icon"),
+            gestureToastMessage: document.getElementById("gesture-toast-message"),
             dynamicBg: document.getElementById("toggle-dynamic-bg"),
             karaoke: document.getElementById("toggle-karaoke"),
             lyricBlur: document.getElementById("toggle-lyric-blur"),
@@ -1351,14 +1368,35 @@ export class MediaPlayerCore {
             this.refreshSettingValueBadges();
         });
 
-        this.ui.playlistSearch.addEventListener("input", () => this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase()));
+        this.ui.playlistSearch.addEventListener("input", () => {
+            this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+            this.refreshPlaylistSearchClearButton();
+        });
+        if (this.ui.playlistSearchClear) {
+            const clearSearch = () => {
+                this.ui.playlistSearch.value = "";
+                this.renderPlaylist("");
+                this.refreshPlaylistSearchClearButton();
+                this.ui.playlistSearch.focus();
+            };
+            this.ui.playlistSearchClear.addEventListener("click", clearSearch);
+            this.ui.playlistSearchClear.addEventListener("pointerdown", () => {
+                this.ui.playlistSearchClear.classList.add("is-feedback");
+            });
+            const clearPressState = () => this.ui.playlistSearchClear.classList.remove("is-feedback");
+            this.ui.playlistSearchClear.addEventListener("pointerup", clearPressState);
+            this.ui.playlistSearchClear.addEventListener("pointerleave", clearPressState);
+            this.ui.playlistSearchClear.addEventListener("blur", clearPressState);
+        }
 
         this.ui.fullscreenBtn.addEventListener("click", async () => {
-            if (document.fullscreenElement) {
-                await document.exitFullscreen();
+            if (this.isFullscreenActive()) {
+                await this.exitFullscreenCompat();
+                setTimeout(() => this.refreshFullscreenButtonVisual(this.isFullscreenActive()), 60);
                 return;
             }
-            await this.fullscreenTarget.requestFullscreen();
+            await this.requestFullscreenCompat();
+            setTimeout(() => this.refreshFullscreenButtonVisual(this.isFullscreenActive()), 60);
         });
 
         this.ui.speedRange.addEventListener("input", () => {
@@ -1366,6 +1404,18 @@ export class MediaPlayerCore {
             this.saveSetting("speed", this.media.playbackRate);
             this.refreshSettingValueBadges();
         });
+
+        if (this.ui.brightnessRange) {
+            this.ui.brightnessRange.addEventListener("input", () => {
+                this.brightnessLevel = clamp(Number(this.ui.brightnessRange.value || 1), 0.4, 1.6);
+                this.applyBrightness();
+                this.saveSetting("brightness", this.brightnessLevel);
+                this.refreshSettingValueBadges();
+                if (this.type === "video") {
+                    this.showGestureToast(`亮度 ${(this.brightnessLevel * 100).toFixed(0)}%`, "brightness");
+                }
+            });
+        }
 
         [this.ui.eqLow, this.ui.eqMid, this.ui.eqHigh].forEach((node) => {
             node.addEventListener("input", () => {
@@ -1413,7 +1463,13 @@ export class MediaPlayerCore {
         this.ui.loopButtons.forEach((btn) => {
             btn.addEventListener("click", () => {
                 this.loopMode = btn.dataset.loop;
-                this.ui.loopButtons.forEach((item) => item.classList.toggle("active", item === btn));
+                this.syncLoopButtonState();
+                if (this.loopMode === "shuffle") {
+                    this.ensurePlaybackOrder({ reshuffle: true });
+                } else {
+                    this.ensurePlaybackOrder();
+                }
+                this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
                 this.saveSetting("loopMode", this.loopMode);
             });
         });
@@ -1468,6 +1524,7 @@ export class MediaPlayerCore {
         if (this.ui.danmakuLayout) {
             this.ui.danmakuLayout.addEventListener("change", () => {
                 this.danmakuLayoutMode = this.ui.danmakuLayout.value || "all";
+                this.syncDanmakuLayoutDropdownLabel(this.danmakuLayoutMode);
                 this.syncDanmakuRenderer();
                 this.saveSetting("danmakuLayoutMode", this.danmakuLayoutMode);
             });
@@ -1493,7 +1550,10 @@ export class MediaPlayerCore {
             this.ui.seek.max = String(this.media.duration || 0);
             this.ui.totalTime.textContent = formatTime(this.media.duration || 0);
             this.ui.previewTotal.textContent = formatTime(this.media.duration || 0);
-            if (this.type === "video") this.captureThirtyPercentFrame();
+            if (this.type === "video") {
+                this.captureThirtyPercentFrame();
+                this.showVideoResolutionStatus();
+            }
         });
 
         this.media.addEventListener("timeupdate", () => {
@@ -1521,12 +1581,20 @@ export class MediaPlayerCore {
             this.onTrackEnded();
         });
 
+        this.bindValueInputEditors();
+        this.bindDanmakuLayoutDropdown();
+        this.syncComponentRangeVisuals();
+
         if (this.type === "video" && this.ui.videoStage) {
             this.ui.videoStage.addEventListener("dblclick", () => this.togglePlay());
             this.bindVideoGestureEvents();
         }
 
+        this.refreshPlaylistSearchClearButton();
+        this.refreshFullscreenButtonVisual(this.isFullscreenActive());
+
         document.addEventListener("fullscreenchange", () => this.handleFullscreenDockState());
+        document.addEventListener("webkitfullscreenchange", () => this.handleFullscreenDockState());
         window.addEventListener("mousemove", (evt) => this.handleVideoFullscreenHover(evt));
 
         document.addEventListener("click", (evt) => {
@@ -1534,6 +1602,8 @@ export class MediaPlayerCore {
             const inSettingsTrigger = !!(this.ui.settingsBtn && this.ui.settingsBtn.contains(target));
             const inVolumeTrigger = !!(this.ui.volumeBtn && this.ui.volumeBtn.contains(target));
             const inImportTrigger = !!(this.ui.importBtn && this.ui.importBtn.contains(target));
+
+            this.handleDanmakuLayoutDropdownOutsideClick(target);
 
             if (!this.ui.settingsPanel.contains(target) && !inSettingsTrigger) {
                 this.ui.settingsPanel.classList.remove("show");
@@ -1553,6 +1623,9 @@ export class MediaPlayerCore {
         });
 
         window.addEventListener("keydown", (evt) => {
+            if (evt.key === "Escape") {
+                this.closeDanmakuLayoutDropdown();
+            }
             if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName || "")) return;
             if (evt.key === "ArrowLeft") {
                 evt.preventDefault();
@@ -1571,6 +1644,7 @@ export class MediaPlayerCore {
 
     togglePanel(panel) {
         const willShow = !panel.classList.contains("show");
+        this.closeDanmakuLayoutDropdown();
         this.ui.settingsPanel.classList.remove("show");
         this.ui.volumePanel.classList.remove("show");
         this.ui.importPanel.classList.remove("show");
@@ -1584,41 +1658,227 @@ export class MediaPlayerCore {
     }
 
     refreshSettingValueBadges() {
+        const setNodeValue = (node, valueText) => {
+            if (!node) return;
+            if ("value" in node) {
+                node.value = valueText;
+                return;
+            }
+            node.textContent = valueText;
+        };
         if (this.ui.speedValue && this.ui.speedRange) {
-            this.ui.speedValue.textContent = `${Number(this.ui.speedRange.value || 1).toFixed(2)}x`;
+            setNodeValue(this.ui.speedValue, `${Number(this.ui.speedRange.value || 1).toFixed(2)}x`);
+        }
+        if (this.ui.brightnessValue) {
+            setNodeValue(this.ui.brightnessValue, `${Math.round(this.brightnessLevel * 100)}%`);
         }
         if (this.ui.volumeValue && this.ui.volumeRange) {
-            this.ui.volumeValue.textContent = `${Math.round(Number(this.ui.volumeRange.value || 1) * 100)}%`;
+            setNodeValue(this.ui.volumeValue, `${Math.round(Number(this.ui.volumeRange.value || 1) * 100)}%`);
         }
         if (this.ui.eqLowValue && this.ui.eqLow) {
             const v = Number(this.ui.eqLow.value || 0);
-            this.ui.eqLowValue.textContent = `${v >= 0 ? "+" : ""}${v} dB`;
+            setNodeValue(this.ui.eqLowValue, `${v >= 0 ? "+" : ""}${v} dB`);
         }
         if (this.ui.eqMidValue && this.ui.eqMid) {
             const v = Number(this.ui.eqMid.value || 0);
-            this.ui.eqMidValue.textContent = `${v >= 0 ? "+" : ""}${v} dB`;
+            setNodeValue(this.ui.eqMidValue, `${v >= 0 ? "+" : ""}${v} dB`);
         }
         if (this.ui.eqHighValue && this.ui.eqHigh) {
             const v = Number(this.ui.eqHigh.value || 0);
-            this.ui.eqHighValue.textContent = `${v >= 0 ? "+" : ""}${v} dB`;
+            setNodeValue(this.ui.eqHighValue, `${v >= 0 ? "+" : ""}${v} dB`);
         }
         if (this.ui.danmakuSizeValue && this.ui.danmakuSize) {
-            this.ui.danmakuSizeValue.textContent = `${Number(this.ui.danmakuSize.value || 24)} px`;
+            setNodeValue(this.ui.danmakuSizeValue, `${Number(this.ui.danmakuSize.value || 24)} px`);
         }
         if (this.ui.danmakuWeightValue && this.ui.danmakuWeight) {
-            this.ui.danmakuWeightValue.textContent = `${Number(this.ui.danmakuWeight.value || 700)} wt`;
+            setNodeValue(this.ui.danmakuWeightValue, `${Number(this.ui.danmakuWeight.value || 700)} wt`);
         }
         if (this.ui.danmakuSpeedValue && this.ui.danmakuSpeed) {
-            this.ui.danmakuSpeedValue.textContent = `${Number(this.ui.danmakuSpeed.value || 0.8).toFixed(1)}x`;
+            setNodeValue(this.ui.danmakuSpeedValue, `${Number(this.ui.danmakuSpeed.value || 0.8).toFixed(1)}x`);
         }
         if (this.ui.danmakuOpacityValue && this.ui.danmakuOpacity) {
-            this.ui.danmakuOpacityValue.textContent = `${Math.round(Number(this.ui.danmakuOpacity.value || 0.9) * 100)}%`;
+            setNodeValue(this.ui.danmakuOpacityValue, `${Math.round(Number(this.ui.danmakuOpacity.value || 0.9) * 100)}%`);
         }
         if (this.ui.lyricSizeValue && this.ui.lyricSize) {
-            this.ui.lyricSizeValue.textContent = `${Number(this.ui.lyricSize.value || 36)} px`;
+            setNodeValue(this.ui.lyricSizeValue, `${Number(this.ui.lyricSize.value || 36)} px`);
         }
         if (this.ui.lyricWeightValue && this.ui.lyricWeight) {
-            this.ui.lyricWeightValue.textContent = `${Number(this.ui.lyricWeight.value || 800)} wt`;
+            setNodeValue(this.ui.lyricWeightValue, `${Number(this.ui.lyricWeight.value || 800)} wt`);
+        }
+        this.syncComponentRangeVisuals();
+    }
+
+    syncComponentRangeVisuals(scope = document) {
+        const sliders = scope.querySelectorAll('input[type="range"].component-range-slider');
+        sliders.forEach((rangeEl) => {
+            const update = () => {
+                const min = Number(rangeEl.min || 0);
+                const max = Number(rangeEl.max || 100);
+                const value = Number(rangeEl.value || min);
+                const safeMax = max <= min ? min + 1 : max;
+                const pct = ((value - min) / (safeMax - min)) * 100;
+                const clamped = Math.min(100, Math.max(0, pct));
+                rangeEl.style.setProperty("--slider-pct", `${clamped.toFixed(2)}%`);
+            };
+
+            if (rangeEl.dataset.boundSliderPct !== "true") {
+                rangeEl.dataset.boundSliderPct = "true";
+                rangeEl.addEventListener("input", update);
+                rangeEl.addEventListener("change", update);
+            }
+            update();
+        });
+    }
+
+    bindValueInputEditors() {
+        const bind = (valueNode, rangeNode, options = {}) => {
+            if (!valueNode || !rangeNode || !("value" in valueNode)) return;
+            const apply = () => {
+                const rawText = String(valueNode.value || "").trim();
+                let parsed = options.parse ? options.parse(rawText, Number(rangeNode.value || 0)) : Number(rawText);
+                if (!Number.isFinite(parsed)) {
+                    this.refreshSettingValueBadges();
+                    return;
+                }
+                parsed = clamp(parsed, options.min ?? parsed, options.max ?? parsed);
+                if (Number.isFinite(options.step) && options.step > 0) {
+                    parsed = Math.round(parsed / options.step) * options.step;
+                    parsed = Number(parsed.toFixed(4));
+                }
+                rangeNode.value = String(parsed);
+                rangeNode.dispatchEvent(new Event("input", { bubbles: true }));
+            };
+            valueNode.addEventListener("change", apply);
+            valueNode.addEventListener("blur", apply);
+            valueNode.addEventListener("keydown", (evt) => {
+                if (evt.key !== "Enter") return;
+                evt.preventDefault();
+                apply();
+                valueNode.blur();
+            });
+        };
+
+        const parseFloatFromText = (text, fallback = NaN) => {
+            const matched = String(text || "").match(/-?\d+(?:\.\d+)?/);
+            if (!matched) return fallback;
+            return Number(matched[0]);
+        };
+        const parsePercentOrRatio = (text, fallback = NaN) => {
+            const n = parseFloatFromText(text, fallback);
+            if (!Number.isFinite(n)) return fallback;
+            return String(text).includes("%") ? n / 100 : (n > 1 ? n / 100 : n);
+        };
+
+        bind(this.ui.speedValue, this.ui.speedRange, {
+            min: 0.5,
+            max: 2,
+            step: 0.05,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.brightnessValue, this.ui.brightnessRange, {
+            min: 0.4,
+            max: 1.6,
+            step: 0.01,
+            parse: (text, fallback) => {
+                const n = parseFloatFromText(text, fallback);
+                if (!Number.isFinite(n)) return fallback;
+                return String(text).includes("%") ? n / 100 : n;
+            },
+        });
+        bind(this.ui.volumeValue, this.ui.volumeRange, {
+            min: 0,
+            max: 1,
+            step: 0.01,
+            parse: (text, fallback) => parsePercentOrRatio(text, fallback),
+        });
+        bind(this.ui.eqLowValue, this.ui.eqLow, {
+            min: -12,
+            max: 12,
+            step: 1,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.eqMidValue, this.ui.eqMid, {
+            min: -12,
+            max: 12,
+            step: 1,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.eqHighValue, this.ui.eqHigh, {
+            min: -12,
+            max: 12,
+            step: 1,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.lyricSizeValue, this.ui.lyricSize, {
+            min: 24,
+            max: 84,
+            step: 1,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.lyricWeightValue, this.ui.lyricWeight, {
+            min: 500,
+            max: 900,
+            step: 100,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.danmakuSizeValue, this.ui.danmakuSize, {
+            min: 14,
+            max: 42,
+            step: 1,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.danmakuWeightValue, this.ui.danmakuWeight, {
+            min: 400,
+            max: 900,
+            step: 100,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.danmakuSpeedValue, this.ui.danmakuSpeed, {
+            min: 0.5,
+            max: 2,
+            step: 0.1,
+            parse: (text, fallback) => parseFloatFromText(text, fallback),
+        });
+        bind(this.ui.danmakuOpacityValue, this.ui.danmakuOpacity, {
+            min: 0.2,
+            max: 1,
+            step: 0.05,
+            parse: (text, fallback) => parsePercentOrRatio(text, fallback),
+        });
+    }
+
+    refreshFullscreenButtonVisual(inFullscreen) {
+        if (!this.ui.fullscreenBtn || !this.ui.fullscreenIcon) return;
+        const normalLabel = this.type === "video" ? "全屏视频" : "全屏页面";
+        this.ui.fullscreenBtn.setAttribute("title", inFullscreen ? "退出全屏" : normalLabel);
+        this.ui.fullscreenBtn.setAttribute("aria-label", inFullscreen ? "退出全屏" : normalLabel);
+        this.ui.fullscreenIcon.className = inFullscreen
+            ? "fluent-icon icon-ic_fluent_full_screen_minimize_24_regular"
+            : "fluent-icon icon-ic_fluent_full_screen_maximize_24_regular";
+    }
+
+    isFullscreenActive() {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement);
+    }
+
+    async requestFullscreenCompat() {
+        if (!this.fullscreenTarget) return;
+        if (typeof this.fullscreenTarget.requestFullscreen === "function") {
+            await this.fullscreenTarget.requestFullscreen();
+            return;
+        }
+        if (typeof this.fullscreenTarget.webkitRequestFullscreen === "function") {
+            this.fullscreenTarget.webkitRequestFullscreen();
+        }
+    }
+
+    async exitFullscreenCompat() {
+        if (typeof document.exitFullscreen === "function") {
+            await document.exitFullscreen();
+            return;
+        }
+        if (typeof document.webkitExitFullscreen === "function") {
+            document.webkitExitFullscreen();
         }
     }
 
@@ -1697,6 +1957,112 @@ export class MediaPlayerCore {
             : "fluent-icon icon-ic_fluent_play_24_regular";
     }
 
+    syncLoopButtonState() {
+        if (!this.ui.loopButtons.length) return;
+        this.ui.loopButtons.forEach((item) => {
+            const active = item.dataset.loop === this.loopMode;
+            item.classList.toggle("active", active);
+            item.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+    }
+
+    syncDanmakuLayoutDropdownLabel(value) {
+        const dropdown = this.ui.danmakuLayoutDropdown;
+        const label = this.ui.danmakuLayoutLabel;
+        const select = this.ui.danmakuLayout;
+        if (!dropdown || !label || !select) return;
+
+        const normalized = Array.from(select.options).some((opt) => opt.value === value)
+            ? value
+            : (select.options[0]?.value || "all");
+        if (select.value !== normalized) {
+            select.value = normalized;
+        }
+
+        const selectedOption = Array.from(select.options).find((opt) => opt.value === normalized);
+        label.textContent = selectedOption ? selectedOption.textContent.trim() : "全部";
+
+        dropdown.querySelectorAll(".component-dropdown-item").forEach((item) => {
+            const active = item.dataset.value === normalized;
+            item.classList.toggle("selected", active);
+            item.setAttribute("aria-selected", active ? "true" : "false");
+        });
+    }
+
+    bindDanmakuLayoutDropdown() {
+        const dropdown = this.ui.danmakuLayoutDropdown;
+        const select = this.ui.danmakuLayout;
+        if (!dropdown || !select) return;
+        if (dropdown.dataset.boundDanmakuDropdown === "true") {
+            this.syncDanmakuLayoutDropdownLabel(select.value || "all");
+            return;
+        }
+        dropdown.dataset.boundDanmakuDropdown = "true";
+
+        const toggle = dropdown.querySelector(".component-dropdown-toggle");
+        const items = Array.from(dropdown.querySelectorAll(".component-dropdown-item[data-value]"));
+        if (!toggle || !items.length) return;
+
+        toggle.addEventListener("click", () => {
+            const willOpen = !dropdown.classList.contains("open");
+            dropdown.classList.toggle("open", willOpen);
+            toggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+        });
+
+        items.forEach((item) => {
+            item.addEventListener("click", () => {
+                const value = item.dataset.value || "all";
+                if (select.value !== value) {
+                    select.value = value;
+                    select.dispatchEvent(new Event("change", { bubbles: true }));
+                } else {
+                    this.syncDanmakuLayoutDropdownLabel(value);
+                }
+                this.closeDanmakuLayoutDropdown();
+            });
+        });
+
+        this.syncDanmakuLayoutDropdownLabel(select.value || "all");
+    }
+
+    closeDanmakuLayoutDropdown() {
+        const dropdown = this.ui.danmakuLayoutDropdown;
+        if (!dropdown || !dropdown.classList.contains("open")) return;
+        dropdown.classList.remove("open");
+        const toggle = dropdown.querySelector(".component-dropdown-toggle");
+        if (toggle) toggle.setAttribute("aria-expanded", "false");
+    }
+
+    handleDanmakuLayoutDropdownOutsideClick(target) {
+        const dropdown = this.ui.danmakuLayoutDropdown;
+        if (!dropdown || !dropdown.classList.contains("open")) return;
+        if (target && typeof dropdown.contains === "function" && dropdown.contains(target)) return;
+        this.closeDanmakuLayoutDropdown();
+    }
+
+    showGestureToast(text, mode = "volume") {
+        const toast = this.ui.gestureToast;
+        const messageNode = this.ui.gestureToastMessage;
+        if (!toast || !messageNode) {
+            this.setStatus(text, { mode: "toast" });
+            return;
+        }
+
+        messageNode.textContent = text;
+        if (this.ui.gestureToastIcon) {
+            const icon = mode === "brightness"
+                ? "icon-ic_fluent_brightness_high_24_regular"
+                : "icon-ic_fluent_speaker_2_24_regular";
+            this.ui.gestureToastIcon.className = `component-toast__icon fluent-icon ${icon}`;
+        }
+
+        toast.classList.add("show");
+        if (this.gestureToastHideTimer) clearTimeout(this.gestureToastHideTimer);
+        this.gestureToastHideTimer = setTimeout(() => {
+            if (this.ui.gestureToast) this.ui.gestureToast.classList.remove("show");
+        }, 900);
+    }
+
     setStatus(text, options = {}) {
         if (!this.status) return;
         const mode = options.mode || "toast";
@@ -1709,6 +2075,29 @@ export class MediaPlayerCore {
                 if (this.status) this.status.classList.remove("show");
             }, 5000);
         }
+    }
+
+    showVideoResolutionStatus() {
+        if (this.type !== "video" || !this.media) return;
+        const width = Math.round(Number(this.media.videoWidth || 0));
+        const height = Math.round(Number(this.media.videoHeight || 0));
+        if (!width || !height) return;
+
+        const gcd = (a, b) => {
+            let x = Math.abs(a);
+            let y = Math.abs(b);
+            while (y) {
+                const t = x % y;
+                x = y;
+                y = t;
+            }
+            return x || 1;
+        };
+
+        const factor = gcd(width, height);
+        const ratioW = Math.round(width / factor);
+        const ratioH = Math.round(height / factor);
+        this.setStatus(`视频信息：${width}x${height} · 横纵比 ${ratioW}:${ratioH}`);
     }
 
     settingsPrefix() {
@@ -1767,9 +2156,10 @@ export class MediaPlayerCore {
         document.body.classList.toggle("dynamic-off", !this.dynamicBg);
 
         this.loopMode = this.loadSetting("loopMode", "none");
-        if (this.ui.loopButtons.length) {
-            this.ui.loopButtons.forEach((item) => item.classList.toggle("active", item.dataset.loop === this.loopMode));
+        if (!LOOP_MODES.includes(this.loopMode)) {
+            this.loopMode = "none";
         }
+        this.syncLoopButtonState();
 
         this.karaokeEnabled = !!this.loadSetting("karaoke", true);
         if (this.ui.karaoke) this.ui.karaoke.checked = this.karaokeEnabled;
@@ -1812,6 +2202,9 @@ export class MediaPlayerCore {
 
         this.brightnessLevel = Number(this.loadSetting("brightness", 1));
         this.brightnessLevel = clamp(this.brightnessLevel, 0.4, 1.6);
+        if (this.ui.brightnessRange) {
+            this.ui.brightnessRange.value = String(this.brightnessLevel);
+        }
         this.applyBrightness();
     }
 
@@ -1971,21 +2364,73 @@ export class MediaPlayerCore {
         const target = this.ui.playlistList;
         const fallbackCover = defaultCover(this.type);
         target.innerHTML = "";
-        this.tracks.forEach((track, index) => {
+        this.ensurePlaybackOrder();
+        const order = this.loopMode === "shuffle"
+            ? [...this.playOrder]
+            : this.tracks.map((_, idx) => idx);
+        order.forEach((trackIndex) => {
+            const track = this.tracks[trackIndex];
             if (filter && !(`${track.title} ${track.author}`.toLowerCase().includes(filter))) return;
             const item = document.createElement("li");
-            item.className = `play-item${index === this.currentIndex ? " active" : ""}`;
+            item.className = `play-item${trackIndex === this.currentIndex ? " active" : ""}`;
+            item.dataset.trackIndex = String(trackIndex);
             const realCover = track.coverUrl || fallbackCover;
             item.innerHTML = `
-                <img src="${fallbackCover}" data-src="${realCover}" loading="lazy" alt="cover">
-                <div>
+                <div class="play-cover" draggable="true" title="按住拖动调整播放位置" aria-label="拖动封面排序">
+                    <img src="${fallbackCover}" data-src="${realCover}" loading="lazy" alt="cover" draggable="false">
+                    <span class="play-cover-overlay" aria-hidden="true">
+                        <i class="fluent-icon icon-ic_fluent_apps_list_24_regular"></i>
+                    </span>
+                </div>
+                <div class="play-item-main">
                     <div class="play-name">${track.title}</div>
                     <div class="play-author">${track.author}</div>
                 </div>
             `;
             item.addEventListener("click", async () => {
-                await this.selectTrack(index);
+                await this.selectTrack(trackIndex);
                 this.ui.playlistDrawer.classList.remove("show");
+            });
+            const cover = item.querySelector(".play-cover");
+            if (cover) {
+                const coverImg = cover.querySelector("img");
+                if (coverImg) {
+                    coverImg.addEventListener("dragstart", (evt) => evt.preventDefault());
+                }
+                cover.addEventListener("dragstart", (evt) => {
+                    this.draggedTrackIndex = trackIndex;
+                    item.classList.add("dragging");
+                    if (evt.dataTransfer) {
+                        evt.dataTransfer.setData("text/plain", String(trackIndex));
+                        evt.dataTransfer.effectAllowed = "move";
+                        evt.dataTransfer.setDragImage(cover, 18, 18);
+                    }
+                });
+                cover.addEventListener("dragend", () => {
+                    this.draggedTrackIndex = -1;
+                    target.querySelectorAll(".play-item.drag-over").forEach((node) => node.classList.remove("drag-over"));
+                    target.querySelectorAll(".play-item.dragging").forEach((node) => node.classList.remove("dragging"));
+                });
+            }
+            item.addEventListener("dragover", (evt) => {
+                evt.preventDefault();
+                item.classList.add("drag-over");
+            });
+            item.addEventListener("dragleave", () => item.classList.remove("drag-over"));
+            item.addEventListener("drop", (evt) => {
+                evt.preventDefault();
+                item.classList.remove("drag-over");
+                const fromRaw = evt.dataTransfer ? evt.dataTransfer.getData("text/plain") : "";
+                const fromTrackIndex = Number.isFinite(Number(fromRaw)) ? Number(fromRaw) : this.draggedTrackIndex;
+                const toTrackIndex = trackIndex;
+                if (Number.isFinite(fromTrackIndex) && Number.isFinite(toTrackIndex)) {
+                    if (this.loopMode === "shuffle") {
+                        this.moveTrackInPlayOrder(fromTrackIndex, toTrackIndex);
+                    } else {
+                        this.moveTrackByIndex(fromTrackIndex, toTrackIndex);
+                    }
+                    this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+                }
             });
             const lazyImg = item.querySelector("img[data-src]");
             if (lazyImg && this.playlistCoverObserver) {
@@ -1996,9 +2441,96 @@ export class MediaPlayerCore {
         this.loadVisiblePlaylistCovers();
     }
 
+    refreshPlaylistSearchClearButton() {
+        if (!this.ui.playlistSearchClear || !this.ui.playlistSearch) return;
+        const hasText = String(this.ui.playlistSearch.value || "").trim().length > 0;
+        this.ui.playlistSearchClear.classList.toggle("hidden", !hasText);
+    }
+
+    ensurePlaybackOrder(options = {}) {
+        const total = this.tracks.length;
+        if (!total) {
+            this.playOrder = [];
+            this.playOrderCursor = -1;
+            return;
+        }
+        const invalidOrder = this.playOrder.length !== total
+            || new Set(this.playOrder).size !== total
+            || this.playOrder.some((idx) => idx < 0 || idx >= total);
+
+        if (this.loopMode !== "shuffle") {
+            if (invalidOrder || options.force) {
+                this.playOrder = this.tracks.map((_, idx) => idx);
+            }
+            this.playOrderCursor = this.playOrder.indexOf(this.currentIndex);
+            return;
+        }
+
+        if (invalidOrder || options.reshuffle) {
+            const all = this.tracks.map((_, idx) => idx);
+            const current = this.currentIndex;
+            const pool = all.filter((idx) => idx !== current);
+            for (let i = pool.length - 1; i > 0; i -= 1) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+            if (current >= 0 && current < total) {
+                this.playOrder = [current, ...pool];
+                this.playOrderCursor = 0;
+            } else {
+                this.playOrder = pool;
+                this.playOrderCursor = this.playOrder.length ? 0 : -1;
+            }
+            return;
+        }
+
+        this.playOrderCursor = this.playOrder.indexOf(this.currentIndex);
+    }
+
+    moveTrackByIndex(fromIndex, toIndex) {
+        if (!Number.isFinite(fromIndex) || !Number.isFinite(toIndex)) return;
+        if (fromIndex === toIndex) return;
+        if (fromIndex < 0 || toIndex < 0) return;
+        if (fromIndex >= this.tracks.length || toIndex >= this.tracks.length) return;
+
+        const movedTrack = this.tracks[fromIndex];
+        this.tracks.splice(fromIndex, 1);
+        this.tracks.splice(toIndex, 0, movedTrack);
+
+        if (this.currentIndex === fromIndex) {
+            this.currentIndex = toIndex;
+        } else if (fromIndex < this.currentIndex && toIndex >= this.currentIndex) {
+            this.currentIndex -= 1;
+        } else if (fromIndex > this.currentIndex && toIndex <= this.currentIndex) {
+            this.currentIndex += 1;
+        }
+
+        if (this.playOrder.length) {
+            this.playOrder = this.playOrder.map((idx) => {
+                if (idx === fromIndex) return toIndex;
+                if (fromIndex < toIndex && idx > fromIndex && idx <= toIndex) return idx - 1;
+                if (fromIndex > toIndex && idx >= toIndex && idx < fromIndex) return idx + 1;
+                return idx;
+            });
+        }
+        this.ensurePlaybackOrder();
+    }
+
+    moveTrackInPlayOrder(fromTrackIndex, toTrackIndex) {
+        this.ensurePlaybackOrder();
+        if (!this.playOrder.length) return;
+        const fromPos = this.playOrder.indexOf(fromTrackIndex);
+        const toPos = this.playOrder.indexOf(toTrackIndex);
+        if (fromPos < 0 || toPos < 0 || fromPos === toPos) return;
+        const [moved] = this.playOrder.splice(fromPos, 1);
+        this.playOrder.splice(toPos, 0, moved);
+        this.playOrderCursor = this.playOrder.indexOf(this.currentIndex);
+    }
+
     async selectTrack(index) {
         if (index < 0 || index >= this.tracks.length) return;
         this.currentIndex = index;
+        this.ensurePlaybackOrder();
         this.danmakuLaneEndTime.scroll.fill(0);
         this.danmakuLaneEndTime.top.fill(0);
         this.danmakuLaneEndTime.bottom.fill(0);
@@ -2073,6 +2605,10 @@ export class MediaPlayerCore {
         await this.media.play().catch(() => {});
         this.setPlayVisual(!this.media.paused);
         this.ensureEq();
+
+        if (this.type === "video") {
+            this.showVideoResolutionStatus();
+        }
 
         if (this.type === "music" && !track.sampleRate && track.sourceFile) {
             this.resolveTrackSampleRate(track);
@@ -2221,6 +2757,17 @@ export class MediaPlayerCore {
 
     playPrev() {
         if (!this.tracks.length) return;
+        if (this.loopMode === "shuffle") {
+            this.ensurePlaybackOrder();
+            if (!this.playOrder.length) return;
+            if (this.playOrderCursor < 0) {
+                this.playOrderCursor = this.playOrder.indexOf(this.currentIndex);
+            }
+            if (this.playOrderCursor < 0) this.playOrderCursor = 0;
+            this.playOrderCursor = (this.playOrderCursor - 1 + this.playOrder.length) % this.playOrder.length;
+            this.selectTrack(this.playOrder[this.playOrderCursor]);
+            return;
+        }
         const nextIndex = this.currentIndex <= 0 ? this.tracks.length - 1 : this.currentIndex - 1;
         this.selectTrack(nextIndex);
     }
@@ -2228,9 +2775,14 @@ export class MediaPlayerCore {
     playNext() {
         if (!this.tracks.length) return;
         if (this.loopMode === "shuffle") {
-            let r = Math.floor(Math.random() * this.tracks.length);
-            if (this.tracks.length > 1 && r === this.currentIndex) r = (r + 1) % this.tracks.length;
-            this.selectTrack(r);
+            this.ensurePlaybackOrder();
+            if (!this.playOrder.length) return;
+            if (this.playOrderCursor < 0) {
+                this.playOrderCursor = this.playOrder.indexOf(this.currentIndex);
+            }
+            if (this.playOrderCursor < 0) this.playOrderCursor = 0;
+            this.playOrderCursor = (this.playOrderCursor + 1) % this.playOrder.length;
+            this.selectTrack(this.playOrder[this.playOrderCursor]);
             return;
         }
         const nextIndex = this.currentIndex >= this.tracks.length - 1 ? 0 : this.currentIndex + 1;
@@ -2292,42 +2844,85 @@ export class MediaPlayerCore {
             this.previewVideo = document.createElement("video");
             this.previewVideo.muted = true;
             this.previewVideo.crossOrigin = "anonymous";
+            this.previewVideo.playsInline = true;
+            this.previewVideo.preload = "auto";
         }
         if (this.previewVideo.src !== this.media.src) {
             this.previewVideo.src = this.media.src;
             await new Promise((resolve) => {
-                this.previewVideo.onloadedmetadata = () => resolve();
-                this.previewVideo.onerror = () => resolve();
+                let settled = false;
+                const finish = () => {
+                    if (settled) return;
+                    settled = true;
+                    this.previewVideo.onloadedmetadata = null;
+                    this.previewVideo.onerror = null;
+                    resolve();
+                };
+                this.previewVideo.onloadedmetadata = finish;
+                this.previewVideo.onerror = finish;
+                setTimeout(finish, 1200);
             });
         }
-        const target = clamp(time, 0, this.media.duration || 0);
-        this.previewVideo.currentTime = target;
+        const duration = Number.isFinite(this.media.duration) && this.media.duration > 0
+            ? this.media.duration
+            : (Number.isFinite(this.previewVideo.duration) ? this.previewVideo.duration : 0);
+        const target = clamp(time, 0, duration || 0);
         const image = await new Promise((resolve) => {
-            const onSeeked = () => {
+            let settled = false;
+            let timeoutId = null;
+            const done = (dataUrl = "") => {
+                if (settled) return;
+                settled = true;
+                this.previewVideo.removeEventListener("seeked", onSeeked);
+                this.previewVideo.removeEventListener("error", onError);
+                if (timeoutId) clearTimeout(timeoutId);
+                resolve(dataUrl);
+            };
+            const captureNow = () => {
                 const ctx = this.previewCanvas.getContext("2d");
                 if (ctx) {
-                    ctx.drawImage(this.previewVideo, 0, 0, this.previewCanvas.width, this.previewCanvas.height);
-                    resolve(this.previewCanvas.toDataURL("image/jpeg", 0.76));
-                } else {
-                    resolve("");
+                    try {
+                        ctx.drawImage(this.previewVideo, 0, 0, this.previewCanvas.width, this.previewCanvas.height);
+                        done(this.previewCanvas.toDataURL("image/jpeg", 0.76));
+                        return;
+                    } catch (error) {
+                        // tainted canvas or decode timing issue
+                    }
                 }
+                done("");
             };
-            this.previewVideo.onseeked = onSeeked;
+            const onSeeked = () => captureNow();
+            const onError = () => done("");
+
+            if (Math.abs((this.previewVideo.currentTime || 0) - target) < 0.02 && this.previewVideo.readyState >= 2) {
+                requestAnimationFrame(() => captureNow());
+                return;
+            }
+
+            this.previewVideo.addEventListener("seeked", onSeeked);
+            this.previewVideo.addEventListener("error", onError);
+            timeoutId = setTimeout(() => captureNow(), 1200);
+            try {
+                this.previewVideo.currentTime = target;
+            } catch (error) {
+                captureNow();
+            }
         });
         if (image) this.previewImage.src = image;
+        return image;
     }
 
     async captureThirtyPercentFrame() {
         if (this.type !== "video" || !this.media.duration) return;
         const target = this.media.duration * 0.3;
         try {
-            await this.updateVideoPreview(target);
+            const captured = await this.updateVideoPreview(target);
             const track = this.tracks[this.currentIndex];
-            if (track && this.previewImage.src) {
-                track.coverUrl = this.previewImage.src;
-                if (this.cover) this.cover.src = this.previewImage.src;
-                if (this.cover) this.updateCoverShape(this.cover, this.previewImage.src);
-                const colors = await extractColorsFromDataUrl(this.previewImage.src);
+            if (track && captured && /^data:image\//.test(captured)) {
+                track.coverUrl = captured;
+                if (this.cover) this.cover.src = captured;
+                if (this.cover) this.updateCoverShape(this.cover, captured);
+                const colors = await extractColorsFromDataUrl(captured);
                 if (this.dynamicBg) {
                     document.documentElement.style.setProperty("--bg-a", colors[0]);
                     document.documentElement.style.setProperty("--bg-b", colors[1]);
@@ -2398,13 +2993,15 @@ export class MediaPlayerCore {
             if (gs.mode === "brightness") {
                 this.brightnessLevel = clamp(gs.startBrightness + delta, 0.4, 1.6);
                 this.applyBrightness();
-                this.setStatus(`亮度 ${(this.brightnessLevel * 100).toFixed(0)}%`, { mode: "progress" });
+                if (this.ui.brightnessRange) this.ui.brightnessRange.value = String(this.brightnessLevel);
+                this.refreshSettingValueBadges();
+                this.showGestureToast(`亮度 ${(this.brightnessLevel * 100).toFixed(0)}%`, "brightness");
             } else {
                 this.media.volume = clamp(gs.startVolume + delta, 0, 1);
                 if (this.ui.volumeRange) this.ui.volumeRange.value = String(this.media.volume);
                 this.refreshSettingValueBadges();
                 this.saveSetting("volume", this.media.volume);
-                this.setStatus(`音量 ${(this.media.volume * 100).toFixed(0)}%`, { mode: "progress" });
+                this.showGestureToast(`音量 ${(this.media.volume * 100).toFixed(0)}%`, "volume");
             }
         };
 
@@ -2616,10 +3213,38 @@ export class MediaPlayerCore {
         this.fullscreenDockOriginalParent.insertBefore(dock, this.fullscreenDockNextSibling);
     }
 
-    handleFullscreenDockState() {
+    syncVideoOverlayPlacement(inFullscreen) {
         if (this.type !== "video") return;
-        const isFs = !!document.fullscreenElement;
+        const stage = this.ui.videoStage;
+        if (!stage) return;
+
+        const moveNode = (node, parentKey, siblingKey) => {
+            if (!node) return;
+            if (inFullscreen) {
+                if (!this[parentKey]) {
+                    this[parentKey] = node.parentNode;
+                    this[siblingKey] = node.nextSibling;
+                }
+                if (node.parentNode !== stage) {
+                    stage.appendChild(node);
+                }
+                return;
+            }
+            if (!this[parentKey] || node.parentNode === this[parentKey]) return;
+            this[parentKey].insertBefore(node, this[siblingKey]);
+        };
+
+        moveNode(this.status, "fullscreenStatusOriginalParent", "fullscreenStatusNextSibling");
+        moveNode(this.ui.gestureToast, "fullscreenGestureToastOriginalParent", "fullscreenGestureToastNextSibling");
+    }
+
+    handleFullscreenDockState() {
+        const isFs = this.isFullscreenActive();
+        this.refreshFullscreenButtonVisual(isFs);
+
+        if (this.type !== "video") return;
         this.syncVideoDockPlacement(isFs);
+        this.syncVideoOverlayPlacement(isFs);
         document.body.classList.toggle("video-fullscreen", isFs);
         if (!isFs) {
             document.body.classList.remove("show-dock");
@@ -2636,7 +3261,7 @@ export class MediaPlayerCore {
 
     handleVideoFullscreenHover(evt) {
         if (this.type !== "video") return;
-        if (!document.fullscreenElement) return;
+        if (!this.isFullscreenActive()) return;
         const target = evt.target;
         if (target && typeof target.closest === "function" && target.closest(".player-dock, .floating-panel, .playlist-drawer")) {
             document.body.classList.add("show-dock");
@@ -3062,6 +3687,7 @@ export class MediaPlayerCore {
         this.stopProgressAnimation();
         if (this.fullscreenDockHideTimer) clearTimeout(this.fullscreenDockHideTimer);
         if (this.statusHideTimer) clearTimeout(this.statusHideTimer);
+        if (this.gestureToastHideTimer) clearTimeout(this.gestureToastHideTimer);
         if (this.artPlayer && typeof this.artPlayer.destroy === "function") {
             this.artPlayer.destroy(false);
         }

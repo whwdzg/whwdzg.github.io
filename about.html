@@ -98,18 +98,10 @@
                     var move = function() {
                         var main = document.querySelector('main');
                         if (!main) return;
-                        var aside = container.querySelector('aside');
                         var footer = container.querySelector('footer');
-                        if (aside && !main.contains(aside)) {
-                            aside.setAttribute('data-shell-moved', '1');
-                            main.appendChild(aside);
-                        }
                         if (footer && footer.parentNode !== main.parentNode) {
                             footer.setAttribute('data-shell-moved', '1');
                             main.insertAdjacentElement('afterend', footer);
-                        }
-                        if (window.refreshAsideStack) {
-                            window.refreshAsideStack();
                         }
                         markCurrentNav();
                     };
@@ -159,7 +151,7 @@
                 <section class="article-card">
                     <h2>功能概览</h2>
                     <ul>
-                        <li>单页导航：共享的 header/sidebar/aside 壳层与轻量路由。</li>
+                        <li>单页导航：共享的 header/sidebar 壳层与轻量路由。</li>
                         <li>多语言与主题切换：预置多语种 JSON 与深浅色模式。</li>
                         <li>渐进式增强：懒加载图片、滚动返回顶部、设置面板。</li>
                         <li>PWA：manifest、service worker 与简单离线缓存。</li>
@@ -190,7 +182,7 @@
                     <div class="article-meta">
                         <span class="pill"><i class="icon-ic_fluent_shield_24_regular" aria-hidden="true"></i>GPL v3</span>
                         <span class="pill"><i class="icon-ic_fluent_cloud_24_regular" aria-hidden="true"></i>PWA</span>
-                        <span class="pill"><i class="icon-ic_fluent_arrow_sync_circle_24_regular" aria-hidden="true"></i>2.0.3.7-20260307</span>
+                        <span class="pill"><i class="icon-ic_fluent_arrow_sync_circle_24_regular" aria-hidden="true"></i>2.0.3.8-20260405</span>
                     </div>
                     <p style="margin-top:10px;">本仓库采用 GPL v3 许可证，详见 <a href="/LICENSE">LICENSE</a>。</p>
                     <p style="margin-top:10px;">项目README中有详细的使用说明 <a href="/README.md">README</a>。</p>

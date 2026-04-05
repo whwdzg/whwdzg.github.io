@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<!--
+  [站点注释 Site Note]
+  文件: D:\Documents\GitHub\whwdzg.github.io\about.html
+	作用: 页面结构与内容容器，具体交互由对应 JS/CSS 增强。
+  English: Defines page markup; behavior and styling are enhanced by JS/CSS.
+-->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>组件测试 | Componets</title>
+    <meta name="author" content="whwdzg">
+    <meta name="description" content="whwdzg.github.io 的关于与使用说明">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/resource/img/shell/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/favicon.ico" as="image" type="image/x-icon">
+    <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
+    <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
+    <link rel="preload" href="/css/variables.css" as="style">
+    <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
+
+    <link rel="stylesheet" href="/css/variables.css">
+	<link rel="stylesheet" href="/css/component.css?v=20260405d">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/main-content.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/lightbox.css">
+    <link rel="stylesheet" href="/css/settings-modal.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
+
+    <script src="/js/pwa/register-sw.js" defer></script>
+	<script src="/js/component.js?v=20260405e" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script src="/js/sidebar.js" defer></script>
+    <script src="/js/lightbox.js" defer></script>
+    <script src="/js/avatar.js" defer></script>
+    <script src="/js/scroll-to-top.js" defer></script>
+    <script src="/js/search.js" defer></script>
+    <script src="/js/spa-router.js" defer></script>
+    <script src="/js/settings-modal.js" defer></script>
+    <script src="/js/code.js" defer></script>
+
+    <link rel="stylesheet" href="/css/column.css">
+    </head>
+<body class="component-demo">
+     <div id="shell-root"></div>
+        <script>
+            (function(){
+                var container = document.getElementById('shell-root');
+                function normalize(pathname) {
+                    var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
+                    return p === '' ? '/' : p;
+                }
+                function markCurrentNav() {
+                    var current = normalize(location.pathname);
+                    var sidebar = document.getElementById('sidebar');
+                    if (!sidebar) return;
+                    sidebar.querySelectorAll('.current, .selected').forEach(function(el){
+                        el.classList.remove('current','selected');
+                        if (el.tagName === 'A') el.removeAttribute('aria-current');
+                    });
+                    document.querySelectorAll('#sidebar a[href]').forEach(function(a){
+                        var href = a.getAttribute('href');
+                        if (!href) return;
+                        var target = normalize(new URL(href, location.origin).pathname);
+                        if (target === current) {
+                            var parent = a.closest('.has-children');
+                            var toggle = parent ? parent.querySelector('.toggle') : null;
+                            var submenu = parent ? parent.querySelector('.submenu') : null;
+                            var parentOpen = !!(parent && parent.classList.contains('open'));
+
+                            if (parent && !parentOpen) {
+                                parent.classList.add('current');
+                                if (toggle) toggle.classList.add('current');
+                                return;
+                            }
+
+                            a.classList.add('current','selected');
+                            a.setAttribute('aria-current','page');
+                            if (parent) {
+                                if (toggle) {
+                                    toggle.classList.add('current');
+                                    toggle.setAttribute('aria-expanded','true');
+                                }
+                                if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
+                            }
+                        }
+                    });
+                }
+                function attachShell(html) {
+                    if (!container || !html) return;
+                    container.innerHTML = html;
+                    var move = function() {
+                        var main = document.querySelector('main');
+                        if (!main) return;
+                        var footer = container.querySelector('footer');
+                        if (footer && footer.parentNode !== main.parentNode) {
+                            footer.setAttribute('data-shell-moved', '1');
+                            main.insertAdjacentElement('afterend', footer);
+                        }
+                        markCurrentNav();
+                    };
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', move, { once: true });
+                    } else {
+                        move();
+                    }
+                }
+                function bust(url){
+                    if (location.protocol === 'file:') return url;
+                    var sep = url.indexOf('?') === -1 ? '?' : '&';
+                    return url + sep + 'ts=' + Date.now();
+                }
+                try {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', bust('/includes/shell.html'), false);
+                    xhr.send(null);
+                    if (xhr.status === 200 || xhr.status === 0) {
+                        attachShell(xhr.responseText);
+                        return;
+                    }
+                } catch (e) {}
+                fetch(bust('/includes/shell.html'), { cache: 'no-store' })
+                    .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
+                    .then(function(html){ attachShell(html); });
+            })();
+        </script>
+
+        <main>
+	<div class="component-demo-page">
+
+		<section class="component-section">
+			<h2 class="component-section-title">浮动提示</h2>
+			<div class="component-row">
+				<button class="component-btn component-btn--standard" type="button" data-toast-variant="info" data-toast-message="这是一个提示" data-toast-icon="icon-ic_fluent_info_24_regular">
+					<i class="icon-ic_fluent_info_24_regular" aria-hidden="true"></i>提示
+				</button>
+				<button class="component-btn component-btn--standard" type="button" data-toast-variant="success" data-toast-message="操作成功" data-toast-icon="icon-ic_fluent_checkmark_circle_24_regular">
+					<i class="icon-ic_fluent_checkmark_circle_24_regular" aria-hidden="true"></i>成功
+				</button>
+				<button class="component-btn component-btn--standard" type="button" data-toast-variant="warning" data-toast-message="注意检查输入" data-toast-icon="icon-ic_fluent_warning_24_regular">
+					<i class="icon-ic_fluent_warning_24_regular" aria-hidden="true"></i>警告
+				</button>
+				<button class="component-btn component-btn--standard" type="button" data-toast-variant="error" data-toast-message="发生错误" data-toast-icon="icon-ic_fluent_error_circle_24_regular">
+					<i class="icon-ic_fluent_error_circle_24_regular" aria-hidden="true"></i>错误
+				</button>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">对话提示框</h2>
+			<div class="component-row">
+				<button class="component-btn component-btn--standard" type="button" data-dialog-open="component-dialog-basic">
+					<i class="icon-ic_fluent_chat_help_24_regular" aria-hidden="true"></i>打开对话框
+				</button>
+				<button class="component-btn component-btn--standard" type="button" data-dialog-open="component-dialog-input">
+					<i class="icon-ic_fluent_textbox_24_regular" aria-hidden="true"></i>带输入框
+				</button>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">通用输入框</h2>
+			<div class="component-grid">
+				<div class="component-input" data-component-input>
+					<div class="component-input__tools">
+						<button class="component-btn component-btn--immersive-tint component-icon-btn" style="--btn-rgb:16,185,129;" type="button" data-input-action="copy" aria-label="复制">
+							<i class="icon-ic_fluent_copy_24_regular" aria-hidden="true"></i>
+						</button>
+						<button class="component-btn component-btn--immersive-tint component-icon-btn" style="--btn-rgb:239,68,68;" type="button" data-input-action="clear" aria-label="清除">
+							<i class="icon-ic_fluent_delete_24_regular" aria-hidden="true"></i>
+						</button>
+					</div>
+					<textarea class="component-textarea" id="component-textarea-auto" data-auto-resize="true" placeholder="可根据内容自动增长"></textarea>
+				</div>
+				<div class="component-input" data-component-input>
+					<div class="component-input__tools">
+						<button class="component-btn component-btn--immersive-tint component-icon-btn" style="--btn-rgb:16,185,129;" type="button" data-input-action="copy" aria-label="复制">
+							<i class="icon-ic_fluent_copy_24_regular" aria-hidden="true"></i>
+						</button>
+						<button class="component-btn component-btn--immersive-tint component-icon-btn" style="--btn-rgb:239,68,68;" type="button" data-input-action="clear" aria-label="清除">
+							<i class="icon-ic_fluent_delete_24_regular" aria-hidden="true"></i>
+						</button>
+					</div>
+					<textarea class="component-textarea component-textarea--fixed" id="component-textarea-fixed" placeholder="默认高度输入框"></textarea>
+				</div>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">搜索输入框</h2>
+			<div class="component-search-wrap">
+				<div class="component-search">
+					<input class="component-search__input" type="text" placeholder="输入关键词，例如 better、base64、video">
+					<button class="component-btn component-btn--immersive-tint component-icon-btn component-search__button" style="--btn-rgb:239,68,68;" type="button" data-search-clear>
+						<i class="icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+					</button>
+					<button class="component-btn component-btn--immersive-tint component-icon-btn component-search__button" style="--btn-rgb:59,130,246;" type="button" data-search-submit aria-label="搜索">
+						<i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>
+					</button>
+				</div>
+				<div class="search-results visible" data-search-results>
+					<div class="search-result-item" data-search-item="better mob drop 数据包">
+						<span class="search-result-text">Better Mob Drop</span>
+						<span class="search-result-indicator">></span>
+					</div>
+					<div class="search-result-item" data-search-item="base64 tool 编码 解码">
+						<span class="search-result-text">Base64 工具</span>
+						<span class="search-result-indicator">></span>
+					</div>
+					<div class="search-result-item" data-search-item="video archive bilibili 视频">
+						<span class="search-result-text">视频归档</span>
+						<span class="search-result-indicator">></span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">滑块开关</h2>
+			<div class="component-row">
+				<label class="component-switch">
+					<input class="component-switch__input" type="checkbox" checked>
+					<span class="component-switch__track">
+						<span class="component-switch__thumb"></span>
+					</span>
+					<span class="component-switch__label">自动播放</span>
+				</label>
+				<label class="component-switch">
+					<input class="component-switch__input" type="checkbox">
+					<span class="component-switch__track">
+						<span class="component-switch__thumb"></span>
+					</span>
+					<span class="component-switch__label">通知提醒</span>
+				</label>
+			</div>
+			<div class="component-slider-row">
+				<input class="component-range-slider" type="range" min="0" max="100" value="36" data-range-demo>
+				<input class="component-range-value styled-input" type="number" min="0" max="100" value="36" data-range-value>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">下拉菜单</h2>
+			<div class="component-row">
+				<div class="component-dropdown" data-component-dropdown>
+					<button class="component-dropdown-toggle" type="button" aria-expanded="false">
+						<span class="toggle-label">默认排序</span>
+						<i class="icon-ic_fluent_chevron_down_24_regular toggle-icon" aria-hidden="true"></i>
+					</button>
+					<div class="component-dropdown-list" role="listbox" aria-label="排序方式">
+						<div class="component-dropdown-item selected" role="option" aria-selected="true">默认排序</div>
+						<div class="component-dropdown-item" role="option" aria-selected="false">按热度</div>
+						<div class="component-dropdown-item" role="option" aria-selected="false">按更新时间</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">色板工具</h2>
+			<div class="component-palette">
+				<div class="component-palette-grid">
+					<button type="button" class="component-theme-swatch active" style="background:#33cc99" data-theme-color="#33cc99" aria-label="色板 #33cc99"></button>
+					<button type="button" class="component-theme-swatch" style="background:#007dc5" data-theme-color="#007dc5" aria-label="色板 #007dc5"></button>
+					<button type="button" class="component-theme-swatch" style="background:#f50000" data-theme-color="#f50000" aria-label="色板 #f50000"></button>
+					<button type="button" class="component-theme-swatch" style="background:#f59e0b" data-theme-color="#f59e0b" aria-label="色板 #f59e0b"></button>
+					<button type="button" class="component-theme-swatch" style="background:#7c3aed" data-theme-color="#7c3aed" aria-label="色板 #7c3aed"></button>
+					<button type="button" class="component-theme-swatch" style="background:#ef4444" data-theme-color="#ef4444" aria-label="色板 #ef4444"></button>
+					<button type="button" class="component-theme-swatch component-theme-swatch--custom" data-open-custom-color aria-label="自定义颜色" aria-expanded="false"><i class="icon-ic_fluent_pen_24_regular" aria-hidden="true"></i></button>
+				</div>
+				<div class="component-color-floating-panel" data-custom-color-panel hidden>
+					<div class="component-panel-header">自定义主题色</div>
+					<div class="component-color-preview" data-color-preview></div>
+					<div class="component-spectrum-panel">
+						<div class="component-spectrum-row">
+							<label for="component-r-range">R</label>
+							<input id="component-r-range" class="component-range-slider" type="range" min="0" max="255" value="51" data-rgb-range="r">
+							<input class="styled-input" type="number" min="0" max="255" value="51" data-rgb-input="r">
+						</div>
+						<div class="component-spectrum-row">
+							<label for="component-g-range">G</label>
+							<input id="component-g-range" class="component-range-slider" type="range" min="0" max="255" value="204" data-rgb-range="g">
+							<input class="styled-input" type="number" min="0" max="255" value="204" data-rgb-input="g">
+						</div>
+						<div class="component-spectrum-row">
+							<label for="component-b-range">B</label>
+							<input id="component-b-range" class="component-range-slider" type="range" min="0" max="255" value="153" data-rgb-range="b">
+							<input class="styled-input" type="number" min="0" max="255" value="153" data-rgb-input="b">
+						</div>
+					</div>
+					<div class="component-hex-row component-hex-row--actions">
+						<input class="component-hex-input" type="text" value="#33cc99" data-theme-hex placeholder="#33cc99" aria-label="输入16进制色值">
+						<button type="button" class="component-btn component-btn--standard" data-theme-apply>应用色值</button>
+						<button type="button" class="component-btn component-btn--immersive" data-theme-cancel>取消</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">作者胶囊 / 标准胶囊 / 头像</h2>
+			<div class="component-row">
+				<a class="component-pill component-pill--author component-pill--author-link" href="/user/%E6%BB%84%E6%B5%B7%E6%B0%B4%E9%AD%9A.html">
+					<img src="/resource/img/shell/shuiyu.avif" alt="头像">
+					<span>滄海水魚</span>
+				</a>
+				<span class="component-pill">
+					<i class="icon-ic_fluent_cube_24_regular" aria-hidden="true"></i>数据项
+				</span>
+				<span class="component-pill">
+					<i class="icon-ic_fluent_calendar_ltr_24_regular" aria-hidden="true"></i>2026-04-05
+				</span>
+				<a class="component-avatar" href="/user/%E6%BB%84%E6%B5%B7%E6%B0%B4%E9%AD%9A.html" aria-label="访问作者页">
+					<img src="/resource/img/shell/shuiyu.avif" alt="头像">
+				</a>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">评论区</h2>
+			<div class="component-comment-list">
+				<article class="component-comment-card">
+					<img class="component-comment-avatar" src="/resource/img/shell/shuiyu.avif" alt="头像">
+					<div class="component-comment-meta">
+						<p class="component-comment-author">滄海水魚</p>
+						<p class="component-comment-date">刚刚</p>
+					</div>
+					<p class="component-comment-text">这是顶级评论示例，展示内容排版与间距。</p>
+					<div class="component-comment-reply">
+						<img src="/resource/img/shell/shuiyu.avif" alt="头像">
+						<div class="component-comment-meta">
+							<p class="component-comment-author">回复者</p>
+							<p class="component-comment-date">1 分钟前</p>
+						</div>
+						<p class="component-comment-reply-text">这是回复评论示例，带引用样式。</p>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">目录</h2>
+			<nav class="component-directory" aria-label="目录">
+				<p class="component-directory__title">目录</p>
+				<ul class="component-directory__list">
+					<li class="component-directory__item level-3"><a class="component-directory__link" href="#">三级标题：概览</a></li>
+					<li class="component-directory__item level-4"><a class="component-directory__link" href="#">四级标题：核心功能</a></li>
+					<li class="component-directory__item level-5"><a class="component-directory__link" href="#">五级标题：使用说明</a></li>
+					<li class="component-directory__item level-3"><a class="component-directory__link" href="#">三级标题：更新记录</a></li>
+				</ul>
+			</nav>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">筛选栏 / 展示栏</h2>
+			<div class="component-row component-row--between">
+				<div class="component-filter-row" aria-label="筛选条件">
+					<button class="component-filter-chip active" type="button" data-filter-count="24">全部</button>
+					<button class="component-filter-chip" type="button" data-filter-count="8">友好</button>
+					<button class="component-filter-chip" type="button" data-filter-count="6">中立</button>
+					<button class="component-filter-chip" type="button" data-filter-count="10">敌对</button>
+				</div>
+				<span class="component-filter-status" data-filter-status></span>
+			</div>
+			<div class="component-display-grid">
+				<div class="component-display-card">
+					<p class="component-display-title">项目数</p>
+					<p class="component-display-value">24</p>
+				</div>
+				<div class="component-display-card">
+					<p class="component-display-title">更新次数</p>
+					<p class="component-display-value">128</p>
+				</div>
+				<div class="component-display-card">
+					<p class="component-display-title">下载量</p>
+					<p class="component-display-value">38k</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">按钮</h2>
+			<div class="component-row">
+				<button class="component-btn component-btn--standard" type="button">
+					<i class="icon-ic_fluent_info_24_regular" aria-hidden="true"></i>标准式
+				</button>
+				<button class="component-btn component-btn--flat" type="button" style="--component-flat-bg: rgba(37, 99, 235, 0.14); --component-flat-color: #2563eb; --component-flat-border: rgba(37, 99, 235, 0.36);">
+					<i class="icon-ic_fluent_flash_24_regular" aria-hidden="true"></i>扁平式
+				</button>
+				<button class="component-btn component-btn--immersive" type="button">
+					<i class="icon-ic_fluent_sparkle_24_regular" aria-hidden="true"></i>沉浸式
+				</button>
+				<button class="component-btn component-btn--immersive-tint" type="button" data-color-cycle="#33cc99|#007dc5|#f50000|#7c3aed" data-color-index="0">
+					<i class="icon-ic_fluent_color_24_regular" aria-hidden="true"></i>沉浸变色式
+				</button>
+				<button class="component-btn component-btn--raised" type="button">
+					<i class="icon-ic_fluent_link_24_regular" aria-hidden="true"></i>立体式
+				</button>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">图片项（点击调用 Lightbox）</h2>
+			<div class="component-media-grid">
+				<article class="component-media-card">
+					<img src="/resource/img/shell/shuiyu.avif" alt="图片示例" data-lightbox="true">
+					<div class="component-media-card-body">
+						<p>点击图片可放大查看</p>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">音频项（底栏播放条）</h2>
+			<div class="component-row">
+				<button class="component-btn component-btn--immersive" type="button" data-audio-open>
+					<i class="icon-ic_fluent_music_note_2_24_regular" aria-hidden="true"></i>MyGO!!!!! - エガクミライ（测试 03:38）
+				</button>
+			</div>
+		</section>
+
+		<section class="component-section">
+			<h2 class="component-section-title">视频项（视频下方播放条）</h2>
+			<div class="component-media-grid">
+				<article class="component-media-card">
+					<video data-demo-video preload="metadata" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" poster="/resource/img/shell/shuiyu.avif"></video>
+					<div class="component-video-controls">
+						<div class="component-video-top">
+							<strong class="component-video-title" data-video-name>Flower Demo Video</strong>
+							<div class="component-video-meta">
+								<span class="component-video-time" data-video-time>00:00 / 00:00</span>
+								<a class="component-btn component-btn--immersive" href="/media/video.html" target="_blank" rel="noopener noreferrer">
+									<i class="icon-ic_fluent_open_24_regular" aria-hidden="true"></i>播放页打开
+								</a>
+							</div>
+						</div>
+						<div class="component-video-seek-row">
+							<button class="component-btn component-btn--immersive component-icon-btn" type="button" data-video-toggle aria-label="播放/暂停">
+								<i class="icon-ic_fluent_play_24_regular" aria-hidden="true"></i>
+							</button>
+							<input class="component-video-progress" type="range" min="0" max="0" step="0.01" value="0" data-video-seek>
+						</div>
+					</div>
+				</article>
+			</div>
+		</section>
+	</div>
+	</main>
+
+	<div class="component-audio-dock" data-audio-dock>
+		<div class="component-audio-symbol" aria-hidden="true"><i class="icon-ic_fluent_music_note_2_24_regular"></i></div>
+		<div class="component-audio-main">
+			<strong class="component-audio-name" data-audio-name>MyGO!!!!! - エガクミライ</strong>
+			<span class="component-audio-time" data-audio-time>00:00 / 00:00</span>
+			<input class="component-audio-progress" type="range" min="0" max="0" step="0.01" value="0" data-audio-seek>
+		</div>
+		<div class="component-row">
+			<button class="component-btn component-btn--immersive component-icon-btn" type="button" data-audio-prev aria-label="上一首"><i class="icon-ic_fluent_previous_24_regular" aria-hidden="true"></i></button>
+			<button class="component-btn component-btn--immersive component-icon-btn" type="button" data-audio-toggle aria-label="播放/暂停"><i class="icon-ic_fluent_play_24_regular" aria-hidden="true"></i></button>
+			<button class="component-btn component-btn--immersive component-icon-btn" type="button" data-audio-next aria-label="下一首"><i class="icon-ic_fluent_next_24_regular" aria-hidden="true"></i></button>
+			<a class="component-btn component-btn--immersive" href="/media/music.html" target="_blank" rel="noopener noreferrer"><i class="icon-ic_fluent_open_24_regular" aria-hidden="true"></i>播放页打开</a>
+			<button class="component-btn component-btn--immersive component-icon-btn" type="button" data-audio-close aria-label="关闭播放"><i class="icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i></button>
+		</div>
+	</div>
+	<audio data-demo-audio preload="metadata" src="/resource/aud/MyGO!!!!! - %E3%82%A8%E3%82%AC%E3%82%AF%E3%83%9F%E3%83%A9%E3%82%A4.mp3"></audio>
+
+	<div class="component-toast" data-component-toast>
+		<i class="component-toast__icon icon-ic_fluent_info_24_regular" aria-hidden="true"></i>
+		<span class="component-toast__message">这是一个提示</span>
+		<button class="component-toast__close" type="button" aria-label="关闭">
+			<i class="icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+		</button>
+	</div>
+
+	<div class="component-dialog" id="component-dialog-basic" role="dialog" aria-modal="true" aria-labelledby="component-dialog-basic-title">
+		<div class="component-dialog__backdrop" data-dialog-close></div>
+		<div class="component-dialog__panel" role="document">
+			<h3 class="component-dialog__title" id="component-dialog-basic-title">确认操作</h3>
+			<p class="component-dialog__text">这是一段用于测试的对话提示文本，可用于说明操作影响。</p>
+			<div class="component-dialog__actions">
+				<button class="component-btn component-btn--standard" type="button" data-dialog-cancel>取消</button>
+				<button class="component-btn component-btn--standard" type="button" data-dialog-confirm>确认</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="component-dialog" id="component-dialog-input" role="dialog" aria-modal="true" aria-labelledby="component-dialog-input-title">
+		<div class="component-dialog__backdrop" data-dialog-close></div>
+		<div class="component-dialog__panel" role="document">
+			<h3 class="component-dialog__title" id="component-dialog-input-title">输入内容</h3>
+			<p class="component-dialog__text">可选输入框示例，用于展示额外的信息采集。</p>
+			<input class="component-dialog__input" type="text" placeholder="输入内容">
+			<div class="component-dialog__actions">
+				<button class="component-btn component-btn--standard" type="button" data-dialog-cancel>取消</button>
+				<button class="component-btn component-btn--standard" type="button" data-dialog-confirm>提交</button>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

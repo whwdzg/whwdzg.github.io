@@ -288,7 +288,7 @@
   box-shadow: 0 0 0 2px var(--primary-color, #2563eb) inset;
 }
 .video-archive-view-switch .settings-action-btn:not(.active):hover {
-  background: var(--view-switch-hover-bg, #e5eaf1);
+  background: transparent;
 }
 
 /* 修正 grid masonry 下 .video-card 宽度自适应 */

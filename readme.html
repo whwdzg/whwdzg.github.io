@@ -148,13 +148,12 @@
     (function loadShell() {
       var root = document.getElementById('shell-root');
       if (!root) return;
-      var inlineShell = '\n  <header id="site-header"></header>\n  <aside id="sidebar"></aside>\n  <footer id="site-footer"></footer>\n';
+      var inlineShell = '\n  <header id="site-header"></header>\n  <footer id="site-footer"></footer>\n';
 
       function arrangeShell(){
         var main = document.getElementById('page-root');
         var header = root.querySelector('header');
         var sidebar = root.querySelector('nav.sidebar');
-        var aside = root.querySelector('aside');
         var footer = root.querySelector('footer');
 
         // Promote shell children to body so layout matches other pages
@@ -164,26 +163,14 @@
         if (sidebar && sidebar.parentNode !== document.body && main) {
           document.body.insertBefore(sidebar, main);
         }
-
-        if (aside) {
-          aside.setAttribute('data-shell-preserve','1');
-          if (main && aside.parentNode !== main) {
-            aside.remove();
-            main.appendChild(aside);
-          }
-        }
         if (footer) {
-          var target = aside || main;
+          var target = main;
           if (target && footer.parentNode !== document.body) {
             footer.remove();
             document.body.insertBefore(footer, target.nextSibling);
           } else if (target && footer.previousElementSibling !== target) {
             target.insertAdjacentElement('afterend', footer);
           }
-        }
-
-        if (window.refreshAsideStack) {
-          window.refreshAsideStack();
         }
       }
 
@@ -194,7 +181,6 @@
         if (xhr.status >= 200 && xhr.status < 300 && xhr.responseText) {
           root.innerHTML = xhr.responseText;
           arrangeShell();
-          if (window.refreshAsideStack) { window.refreshAsideStack(); }
           return;
         }
       } catch (e) {}
@@ -204,11 +190,9 @@
       }).then(function(html) {
         root.innerHTML = html;
         arrangeShell();
-        if (window.refreshAsideStack) { window.refreshAsideStack(); }
       }).catch(function() {
         root.innerHTML = inlineShell;
         arrangeShell();
-        if (window.refreshAsideStack) { window.refreshAsideStack(); }
       });
     })();
   </script>
@@ -255,7 +239,7 @@
         '- 旧版存档：/Legacy-1.0/',
         '',
         '## 功能概览',
-        '- 单页导航：共享的 header/sidebar/aside 壳层与轻量路由',
+        '- 单页导航：共享的 header/sidebar 壳层与轻量路由',
         '- 多语言与主题切换：预置多语种 JSON 与深浅色模式',
         '- 渐进式增强：懒加载图片、滚动返回顶部、设置面板',
         '- PWA：manifest、service worker 与简单离线缓存',

@@ -21,7 +21,7 @@
     <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
     <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
     <link rel="preload" href="/css/variables.css" as="style">
-    <link rel="preload" href="/includes/shell.html?v=2.0.3.7-20260307" as="fetch" crossorigin>
+    <link rel="preload" href="/includes/shell.html?v=2.0.3.8-20260405" as="fetch" crossorigin>
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="/css/variables.css">
@@ -106,18 +106,10 @@
                 var move = function () {
                     var main = document.querySelector('main');
                     if (!main) return;
-                    var aside = container.querySelector('aside');
                     var footer = container.querySelector('footer');
-                    if (aside && !main.contains(aside)) {
-                        aside.setAttribute('data-shell-moved', '1');
-                        main.appendChild(aside);
-                    }
                     if (footer && footer.parentNode !== main.parentNode) {
                         footer.setAttribute('data-shell-moved', '1');
                         main.insertAdjacentElement('afterend', footer);
-                    }
-                    if (window.refreshAsideStack) {
-                        window.refreshAsideStack();
                     }
                     markCurrentNav();
                 };
@@ -130,7 +122,7 @@
             function withVersion(url){
                 if (location.protocol === 'file:') return url;
                 var sep = url.indexOf('?') === -1 ? '?' : '&';
-                return url + sep + 'v=2.0.3.7-20260307';
+                return url + sep + 'v=2.0.3.8-20260405';
             }
             try {
                 var xhr = new XMLHttpRequest();

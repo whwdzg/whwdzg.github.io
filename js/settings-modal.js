@@ -1,14 +1,15 @@
 /**
- * [站点注释 Site Note]
- * 文件: D:\Documents\GitHub\whwdzg.github.io\js\settings-modal.js
- * 作用: 前端交互逻辑与功能模块实现。
+ * [绔欑偣娉ㄩ噴 Site Note]
+ * 鏂囦欢: D:\Documents\GitHub\whwdzg.github.io\js\settings-modal.js
+ * 浣滅敤: 鍓嶇浜や簰閫昏緫涓庡姛鑳芥ā鍧楀疄鐜般€?
  * English: Implements client-side interactions and feature logic.
  */
-// 模块：设置弹窗与主题 / Settings modal lifecycle, theme controls, custom colors.
+// 妯″潡锛氳缃脊绐椾笌涓婚 / Settings modal lifecycle, theme controls, custom colors.
 // load control to avoid race when opening/closing rapidly
 let __settingsLoadToken = 0; // incrementing token for each open
 let __settingsFetchController = null; // AbortController for fetch
 let __settingsClearTimeoutId = null; // timeout id used when closing
+const SETTINGS_LANG_KEY = 'settings-lang';
 const DEFAULT_THEME_COLOR = '#33CC99';
 const CUSTOM_DEFAULT_COLOR = '#b6b6b6';
 const CACHE_BUST = () => 'ts=' + Date.now();
@@ -19,15 +20,23 @@ const SETTINGS_URL_CANDIDATES = [
   '../../includes/setting.html',
   '../../../includes/setting.html'
 ];
+const COMPONENT_CSS_URL = '/css/component.css';
+const COMPONENT_JS_URL = '/js/component.js';
 let __settingsTemplateHtml = null; // in-memory cache of fetched template
 let __settingsTemplatePromise = null; // inflight promise to avoid duplicate fetches
+let __componentAssetsPromise = null;
 
 const getTranslationsMap = () => {
   return (typeof window !== 'undefined' && window.__translations) || (typeof translations !== 'undefined' ? translations : null);
 };
 
 function resolveSettingsLang(map) {
-  const saved = localStorage.getItem(SETTINGS_LANG_KEY) || document.documentElement.lang || 'zh-CN';
+  let saved = 'zh-CN';
+  try {
+    saved = localStorage.getItem(SETTINGS_LANG_KEY) || document.documentElement.lang || 'zh-CN';
+  } catch (_) {
+    saved = document.documentElement.lang || 'zh-CN';
+  }
   if (map && map[saved]) return saved;
   return 'zh-CN';
 }
@@ -138,15 +147,15 @@ const SETTINGS_FALLBACK_HTML = `
     <p>落叶银杏</p>
     <p>雪花</p>
   </section>
-  <section id="clear-page-cache">
-    <h2>清除页面缓存</h2>
-    <h4>清除本地页面缓存，以确保页面为最新，一般情况不建议使用</h4>
-    <button type="button">清除</button>
-  </section>
   <section id="reset-wallpaper-rotation">
     <h2>重置壁纸轮换</h2>
     <h4>清除今日壁纸记录并重新生成随机壁纸</h4>
     <button type="button">重置</button>
+  </section>
+  <section id="clear-page-cache">
+    <h2>清除页面缓存</h2>
+    <h4>清理站点缓存并重新加载当前页面</h4>
+    <button type="button">清除并刷新</button>
   </section>
 `;
 
@@ -164,7 +173,6 @@ const SECTION_ICON_MAP = {
   pageprogress: 'icon-ic_fluent_chart_multiple_24_regular',
   'page-progress': 'icon-ic_fluent_chart_multiple_24_regular',
   particleanimation: 'icon-ic_fluent_sparkle_24_regular',
-  'clear-page-cache': 'icon-ic_fluent_delete_24_regular',
   'reset-wallpaper-rotation': 'icon-ic_fluent_arrow_reset_24_regular',
   'settings-about-browserUA': 'icon-ic_fluent_window_24_regular',
   'settings-about-currentTime': 'icon-ic_fluent_timer_24_regular',
@@ -206,7 +214,7 @@ const ABOUT_ENTRY_DEFINITIONS = [
 ];
 
 let __settingsCurrentTimeIntervalId = null;
-// 优先使用浏览器语言，回退到文档 lang 或中文
+// 浼樺厛浣跨敤娴忚鍣ㄨ瑷€锛屽洖閫€鍒版枃妗?lang 鎴栦腑鏂?
 const locale = (typeof navigator !== 'undefined' && (navigator.language || navigator.userLanguage)) ||
   (typeof document !== 'undefined' && document.documentElement && document.documentElement.lang) ||
   'zh-CN';
@@ -226,7 +234,7 @@ function formatCurrentTime() {
 }
 
 function getSiteVersionMarkup() {
-  return '当前版本：<strong>2.0.3.7-20260307</strong>';
+  return '当前版本：<strong>2.0.3.8-20260405</strong>';
 }
 
 function stopCurrentTimeTicker() {
@@ -253,6 +261,52 @@ function buildSettingUrls() {
     try { return new URL(p, base).href; } catch (_) { return null; }
   }).filter(Boolean);
   return [...new Set(resolved)];
+}
+
+function ensureComponentAssets() {
+  if (__componentAssetsPromise) return __componentAssetsPromise;
+  __componentAssetsPromise = new Promise((resolve) => {
+    try {
+      if (!document.querySelector('link[data-component-style]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = COMPONENT_CSS_URL;
+        link.dataset.componentStyle = 'true';
+        document.head.appendChild(link);
+      }
+    } catch (_) {}
+
+    if (window.componentUi && typeof window.componentUi.init === 'function') {
+      resolve();
+      return;
+    }
+
+    const finalize = () => resolve();
+    let script = document.querySelector('script[data-component-runtime], script[data-component-script], script[src$="/js/component.js"]');
+    if (!script) {
+      script = document.createElement('script');
+      script.src = COMPONENT_JS_URL;
+      script.defer = true;
+      script.dataset.componentRuntime = 'true';
+      script.addEventListener('load', () => {
+        script.dataset.loaded = 'true';
+        finalize();
+      }, { once: true });
+      script.addEventListener('error', finalize, { once: true });
+      document.body.appendChild(script);
+    } else if (script.dataset.loaded === 'true') {
+      finalize();
+    } else {
+      script.addEventListener('load', () => {
+        script.dataset.loaded = 'true';
+        finalize();
+      }, { once: true });
+      script.addEventListener('error', finalize, { once: true });
+    }
+
+    setTimeout(finalize, 1500);
+  });
+  return __componentAssetsPromise;
 }
 
 async function fetchSettingsTemplate({ allowAbort } = {}) {
@@ -361,15 +415,6 @@ function applySettingsTranslations(container) {
     }
   }
 
-  const clearCache = container.querySelector('#clear-page-cache');
-  if (clearCache && t.clearCache) {
-    const h2 = clearCache.querySelector('h2');
-    const h4 = clearCache.querySelector('h4');
-    const btn = clearCache.querySelector('button');
-    if (h2 && t.clearCache.title) h2.textContent = t.clearCache.title;
-    if (h4 && t.clearCache.subtitle) h4.textContent = t.clearCache.subtitle;
-    if (btn && t.clearCache.button) btn.textContent = t.clearCache.button;
-  }
 }
 
 function ensureContainers(){
@@ -382,7 +427,7 @@ function ensureContainers(){
   if (!document.getElementById('settings-modal')){
     const modal = document.createElement('div');
     modal.id = 'settings-modal';
-    modal.innerHTML = '<div class="modal-header"><span class="modal-title"></span><button class="modal-close" aria-label="�ر�"><i class="icon-ic_fluent_dismiss_24_regular"></i></button></div><div class="modal-body"></div>';
+    modal.innerHTML = '<div class="modal-header"><span class="modal-title"></span><button class="modal-close component-btn component-btn--immersive component-icon-btn" type="button" aria-label="关闭"><i class="icon-ic_fluent_dismiss_24_regular"></i></button></div><div class="modal-body"></div>';
     document.body.appendChild(modal);
     modal.querySelector('.modal-close').addEventListener('click', closeModal);
   }
@@ -495,31 +540,31 @@ function buildSection(sec){
         hueSlider.type = 'range';
         hueSlider.name = 'theme-hue-slider';
         hueSlider.id = 'theme-hue-slider';
-        hueSlider.className = 'color-slider color-hue';
+        hueSlider.className = 'color-slider color-hue component-range-slider';
         hueSlider.min = '0';
         hueSlider.max = '360';
 
         const satRow = document.createElement('div');
         satRow.className = 'color-slider-row';
         const satLabel = document.createElement('span');
-        satLabel.textContent = (customStrings && customStrings.saturation) || '饱和';
+        satLabel.textContent = (customStrings && customStrings.saturation) || '饱和度';
         satSlider = document.createElement('input');
         satSlider.type = 'range';
         satSlider.name = 'theme-sat-slider';
         satSlider.id = 'theme-sat-slider';
-        satSlider.className = 'color-slider color-sat';
+        satSlider.className = 'color-slider color-sat component-range-slider';
         satSlider.min = '0';
         satSlider.max = '100';
 
         const lightRow = document.createElement('div');
         lightRow.className = 'color-slider-row';
         const lightLabel = document.createElement('span');
-        lightLabel.textContent = (customStrings && customStrings.lightness) || '明度';
+        lightLabel.textContent = (customStrings && customStrings.lightness) || '亮度';
         lightSlider = document.createElement('input');
         lightSlider.type = 'range';
         lightSlider.name = 'theme-light-slider';
         lightSlider.id = 'theme-light-slider';
-        lightSlider.className = 'color-slider color-light';
+        lightSlider.className = 'color-slider color-light component-range-slider';
         lightSlider.min = '0';
         lightSlider.max = '100';
 
@@ -561,7 +606,7 @@ function buildSection(sec){
         grid.className = 'color-swatch-grid';
         swatchColors.forEach(c => {
           const s = document.createElement('div');
-          s.className = 'color-swatch';
+          s.className = 'color-swatch component-theme-swatch';
           s.style.backgroundColor = c;
           // mark selected if matches current theme color
           if (currentThemeColor && c.toLowerCase() === currentThemeColor.toLowerCase()) {
@@ -615,13 +660,13 @@ function buildSection(sec){
         hexInput.type = 'text';
         hexInput.name = 'theme-hex-input';
         hexInput.id = 'theme-hex-input';
-        hexInput.className = 'color-hex-input';
+        hexInput.className = 'component-hex-input component-input';
         hexInput.placeholder = (customStrings && customStrings.hexPlaceholder) || '#RRGGBB 或 #RGB';
         hexInput.value = currentThemeColor;
 
         const applyBtn = document.createElement('button');
         applyBtn.type = 'button';
-        applyBtn.className = 'color-apply-btn';
+        applyBtn.className = 'component-btn component-btn--standard';
         applyBtn.textContent = (customStrings && customStrings.apply) || '确定';
         applyBtn.addEventListener('click', ()=>{
           const val = (hexInput.value || '').trim();
@@ -664,13 +709,13 @@ function buildSection(sec){
         const lower = (color || '').toLowerCase();
         const isCustom = lower === 'custom' || color === '自定义' || (customLabel && color === customLabel);
         const colorOption = document.createElement('div');
-        colorOption.className = 'color-option' + (isCustom ? ' custom' : '');
+        colorOption.className = 'component-theme-swatch color-option' + (isCustom ? ' custom component-theme-swatch--custom' : '');
         const core = document.createElement('div');
         core.className = 'color-core';
         if (isCustom) {
           core.style.backgroundColor = CUSTOM_DEFAULT_COLOR;
           const icon = document.createElement('i');
-          // 使用 Fluent System Icons 的 edit 图标类，保留 fluent-icon 以应用字体族
+          // 浣跨敤 Fluent System Icons 鐨?edit 鍥炬爣绫伙紝淇濈暀 fluent-icon 浠ュ簲鐢ㄥ瓧浣撴棌
           icon.className = 'fluent-icon icon-ic_fluent_edit_24_regular';
           core.appendChild(icon);
           customOption = colorOption;
@@ -759,7 +804,7 @@ function buildSection(sec){
         const color = p.getAttribute('data-color');
         if (!color || color === '自定义') return;
         const opt = document.createElement('div');
-        opt.className = 'color-option';
+        opt.className = 'component-theme-swatch color-option';
         const core = document.createElement('div');
         core.className = 'color-core';
         core.style.backgroundColor = color;
@@ -806,24 +851,6 @@ function buildSection(sec){
     row.appendChild(pContainer);
     row.appendChild(toggle);
     wrapper.appendChild(row);
-  } else if (sec.id === 'clear-page-cache') {
-    const row = document.createElement('div');
-    row.className = 'settings-action-row';
-
-    const status = document.createElement('span');
-    status.className = 'settings-action-status';
-
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'settings-action-btn';
-    const sourceBtn = sec.querySelector('button');
-    btn.textContent = (sourceBtn && sourceBtn.textContent ? sourceBtn.textContent.trim() : '清除') || '清除';
-
-    btn.addEventListener('click', () => handleClearPageCache(btn, status));
-
-    row.appendChild(status);
-    row.appendChild(btn);
-    wrapper.appendChild(row);
   } else if (sec.id === 'reset-wallpaper-rotation') {
     const row = document.createElement('div');
     row.className = 'settings-action-row';
@@ -833,7 +860,7 @@ function buildSection(sec){
 
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'settings-action-btn';
+    btn.className = 'component-btn component-btn--standard';
     const sourceBtn = sec.querySelector('button');
     btn.textContent = (sourceBtn && sourceBtn.textContent ? sourceBtn.textContent.trim() : '重置') || '重置';
 
@@ -848,6 +875,50 @@ function buildSection(sec){
         btn.disabled = false;
         btn.classList.remove('loading');
       }, 280);
+    });
+
+    row.appendChild(status);
+    row.appendChild(btn);
+    wrapper.appendChild(row);
+  } else if (sec.id === 'clear-page-cache') {
+    const row = document.createElement('div');
+    row.className = 'settings-action-row';
+
+    const status = document.createElement('span');
+    status.className = 'settings-action-status';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'component-btn component-btn--standard';
+    const sourceBtn = sec.querySelector('button');
+    btn.textContent = (sourceBtn && sourceBtn.textContent ? sourceBtn.textContent.trim() : '清除并刷新') || '清除并刷新';
+
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      btn.classList.add('loading');
+      status.textContent = '正在清理缓存';
+      status.classList.remove('error', 'muted', 'ok');
+
+      try {
+        if (typeof window !== 'undefined' && 'caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map((key) => caches.delete(key)));
+        }
+        if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map((reg) => reg.update().catch(() => null)));
+        }
+        status.textContent = '缓存已清理，正在刷新';
+        status.classList.add('ok');
+        setTimeout(() => {
+          window.location.reload();
+        }, 220);
+      } catch (err) {
+        status.textContent = '清理失败，请重试';
+        status.classList.add('error');
+        btn.disabled = false;
+        btn.classList.remove('loading');
+      }
     });
 
     row.appendChild(status);
@@ -914,28 +985,27 @@ function buildSection(sec){
 
     if (nonHexCount >= 2) {
       const row = document.createElement('div');
-      row.className = 'settings-dropdown';
+      row.className = 'component-dropdown';
+      row.setAttribute('data-component-dropdown', 'true');
+      row.setAttribute('data-component-dropdown-managed', 'settings-modal');
 
       const toggleBtn = document.createElement('button');
       toggleBtn.type = 'button';
-      toggleBtn.className = 'settings-dropdown-toggle';
+      toggleBtn.className = 'component-dropdown-toggle';
+      toggleBtn.setAttribute('aria-haspopup', 'listbox');
       const label = document.createElement('span');
       label.className = 'toggle-label';
       label.textContent = ps[0].textContent || '';
       const icon = document.createElement('i');
-      icon.className = 'toggle-icon icon-ic_fluent_chevron_right_24_regular';
+      icon.className = 'toggle-icon icon-ic_fluent_chevron_down_24_regular';
       icon.setAttribute('aria-hidden', 'true');
       toggleBtn.appendChild(label);
       toggleBtn.appendChild(icon);
+      toggleBtn.setAttribute('aria-expanded', 'false');
 
       const list = document.createElement('div');
-      list.className = 'settings-dropdown-list';
-
-      // Create portal container appended to body so it floats above the modal
-      const portal = document.createElement('div');
-      portal.className = 'settings-dropdown-portal hidden';
-      portal.appendChild(list);
-      document.body.appendChild(portal);
+      list.className = 'component-dropdown-list';
+      list.setAttribute('role', 'listbox');
 
       // determine stored selection index (if any)
       const storageKey = `setting-${sec.id || 'unknown'}`;
@@ -945,158 +1015,35 @@ function buildSection(sec){
       ps.forEach((p, idx) => {
         const text = p.textContent || '';
         const item = document.createElement('div');
-        item.className = 'dropdown-item';
+        item.className = 'component-dropdown-item';
+        item.setAttribute('role', 'option');
+        item.setAttribute('aria-selected', 'false');
         item.textContent = text;
         // highlight if it's the stored selection
-        if (!Number.isNaN(storedIdx) && storedIdx === idx) item.classList.add('selected');
+        if (!Number.isNaN(storedIdx) && storedIdx === idx) {
+          item.classList.add('selected');
+          item.setAttribute('aria-selected', 'true');
+        }
         item.addEventListener('click', () => {
-          // click animation
-          item.classList.remove('click-anim');
-          void item.offsetWidth; // reflow to restart animation
-          item.classList.add('click-anim');
-          item.addEventListener('animationend', function _once(){ item.classList.remove('click-anim'); item.removeEventListener('animationend', _once); });
           // store selection by index under a key derived from section id
-          const key = storageKey;
-          localStorage.setItem(key, String(idx));
+          localStorage.setItem(storageKey, String(idx));
           label.textContent = text;
           // update visual selection
-          list.querySelectorAll('.dropdown-item').forEach(it => it.classList.remove('selected'));
+          list.querySelectorAll('.component-dropdown-item').forEach(it => {
+            it.classList.remove('selected');
+            it.setAttribute('aria-selected', 'false');
+          });
           item.classList.add('selected');
-          // collapse after select
-          collapseDropdown();
-          // dispatch change event
-          document.dispatchEvent(new CustomEvent('setting-changed', { detail: { id: sec.id, index: idx, text } }));
+          item.setAttribute('aria-selected', 'true');
+          // collapse after select, same as component dropdown behavior
+          row.classList.remove('open');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          // delay re-render trigger to preserve close animation
+          window.setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('setting-changed', { detail: { id: sec.id, index: idx, text } }));
+          }, 190);
         });
         list.appendChild(item);
-      });
-
-      function positionPortal(e){
-        const rect = toggleBtn.getBoundingClientRect();
-        const vv = window.visualViewport;
-        const viewportW = vv ? vv.width : window.innerWidth;
-        const viewportH = vv ? vv.height : window.innerHeight;
-        const viewportLeft = vv ? vv.offsetLeft : 0;
-        const viewportTop = vv ? vv.offsetTop : 0;
-        const minW = 160;
-        const maxW = 520;
-        const gap = 8;
-        const edge = 8;
-        const portalPadding = 12;
-        const minVisibleListHeight = 36;
-
-        // Recompute width when opening or resizing so long labels do not overflow.
-        const isResizeEvent = e && e.type === 'resize';
-        if (isResizeEvent || !portal.dataset.widthComputed) {
-          const items = list.querySelectorAll('.dropdown-item');
-          let maxItemW = rect.width;
-          items.forEach(it => {
-            try { maxItemW = Math.max(maxItemW, Math.ceil(it.scrollWidth)); } catch (err) {}
-          });
-          const contentW = maxItemW + 24;
-          let portalW = Math.min(maxW, Math.max(minW, contentW));
-          portalW = Math.min(portalW, viewportW - edge * 2);
-          portal.style.width = portalW + 'px';
-          portal.dataset.widthComputed = '1';
-        }
-
-        // Clamp horizontal position first.
-        const portalWcur = parseInt(portal.style.width, 10) || Math.min(Math.max(minW, Math.ceil(list.scrollWidth || rect.width) + 24), viewportW - edge * 2);
-        let left = rect.left;
-        const minLeft = viewportLeft + edge;
-        const maxLeft = Math.max(minLeft, viewportLeft + viewportW - portalWcur - edge);
-        left = Math.min(Math.max(minLeft, left), maxLeft);
-        portal.style.left = left + 'px';
-
-        // Decide opening direction by available space and cap list height to stay in viewport.
-        const spaceBelow = Math.max(0, viewportTop + viewportH - rect.bottom - gap - edge - portalPadding);
-        const spaceAbove = Math.max(0, rect.top - viewportTop - gap - edge - portalPadding);
-        const openBelow = spaceBelow >= spaceAbove;
-        const available = Math.max(0, openBelow ? spaceBelow : spaceAbove);
-        const targetH = Math.max(0, Math.min(list.scrollHeight, available));
-        list.style.maxHeight = targetH + 'px';
-        if (list.scrollHeight > targetH) list.classList.add('scrollable');
-        else list.classList.remove('scrollable');
-
-        // Use expected final height (not transitional offsetHeight) to avoid animation overflow.
-        const listStyles = getComputedStyle(list);
-        const listMarginTop = parseFloat(listStyles.marginTop || '0') || 0;
-        const expectedListHeight = Math.max(minVisibleListHeight, targetH);
-        const expectedPortalH = expectedListHeight + portalPadding + listMarginTop + 2;
-
-        // Position portal and clamp vertically to viewport to avoid clipping outside page.
-        let top = openBelow ? (rect.bottom + gap) : (rect.top - expectedPortalH - gap);
-        const minTop = viewportTop + edge;
-        const maxTop = Math.max(minTop, viewportTop + viewportH - expectedPortalH - edge);
-        top = Math.min(Math.max(minTop, top), maxTop);
-        portal.style.top = top + 'px';
-      }
-
-      function expandDropdown(){
-        row.classList.add('open');
-        list.classList.add('open');
-        portal.classList.remove('hidden');
-        // ensure portal visible then measure
-        portal.style.maxHeight = '';
-        // allow width recomputation on open
-        delete portal.dataset.widthComputed;
-        // let portal width adapt to content before measurement
-        portal.style.width = '';
-        // set CSS variable to control rotation only (keep translateY from CSS)
-        toggleBtn.style.setProperty('--toggle-rotate', '90deg');
-        positionPortal();
-        // Reposition after open transition starts to prevent edge overflow on small viewports.
-        requestAnimationFrame(() => {
-          if (!opened && !row.classList.contains('open')) return;
-          positionPortal();
-          requestAnimationFrame(() => {
-            if (!opened && !row.classList.contains('open')) return;
-            positionPortal();
-          });
-        });
-        // bind outside click and resize/scroll handlers
-        window.addEventListener('click', outsideClickHandler);
-        window.addEventListener('resize', outsideCloseHandler);
-        window.addEventListener('scroll', outsideCloseHandler, true);
-        // reposition on resize/scroll while open
-        window.addEventListener('resize', positionPortal);
-        window.addEventListener('scroll', positionPortal, true);
-        opened = true;
-      }
-      function collapseDropdown(){
-        row.classList.remove('open');
-        list.classList.remove('open');
-        list.style.maxHeight = '0px';
-        toggleBtn.style.setProperty('--toggle-rotate', '-90deg');
-        portal.classList.add('hidden');
-        // clear computed flag so future opens can recompute width
-        delete portal.dataset.widthComputed;
-        window.removeEventListener('click', outsideClickHandler);
-        window.removeEventListener('resize', outsideCloseHandler);
-        window.removeEventListener('scroll', outsideCloseHandler, true);
-        window.removeEventListener('resize', positionPortal);
-        window.removeEventListener('scroll', positionPortal, true);
-        opened = false;
-      }
-
-      function outsideClickHandler(e){
-        if (!portal.contains(e.target) && !toggleBtn.contains(e.target)) collapseDropdown();
-      }
-      function outsideCloseHandler(e){
-        // If the scroll event originated from inside the portal (or toggle), ignore it
-        try {
-          if (e && portal && (portal.contains(e.target) || toggleBtn.contains(e.target))) return;
-        } catch (err) {}
-        collapseDropdown();
-      }
-
-      let opened = false;
-      toggleBtn.addEventListener('click', () => {
-        const isOpen = row.classList.contains('open');
-        if (!isOpen) {
-          expandDropdown();
-        } else {
-          collapseDropdown();
-        }
       });
 
       // restore stored selection
@@ -1110,13 +1057,7 @@ function buildSection(sec){
       } catch (e) {}
 
       row.appendChild(toggleBtn);
-      // list is appended to portal; ensure portal cleaned when modal closes
-      const cleanupPortal = ()=>{ try{ portal.remove(); }catch(e){} };
-      // remove portal when modal is closed
-      document.addEventListener('close-settings-modal', cleanupPortal, { once: true });
-      // also remove when DOM unloads
-      window.addEventListener('unload', cleanupPortal);
-      wrapper.appendChild(row);
+      row.appendChild(list);
       wrapper.appendChild(row);
     } else {
       // fallback to old two-option toggle behavior (follow-system style)
@@ -1134,7 +1075,7 @@ function buildSection(sec){
       pContainer.appendChild(p2);
 
       const followSystemStr = localStorage.getItem('follow-system');
-      // follow-system === 'true' 表示跟随系统（p1 显示为跟随系统）
+      // follow-system === 'true' 琛ㄧず璺熼殢绯荤粺锛坧1 鏄剧ず涓鸿窡闅忕郴缁燂級
       const initialActive = followSystemStr === null ? true : followSystemStr === 'true';
 
       // p1 = 跟随系统, p2 = 手动设置
@@ -1184,7 +1125,7 @@ function getSettingsCategoryDefinitions(strings) {
     {
       key: 'technical',
       title: advancedTitle,
-      sectionIds: ['clear-page-cache', 'reset-wallpaper-rotation']
+      sectionIds: ['reset-wallpaper-rotation', 'clear-page-cache']
     },
     {
       key: 'about',
@@ -1230,7 +1171,7 @@ function buildSettingsLayout(sectionMap, settingsStrings) {
   const layout = document.createElement('div');
   layout.className = 'settings-layout';
   const nav = document.createElement('div');
-  nav.className = 'settings-layout-nav';
+  nav.className = 'settings-layout-nav component-row';
   nav.setAttribute('role', 'tablist');
   const panels = document.createElement('div');
   panels.className = 'settings-layout-panels';
@@ -1245,7 +1186,7 @@ function buildSettingsLayout(sectionMap, settingsStrings) {
   categories.forEach(category => {
     const tab = document.createElement('button');
     tab.type = 'button';
-    tab.className = 'settings-category-tab';
+    tab.className = 'settings-category-tab component-btn component-btn--flat';
     tab.dataset.category = category.key;
     tab.setAttribute('role', 'tab');
     tab.setAttribute('aria-selected', 'false');
@@ -1294,10 +1235,19 @@ function buildSettingsLayout(sectionMap, settingsStrings) {
     tabs.forEach(tab => {
       const active = tab.dataset.category === key;
       tab.classList.toggle('active', active);
+      tab.classList.toggle('component-btn--flat', !active);
+      tab.classList.toggle('component-btn--immersive-tint', active);
       tab.setAttribute('aria-selected', active ? 'true' : 'false');
       tab.tabIndex = active ? 0 : -1;
     });
     categoryPanels.forEach(panel => panel.classList.toggle('active', panel.dataset.category === key));
+
+    // Avoid stale scroll offset when switching from a long panel to a short panel,
+    // which can look like an unexpected blank area at the bottom.
+    const modalBody = layout.closest('.modal-body');
+    if (modalBody) {
+      modalBody.scrollTop = 0;
+    }
   }
 
   if (categories.length) {
@@ -1320,53 +1270,34 @@ function renderSettingsSections(source, bodyEl, settingsStrings) {
   const layout = buildSettingsLayout(sectionMap, settingsStrings);
   bodyEl.innerHTML = '';
   bodyEl.appendChild(layout);
+  bodyEl.scrollTop = 0;
 }
 
 function buildToggle(onChange, initialState){
-  const el = document.createElement('div');
-  el.className = 'toggle-switch';
-  const knob = document.createElement('div');
-  knob.className = 'knob';
-  el.appendChild(knob);
-  let active = initialState || false;
-  
-  if (active) {
-    el.classList.add('active');
-  }
-  
-  // accessibility: make it focusable and expose role/aria
-  el.setAttribute('tabindex', '0');
-  el.setAttribute('role', 'switch');
-  el.setAttribute('aria-checked', active ? 'true' : 'false');
+  const el = document.createElement('label');
+  el.className = 'settings-component-switch component-switch';
+  const input = document.createElement('input');
+  input.type = 'checkbox';
+  input.className = 'component-switch__input';
+  input.checked = !!initialState;
+  input.setAttribute('aria-label', '开关');
+
+  const track = document.createElement('span');
+  track.className = 'component-switch__track';
+  const thumb = document.createElement('span');
+  thumb.className = 'component-switch__thumb';
+  track.appendChild(thumb);
+  el.appendChild(input);
+  el.appendChild(track);
 
   const update = ()=>{
-    el.classList.toggle('active', active);
-    el.setAttribute('aria-checked', active ? 'true' : 'false');
+    const active = !!input.checked;
+    input.setAttribute('aria-checked', active ? 'true' : 'false');
     onChange && onChange(active);
   };
 
+  input.addEventListener('change', update);
   update();
-
-  // pointer interaction
-  el.addEventListener('click', (e)=>{ 
-    // prevent double-activation when keyboard triggers
-    e.preventDefault();
-    active = !active; 
-    update(); 
-  });
-
-  // keyboard support
-  el.addEventListener('keydown', (e)=>{
-    if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar'){
-      e.preventDefault();
-      active = !active;
-      update();
-    } else if (e.code === 'Enter' || e.key === 'Enter'){
-      e.preventDefault();
-      active = !active;
-      update();
-    }
-  });
 
   // ensure we track whether last interaction was keyboard or pointer
   if (typeof window.__lastInteractionWasKeyboard === 'undefined'){
@@ -1382,81 +1313,12 @@ function buildToggle(onChange, initialState){
   }
 
   // visual focus styling when using keyboard only
-  el.addEventListener('focus', ()=>{
+  input.addEventListener('focus', ()=>{
     if (window.__lastInteractionWasKeyboard) el.classList.add('focus');
   });
-  el.addEventListener('blur', ()=> el.classList.remove('focus'));
+  input.addEventListener('blur', ()=> el.classList.remove('focus'));
 
   return el;
-}
-
-async function handleClearPageCache(btn, statusEl){
-  if (!btn) return;
-  const settingsStrings = getSettingsStrings();
-  const clearStrings = (settingsStrings && settingsStrings.clearCache) || null;
-  const statusStrings = clearStrings && clearStrings.status;
-  const workingBtnText = (clearStrings && clearStrings.buttonWorking) || '清除中...';
-  const unsupportedText = (statusStrings && statusStrings.unsupported) || '当前浏览器不支持清除缓存';
-  const workingText = (statusStrings && statusStrings.working) || '正在清除缓存...';
-  const doneText = (statusStrings && statusStrings.done) || '已清除缓存，正在刷新';
-  const failedText = (statusStrings && statusStrings.failed) || '清除失败，请重试';
-  const originalText = btn.textContent;
-  const setStatus = (text, tone) => {
-    if (!statusEl) return;
-    statusEl.textContent = text || '';
-    statusEl.classList.remove('ok', 'error', 'muted');
-    if (tone) statusEl.classList.add(tone);
-  };
-
-  const start = () => {
-    btn.disabled = true;
-    btn.classList.add('loading');
-    btn.textContent = workingBtnText;
-  };
-
-  const reset = () => {
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    btn.textContent = originalText;
-  };
-
-  const hasAnyCapability = () => {
-    const hasCache = typeof caches !== 'undefined';
-    const hasSw = typeof navigator !== 'undefined' && !!navigator.serviceWorker && typeof navigator.serviceWorker.getRegistrations === 'function';
-    return hasCache || hasSw;
-  };
-
-  if (!hasAnyCapability()) {
-    setStatus(unsupportedText, 'error');
-    return;
-  }
-
-  start();
-  setStatus(workingText, 'muted');
-
-  try {
-    const cacheTask = (async () => {
-      if (typeof caches === 'undefined' || !caches.keys) return;
-      const keys = await caches.keys();
-      await Promise.all(keys.map((key) => caches.delete(key)));
-    })();
-
-    const swTask = (async () => {
-      if (!navigator || !navigator.serviceWorker || typeof navigator.serviceWorker.getRegistrations !== 'function') return;
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(registrations.map((reg) => reg.unregister()));
-    })();
-
-    await Promise.all([cacheTask, swTask]);
-    setStatus(doneText, 'ok');
-    setTimeout(() => {
-      try { location.reload(); } catch (e) { reset(); }
-    }, 220);
-  } catch (err) {
-    console.error('[Settings Modal] 清除缓存失败', err);
-    setStatus(failedText, 'error');
-    reset();
-  }
 }
 
 function applyThemeColor(color) {
@@ -1514,6 +1376,7 @@ function closeModal(){
 
 async function openModal(){
   ensureContainers();
+  await ensureComponentAssets();
 
   __settingsLoadToken += 1;
   const myToken = __settingsLoadToken;
@@ -1553,12 +1416,18 @@ async function openModal(){
       body.innerHTML = '';
       try {
         renderSettingsSections(tmp, body, settingsStrings);
+        if (window.componentUi && typeof window.componentUi.init === 'function') {
+          window.componentUi.init(body);
+        }
       } catch (e) {
         console.error('[Settings Modal] render error, fallback to built-in template', e);
         const fallback = document.createElement('div');
         fallback.innerHTML = SETTINGS_FALLBACK_HTML;
         applySettingsTranslations(fallback);
         renderSettingsSections(fallback, body, settingsStrings);
+        if (window.componentUi && typeof window.componentUi.init === 'function') {
+          window.componentUi.init(body);
+        }
       }
     }
   } catch (e) {
@@ -1629,6 +1498,9 @@ function refreshOpenSettingsModal(reasonLabel) {
   }
   try {
     renderSettingsSections(tmp, body, getSettingsStrings());
+    if (window.componentUi && typeof window.componentUi.init === 'function') {
+      window.componentUi.init(body);
+    }
   } catch (err) {
     console.error(`[Settings Modal] ${reasonLabel || 'state'} re-render failed`, err);
   }

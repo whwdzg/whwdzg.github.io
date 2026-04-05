@@ -76,7 +76,29 @@
       indicator.style.visibility = active ? 'visible' : 'hidden';
       indicator.style.opacity = active ? '1' : '0';
     }
+    const contentHost = document.getElementById(CONTENT_CONTAINER_ID);
+    if (!contentHost) return;
+    ensureMainLoadingOverlay(contentHost);
+    contentHost.classList.toggle('main-loading', !!active);
+    contentHost.setAttribute('aria-busy', active ? 'true' : 'false');
   };
+
+  function ensureMainLoadingOverlay(contentHost){
+    if (!contentHost) return null;
+    let overlay = contentHost.querySelector(':scope > .main-loading-overlay');
+    if (overlay) return overlay;
+    overlay = document.createElement('div');
+    overlay.className = 'main-loading-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = [
+      '<div class="main-loading-box" role="status" aria-live="polite">',
+      '  <span class="main-loading-spinner" aria-hidden="true"></span>',
+      '  <span class="main-loading-text">页面加载中...</span>',
+      '</div>'
+    ].join('');
+    contentHost.appendChild(overlay);
+    return overlay;
+  }
 
   async function loadDocument(url, forceReload=false){
     let html = pageCache.get(url);
@@ -108,6 +130,7 @@
         root.appendChild(contentHost);
       }
     }
+    ensureMainLoadingOverlay(contentHost);
   }
 
   function appendOnce(tagName, url, parent){
@@ -168,7 +191,18 @@
       // fallback: wrap entire body into a synthetic <main> so SPA swap still works
       main = document.createElement('main');
       if (doc.body) {
-        Array.from(doc.body.childNodes).forEach(n => main.appendChild(n.cloneNode(true)));
+        const bodyChildren = doc.body.children ? Array.from(doc.body.children) : [];
+        const hasElementNode = bodyChildren.length > 0;
+        const bodyText = doc.body.textContent || '';
+        if (!hasElementNode && bodyText.trim()) {
+          // Preserve line breaks/blank lines for plain text pages (e.g. README.md).
+          const pre = document.createElement('pre');
+          pre.className = 'spa-plain-text';
+          pre.textContent = bodyText;
+          main.appendChild(pre);
+        } else {
+          Array.from(doc.body.childNodes).forEach(n => main.appendChild(n.cloneNode(true)));
+        }
       }
       doc.body.innerHTML = '';
       doc.body.appendChild(main);
@@ -180,17 +214,14 @@
     const contentHost = document.getElementById(CONTENT_CONTAINER_ID);
     const main = fragmentDoc.querySelector('main');
     if (!contentHost || !main) return false;
+    const loadingOverlay = ensureMainLoadingOverlay(contentHost);
     const preserved = Array.from(contentHost.querySelectorAll('[data-shell-preserve="1"]'));
     preserved.forEach(node => node.remove());
 
     contentHost.innerHTML = '';
     Array.from(main.childNodes).forEach(node => contentHost.appendChild(node));
     preserved.forEach(node => contentHost.appendChild(node));
-    reorderShellLayout();
-    if (window.refreshAsideStack) {
-      try { window.refreshAsideStack(); } catch (_) {}
-    }
-    // After reordering, ensure footer sits after main/aside even if navigation moved nodes
+    if (loadingOverlay) contentHost.appendChild(loadingOverlay);
     reorderShellLayout();
     return true;
   }
@@ -204,7 +235,6 @@
 
     const header = document.querySelector('header');
     const sidebar = document.querySelector('nav.sidebar');
-    const aside = document.querySelector('aside');
     const footer = document.querySelector('footer');
     // Ensure header then sidebar appear before main for layout CSS expectations
     if (header && header.parentNode !== document.body) {
@@ -212,15 +242,6 @@
     }
     if (sidebar && sidebar.parentNode !== document.body) {
       document.body.insertBefore(sidebar, main);
-    }
-
-    // Place aside inside main so grid rules apply
-    if (aside) {
-      aside.setAttribute('data-shell-preserve', '1');
-      if (aside.parentNode !== main) {
-        aside.remove();
-        main.appendChild(aside);
-      }
     }
 
     // Keep footer directly after main (as body sibling), never inside main
@@ -250,6 +271,17 @@
     }
   }
 
+  function hasInitialMainContent(contentHost){
+    if (!contentHost) return false;
+    return Array.from(contentHost.childNodes).some((node) => {
+      if (node.nodeType === 1) {
+        const el = node;
+        return !(el.classList && el.classList.contains('main-loading-overlay'));
+      }
+      return node.nodeType === 3 && !!(node.textContent && node.textContent.trim());
+    });
+  }
+
   async function runInlineScripts(fragmentDoc){
     const scripts = Array.from(fragmentDoc.querySelectorAll('main script'));
     for (const s of scripts) {
@@ -270,7 +302,6 @@
     // If shell already exists (header/nav) skip re-insert
     if (document.querySelector('header') && document.querySelector('nav.sidebar')) {
       reorderShellLayout();
-      if (window.refreshAsideStack) { try { window.refreshAsideStack(); } catch (_) {} }
       shellLoaded = true;
       return;
     }
@@ -280,7 +311,6 @@
     shellFrag.innerHTML = shellHtml;
     root.insertBefore(shellFrag, document.getElementById(CONTENT_CONTAINER_ID));
     reorderShellLayout();
-    if (window.refreshAsideStack) { try { window.refreshAsideStack(); } catch (_) {} }
     shellLoaded = true;
   }
 
@@ -327,8 +357,13 @@
 
   async function navigate(target, push=true, opts={}){
     if (isNavigating) return;
-    const url = buildUrl(target);
+    let url = buildUrl(target);
     if (!url) return;
+    // 兼容常见拼写错误 /LISENCE → /LICENSE
+    if (url.replace(/[#?].*$/, '').toLowerCase() === '/lisence') {
+      url = '/LICENSE' + (url.includes('#') ? url.slice(url.indexOf('#')) : '');
+      window.history.replaceState({ page: url }, '', url);
+    }
     if (enteringLegacy(url)) {
       window.location.assign(url);
       return;
@@ -337,7 +372,7 @@
     isNavigating = true;
     setLoadingState(true);
     try {
-      const { doc, fromCache } = await loadDocument(url, forceReload);
+      const { doc } = await loadDocument(url, forceReload);
       ensurePageAssets(doc, url);
       if (!swapContent(doc)) throw new Error('No <main> in target');
       if (window.lazySizes && window.lazySizes.loader && window.lazySizes.loader.checkElems) {
@@ -353,7 +388,6 @@
       if (push) window.history.pushState({ page: url }, '', url);
       window.scrollTo(0, 0);
       window.dispatchEvent(new CustomEvent('spa:page:loaded', { detail: { url } }));
-      setCacheNoticeVisibility(fromCache);
     } catch (err) {
       console.error('[spa-router] navigation failed, full load fallback', err);
       window.location.assign(target);
@@ -421,59 +455,20 @@
     });
   }
 
-  // Cache notice (bottom-right). Shown when serving cached page; offers reload.
-  let cacheNotice;
-  function ensureCacheNotice(){
-    if (cacheNotice && (!cacheNotice.wrap || !document.body.contains(cacheNotice.wrap))) {
-      cacheNotice = null;
-    }
-    if (cacheNotice) return cacheNotice;
-    const wrap = document.createElement('aside');
-    wrap.id = 'cache-notice';
-    wrap.className = 'cache-notice';
-    wrap.setAttribute('aria-live', 'polite');
-    wrap.innerHTML = [
-      '<div class="cache-notice__title">当前正在浏览缓存页面</div>',
-      '<div class="cache-notice__desc">刷新以更新页面。</div>',
-      '<div class="cache-notice__actions">',
-      '  <button type="button" class="cache-notice__refresh">刷新</button>',
-      '</div>'
-    ].join('');
-    document.body.appendChild(wrap);
-    const refreshBtn = wrap.querySelector('.cache-notice__refresh');
-    if (refreshBtn && !refreshBtn.dataset.bound) {
-      refreshBtn.dataset.bound = '1';
-      refreshBtn.addEventListener('click', () => {
-        setCacheNoticeVisibility(false);
-        const current = window.location.pathname + window.location.search;
-        navigate(current, true, { forceReload: true });
-      });
-    }
-    cacheNotice = { wrap, refreshBtn };
-    return cacheNotice;
-  }
-
-  function setCacheNoticeVisibility(show){
-    const n = ensureCacheNotice();
-    if (!n) return;
-    n.wrap.classList.toggle('show', !!show);
-    if (show && window.refreshAsideStack) {
-      try { window.refreshAsideStack(); } catch (_) {}
-    }
-  }
-
-  function attachCacheNoticeHandlers(){
-    ensureCacheNotice();
-  }
-
   async function boot(){
     await renderShell();
     await preloadSettingsTemplate();
     attachLinkHandler();
     attachPopstate();
     attachResizeHandler();
-    attachCacheNoticeHandlers();
     const current = window.location.pathname + window.location.search;
+    const contentHost = document.getElementById(CONTENT_CONTAINER_ID);
+    if (hasInitialMainContent(contentHost)) {
+      reorderShellLayout();
+      updateHeaderHeightVar();
+      window.dispatchEvent(new CustomEvent('spa:page:loaded', { detail: { url: current, initial: true } }));
+      return;
+    }
     await navigate(current, false);
   }
 
