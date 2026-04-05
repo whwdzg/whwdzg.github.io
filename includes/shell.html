@@ -6,6 +6,7 @@
 -->
 <!-- Shared shell: header, sidebar, footer -->
 <!-- 模块：全站壳层 / Shared shell (header, sidebar, footer). 保留导航与动画。 -->
+<link rel="stylesheet" href="/css/component.css" data-component-style>
 <header>
     <h1>
         <button class="sidebar-collapse-btn header-collapse-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
@@ -187,11 +188,13 @@
 <footer>
     <div class="footer-main">
         <p>Copyright (c) 2022-2026 滄海水魚</p>
-        <p>本站代码采用 GNU GENERAL PUBLIC LICENSE v3.0 协议开源</p>
+        <p>本站代码采用 GNU GENERAL PUBLIC LICENSE v3.0 协议</p>
+        <p>本站文本内容采用 CC BY-NC-SA 4.0 协议</p>
         <p>当前版本：<strong>2.0.3.8-20260405</strong></p>
     </div>
     <div class="footer-badges" aria-label="许可证与托管信息">
-        <a class="footer-badge" href="/LICENSE"><i class="fluent-icon icon-ic_fluent_document_24_regular" aria-hidden="true"></i>GNU General Public License v3.0</a>
+        <a class="footer-badge" href="/LICENSE"><i class="fluent-icon icon-ic_fluent_shield_24_regular" aria-hidden="true"></i>GNU General Public License v3.0</a>
+        <a class="footer-badge" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer"><i class="fluent-icon icon-ic_fluent_document_24_regular" aria-hidden="true"></i>CC BY-NC-SA 4.0</a>
         <a class="footer-badge" href="https://github.com/whwdzg/whwdzg.github.io" target="_blank" rel="noopener noreferrer"><i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>Hosted on GitHub</a>
     </div>
 </footer>
@@ -206,6 +209,17 @@
 <script>
 // 首先加载 lazysizes（用于图片/iframe 等懒加载），然后按需动态导入交互脚本
 (function(){
+    function ensureComponentCssLoaded(){
+        if (document.querySelector('link[data-component-style]')) return;
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/css/component.css';
+        link.dataset.componentStyle = 'true';
+        document.head.appendChild(link);
+    }
+
+    ensureComponentCssLoaded();
+
     // 插入 lazysizes 脚本（CDN 小脚本，未阻塞渲染）
     var s = document.createElement('script');
     s.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
@@ -220,6 +234,7 @@
         if('noModule' in HTMLScriptElement.prototype){
             // 先加载 avatar-loader（模块），并调用初始化
             import('/js/avatar-loader.js').then(function(m){ try{ m.initAvatarLoader && m.initAvatarLoader(); }catch(e){} }).catch(()=>{});
+            import('/js/component.js').catch(()=>{});
             import('/js/avatar.js').catch(()=>{});
             import('/js/theme.js').catch(()=>{});
             import('/js/sidebar.js').catch(()=>{});
@@ -227,7 +242,7 @@
             import('/js/settings-modal.js').catch(()=>{});
         } else {
             // 回退：按需创建 script 标签
-            var toLoad = ['/js/image-loader.nomodule.js','/js/avatar.js','/js/theme.js','/js/sidebar.js','/js/scroll-to-top.js','/js/settings-modal.js'];
+            var toLoad = ['/js/image-loader.nomodule.js','/js/component.js','/js/avatar.js','/js/theme.js','/js/sidebar.js','/js/scroll-to-top.js','/js/settings-modal.js'];
             toLoad.forEach(function(p){
                 var sc = document.createElement('script');
                 sc.src = p;
@@ -244,5 +259,74 @@
 
     // 2 秒后作为降级加载（用户可能未交互）
     setTimeout(loadInteractionModules, 2000);
+})();
+</script>
+<script>
+// 设置按钮兜底桥接：确保在懒加载脚本尚未完成时也能打开设置弹窗
+(function () {
+    if (window.__settingsBtnBridgeBound) return;
+    window.__settingsBtnBridgeBound = true;
+
+    function ensureSettingsModalReady(onReady) {
+        if (typeof window.openSettingsModal === 'function' || typeof window.closeSettingsModal === 'function') {
+            onReady();
+            return;
+        }
+
+        if (!document.querySelector('link[data-component-style]')) {
+            var style = document.createElement('link');
+            style.rel = 'stylesheet';
+            style.href = '/css/component.css';
+            style.dataset.componentStyle = 'true';
+            document.head.appendChild(style);
+        }
+
+        if (!document.querySelector('script[data-component-script]')) {
+            var comp = document.createElement('script');
+            comp.src = '/js/component.js';
+            comp.defer = true;
+            comp.dataset.componentScript = 'true';
+            document.body.appendChild(comp);
+        }
+
+        var existing = document.querySelector('script[data-settings-modal-bridge]');
+        if (existing && existing.dataset.loaded === 'true') {
+            onReady();
+            return;
+        }
+
+        if (!existing) {
+            existing = document.createElement('script');
+            existing.src = '/js/settings-modal.js';
+            existing.defer = true;
+            existing.dataset.settingsModalBridge = 'true';
+            existing.addEventListener('load', function () {
+                existing.dataset.loaded = 'true';
+                onReady();
+            }, { once: true });
+            document.body.appendChild(existing);
+        } else {
+            existing.addEventListener('load', onReady, { once: true });
+        }
+    }
+
+    document.addEventListener('click', function (event) {
+        var btn = event.target && event.target.closest ? event.target.closest('.theme-settings-btn') : null;
+        if (!btn) return;
+        event.preventDefault();
+        event.stopPropagation();
+
+        ensureSettingsModalReady(function () {
+            var modal = document.getElementById('settings-modal');
+            var isOpen = !!(modal && modal.classList.contains('show'));
+            if (isOpen) {
+                if (typeof window.closeSettingsModal === 'function') window.closeSettingsModal();
+                else document.dispatchEvent(new CustomEvent('close-settings-modal'));
+                return;
+            }
+            if (typeof window.openSettingsModal === 'function') window.openSettingsModal();
+            else document.dispatchEvent(new CustomEvent('open-settings-modal'));
+        });
+    }, true);
 })();
 </script>

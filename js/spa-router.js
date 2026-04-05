@@ -271,6 +271,17 @@
     }
   }
 
+  function hasInitialMainContent(contentHost){
+    if (!contentHost) return false;
+    return Array.from(contentHost.childNodes).some((node) => {
+      if (node.nodeType === 1) {
+        const el = node;
+        return !(el.classList && el.classList.contains('main-loading-overlay'));
+      }
+      return node.nodeType === 3 && !!(node.textContent && node.textContent.trim());
+    });
+  }
+
   async function runInlineScripts(fragmentDoc){
     const scripts = Array.from(fragmentDoc.querySelectorAll('main script'));
     for (const s of scripts) {
@@ -451,6 +462,13 @@
     attachPopstate();
     attachResizeHandler();
     const current = window.location.pathname + window.location.search;
+    const contentHost = document.getElementById(CONTENT_CONTAINER_ID);
+    if (hasInitialMainContent(contentHost)) {
+      reorderShellLayout();
+      updateHeaderHeightVar();
+      window.dispatchEvent(new CustomEvent('spa:page:loaded', { detail: { url: current, initial: true } }));
+      return;
+    }
     await navigate(current, false);
   }
 

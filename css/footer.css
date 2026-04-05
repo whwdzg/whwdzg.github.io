@@ -72,8 +72,11 @@ footer .footer-badges {
 	right: 1rem;
 	bottom: 0.5rem;
 	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
 	gap: 0.4rem;
 	align-items: center;
+	max-width: min(55vw, 900px);
 }
 
 footer .footer-badge {
@@ -106,8 +109,20 @@ footer .footer-badge i {
 	footer .footer-badges {
 		position: static;
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: center;
 		margin-top: 0.45rem;
+	}
+}
+
+@media (max-width: 1200px) {
+	footer .footer-badges {
+		position: static;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		margin-top: 0.45rem;
+		max-width: none;
 	}
 }
 

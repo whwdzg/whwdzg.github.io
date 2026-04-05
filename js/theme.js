@@ -373,20 +373,19 @@ document.addEventListener('DOMContentLoaded', function () {
 		setTheme(true);
 	}
 
-	// 主题设置按钮：打开设置弹窗
-	if (settingsBtn) {
-		settingsBtn.addEventListener('click', (e) => {
-			e.stopPropagation();
-			closeAllMenus();
-			// Toggle settings modal: if open, close; otherwise open
-			const modal = document.getElementById('settings-modal');
-			if (modal && modal.classList.contains('show')) {
-				document.dispatchEvent(new CustomEvent('close-settings-modal'));
-			} else {
-				document.dispatchEvent(new CustomEvent('open-settings-modal'));
-			}
-		});
-	}
+	// 主题设置按钮：打开设置弹窗（事件委托，兼容后续动态注入的页眉按钮）
+	document.addEventListener('click', (e) => {
+		const btn = e.target && e.target.closest ? e.target.closest('.theme-settings-btn') : null;
+		if (!btn) return;
+		e.stopPropagation();
+		closeAllMenus();
+		const modal = document.getElementById('settings-modal');
+		if (modal && modal.classList.contains('show')) {
+			document.dispatchEvent(new CustomEvent('close-settings-modal'));
+		} else {
+			document.dispatchEvent(new CustomEvent('open-settings-modal'));
+		}
+	});
 
 	// 监听系统主题变化（仅在跟随系统模式下）
 	const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');

@@ -1,20 +1,20 @@
 /*
- * [站点注释 Site Note]
- * 文件: D:\Documents\GitHub\whwdzg.github.io\css\settings-modal.css
- * 作用: 页面样式与布局规则，按模块拆分维护。
+ * [绔欑偣娉ㄩ噴 Site Note]
+ * 鏂囦欢: D:\Documents\GitHub\whwdzg.github.io\css\settings-modal.css
+ * 浣滅敤: 椤甸潰鏍峰紡涓庡竷灞€瑙勫垯锛屾寜妯″潡鎷嗗垎缁存姢銆?
  * English: Module-level styles for layout and presentation.
  */
-/* 模块：设置模态框 / Settings modal layout, sliders, and custom color UI. */
-/* 设置弹窗与遮罩 */
+/* 妯″潡锛氳缃ā鎬佹 / Settings modal layout, sliders, and custom color UI. */
+/* 璁剧疆寮圭獥涓庨伄缃?*/
 #settings-backdrop {
   position: fixed;
-  top: 0; /* 覆盖到视口顶部，确保在窄视图下不留缝隙 */
+  top: 0; /* 瑕嗙洊鍒拌鍙ｉ《閮紝纭繚鍦ㄧ獎瑙嗗浘涓嬩笉鐣欑紳闅?*/
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0,0,0,0.5);
   backdrop-filter: blur(2px);
-  z-index: 1600; /* 提升到高于页眉的级别，避免被 header 露出缝隙 */
+  z-index: 1600; /* 鎻愬崌鍒伴珮浜庨〉鐪夌殑绾у埆锛岄伩鍏嶈 header 闇插嚭缂濋殭 */
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -47,7 +47,7 @@
   border: 1px solid var(--border-color);
   border-radius: 12px;
   box-shadow: 0 20px 50px var(--shadow-color);
-  z-index: 1620; /* 高于遮罩，确保模态位于最上层 */
+  z-index: 1620; /* 楂樹簬閬僵锛岀‘淇濇ā鎬佷綅浜庢渶涓婂眰 */
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -111,11 +111,13 @@
   line-height: normal; /* avoid relying on line-height for centering */
 }
 #settings-modal .modal-body {
-  padding: 12px 16px 16px;
-  display: grid;
+  padding: 12px 16px 8px;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-height: 0;
+  max-height: calc(100vh - 150px);
   overflow-y: auto;
 }
 
@@ -162,6 +164,13 @@
   flex: 0 0 auto;
 }
 
+.settings-category-tab.component-btn {
+  border-radius: 999px;
+  padding: 6px 16px;
+  min-height: 0;
+  line-height: 1.2;
+}
+
 .settings-category-tab:hover {
   background: var(--hover-bg);
   border-color: var(--border-color);
@@ -194,14 +203,14 @@
 }
 
 .settings-category-panel[data-category="about"] {
-  padding-bottom: 10px;
+  padding-bottom: 0;
 }
 
 .settings-category-panel.active {
   display: flex;
 }
 
-.settings-section .settings-dropdown,
+.settings-section .component-dropdown,
 .settings-section .color-picker-row {
   align-self: center;
 }
@@ -232,7 +241,7 @@
   font-size: 0.95rem;
   padding: 28px 8px;
 }
-/* section 卡片样式 */
+/* section 鍗＄墖鏍峰紡 */
 .settings-section {
   background: var(--secondary-bg);
   border: 1px solid var(--border-color);
@@ -275,12 +284,18 @@
   opacity: 0.7;
   font-size: 0.875rem;
 }
-/* 文本 + 开关布局 */
+/* 鏂囨湰 + 寮€鍏冲竷灞€ */
 .settings-toggle-row {
   display: flex;
   align-items: center;
   gap: 12px;
   align-self: center;
+}
+
+.settings-toggle-row > .component-dropdown {
+  width: fit-content;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .settings-action-row {
@@ -299,89 +314,34 @@
 .settings-action-status.error { color: #d14343; }
 .settings-action-status.muted { color: var(--text-muted, #6b7280); }
 
-.settings-action-btn {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: var(--secondary-bg);
-  color: var(--text-color);
-  font-weight: 600;
-  cursor: pointer;
+.settings-action-row > .component-btn {
   min-width: 78px;
-  transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease, opacity 120ms ease;
+  justify-content: center;
+  text-align: center;
 }
-.settings-action-btn:hover { background: var(--hover-bg); box-shadow: 0 8px 18px rgba(0,0,0,0.08); }
-.settings-action-btn:active { transform: scale(0.98); background: var(--active-bg); }
-.settings-action-btn:disabled {
+.settings-action-row > .component-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   box-shadow: none;
 }
-.settings-action-btn.loading { cursor: progress; }
+.settings-action-row > .component-btn.loading { cursor: progress; }
 
 /* right-side control container slight elevation */
-.settings-toggle-row > .settings-dropdown-toggle {
+.settings-toggle-row > .component-dropdown-toggle {
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
-.settings-toggle-row > .settings-dropdown-toggle:hover {
+.settings-toggle-row > .component-dropdown-toggle:hover {
   transform: translateY(-0.6px);
   box-shadow: 0 6px 14px rgba(0,0,0,0.05);
 }
-.toggle-switch {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  background: #d0d0d0;
-  border: 1px solid var(--border-color);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 200ms cubic-bezier(.2,.8,.2,1), box-shadow 180ms ease, transform 180ms ease;
-  will-change: background, box-shadow, transform;
-}
-.toggle-switch .knob {
-  position: absolute;
-  top: 50%;
-  left: 3px;
-  transform: translateY(-50%) translateX(0);
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgba(0,0,0,.2);
-  transition: transform 220ms cubic-bezier(.2,.8,.2,1), box-shadow 160ms ease;
-  will-change: transform, box-shadow;
-}
-.toggle-switch.active {
-  background: var(--primary-color);
-  /* keep subtle elevation when active but do NOT show persistent colored ring */
-  box-shadow: 0 8px 26px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.02);
-}
-.toggle-switch.active .knob {
-  transform: translateY(-50%) translateX(19px) scale(1.02);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.14);
-}
-
-/* focus and keyboard-visible state (element becomes focusable via JS) */
-.toggle-switch.focus,
-.toggle-switch:focus-visible {
-  outline: none;
-  box-shadow: 0 8px 24px rgba(var(--primary-color-rgb, 51,204,153), 0.08);
-}
-
-/* Note: toggle-switch ring removed — ring is applied only to .color-option */
-
-/* Respect reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .toggle-switch,
-  .toggle-switch .knob {
-    transition-duration: 1ms !important;
-  }
+.settings-component-switch {
+  align-self: center;
 }
 
 
 
 
-/* 颜色选择器 */
+/* 棰滆壊閫夋嫨鍣?*/
 .color-picker-row {
   display: flex;
   align-items: center;
@@ -389,21 +349,25 @@
   flex-wrap: wrap;
   position: relative;
 }
-.color-option {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
+.settings-section .color-option.component-theme-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
   cursor: pointer;
-  border: 0;
+  border: none;
+  box-shadow: none;
   transition: box-shadow 160ms ease, border-color 160ms ease, transform 160ms ease;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2px; /* 留出内间距，让外圈不覆盖内圆 */
+  padding: 0;
 }
-.color-option.selected {
-  /* Keep internal selection state but visual ring shown only on hover/focus */
+
+.settings-section .color-option.custom.component-theme-swatch--custom {
+  width: 20px;
+  height: 20px;
+  border-radius: 7px;
 }
 
 /* persistent subtle indicator for currently selected color (smaller than hover ring) */
@@ -412,8 +376,8 @@
   transform: translateY(-1px);
 }
 
-/* 统一：settings 模态中所有选中项使用圆角高光 */
-.settings-section .dropdown-item.selected,
+/* 缁熶竴锛歴ettings 妯℃€佷腑鎵€鏈夐€変腑椤逛娇鐢ㄥ渾瑙掗珮鍏?*/
+.settings-section .component-dropdown-item.selected,
 .settings-section .settings-toggle-row .selected {
   background: var(--hover-bg);
   border-radius: 8px;
@@ -430,9 +394,9 @@
 }
 
 .color-core {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
   transition: transform 160ms ease;
   transform-origin: center;
   will-change: transform;
@@ -444,8 +408,8 @@
   font-weight: 600;
 }
 
-/* 使输入框与顶部搜索浮层的搜索框样式一致 */
-.color-hex-input {
+/* 浣胯緭鍏ユ涓庨《閮ㄦ悳绱㈡诞灞傜殑鎼滅储妗嗘牱寮忎竴鑷?*/
+.settings-section .component-hex-input {
   width: 100%;
   box-sizing: border-box;
   height: 36px;
@@ -461,15 +425,15 @@
   transition: background 0.18s ease, border 0.18s ease, box-shadow 0.2s ease;
 }
 
-/* 将 swatch 显示为圆形按钮（统一样式） */
-.color-swatch {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+/* 灏?swatch 鏄剧ず涓哄渾褰㈡寜閽紙缁熶竴鏍峰紡锛?*/
+.settings-section .color-swatch.component-theme-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
   margin: 2px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  box-shadow: none;
   cursor: pointer;
-  border: 1px solid var(--border-color);
+  border: none;
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
@@ -495,13 +459,13 @@ body.dark-mode .color-swatch.focus {
 
 .color-option .fluent-icon {
   font-family: 'FluentSystemIcons-regular', 'Segoe MDL2 Assets', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
-  color: #ffffff; /* 白色图标 */
+  color: #ffffff; /* 鐧借壊鍥炬爣 */
   display: inline-block;
 }
 
-/* （已合并）hex 输入框样式现在与搜索框一致，移除旧的精简样式 */
+/* 锛堝凡鍚堝苟锛塰ex 杈撳叆妗嗘牱寮忕幇鍦ㄤ笌鎼滅储妗嗕竴鑷达紝绉婚櫎鏃х殑绮剧畝鏍峰紡 */
 .color-option:hover .color-core {
   transform: scale(1.10);
 }
@@ -600,8 +564,19 @@ body.dark-mode .color-swatch.focus {
 }
 .color-swatch-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(18px, 1fr));
   gap: 8px;
+}
+
+.settings-section .color-option.selected,
+.settings-section .color-option:hover,
+.settings-section .color-option:focus-visible,
+.settings-section .color-option.focus,
+.settings-section .color-swatch.selected,
+.settings-section .color-swatch:hover,
+.settings-section .color-swatch:focus-visible,
+.settings-section .color-swatch.focus {
+  box-shadow: none;
 }
 .color-swatch:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
 .color-swatch:active { transform: translateY(0); box-shadow: none; }
@@ -611,174 +586,18 @@ body.dark-mode .color-swatch.focus {
   grid-template-columns: 1fr auto;
   gap: 8px;
 }
-.color-hex-input:focus {
-  outline: none;
-  border-color: var(--border-color);
-  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
-  background: var(--input-focus-bg, var(--hover-bg));
-}
-.color-apply-btn {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: var(--secondary-bg);
-  color: var(--text-color);
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
-}
-.color-apply-btn:hover { box-shadow: 0 6px 14px rgba(0,0,0,0.08); background: var(--hover-bg); }
-.color-apply-btn:active { transform: scale(0.98); background: var(--active-bg); }
-
-/* 设置项下拉菜单（复用侧栏折叠箭头样式） */
-.settings-dropdown-row {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 12px;
-}
-.settings-dropdown-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 8px 10px;
-  /* 使图标不改变父元素的边界：为图标预留右侧空间并将父容器设为相对定位 */
-  position: relative;
-  padding-right: 40px;
-  background: transparent;
-  border-radius: 8px;
-  cursor: pointer;
-  border: 1px solid var(--border-color);
-  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
-}
-.settings-dropdown-toggle,
-.settings-dropdown-toggle .toggle-label,
-.settings-dropdown-toggle .toggle-icon {
-  color: var(--text-color);
-}
-.settings-dropdown-toggle:hover {
-  background: var(--hover-bg);
-  border-color: var(--border-color);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-}
-.settings-dropdown-toggle .toggle-label { flex: 1; text-align: left; }
-.settings-dropdown-toggle .toggle-label {
-  line-height: 20px; /* match icon height for vertical alignment */
-  padding-right: 6px; /* small gap before reserved icon area */
-}
-.settings-dropdown-toggle .toggle-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  /* 使用 translateY 保持垂直居中，旋转只由 CSS 变量控制，避免 JS 覆盖 translateY 导致 Y 轴偏移 */
-  /* --toggle-nudge 允许微调图标在 Y 轴上的位置（正值向下，负值向上） */
-  transform: translateY(calc(-50% + var(--toggle-nudge, -1px))) rotate(var(--toggle-rotate, -90deg));
-  transition: transform 220ms ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  font-size: 14px; /* 控制 glyph 尺寸，避免字体内联基线偏移 */
-  text-align: center;
-  /* 使用图标中心作为旋转原点，避免视觉上偏向一侧 */
-  transform-origin: center center;
-  will-change: transform;
-}
-.settings-dropdown-toggle .toggle-icon { color: var(--text-muted); }
-
-/* Ensure toggle uses readable colors in dark mode when body has dark-mode */
-body.dark-mode .settings-dropdown-toggle,
-body.dark-mode .settings-dropdown-toggle .toggle-label,
-body.dark-mode .settings-dropdown-toggle .toggle-icon {
-  color: var(--text-color);
-}
-body.dark-mode .settings-dropdown-toggle .toggle-icon { color: var(--text-muted); }
-.settings-dropdown.open .settings-dropdown-toggle .toggle-icon {
-  /* 打开时旋转到 90deg（用户请求） */
-  --toggle-rotate: 90deg;
-}
-.settings-dropdown-list {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 220ms ease;
-  margin-top: 8px;
-  /* 列表由 portal 提供圆角与边框，内部项不应再重复圆角 */
-  border-radius: 0;
-  border: none;
-  background: transparent;
-}
-.settings-dropdown-list.open {
-  max-height: 420px; /* JS 将使用 scrollHeight 覆盖以获得精确高度 */
-}
-.settings-dropdown-list .dropdown-item {
-  padding: 8px 10px;
-  cursor: pointer;
-  border-bottom: 1px solid rgba(0,0,0,0.03);
-}
-.settings-dropdown-list .dropdown-item:hover { transform: translateY(-0.6px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
-.settings-dropdown-list .dropdown-item:last-child { border-bottom: none; }
-.settings-dropdown-list .dropdown-item {
-  border-radius: 8px;
-  margin: 4px 0;
-  padding: 8px 12px;
-  transition: background 160ms ease, transform 120ms ease;
-  /* 允许文本换行并在单词/符号过长时断行，避免撑开浮层 */
-  white-space: normal;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-.settings-dropdown-list .dropdown-item:hover {
-  background: rgba(0,0,0,0.02); /* subtle rounded highlight for hover */
-}
-/* 选中状态更明显，使用卡片内高亮（同时保留左侧主题色条） */
-.settings-dropdown-list .dropdown-item.selected {
-  background: linear-gradient(180deg, rgba(0,0,0,0.01), rgba(0,0,0,0.00));
-}
-
-.settings-dropdown-list .dropdown-item.selected {
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-}
-
-/* Portal 浮层样式：当下拉需要悬浮在模态之上时使用 */
-.settings-dropdown-portal {
-  position: fixed;
-  z-index: 2000; /* 高于模态 (1620) 和遮罩 (1600) */
-  min-width: 180px;
-  max-width: 420px; /* 允许在需要时更宽，同时 JS 会再做视口限制 */
-  background: var(--card-bg); /* 与页眉链接使用相同卡片背景 */
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  box-shadow: 0 28px 80px rgba(0,0,0,0.16), 0 6px 22px rgba(0,0,0,0.08);
-  overflow: hidden;
-  transition: transform 160ms ease, opacity 140ms ease;
-  opacity: 1;
-  padding: 6px 6px; /* 内边距让项看起来像链接弹窗 */
-}
-
-.settings-dropdown-portal.hidden { opacity: 0; pointer-events: none; transform: translateY(-6px) scale(0.995); }
-
-/* 选中项左侧的主题色竖线（两端圆角） */
-.settings-dropdown-list .dropdown-item.selected {
-  position: relative;
-  padding-left: 14px; /* 给accent bar留出空间 */
-  background: transparent;
-}
-.settings-dropdown-list .dropdown-item.selected::before {
+.component-dropdown-list .component-dropdown-item.selected::before {
   content: '';
   position: absolute;
   left: 4px;
   top: 10px;
   bottom: 10px;
   width: 4px;
-  border-radius: 4px; /* 两端圆角 */
+  border-radius: 4px; /* 涓ょ鍦嗚 */
   background: var(--primary-color);
 }
 /* Rounded highlight background for selected item */
-.settings-dropdown-list .dropdown-item.selected {
+.component-dropdown-list .component-dropdown-item.selected {
   background: var(--hover-bg);
   border-radius: 8px;
   padding-top: 8px;
@@ -793,63 +612,52 @@ body.dark-mode .settings-dropdown-toggle .toggle-icon { color: var(--text-muted)
   50% { transform: scale(0.96); }
   100% { transform: scale(1); }
 }
-.settings-dropdown-list .dropdown-item.click-anim {
+.component-dropdown-list .component-dropdown-item.click-anim {
   animation: dropdownClick 180ms ease;
 }
 
-/* 使 dropdown-item 更像页眉链接（更细的行高与内边距） */
-.settings-dropdown-list .dropdown-item {
+/* 浣?dropdown-item 鏇村儚椤电湁閾炬帴锛堟洿缁嗙殑琛岄珮涓庡唴杈硅窛锛?*/
+.component-dropdown-list .component-dropdown-item {
   padding: 8px 12px;
   font-size: 0.95rem;
   line-height: 1.4;
 }
 
-/* 当 list 高度受限时使其可滚动 */
-.settings-dropdown-list.scrollable {
+/* 褰?list 楂樺害鍙楅檺鏃朵娇鍏跺彲婊氬姩 */
+.component-dropdown-list.scrollable {
   overflow-y: auto;
 }
 
-/* 深色模式适配：下拉选择框 */
-.dark-mode .settings-dropdown-list .dropdown-item {
+/* 娣辫壊妯″紡閫傞厤锛氫笅鎷夐€夋嫨妗?*/
+.dark-mode .component-dropdown-list .component-dropdown-item {
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.dark-mode .settings-dropdown-list .dropdown-item:hover {
+.dark-mode .component-dropdown-list .component-dropdown-item:hover {
   background: rgba(255,255,255,0.06);
 }
-.dark-mode .settings-dropdown-list .dropdown-item.selected {
+.dark-mode .component-dropdown-list .component-dropdown-item.selected {
   background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
 }
-.dark-mode .settings-dropdown-list .dropdown-item.selected {
+.dark-mode .component-dropdown-list .component-dropdown-item.selected {
   background: rgba(255,255,255,0.08);
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
-.dark-mode .settings-dropdown-portal {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-
-/* Ensure portal uses dark-mode variables when body has .dark-mode
-   (portal is appended to body, so selector should target body.dark-mode .settings-dropdown-portal) */
-body.dark-mode .settings-dropdown-portal {
-  background: var(--card-bg);
-  border-color: var(--border-color);
-  color: var(--text-color);
-}
 
 /* Dropdown items and selected visuals in dark mode should use subtle light overlays */
-body.dark-mode .settings-dropdown-list .dropdown-item {
+body.dark-mode .component-dropdown-list .component-dropdown-item {
   border-bottom: 1px solid rgba(255,255,255,0.03);
   color: var(--text-color);
 }
-body.dark-mode .settings-dropdown-list .dropdown-item:hover {
+body.dark-mode .component-dropdown-list .component-dropdown-item:hover {
   background: rgba(255,255,255,0.03);
 }
-body.dark-mode .settings-dropdown-list .dropdown-item.selected {
+body.dark-mode .component-dropdown-list .component-dropdown-item.selected {
   background: var(--hover-bg);
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
 /* Dark mode: make the left accent bar use a lighter alpha of primary color for contrast */
-body.dark-mode .settings-dropdown-list .dropdown-item.selected::before {
+body.dark-mode .component-dropdown-list .component-dropdown-item.selected::before {
   /* use primary color in dark mode for clear accent */
   background: rgba(var(--primary-color-rgb, 51,204,153), 0.95);
 }

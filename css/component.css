@@ -569,6 +569,9 @@ body:has(.component-demo-page) {
   text-align: left;
   line-height: 20px;
   padding-right: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .component-dropdown-toggle .toggle-icon {
@@ -593,14 +596,19 @@ body:has(.component-demo-page) {
   top: calc(100% + 8px);
   left: 0;
   z-index: 40;
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
+  max-width: min(520px, calc(100vw - 24px));
+  max-height: min(320px, 52vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border-radius: 10px;
   border: 1px solid var(--border-color);
   background: var(--card-bg);
   box-shadow: 0 20px 46px var(--shadow-color);
   padding: 6px;
   opacity: 0;
-  transform: translateY(-8px) scale(0.99);
+  transform: translateY(-4px) scale(0.99);
   pointer-events: none;
   transition: opacity 180ms cubic-bezier(.2,.8,.2,1), transform 200ms cubic-bezier(.2,.8,.2,1);
 }
@@ -614,10 +622,32 @@ body:has(.component-demo-page) {
 .component-dropdown.dropup .component-dropdown-list {
   top: auto;
   bottom: calc(100% + 8px);
-  transform: translateY(8px) scale(0.99);
+  transform: translateY(4px) scale(0.99);
 }
 
 .component-dropdown.dropup.open .component-dropdown-list {
+  transform: translateY(0) scale(1);
+}
+
+.component-dropdown-list.component-dropdown-list--portal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1900;
+  min-width: 0;
+}
+
+.component-dropdown-list.component-dropdown-list--portal.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.component-dropdown-list.component-dropdown-list--portal.dropup {
+  transform: translateY(4px) scale(0.99);
+}
+
+.component-dropdown-list.component-dropdown-list--portal.dropup.is-open {
   transform: translateY(0) scale(1);
 }
 
@@ -625,6 +655,9 @@ body:has(.component-demo-page) {
   border-radius: 8px;
   margin: 4px 0;
   padding: 8px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: background 220ms cubic-bezier(.2,.8,.2,1), transform 180ms cubic-bezier(.2,.8,.2,1), box-shadow 180ms cubic-bezier(.2,.8,.2,1);
   cursor: pointer;
   position: relative;
@@ -928,7 +961,7 @@ a.component-avatar {
 }
 
 .component-filter-chip:hover {
-  transform: translateY(-0.6px);
+  transform: none;
 }
 
 .component-filter-chip.active {
@@ -1247,13 +1280,14 @@ a.component-avatar {
 
 .component-audio-main {
   display: grid;
-  gap: 0.25rem;
+  gap: 0.22rem;
 }
 
 .component-audio-symbol {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1265,9 +1299,31 @@ a.component-avatar {
   font-size: 18px;
 }
 
+.component-audio-symbol.has-cover i {
+  display: none;
+}
+
+.component-audio-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.component-audio-symbol.has-cover .component-audio-cover {
+  display: block;
+}
+
 .component-audio-name {
   font-size: 0.95rem;
   font-weight: 600;
+  line-height: 1.2;
+}
+
+.component-audio-author {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.2;
 }
 
 .component-audio-time {

@@ -8,6 +8,7 @@
   const root = document.documentElement;
   let toastTimer = null;
   let globalEscBound = false;
+  let dropdownGlobalsBound = false;
 
   function getToastParts() {
     const el = document.querySelector('[data-component-toast]');
@@ -535,22 +536,149 @@
     updateStatus(document.querySelector('.component-filter-chip.active') || chips[0]);
   }
 
-  function bindDropdownHandlers() {
-    const dropdowns = document.querySelectorAll('[data-component-dropdown]');
+  function bindDropdownHandlers(scope) {
+    const target = scope || document;
+    const dropdowns = target.querySelectorAll('[data-component-dropdown]');
     if (!dropdowns.length) return;
 
+    const measureTextWidth = (text, sampleEl) => {
+      if (!sampleEl) return 0;
+      const measurer = document.createElement('span');
+      measurer.textContent = text || '';
+      measurer.style.position = 'fixed';
+      measurer.style.left = '-9999px';
+      measurer.style.top = '-9999px';
+      measurer.style.visibility = 'hidden';
+      measurer.style.whiteSpace = 'nowrap';
+      const style = getComputedStyle(sampleEl);
+      measurer.style.fontFamily = style.fontFamily;
+      measurer.style.fontSize = style.fontSize;
+      measurer.style.fontWeight = style.fontWeight;
+      measurer.style.letterSpacing = style.letterSpacing;
+      document.body.appendChild(measurer);
+      const width = Math.ceil(measurer.getBoundingClientRect().width);
+      measurer.remove();
+      return width;
+    };
+
+    const getListEl = (dropdown) => dropdown.__floatingList || dropdown.querySelector('.component-dropdown-list');
+
+    const fitDropdownWidth = (dropdown) => {
+      const toggle = dropdown.querySelector('.component-dropdown-toggle');
+      const list = getListEl(dropdown);
+      if (!toggle || !list) return;
+
+      const label = toggle.querySelector('.toggle-label');
+      const sample = list.querySelector('.component-dropdown-item') || label || toggle;
+      const normalizedLabel = label ? (label.textContent || '').replace(/\s+/g, ' ').trim() : '';
+      let maxTextWidth = normalizedLabel ? measureTextWidth(normalizedLabel, sample) : 0;
+      list.querySelectorAll('.component-dropdown-item').forEach((item) => {
+        const text = (item.textContent || '').replace(/\s+/g, ' ').trim();
+        maxTextWidth = Math.max(maxTextWidth, measureTextWidth(text, sample));
+      });
+
+      const toggleStyle = getComputedStyle(toggle);
+      const paddingLeft = parseFloat(toggleStyle.paddingLeft || '0') || 0;
+      const paddingRight = parseFloat(toggleStyle.paddingRight || '0') || 0;
+      const iconReserve = 22;
+      const desired = Math.ceil(maxTextWidth + paddingLeft + paddingRight + iconReserve);
+      const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+      const viewportMax = Math.max(120, viewportWidth - 24);
+      const maxAllowed = Math.max(120, Math.min(520, viewportMax));
+      const width = Math.max(96, Math.min(desired, maxAllowed));
+      const menuWidth = Math.ceil(width);
+      // Only resize floating panel; never mutate trigger container width.
+      list.style.minWidth = menuWidth + 'px';
+      list.style.width = menuWidth + 'px';
+    };
+
+    const mountListToPortal = (dropdown) => {
+      const list = getListEl(dropdown);
+      if (!list) return null;
+      dropdown.__floatingList = list;
+      if (list.parentElement !== document.body) {
+        list.classList.add('component-dropdown-list--portal');
+        document.body.appendChild(list);
+      }
+      return list;
+    };
+
+    const restoreListToDropdown = (dropdown) => {
+      const list = dropdown.__floatingList;
+      if (!list) return;
+      if (list.parentElement === dropdown) return;
+      list.classList.remove('component-dropdown-list--portal', 'is-open', 'dropup');
+      list.style.position = '';
+      list.style.left = '';
+      list.style.top = '';
+      list.style.bottom = '';
+      list.style.zIndex = '';
+      dropdown.appendChild(list);
+    };
+
+    const closeDropdown = (dropdown, immediate) => {
+      const toggle = dropdown.querySelector('.component-dropdown-toggle');
+      const list = getListEl(dropdown);
+      dropdown.classList.remove('open', 'dropup');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      if (!list) return;
+
+      list.classList.remove('is-open');
+      if (list.classList.contains('component-dropdown-list--portal')) {
+        const restore = () => {
+          if (!dropdown.classList.contains('open')) {
+            restoreListToDropdown(dropdown);
+          }
+        };
+        if (immediate) {
+          restore();
+        } else {
+          window.setTimeout(restore, 210);
+        }
+      }
+    };
+
     const placeDropdown = (dropdown) => {
-      const list = dropdown.querySelector('.component-dropdown-list');
+      const list = getListEl(dropdown);
       const toggle = dropdown.querySelector('.component-dropdown-toggle');
       if (!list || !toggle) return;
-      const listRect = list.getBoundingClientRect();
+      fitDropdownWidth(dropdown);
       const toggleRect = toggle.getBoundingClientRect();
+      const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-      const listHeight = listRect.height || Math.min(280, list.scrollHeight || 0);
-      const spaceBelow = viewportHeight - toggleRect.bottom;
-      const spaceAbove = toggleRect.top;
-      const shouldDropUp = spaceBelow < listHeight + 12 && spaceAbove > spaceBelow;
+      const boundTop = 8;
+      const boundBottom = Math.max(8, viewportHeight - 8);
+      const spaceBelow = Math.max(0, boundBottom - toggleRect.bottom);
+      const spaceAbove = Math.max(0, toggleRect.top - boundTop);
+      const naturalHeight = Math.max(0, list.scrollHeight || 0);
+      const shouldDropUp = spaceBelow < naturalHeight + 12 && spaceAbove > spaceBelow;
+      const available = Math.max(40, Math.floor((shouldDropUp ? spaceAbove : spaceBelow) - 8));
+      const maxHeightCap = 320;
+      const appliedMaxHeight = Math.max(40, Math.min(maxHeightCap, naturalHeight || 40, available));
+
+      list.style.maxHeight = appliedMaxHeight + 'px';
+      list.classList.toggle('scrollable', (list.scrollHeight || 0) > appliedMaxHeight + 1);
       dropdown.classList.toggle('dropup', shouldDropUp);
+
+      if (list.classList.contains('component-dropdown-list--portal')) {
+        const listWidth = Math.max(96, Math.ceil(parseFloat(list.style.width || '0') || list.getBoundingClientRect().width || toggleRect.width));
+        const left = Math.max(8, Math.min(toggleRect.left, viewportWidth - listWidth - 8));
+        const top = shouldDropUp
+          ? Math.max(8, Math.floor(toggleRect.top - appliedMaxHeight - 8))
+          : Math.min(Math.floor(toggleRect.bottom + 8), viewportHeight - appliedMaxHeight - 8);
+        list.classList.toggle('dropup', shouldDropUp);
+        list.style.position = 'fixed';
+        list.style.left = Math.round(left) + 'px';
+        list.style.top = Math.round(top) + 'px';
+        list.style.bottom = 'auto';
+        list.style.zIndex = '1900';
+      } else {
+        list.style.position = '';
+        list.style.left = '';
+        list.style.top = '';
+        list.style.bottom = '';
+        list.style.zIndex = '';
+      }
     };
 
     dropdowns.forEach((dropdown) => {
@@ -561,52 +689,76 @@
       const items = dropdown.querySelectorAll('.component-dropdown-item');
       if (!toggle || !label || !items.length) return;
 
+      fitDropdownWidth(dropdown);
+
       toggle.addEventListener('click', () => {
         document.querySelectorAll('[data-component-dropdown].open').forEach((item) => {
           if (item !== dropdown) {
-            item.classList.remove('open');
-            const otherToggle = item.querySelector('.component-dropdown-toggle');
-            if (otherToggle) otherToggle.setAttribute('aria-expanded', 'false');
+            closeDropdown(item, true);
           }
         });
-        const open = dropdown.classList.toggle('open');
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-        if (open) placeDropdown(dropdown);
+        const open = !dropdown.classList.contains('open');
+        if (!open) {
+          closeDropdown(dropdown);
+          return;
+        }
+        mountListToPortal(dropdown);
+        dropdown.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        const list = getListEl(dropdown);
+        if (list) list.classList.add('is-open');
+        placeDropdown(dropdown);
       });
 
       items.forEach((item) => {
         item.addEventListener('click', () => {
-          items.forEach((it) => {
-            it.classList.remove('selected');
-            it.setAttribute('aria-selected', 'false');
-          });
-          item.classList.add('selected');
-          item.setAttribute('aria-selected', 'true');
-          label.textContent = item.textContent.trim();
-          dropdown.classList.remove('open');
-          toggle.setAttribute('aria-expanded', 'false');
-          showToast('已选择：' + label.textContent, 'info', 'icon-ic_fluent_chevron_down_24_regular');
+          try {
+            // settings modal has its own selection pipeline and re-render behavior.
+            if ((dropdown.dataset.componentDropdownManaged || '') === 'settings-modal') {
+              closeDropdown(dropdown);
+              return;
+            }
+            items.forEach((it) => {
+              it.classList.remove('selected');
+              it.setAttribute('aria-selected', 'false');
+            });
+            item.classList.add('selected');
+            item.setAttribute('aria-selected', 'true');
+            label.textContent = item.textContent.trim();
+            fitDropdownWidth(dropdown);
+            closeDropdown(dropdown);
+            showToast('已选择：' + label.textContent, 'info', 'icon-ic_fluent_chevron_down_24_regular');
+          } catch (err) {
+            console.error('[component-dropdown] item click failed', err);
+          }
         });
       });
     });
 
-    const updateOpenDropdownDirection = () => {
-      dropdowns.forEach((dropdown) => {
-        if (dropdown.classList.contains('open')) placeDropdown(dropdown);
-      });
-    };
+    if (!dropdownGlobalsBound) {
+      dropdownGlobalsBound = true;
 
-    window.addEventListener('resize', updateOpenDropdownDirection);
-    window.addEventListener('scroll', updateOpenDropdownDirection, true);
+      const updateOpenDropdownDirection = () => {
+        document.querySelectorAll('[data-component-dropdown]').forEach((dropdown) => {
+          fitDropdownWidth(dropdown);
+        });
+        document.querySelectorAll('[data-component-dropdown].open').forEach((dropdown) => {
+          placeDropdown(dropdown);
+        });
+      };
 
-    document.addEventListener('click', (event) => {
-      dropdowns.forEach((dropdown) => {
-        if (dropdown.contains(event.target)) return;
-        dropdown.classList.remove('open');
-        const toggle = dropdown.querySelector('.component-dropdown-toggle');
-        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      window.addEventListener('resize', updateOpenDropdownDirection);
+      window.addEventListener('scroll', updateOpenDropdownDirection, true);
+
+      document.addEventListener('click', (event) => {
+        document.querySelectorAll('[data-component-dropdown].open').forEach((dropdown) => {
+          const list = getListEl(dropdown);
+          if (dropdown.contains(event.target)) return;
+          if (list && list.contains(event.target)) return;
+          closeDropdown(dropdown);
+        });
       });
-    });
+    }
   }
 
   function bindMenuHandlers() {
@@ -694,6 +846,172 @@
     return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
   }
 
+  function defaultMediaCover(type) {
+    const label = type === 'video' ? 'VIDEO' : 'MUSIC';
+    return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Crect width='320' height='320' fill='%2322304a'/%3E%3Ctext x='160' y='170' fill='%23ffffff' text-anchor='middle' font-size='34'%3E${label}%3C/text%3E%3C/svg%3E`;
+  }
+
+  function inferTrackIdentity(name, src) {
+    let base = String(name || '').trim();
+    if (!base && src) {
+      try {
+        const file = decodeURIComponent(String(src).split('/').pop() || '');
+        base = file.replace(/\.[^.]+$/, '').trim();
+      } catch (_) {
+        base = String(src).split('/').pop() || '';
+      }
+    }
+    const matched = base.match(/^\s*(.*?)\s*[\-–—]\s*(.*?)\s*$/);
+    if (matched) {
+      return {
+        author: (matched[1] || '').trim() || '未知作者',
+        title: (matched[2] || '').trim() || '未命名音频'
+      };
+    }
+    return {
+      author: '未知作者',
+      title: base || '未命名音频'
+    };
+  }
+
+  function readSynchsafeInt(bytes, offset) {
+    return ((bytes[offset] & 0x7f) << 21)
+      | ((bytes[offset + 1] & 0x7f) << 14)
+      | ((bytes[offset + 2] & 0x7f) << 7)
+      | (bytes[offset + 3] & 0x7f);
+  }
+
+  function readUint32(bytes, offset) {
+    return ((bytes[offset] << 24) >>> 0)
+      | (bytes[offset + 1] << 16)
+      | (bytes[offset + 2] << 8)
+      | bytes[offset + 3];
+  }
+
+  function decodeTagText(data, encoding) {
+    if (!data || !data.length) return '';
+    try {
+      if (encoding === 1 || encoding === 2) {
+        return new TextDecoder('utf-16').decode(data).replace(/\u0000/g, '').trim();
+      }
+      if (encoding === 3) {
+        return new TextDecoder('utf-8').decode(data).replace(/\u0000/g, '').trim();
+      }
+      return new TextDecoder('latin1').decode(data).replace(/\u0000/g, '').trim();
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function parseId3Metadata(bytes) {
+    const result = { title: '', artist: '', coverUrl: '' };
+    if (!bytes || bytes.length < 10) return result;
+    if (String.fromCharCode(bytes[0], bytes[1], bytes[2]) !== 'ID3') return result;
+
+    const version = bytes[3];
+    const tagSize = readSynchsafeInt(bytes, 6);
+    let ptr = 10;
+    const end = Math.min(bytes.length, 10 + tagSize);
+
+    while (ptr + 10 <= end) {
+      const frameId = String.fromCharCode(bytes[ptr], bytes[ptr + 1], bytes[ptr + 2], bytes[ptr + 3]);
+      if (!/^[A-Z0-9]{4}$/.test(frameId)) break;
+      const frameSize = version === 4 ? readSynchsafeInt(bytes, ptr + 4) : readUint32(bytes, ptr + 4);
+      if (!frameSize || frameSize < 0) break;
+      const frameStart = ptr + 10;
+      const frameEnd = frameStart + frameSize;
+      if (frameEnd > end) break;
+
+      const frameData = bytes.slice(frameStart, frameEnd);
+      if (frameData.length) {
+        if (frameId === 'TIT2' || frameId === 'TPE1') {
+          const encoding = frameData[0];
+          const text = decodeTagText(frameData.slice(1), encoding);
+          if (frameId === 'TIT2' && text) result.title = text;
+          if (frameId === 'TPE1' && text) result.artist = text;
+        }
+
+        if (frameId === 'APIC' && !result.coverUrl) {
+          const encoding = frameData[0];
+          let off = 1;
+          while (off < frameData.length && frameData[off] !== 0) off += 1;
+          const mime = decodeTagText(frameData.slice(1, off), 0) || 'image/jpeg';
+          off += 1;
+          off += 1; // picture type
+
+          if (encoding === 1 || encoding === 2) {
+            while (off + 1 < frameData.length && !(frameData[off] === 0 && frameData[off + 1] === 0)) off += 2;
+            off += 2;
+          } else {
+            while (off < frameData.length && frameData[off] !== 0) off += 1;
+            off += 1;
+          }
+
+          if (off < frameData.length - 16) {
+            try {
+              const blob = new Blob([frameData.slice(off)], { type: mime });
+              result.coverUrl = URL.createObjectURL(blob);
+            } catch (_) {
+              // ignore cover parse failures
+            }
+          }
+        }
+      }
+      ptr = frameEnd;
+    }
+    return result;
+  }
+
+  async function captureVideoCoverAt(video, ratio) {
+    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return '';
+    const source = video.currentSrc || video.src;
+    if (!source) return '';
+
+    const probe = document.createElement('video');
+    probe.preload = 'metadata';
+    probe.muted = true;
+    probe.crossOrigin = 'anonymous';
+    probe.src = source;
+
+    await new Promise((resolve) => {
+      const done = () => resolve();
+      probe.addEventListener('loadedmetadata', done, { once: true });
+      probe.addEventListener('error', done, { once: true });
+      setTimeout(done, 1500);
+    });
+
+    if (!Number.isFinite(probe.duration) || probe.duration <= 0) return '';
+    const target = Math.max(0, Math.min(probe.duration - 0.05, probe.duration * ratio));
+
+    await new Promise((resolve) => {
+      const done = () => resolve();
+      probe.addEventListener('seeked', done, { once: true });
+      probe.addEventListener('error', done, { once: true });
+      setTimeout(done, 1200);
+      try {
+        probe.currentTime = target;
+      } catch (_) {
+        done();
+      }
+    });
+
+    const w = probe.videoWidth || 640;
+    const h = probe.videoHeight || 360;
+    if (!w || !h) return '';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    try {
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return '';
+      ctx.drawImage(probe, 0, 0, w, h);
+      return canvas.toDataURL('image/jpeg', 0.76);
+    } catch (_) {
+      return '';
+    }
+  }
+
   function bindAudioItem() {
     const audio = document.querySelector('[data-demo-audio]');
     const dock = document.querySelector('[data-audio-dock]');
@@ -706,26 +1024,109 @@
     const seek = document.querySelector('[data-audio-seek]');
     const timeEl = document.querySelector('[data-audio-time]');
     const nameEl = document.querySelector('[data-audio-name]');
+    const symbolEl = dock ? dock.querySelector('.component-audio-symbol') : null;
     if (!audio || !dock || !openBtn || !closeBtn || !playBtn || !seek || !timeEl || !nameEl) return;
     if (openBtn.dataset.boundAudioOpen === 'true') return;
     openBtn.dataset.boundAudioOpen = 'true';
 
+    const fallbackCover = defaultMediaCover('music');
+    let authorEl = dock.querySelector('[data-audio-author]');
+    if (!authorEl) {
+      authorEl = document.createElement('span');
+      authorEl.className = 'component-audio-author';
+      authorEl.setAttribute('data-audio-author', 'true');
+      nameEl.insertAdjacentElement('afterend', authorEl);
+    }
+
+    let coverEl = symbolEl ? symbolEl.querySelector('.component-audio-cover') : null;
+    if (!coverEl && symbolEl) {
+      coverEl = document.createElement('img');
+      coverEl.className = 'component-audio-cover';
+      coverEl.alt = 'cover';
+      symbolEl.appendChild(coverEl);
+    }
+
     const tracks = [
-      { name: 'MyGO!!!!! - エガクミライ', src: '/resource/aud/MyGO!!!!! - %E3%82%A8%E3%82%AC%E3%82%AF%E3%83%9F%E3%83%A9%E3%82%A4.mp3' },
-      { name: 'MyGO!!!!! - エガクミライ (Loop Demo)', src: '/resource/aud/MyGO!!!!! - %E3%82%A8%E3%82%AC%E3%82%AF%E3%83%9F%E3%83%A9%E3%82%A4.mp3' }
+      {
+        name: 'MyGO!!!!! - エガクミライ',
+        src: '/resource/aud/MyGO!!!!! - %E3%82%A8%E3%82%AC%E3%82%AF%E3%83%9F%E3%83%A9%E3%82%A4.mp3',
+        title: '',
+        author: '',
+        cover: ''
+      },
+      {
+        name: 'MyGO!!!!! - エガクミライ (Loop Demo)',
+        src: '/resource/aud/MyGO!!!!! - %E3%82%A8%E3%82%AC%E3%82%AF%E3%83%9F%E3%83%A9%E3%82%A4.mp3',
+        title: '',
+        author: '',
+        cover: ''
+      }
     ];
     let currentTrack = 0;
     let isSeeking = false;
+    let metaLoadToken = 0;
 
     const icon = playBtn.querySelector('i');
+
+    const ensureTrackFallback = (track) => {
+      if (!track) return track;
+      const inferred = inferTrackIdentity(track.name, track.src);
+      track.title = String(track.title || inferred.title || '未命名音频').trim();
+      track.author = String(track.author || inferred.author || '未知作者').trim();
+      track.cover = String(track.cover || fallbackCover).trim();
+      return track;
+    };
+
+    const applyTrackMetaToDock = (track) => {
+      if (!track) return;
+      ensureTrackFallback(track);
+      nameEl.textContent = track.title;
+      if (authorEl) authorEl.textContent = `作者：${track.author}`;
+      if (coverEl) {
+        coverEl.src = track.cover;
+        coverEl.alt = track.title || 'cover';
+      }
+      if (symbolEl) {
+        symbolEl.classList.add('has-cover');
+      }
+    };
+
+    const resolveTrackMetadata = async (track) => {
+      if (!track) return ensureTrackFallback(track);
+      ensureTrackFallback(track);
+      if (track._metaResolved) return track;
+      if (track._metaPromise) return track._metaPromise;
+
+      track._metaPromise = (async () => {
+        try {
+          const url = new URL(track.src, window.location.origin);
+          if (url.origin === window.location.origin && /\.mp3($|\?)/i.test(url.pathname)) {
+            const resp = await fetch(url.href, { cache: 'force-cache' });
+            if (resp.ok) {
+              const bytes = new Uint8Array(await resp.arrayBuffer());
+              const id3 = parseId3Metadata(bytes);
+              if (id3.title) track.title = id3.title;
+              if (id3.artist) track.author = id3.artist;
+              if (id3.coverUrl) track.cover = id3.coverUrl;
+            }
+          }
+        } catch (_) {
+          // fall back to inferred metadata
+        }
+        track._metaResolved = true;
+        return ensureTrackFallback(track);
+      })();
+
+      return track._metaPromise;
+    };
 
     const updatePlayPageLink = (track) => {
       if (!openPageLink || !track) return;
       const params = new URLSearchParams();
-      params.set('title', track.name || '未命名音频');
-      params.set('author', '组件页');
+      params.set('title', track.title || track.name || '未命名音频');
+      params.set('author', track.author || '未知作者');
       params.set('src', track.src || '');
-      params.set('cover', '/resource/img/shell/shuiyu.avif');
+      params.set('cover', track.cover || fallbackCover);
       openPageLink.href = '/media/music.html?' + params.toString();
     };
 
@@ -747,12 +1148,20 @@
     const setTrack = (index) => {
       currentTrack = (index + tracks.length) % tracks.length;
       const track = tracks[currentTrack];
+      const token = ++metaLoadToken;
+      ensureTrackFallback(track);
       audio.src = track.src;
-      nameEl.textContent = track.name;
+      applyTrackMetaToDock(track);
       updatePlayPageLink(track);
       audio.currentTime = 0;
       safePlay(audio);
       updateAudioUi();
+
+      resolveTrackMetadata(track).then((resolved) => {
+        if (token !== metaLoadToken) return;
+        applyTrackMetaToDock(resolved);
+        updatePlayPageLink(resolved);
+      });
     };
 
     const updateAudioUi = () => {
@@ -842,12 +1251,38 @@
     const toggle = document.querySelector('[data-video-toggle]');
     const timeEl = document.querySelector('[data-video-time]');
     const seek = document.querySelector('[data-video-seek]');
+    const titleEl = document.querySelector('[data-video-name]');
     if (!video || !toggle || !timeEl || !seek) return;
     if (video.dataset.boundVideo === 'true') return;
     video.dataset.boundVideo = 'true';
 
     const icon = toggle.querySelector('i');
     let videoProgressRaf = 0;
+    let coverToken = 0;
+    const fallbackPoster = video.getAttribute('poster') || defaultMediaCover('video');
+
+    const updateVideoPageLink = (cover) => {
+      const card = video.closest('.component-media-card');
+      const openPageLink = card ? card.querySelector('a[href*="/media/video.html"]') : null;
+      if (!openPageLink) return;
+      const params = new URLSearchParams();
+      params.set('title', (titleEl && titleEl.textContent) ? titleEl.textContent.trim() : '组件视频');
+      params.set('src', video.currentSrc || video.src || '');
+      params.set('cover', cover || video.getAttribute('poster') || fallbackPoster);
+      openPageLink.href = '/media/video.html?' + params.toString();
+    };
+
+    const refreshIdleCover = async () => {
+      const token = ++coverToken;
+      const cover = await captureVideoCoverAt(video, 0.3);
+      if (token !== coverToken) return;
+      if (cover) {
+        video.setAttribute('poster', cover);
+        updateVideoPageLink(cover);
+      } else {
+        updateVideoPageLink('');
+      }
+    };
 
     const updateVideoUi = () => {
       seek.max = String(video.duration || 0);
@@ -892,7 +1327,10 @@
     });
 
     video.addEventListener('timeupdate', updateVideoUi);
-    video.addEventListener('loadedmetadata', updateVideoUi);
+    video.addEventListener('loadedmetadata', () => {
+      updateVideoUi();
+      refreshIdleCover();
+    });
     video.addEventListener('play', () => {
       updateVideoUi();
       startVideoProgressLoop();
@@ -905,6 +1343,11 @@
       stopVideoProgressLoop();
       updateVideoUi();
     });
+
+    updateVideoPageLink('');
+    if (video.readyState >= 1) {
+      refreshIdleCover();
+    }
   }
 
   function bindToastButtons() {
@@ -998,5 +1441,16 @@
   const observer = new MutationObserver(scheduleInit);
   observer.observe(document.documentElement, { childList: true, subtree: true });
 
+  function initSharedUi(scope) {
+    const target = scope || document;
+    bindDropdownHandlers(target);
+    bindRangeVisuals(target);
+  }
+
   window.componentToast = { show: showToast, hide: hideToast, applyThemeColor };
+  window.componentUi = {
+    init: initSharedUi,
+    bindDropdowns: bindDropdownHandlers,
+    bindRanges: bindRangeVisuals
+  };
 })();

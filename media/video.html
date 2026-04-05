@@ -44,7 +44,7 @@
 
     <section class="player-dock">
         <div class="progress-zone">
-            <input id="seek-range" class="progress-input" type="range" min="0" max="0" step="0.01" value="0">
+            <input id="seek-range" class="progress-input component-slider" type="range" min="0" max="0" step="0.01" value="0">
             <div id="progress-preview" class="progress-preview">
                 <img id="preview-image" src="" alt="预览图" decoding="async">
                 <div class="time-line">
@@ -109,12 +109,13 @@
 
         <div id="import-panel" class="floating-panel" aria-label="导入方式面板">
             <div class="setting-row setting-row-title">选择导入方式</div>
+            <div class="floating-panel-divider" aria-hidden="true"></div>
             <div class="import-panel-actions">
-                <button id="import-folder-btn" class="panel-action-btn" type="button">
+                <button id="import-folder-btn" class="panel-action-btn component-btn component-btn--flat" type="button">
                     <i class="fluent-icon icon-ic_fluent_folder_open_24_regular" aria-hidden="true"></i>
                     <span>导入文件夹（推荐）</span>
                 </button>
-                <button id="import-file-btn" class="panel-action-btn" type="button">
+                <button id="import-file-btn" class="panel-action-btn component-btn component-btn--flat" type="button">
                     <i class="fluent-icon icon-ic_fluent_document_24_regular" aria-hidden="true"></i>
                     <span>导入视频文件</span>
                 </button>
@@ -126,93 +127,126 @@
             <div class="setting-row">
                 <label for="danmaku-size">大小</label>
                 <div class="setting-control">
-                    <input id="danmaku-size" class="setting-slider component-slider" type="range" min="14" max="42" step="1" value="24">
-                    <span class="setting-value" id="danmaku-size-value">24</span>
+                    <input id="danmaku-size" class="component-slider component-range-slider" type="range" min="14" max="42" step="1" value="24">
+                    <input class="setting-value-input component-dialog__input" id="danmaku-size-value" type="text" value="24">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="danmaku-weight">粗细</label>
                 <div class="setting-control">
-                    <input id="danmaku-weight" class="setting-slider component-slider" type="range" min="400" max="900" step="100" value="700">
-                    <span class="setting-value" id="danmaku-weight-value">700</span>
+                    <input id="danmaku-weight" class="component-slider component-range-slider" type="range" min="400" max="900" step="100" value="700">
+                    <input class="setting-value-input component-dialog__input" id="danmaku-weight-value" type="text" value="700">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="block-scroll-danmaku">屏蔽滚动弹幕</label>
-                <input id="block-scroll-danmaku" type="checkbox">
+                <label class="component-switch" aria-label="屏蔽滚动弹幕开关">
+                    <input id="block-scroll-danmaku" class="component-switch__input" type="checkbox">
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
             </div>
             <div class="setting-row">
                 <label for="block-top-danmaku">屏蔽上方弹幕</label>
-                <input id="block-top-danmaku" type="checkbox">
+                <label class="component-switch" aria-label="屏蔽上方弹幕开关">
+                    <input id="block-top-danmaku" class="component-switch__input" type="checkbox">
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
             </div>
             <div class="setting-row">
                 <label for="block-bottom-danmaku">屏蔽下方弹幕</label>
-                <input id="block-bottom-danmaku" type="checkbox">
+                <label class="component-switch" aria-label="屏蔽下方弹幕开关">
+                    <input id="block-bottom-danmaku" class="component-switch__input" type="checkbox">
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
             </div>
             <div class="setting-row">
                 <label for="danmaku-layout">排布模式</label>
-                <select id="danmaku-layout" class="component-dialog__input">
-                    <option value="all" selected>全部</option>
-                    <option value="no-overlap">不重叠</option>
-                </select>
+                <div class="component-dropdown" id="danmaku-layout-dropdown">
+                    <button class="component-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="listbox" aria-controls="danmaku-layout-list">
+                        <span id="danmaku-layout-label" class="toggle-label">全部</span>
+                        <i class="toggle-icon fluent-icon icon-ic_fluent_chevron_down_24_regular" aria-hidden="true"></i>
+                    </button>
+                    <div class="component-dropdown-list" id="danmaku-layout-list" role="listbox" aria-label="弹幕排布模式">
+                        <div class="component-dropdown-item selected" role="option" aria-selected="true" data-value="all">全部</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="no-overlap">不重叠</div>
+                    </div>
+                    <select id="danmaku-layout" class="hidden component-dialog__input" tabindex="-1" aria-hidden="true">
+                        <option value="all" selected>全部</option>
+                        <option value="no-overlap">不重叠</option>
+                    </select>
+                </div>
             </div>
             <div class="setting-row">
                 <label for="danmaku-speed">速度</label>
                 <div class="setting-control">
-                    <input id="danmaku-speed" class="setting-slider component-slider" type="range" min="0.5" max="2" step="0.1" value="0.8">
-                    <span class="setting-value" id="danmaku-speed-value">0.8x</span>
+                    <input id="danmaku-speed" class="component-slider component-range-slider" type="range" min="0.5" max="2" step="0.1" value="0.8">
+                    <input class="setting-value-input component-dialog__input" id="danmaku-speed-value" type="text" value="0.8x">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="danmaku-opacity">透明度</label>
                 <div class="setting-control">
-                    <input id="danmaku-opacity" class="setting-slider component-slider" type="range" min="0.2" max="1" step="0.05" value="0.9">
-                    <span class="setting-value" id="danmaku-opacity-value">90%</span>
+                    <input id="danmaku-opacity" class="component-slider component-range-slider" type="range" min="0.2" max="1" step="0.05" value="0.9">
+                    <input class="setting-value-input component-dialog__input" id="danmaku-opacity-value" type="text" value="90%">
                 </div>
             </div>
         </div>
 
         <div id="settings-panel" class="floating-panel" aria-label="设置面板">
+            <div class="setting-row setting-row-title">设置</div>
+            <div class="floating-panel-divider" aria-hidden="true"></div>
             <div class="setting-row">
                 <label for="speed-range">倍速</label>
                 <div class="setting-control">
-                    <input id="speed-range" class="setting-slider component-slider" type="range" min="0.5" max="2" step="0.05" value="1">
-                    <span class="setting-value" id="speed-value">1.00x</span>
+                    <input id="speed-range" class="component-slider component-range-slider" type="range" min="0.5" max="2" step="0.05" value="1">
+                    <input class="setting-value-input component-dialog__input" id="speed-value" type="text" value="1.00x">
+                </div>
+            </div>
+            <div class="setting-row">
+                <label for="brightness-range">亮度</label>
+                <div class="setting-control">
+                    <input id="brightness-range" class="component-slider component-range-slider" type="range" min="0.4" max="1.6" step="0.01" value="1">
+                    <input class="setting-value-input component-dialog__input" id="brightness-value" type="text" value="100%">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="toggle-dynamic-bg">动态背景</label>
-                <input id="toggle-dynamic-bg" type="checkbox" checked>
+                <label class="component-switch" aria-label="动态背景开关">
+                    <input id="toggle-dynamic-bg" class="component-switch__input" type="checkbox" checked>
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
             </div>
         </div>
 
         <div id="volume-panel" class="floating-panel" aria-label="音量面板">
+            <div class="setting-row setting-row-title">音效</div>
+            <div class="floating-panel-divider" aria-hidden="true"></div>
             <div class="setting-row">
                 <label for="volume-range">音量</label>
                 <div class="setting-control">
-                    <input id="volume-range" class="setting-slider component-slider" type="range" min="0" max="1" step="0.01" value="1">
-                    <span class="setting-value" id="volume-value">100%</span>
+                    <input id="volume-range" class="component-slider component-range-slider" type="range" min="0" max="1" step="0.01" value="1">
+                    <input class="setting-value-input component-dialog__input" id="volume-value" type="text" value="100%">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-low">低频</label>
                 <div class="setting-control">
-                    <input id="eq-low" class="setting-slider component-slider" type="range" min="-12" max="12" value="0">
-                    <span class="setting-value" id="eq-low-value">0 dB</span>
+                    <input id="eq-low" class="component-slider component-range-slider" type="range" min="-12" max="12" value="0">
+                    <input class="setting-value-input component-dialog__input" id="eq-low-value" type="text" value="0 dB">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-mid">中频</label>
                 <div class="setting-control">
-                    <input id="eq-mid" class="setting-slider component-slider" type="range" min="-12" max="12" value="0">
-                    <span class="setting-value" id="eq-mid-value">0 dB</span>
+                    <input id="eq-mid" class="component-slider component-range-slider" type="range" min="-12" max="12" value="0">
+                    <input class="setting-value-input component-dialog__input" id="eq-mid-value" type="text" value="0 dB">
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-high">高频</label>
                 <div class="setting-control">
-                    <input id="eq-high" class="setting-slider component-slider" type="range" min="-12" max="12" value="0">
-                    <span class="setting-value" id="eq-high-value">0 dB</span>
+                    <input id="eq-high" class="component-slider component-range-slider" type="range" min="-12" max="12" value="0">
+                    <input class="setting-value-input component-dialog__input" id="eq-high-value" type="text" value="0 dB">
                 </div>
             </div>
         </div>
@@ -222,12 +256,20 @@
     </section>
 
     <div class="status-tip" id="status-tip">点击导入按钮后选择“文件”或“文件夹”</div>
+    <div class="component-toast component-toast--info gesture-toast" id="gesture-toast" role="status" aria-live="polite">
+        <i id="gesture-toast-icon" class="component-toast__icon fluent-icon icon-ic_fluent_speaker_2_24_regular" aria-hidden="true"></i>
+        <span id="gesture-toast-message" class="component-toast__message">音量 100%</span>
+    </div>
 
     <aside class="playlist-drawer" id="playlist-drawer" aria-label="播放列表">
         <div class="playlist-head">
-            <button class="playlist-close-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
-                <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
-            </button>
+            <div class="playlist-head-top">
+                <div class="playlist-title">播放列表</div>
+                <button class="playlist-close-btn component-btn component-btn--immersive component-icon-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
+                    <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="playlist-head-divider" aria-hidden="true"></div>
             <div class="loop-row">
                 <button class="loop-btn component-filter-chip active" data-loop="none" type="button">不循环</button>
                 <button class="loop-btn component-filter-chip" data-loop="all" type="button">全部循环</button>
