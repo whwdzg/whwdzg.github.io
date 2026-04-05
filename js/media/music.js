@@ -61,4 +61,39 @@ player.selectTrack = async (index) => {
 
 syncCoverShape(fallback);
 
+function consumeExternalTrackFromQuery() {
+    const params = new URLSearchParams(window.location.search || "");
+    const src = String(params.get("src") || "").trim();
+    if (!src) return;
+
+    const title = String(params.get("title") || "组件页音频").trim();
+    const author = String(params.get("author") || "组件页").trim();
+    const cover = String(params.get("cover") || "").trim();
+
+    const normalizedSrc = src.startsWith("http") ? src : src;
+    const existingIndex = player.tracks.findIndex((track) => String(track?.sourceUrl || "") === normalizedSrc);
+    if (existingIndex >= 0) {
+        player.selectTrack(existingIndex);
+        return;
+    }
+
+    player.tracks.unshift({
+        type: "music",
+        title: title || "组件页音频",
+        author: author || "组件页",
+        album: "",
+        coverUrl: cover || fallback,
+        sourceUrl: normalizedSrc,
+        lyrics: [],
+        quality: "external",
+        sampleRate: null,
+        sourceFile: null,
+    });
+
+    player.renderPlaylist("");
+    player.selectTrack(0);
+}
+
+consumeExternalTrackFromQuery();
+
 window.addEventListener("beforeunload", () => player.dispose());

@@ -97,18 +97,10 @@
                     var move = function() {
                         var main = document.querySelector('main');
                         if (!main) return;
-                        var aside = container.querySelector('aside');
                         var footer = container.querySelector('footer');
-                        if (aside && !main.contains(aside)) {
-                            aside.setAttribute('data-shell-moved', '1');
-                            main.appendChild(aside);
-                        }
                         if (footer && footer.parentNode !== main.parentNode) {
                             footer.setAttribute('data-shell-moved', '1');
                             main.insertAdjacentElement('afterend', footer);
-                        }
-                        if (window.refreshAsideStack) {
-                            window.refreshAsideStack();
                         }
                         markCurrentNav();
                     };

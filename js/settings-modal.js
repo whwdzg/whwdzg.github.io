@@ -138,11 +138,6 @@ const SETTINGS_FALLBACK_HTML = `
     <p>落叶银杏</p>
     <p>雪花</p>
   </section>
-  <section id="clear-page-cache">
-    <h2>清除页面缓存</h2>
-    <h4>清除本地页面缓存，以确保页面为最新，一般情况不建议使用</h4>
-    <button type="button">清除</button>
-  </section>
   <section id="reset-wallpaper-rotation">
     <h2>重置壁纸轮换</h2>
     <h4>清除今日壁纸记录并重新生成随机壁纸</h4>
@@ -164,7 +159,6 @@ const SECTION_ICON_MAP = {
   pageprogress: 'icon-ic_fluent_chart_multiple_24_regular',
   'page-progress': 'icon-ic_fluent_chart_multiple_24_regular',
   particleanimation: 'icon-ic_fluent_sparkle_24_regular',
-  'clear-page-cache': 'icon-ic_fluent_delete_24_regular',
   'reset-wallpaper-rotation': 'icon-ic_fluent_arrow_reset_24_regular',
   'settings-about-browserUA': 'icon-ic_fluent_window_24_regular',
   'settings-about-currentTime': 'icon-ic_fluent_timer_24_regular',
@@ -361,15 +355,6 @@ function applySettingsTranslations(container) {
     }
   }
 
-  const clearCache = container.querySelector('#clear-page-cache');
-  if (clearCache && t.clearCache) {
-    const h2 = clearCache.querySelector('h2');
-    const h4 = clearCache.querySelector('h4');
-    const btn = clearCache.querySelector('button');
-    if (h2 && t.clearCache.title) h2.textContent = t.clearCache.title;
-    if (h4 && t.clearCache.subtitle) h4.textContent = t.clearCache.subtitle;
-    if (btn && t.clearCache.button) btn.textContent = t.clearCache.button;
-  }
 }
 
 function ensureContainers(){
@@ -382,7 +367,7 @@ function ensureContainers(){
   if (!document.getElementById('settings-modal')){
     const modal = document.createElement('div');
     modal.id = 'settings-modal';
-    modal.innerHTML = '<div class="modal-header"><span class="modal-title"></span><button class="modal-close" aria-label="�ر�"><i class="icon-ic_fluent_dismiss_24_regular"></i></button></div><div class="modal-body"></div>';
+    modal.innerHTML = '<div class="modal-header"><span class="modal-title"></span><button class="modal-close" aria-label="关闭"><i class="icon-ic_fluent_dismiss_24_regular"></i></button></div><div class="modal-body"></div>';
     document.body.appendChild(modal);
     modal.querySelector('.modal-close').addEventListener('click', closeModal);
   }
@@ -806,24 +791,6 @@ function buildSection(sec){
     row.appendChild(pContainer);
     row.appendChild(toggle);
     wrapper.appendChild(row);
-  } else if (sec.id === 'clear-page-cache') {
-    const row = document.createElement('div');
-    row.className = 'settings-action-row';
-
-    const status = document.createElement('span');
-    status.className = 'settings-action-status';
-
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'settings-action-btn';
-    const sourceBtn = sec.querySelector('button');
-    btn.textContent = (sourceBtn && sourceBtn.textContent ? sourceBtn.textContent.trim() : '清除') || '清除';
-
-    btn.addEventListener('click', () => handleClearPageCache(btn, status));
-
-    row.appendChild(status);
-    row.appendChild(btn);
-    wrapper.appendChild(row);
   } else if (sec.id === 'reset-wallpaper-rotation') {
     const row = document.createElement('div');
     row.className = 'settings-action-row';
@@ -1184,7 +1151,7 @@ function getSettingsCategoryDefinitions(strings) {
     {
       key: 'technical',
       title: advancedTitle,
-      sectionIds: ['clear-page-cache', 'reset-wallpaper-rotation']
+      sectionIds: ['reset-wallpaper-rotation']
     },
     {
       key: 'about',
@@ -1388,75 +1355,6 @@ function buildToggle(onChange, initialState){
   el.addEventListener('blur', ()=> el.classList.remove('focus'));
 
   return el;
-}
-
-async function handleClearPageCache(btn, statusEl){
-  if (!btn) return;
-  const settingsStrings = getSettingsStrings();
-  const clearStrings = (settingsStrings && settingsStrings.clearCache) || null;
-  const statusStrings = clearStrings && clearStrings.status;
-  const workingBtnText = (clearStrings && clearStrings.buttonWorking) || '清除中...';
-  const unsupportedText = (statusStrings && statusStrings.unsupported) || '当前浏览器不支持清除缓存';
-  const workingText = (statusStrings && statusStrings.working) || '正在清除缓存...';
-  const doneText = (statusStrings && statusStrings.done) || '已清除缓存，正在刷新';
-  const failedText = (statusStrings && statusStrings.failed) || '清除失败，请重试';
-  const originalText = btn.textContent;
-  const setStatus = (text, tone) => {
-    if (!statusEl) return;
-    statusEl.textContent = text || '';
-    statusEl.classList.remove('ok', 'error', 'muted');
-    if (tone) statusEl.classList.add(tone);
-  };
-
-  const start = () => {
-    btn.disabled = true;
-    btn.classList.add('loading');
-    btn.textContent = workingBtnText;
-  };
-
-  const reset = () => {
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    btn.textContent = originalText;
-  };
-
-  const hasAnyCapability = () => {
-    const hasCache = typeof caches !== 'undefined';
-    const hasSw = typeof navigator !== 'undefined' && !!navigator.serviceWorker && typeof navigator.serviceWorker.getRegistrations === 'function';
-    return hasCache || hasSw;
-  };
-
-  if (!hasAnyCapability()) {
-    setStatus(unsupportedText, 'error');
-    return;
-  }
-
-  start();
-  setStatus(workingText, 'muted');
-
-  try {
-    const cacheTask = (async () => {
-      if (typeof caches === 'undefined' || !caches.keys) return;
-      const keys = await caches.keys();
-      await Promise.all(keys.map((key) => caches.delete(key)));
-    })();
-
-    const swTask = (async () => {
-      if (!navigator || !navigator.serviceWorker || typeof navigator.serviceWorker.getRegistrations !== 'function') return;
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(registrations.map((reg) => reg.unregister()));
-    })();
-
-    await Promise.all([cacheTask, swTask]);
-    setStatus(doneText, 'ok');
-    setTimeout(() => {
-      try { location.reload(); } catch (e) { reset(); }
-    }, 220);
-  } catch (err) {
-    console.error('[Settings Modal] 清除缓存失败', err);
-    setStatus(failedText, 'error');
-    reset();
-  }
 }
 
 function applyThemeColor(color) {

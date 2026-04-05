@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function(){
   let controlsHideTimer = null;
   let controlsVisible = true;
   let menuOpen = false;
+  let overlayProgressRaf = 0;
 
   function updateVolumeIconFromValue(val){
     if (!volumeIcon) return;
@@ -316,6 +317,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function closeVideo(){
+    stopOverlayProgressLoop();
     overlay.classList.remove('active');
     try{ video.pause(); }catch(e){}
     video.removeAttribute('src');
@@ -341,14 +343,45 @@ document.addEventListener('DOMContentLoaded', function(){
     currentEl.textContent = formatTime(video.currentTime);
   }
 
+  function stopOverlayProgressLoop(){
+    if (overlayProgressRaf) {
+      cancelAnimationFrame(overlayProgressRaf);
+      overlayProgressRaf = 0;
+    }
+  }
+
+  function startOverlayProgressLoop(){
+    if (overlayProgressRaf) return;
+    const tick = () => {
+      updateProgress();
+      if (!video.paused && !video.ended && overlay.classList.contains('active')) {
+        overlayProgressRaf = requestAnimationFrame(tick);
+      } else {
+        overlayProgressRaf = 0;
+      }
+    };
+    overlayProgressRaf = requestAnimationFrame(tick);
+  }
+
   // bind events
   closeBtn.addEventListener('click', closeVideo);
   playBtn.addEventListener('click', () => {
     if (video.paused) video.play(); else video.pause();
     updatePlayButton();
   });
-  video.addEventListener('play', updatePlayButton);
-  video.addEventListener('pause', updatePlayButton);
+  video.addEventListener('play', () => {
+    updatePlayButton();
+    startOverlayProgressLoop();
+  });
+  video.addEventListener('pause', () => {
+    updatePlayButton();
+    stopOverlayProgressLoop();
+    updateProgress();
+  });
+  video.addEventListener('ended', () => {
+    stopOverlayProgressLoop();
+    updateProgress();
+  });
   video.addEventListener('timeupdate', updateProgress);
 
   // --- Initialize inline videos: generate first-frame poster and apply image-like rounded corners
@@ -390,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     // capture first frame as poster for videos without poster attribute
-    const inlineVideos = Array.from(document.querySelectorAll('main video, article video, .post-content video, #aside-stack video, video'));
+    const inlineVideos = Array.from(document.querySelectorAll('main video, article video, .post-content video, video'));
     inlineVideos.forEach(v => {
       try {
         // skip if poster already present or no src
@@ -631,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function(){
 document.addEventListener('DOMContentLoaded', function(){
     // initialize overlay wrappers: only videos explicitly marked for overlay
     function initVideoPlay() {
-      const videos = Array.from(document.querySelectorAll('main video[data-overlay-player], #aside-stack video[data-overlay-player]'));
+      const videos = Array.from(document.querySelectorAll('main video[data-overlay-player]'));
         videos.forEach((v, idx) => {
         if (v.hasAttribute('data-inline-player')) return; // inline players handled separately
             if (v.dataset.videoplayAttached) return;
@@ -677,7 +710,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     // Inline player: keep video in place with custom controls
     function initInlinePlayers(){
-      const vids = Array.from(document.querySelectorAll('main video:not([data-overlay-player]), #aside-stack video:not([data-overlay-player]), article video:not([data-overlay-player]), video[data-inline-player]'));
+      const vids = Array.from(document.querySelectorAll('main video:not([data-overlay-player]), article video:not([data-overlay-player]), video[data-inline-player]'));
       vids.forEach((v)=>{
         if (v.dataset.vpInlineAttached) return;
         v.dataset.vpInlineAttached = '1';
@@ -732,6 +765,25 @@ document.addEventListener('DOMContentLoaded', function(){
           curEl.textContent = fmt(v.currentTime);
           durEl.textContent = fmt(v.duration);
         }
+        let inlineProgressRaf = 0;
+        function stopInlineProgressLoop(){
+          if (inlineProgressRaf) {
+            cancelAnimationFrame(inlineProgressRaf);
+            inlineProgressRaf = 0;
+          }
+        }
+        function startInlineProgressLoop(){
+          if (inlineProgressRaf) return;
+          const tick = () => {
+            syncProgress();
+            if (!v.paused && !v.ended && document.body.contains(v)) {
+              inlineProgressRaf = requestAnimationFrame(tick);
+            } else {
+              inlineProgressRaf = 0;
+            }
+          };
+          inlineProgressRaf = requestAnimationFrame(tick);
+        }
         function setVolume(val){
           const vol = Math.max(0, Math.min(1, Number(val)));
           try { v.volume = vol; v.muted = vol === 0; } catch(_){ }
@@ -744,8 +796,9 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
         playBtn.addEventListener('click', ()=>{ if (v.paused) v.play(); else v.pause(); });
-        v.addEventListener('play', syncPlayIcon);
-        v.addEventListener('pause', syncPlayIcon);
+        v.addEventListener('play', ()=>{ syncPlayIcon(); startInlineProgressLoop(); });
+        v.addEventListener('pause', ()=>{ syncPlayIcon(); stopInlineProgressLoop(); syncProgress(); });
+        v.addEventListener('ended', ()=>{ stopInlineProgressLoop(); syncProgress(); });
         v.addEventListener('timeupdate', syncProgress);
         v.addEventListener('loadedmetadata', syncProgress, { once:true });
 

@@ -4,7 +4,7 @@
   作用: 页面结构与内容容器，具体交互由对应 JS/CSS 增强。
   English: Defines page markup; behavior and styling are enhanced by JS/CSS.
 -->
-<!-- Shared shell: header, sidebar, aside, footer -->
+<!-- Shared shell: header, sidebar, footer -->
 <!-- 模块：全站壳层 / Shared shell (header, sidebar, footer). 保留导航与动画。 -->
 <header>
     <h1>
@@ -185,14 +185,21 @@
     <i class="scroll-to-top-icon icon-ic_fluent_arrow_up_24_regular item-icon" aria-hidden="true"></i>
 </button>
 <footer>
-    <p>Copyright (c) 2022-2026 滄海水魚</p>
-    <p>本站代码采用 <a href="/LICENSE">GNU GENERAL PUBLIC LICENSE v3.0</a> 协议</p>
-    <p>当前版本：<strong>2.0.3.8-20260405</strong></p>
+    <div class="footer-main">
+        <p>Copyright (c) 2022-2026 滄海水魚</p>
+        <p>本站代码采用 GNU GENERAL PUBLIC LICENSE v3.0 协议开源</p>
+        <p>当前版本：<strong>2.0.3.8-20260405</strong></p>
+    </div>
+    <div class="footer-badges" aria-label="许可证与托管信息">
+        <a class="footer-badge" href="/LICENSE"><i class="fluent-icon icon-ic_fluent_document_24_regular" aria-hidden="true"></i>GNU General Public License v3.0</a>
+        <a class="footer-badge" href="https://github.com/whwdzg/whwdzg.github.io" target="_blank" rel="noopener noreferrer"><i class="icon-ic_fluent_animal_cat_24_regular" aria-hidden="true"></i>Hosted on GitHub</a>
+    </div>
 </footer>
 <div id="global-copy-toast" class="global-copy-toast" role="status" aria-live="assertive">
     <span class="global-toast-icon fluent-icon icon-ic_fluent_checkmark_circle_24_regular" aria-hidden="true"></span>
     <span class="global-toast-message"></span>
     <button type="button" class="global-toast-close" aria-label="关闭提示">×</button>
+    <span class="global-toast-progress" aria-hidden="true"></span>
 </div>
 <!-- 分步加载 & 轻量懒加载库 -->
 <script src="/js/copy-toast.js" defer></script>

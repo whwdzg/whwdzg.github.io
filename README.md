@@ -8,7 +8,7 @@
 - 旧版存档：/Legacy-1.0/
 
 ## 功能概览
-- 单页导航：共享的 header/sidebar/aside 壳层与轻量路由
+- 单页导航：共享的 header/sidebar 壳层与轻量路由
 - 多语言与主题切换：预置多语种 JSON 与深浅色模式
 - 渐进式增强：懒加载图片、滚动返回顶部、设置面板
 - PWA：manifest、service worker 与简单离线缓存

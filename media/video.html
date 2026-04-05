@@ -21,6 +21,7 @@
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="modulepreload" href="/js/media/common.js">
     <link rel="modulepreload" href="/js/media/video.js">
+    <link rel="stylesheet" href="/css/component.css">
     <link rel="stylesheet" href="/css/media-player.css">
     <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
     <script src="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js" defer></script>
@@ -125,14 +126,14 @@
             <div class="setting-row">
                 <label for="danmaku-size">大小</label>
                 <div class="setting-control">
-                    <input id="danmaku-size" class="setting-slider" type="range" min="14" max="42" step="1" value="24">
+                    <input id="danmaku-size" class="setting-slider component-slider" type="range" min="14" max="42" step="1" value="24">
                     <span class="setting-value" id="danmaku-size-value">24</span>
                 </div>
             </div>
             <div class="setting-row">
                 <label for="danmaku-weight">粗细</label>
                 <div class="setting-control">
-                    <input id="danmaku-weight" class="setting-slider" type="range" min="400" max="900" step="100" value="700">
+                    <input id="danmaku-weight" class="setting-slider component-slider" type="range" min="400" max="900" step="100" value="700">
                     <span class="setting-value" id="danmaku-weight-value">700</span>
                 </div>
             </div>
@@ -150,7 +151,7 @@
             </div>
             <div class="setting-row">
                 <label for="danmaku-layout">排布模式</label>
-                <select id="danmaku-layout">
+                <select id="danmaku-layout" class="component-dialog__input">
                     <option value="all" selected>全部</option>
                     <option value="no-overlap">不重叠</option>
                 </select>
@@ -158,14 +159,14 @@
             <div class="setting-row">
                 <label for="danmaku-speed">速度</label>
                 <div class="setting-control">
-                    <input id="danmaku-speed" class="setting-slider" type="range" min="0.5" max="2" step="0.1" value="0.8">
+                    <input id="danmaku-speed" class="setting-slider component-slider" type="range" min="0.5" max="2" step="0.1" value="0.8">
                     <span class="setting-value" id="danmaku-speed-value">0.8x</span>
                 </div>
             </div>
             <div class="setting-row">
                 <label for="danmaku-opacity">透明度</label>
                 <div class="setting-control">
-                    <input id="danmaku-opacity" class="setting-slider" type="range" min="0.2" max="1" step="0.05" value="0.9">
+                    <input id="danmaku-opacity" class="setting-slider component-slider" type="range" min="0.2" max="1" step="0.05" value="0.9">
                     <span class="setting-value" id="danmaku-opacity-value">90%</span>
                 </div>
             </div>
@@ -175,7 +176,7 @@
             <div class="setting-row">
                 <label for="speed-range">倍速</label>
                 <div class="setting-control">
-                    <input id="speed-range" class="setting-slider" type="range" min="0.5" max="2" step="0.05" value="1">
+                    <input id="speed-range" class="setting-slider component-slider" type="range" min="0.5" max="2" step="0.05" value="1">
                     <span class="setting-value" id="speed-value">1.00x</span>
                 </div>
             </div>
@@ -189,28 +190,28 @@
             <div class="setting-row">
                 <label for="volume-range">音量</label>
                 <div class="setting-control">
-                    <input id="volume-range" class="setting-slider" type="range" min="0" max="1" step="0.01" value="1">
+                    <input id="volume-range" class="setting-slider component-slider" type="range" min="0" max="1" step="0.01" value="1">
                     <span class="setting-value" id="volume-value">100%</span>
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-low">低频</label>
                 <div class="setting-control">
-                    <input id="eq-low" class="setting-slider" type="range" min="-12" max="12" value="0">
+                    <input id="eq-low" class="setting-slider component-slider" type="range" min="-12" max="12" value="0">
                     <span class="setting-value" id="eq-low-value">0 dB</span>
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-mid">中频</label>
                 <div class="setting-control">
-                    <input id="eq-mid" class="setting-slider" type="range" min="-12" max="12" value="0">
+                    <input id="eq-mid" class="setting-slider component-slider" type="range" min="-12" max="12" value="0">
                     <span class="setting-value" id="eq-mid-value">0 dB</span>
                 </div>
             </div>
             <div class="setting-row">
                 <label for="eq-high">高频</label>
                 <div class="setting-control">
-                    <input id="eq-high" class="setting-slider" type="range" min="-12" max="12" value="0">
+                    <input id="eq-high" class="setting-slider component-slider" type="range" min="-12" max="12" value="0">
                     <span class="setting-value" id="eq-high-value">0 dB</span>
                 </div>
             </div>
@@ -228,12 +229,17 @@
                 <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
             </button>
             <div class="loop-row">
-                <button class="loop-btn active" data-loop="none" type="button">不循环</button>
-                <button class="loop-btn" data-loop="all" type="button">全部循环</button>
-                <button class="loop-btn" data-loop="one" type="button">单项循环</button>
-                <button class="loop-btn" data-loop="shuffle" type="button">随机播放</button>
+                <button class="loop-btn component-filter-chip active" data-loop="none" type="button">不循环</button>
+                <button class="loop-btn component-filter-chip" data-loop="all" type="button">全部循环</button>
+                <button class="loop-btn component-filter-chip" data-loop="one" type="button">单项循环</button>
+                <button class="loop-btn component-filter-chip" data-loop="shuffle" type="button">随机播放</button>
             </div>
-            <input id="playlist-search" class="playlist-search" type="search" placeholder="搜索列表">
+            <div class="component-search">
+                <input id="playlist-search" class="playlist-search component-search__input" type="search" placeholder="搜索列表">
+                <button id="playlist-search-clear" class="playlist-search-clear component-btn component-btn--immersive-tint component-icon-btn hidden" type="button" aria-label="清空搜索" title="清空搜索">
+                    <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
         <ul id="playlist-list" class="playlist-list"></ul>
     </aside>

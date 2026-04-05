@@ -6,84 +6,9 @@
  */
 // 左侧导航折叠/展开逻辑
 document.addEventListener('DOMContentLoaded', function () {
-	// 将文档中的 aside 收集到右下角浮动栈容器，避免重叠纵向排列
 // 模块：侧边栏控制 / Sidebar toggle, submenu, and responsive behavior.
 
 	const NARROW_BREAKPOINT = 960;
-
-	function addAsideCloseButtons(stack){
-		if (!stack) return;
-		stack.querySelectorAll('aside').forEach(card => {
-			if (card.querySelector('.aside-close')) return;
-			const btn = document.createElement('button');
-			btn.className = 'aside-close';
-			btn.setAttribute('aria-label', 'Close');
-			btn.innerHTML = '<i class="fluent-font" aria-hidden="true">&#xF369;</i>';
-			btn.addEventListener('click', () => {
-				card.classList.add('closing');
-				setTimeout(() => { card.remove(); }, 240);
-			});
-			card.appendChild(btn);
-		});
-	}
-
-	function sortAsideStack(stack){
-		if (!stack) return;
-		const orderMap = { beta: 1, archives: 2, 'cache-notice': 99 };
-		const cards = Array.from(stack.querySelectorAll(':scope > aside'));
-		if (cards.length <= 1) return;
-		const ranked = cards.map((card, idx) => {
-			const section = card.querySelector(':scope > section');
-			const dataOrder = (card.dataset && card.dataset.order) || (section && section.dataset ? section.dataset.order : undefined);
-			const parsed = dataOrder !== undefined && dataOrder !== null && dataOrder !== '' ? Number(dataOrder) : NaN;
-			const hasExplicitOrder = Number.isFinite(parsed);
-			const id = (card.id || (section && section.id) || '').toLowerCase();
-			const order = hasExplicitOrder ? parsed : (orderMap[id] !== undefined ? orderMap[id] : 50);
-			return { card, order, idx };
-		});
-		ranked.sort((a, b) => a.order === b.order ? a.idx - b.idx : a.order - b.order);
-		ranked.forEach(({ card }) => stack.appendChild(card));
-	}
-
-	function setupAsideStack() {
-		let stack = document.getElementById('aside-stack');
-		const asides = Array.from(document.querySelectorAll('main aside, body > aside'))
-			.filter(a => a.id !== 'site-aside' && a.closest('#aside-stack') === null);
-		if (!stack && !asides.length) return;
-		if (!stack) {
-			stack = document.createElement('div');
-			stack.id = 'aside-stack';
-			document.body.appendChild(stack);
-		}
-		// 将现有 aside 的内容按 section 拆分成多个卡片，避免在一个卡里堆叠
-		asides.forEach(a => {
-			const sections = Array.from(a.querySelectorAll(':scope > section'));
-			if (sections.length > 0) {
-				sections.forEach(sec => {
-					const card = document.createElement('aside');
-					card.appendChild(sec);
-					stack.appendChild(card);
-				});
-				a.remove();
-			} else {
-				stack.appendChild(a);
-			}
-		});
-		addAsideCloseButtons(stack);
-		sortAsideStack(stack);
-	}
-
-	window.refreshAsideStack = setupAsideStack;
-	setupAsideStack();
-	window.addEventListener('spa:page:loaded', setupAsideStack);
-
-	// 为浮动栈卡片添加关闭按钮
-	(function initAsideStackButtons() {
-		const stack = document.getElementById('aside-stack');
-		if (!stack) return;
-		addAsideCloseButtons(stack);
-		sortAsideStack(stack);
-	})();
 
 	// 全局：侧边栏与返回顶部位置调整
 	function adjustSidebarPosition() {
@@ -147,6 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		const collapseBtns = document.querySelectorAll('.sidebar-collapse-btn');
 		const body = document.body;
 		const SIDEBAR_KEY = 'sidebarCollapsed';
+		let wasNarrowView = window.innerWidth <= NARROW_BREAKPOINT;
+
+		function isNarrowView() {
+			return window.innerWidth <= NARROW_BREAKPOINT;
+		}
 
 		function setCollapsed(collapsed, save = true) {
 			body.classList.toggle('sidebar-collapsed', collapsed);
@@ -159,19 +89,39 @@ document.addEventListener('DOMContentLoaded', function () {
 					if (sm) sm.style.maxHeight = '0px';
 				});
 			}
-			if (save) localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0');
+			// 仅在宽屏记忆折叠状态，避免窄屏临时操作影响宽屏默认状态
+			if (save && !isNarrowView()) localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0');
 			adjustSidebarPosition();
 		}
 
-		// 恢复上次状态
-		const saved = localStorage.getItem(SIDEBAR_KEY);
-		if (saved === '1') setCollapsed(true, false);
+		// 供其他模块在需要时触发侧栏收起（如窄屏点击导航项后）
+		window.setSidebarCollapsed = setCollapsed;
+
+		function applyViewportDefault(force = false) {
+			const narrow = isNarrowView();
+			if (!force && narrow === wasNarrowView) return;
+			wasNarrowView = narrow;
+
+			if (narrow) {
+				// 窄屏默认收起
+				setCollapsed(true, false);
+				return;
+			}
+
+			// 宽屏按已保存状态恢复（默认展开）
+			const saved = localStorage.getItem(SIDEBAR_KEY);
+			setCollapsed(saved === '1', false);
+		}
+
+		applyViewportDefault(true);
 
 		collapseBtns.forEach(btn => {
 			btn.addEventListener('click', () => {
 				setCollapsed(!body.classList.contains('sidebar-collapsed'));
 			});
 		});
+
+		window.addEventListener('resize', () => applyViewportDefault(false));
 
 		// 在折叠状态变化时也重算位置（延迟以配合过渡）
 		const observer = new MutationObserver(() => { setTimeout(adjustSidebarPosition, 220); });
@@ -356,6 +306,10 @@ document.addEventListener('DOMContentLoaded', function () {
 					if (!a) return;
 					// schedule update shortly after click so SPA route handlers can run
 					setTimeout(markCurrentSidebarItem, 80);
+					// 窄屏下点击导航项后自动收起侧边栏（不影响展开/收起按钮）
+					if (window.innerWidth <= NARROW_BREAKPOINT && typeof window.setSidebarCollapsed === 'function') {
+						setTimeout(() => window.setSidebarCollapsed(true, false), 80);
+					}
 				});
 			}
 		})();

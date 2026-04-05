@@ -1233,6 +1233,7 @@ export class MediaPlayerCore {
             playlistDrawer: document.getElementById("playlist-drawer"),
             playlistList: document.getElementById("playlist-list"),
             playlistSearch: document.getElementById("playlist-search"),
+            playlistSearchClear: document.getElementById("playlist-search-clear"),
             fullscreenBtn: document.getElementById("fullscreen-btn"),
             danmakuBtn: document.getElementById("danmaku-btn"),
             danmakuSettingsBtn: document.getElementById("danmaku-settings-btn"),
@@ -1351,7 +1352,26 @@ export class MediaPlayerCore {
             this.refreshSettingValueBadges();
         });
 
-        this.ui.playlistSearch.addEventListener("input", () => this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase()));
+        this.ui.playlistSearch.addEventListener("input", () => {
+            this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+            this.refreshPlaylistSearchClearButton();
+        });
+        if (this.ui.playlistSearchClear) {
+            const clearSearch = () => {
+                this.ui.playlistSearch.value = "";
+                this.renderPlaylist("");
+                this.refreshPlaylistSearchClearButton();
+                this.ui.playlistSearch.focus();
+            };
+            this.ui.playlistSearchClear.addEventListener("click", clearSearch);
+            this.ui.playlistSearchClear.addEventListener("pointerdown", () => {
+                this.ui.playlistSearchClear.classList.add("is-danger-pressed");
+            });
+            const clearDangerState = () => this.ui.playlistSearchClear.classList.remove("is-danger-pressed");
+            this.ui.playlistSearchClear.addEventListener("pointerup", clearDangerState);
+            this.ui.playlistSearchClear.addEventListener("pointerleave", clearDangerState);
+            this.ui.playlistSearchClear.addEventListener("blur", clearDangerState);
+        }
 
         this.ui.fullscreenBtn.addEventListener("click", async () => {
             if (document.fullscreenElement) {
@@ -1525,6 +1545,8 @@ export class MediaPlayerCore {
             this.ui.videoStage.addEventListener("dblclick", () => this.togglePlay());
             this.bindVideoGestureEvents();
         }
+
+        this.refreshPlaylistSearchClearButton();
 
         document.addEventListener("fullscreenchange", () => this.handleFullscreenDockState());
         window.addEventListener("mousemove", (evt) => this.handleVideoFullscreenHover(evt));
@@ -1994,6 +2016,12 @@ export class MediaPlayerCore {
             target.appendChild(item);
         });
         this.loadVisiblePlaylistCovers();
+    }
+
+    refreshPlaylistSearchClearButton() {
+        if (!this.ui.playlistSearchClear || !this.ui.playlistSearch) return;
+        const hasText = String(this.ui.playlistSearch.value || "").trim().length > 0;
+        this.ui.playlistSearchClear.classList.toggle("hidden", !hasText);
     }
 
     async selectTrack(index) {

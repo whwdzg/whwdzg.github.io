@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// create/init lightbox so it can be called after SPA swaps
 	function initLightbox() {
 		console.log('[lightbox] initLightbox: scanning candidates');
-		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img')).filter(isEligibleForLightbox);
+		candidates = Array.from(document.querySelectorAll('main img')).filter(isEligibleForLightbox);
 		// rebuild captions for the new candidates
 		buildCaptions();
 		// if overlay was removed by SPA cleanup, re-create by re-running the init block
@@ -752,12 +752,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	function refreshAll(){
 		console.log('[lightbox] refreshAll called');
-		console.log('[lightbox] candidates before refresh: ' + document.querySelectorAll('main img, #aside-stack img').length);
+		console.log('[lightbox] candidates before refresh: ' + document.querySelectorAll('main img').length);
 		ensureOverlay();
 		// show debug panel ASAP when enabled (even if pointer events never fire)
 		try { ensureDebugPanel(); } catch (e) { /* ignore */ }
 		refreshOverlayRefs();
-		candidates = Array.from(document.querySelectorAll('main img, #aside-stack img')).filter(isEligibleForLightbox);
+		candidates = Array.from(document.querySelectorAll('main img')).filter(isEligibleForLightbox);
 		// clear previous attachment markers so we rebind cleanly after SPA swaps
 		document.querySelectorAll('img[data-lightbox-attached]').forEach(i => delete i.dataset.lightboxAttached);
 		console.log('[lightbox] candidates after query: ' + candidates.length);

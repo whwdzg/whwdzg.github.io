@@ -393,6 +393,11 @@ header .header-avatar {
 #header-search-overlay .search-input {
 	flex: 1;
 	min-width: 0;
+	font-size: 0.9rem;
+}
+
+#header-search-overlay .search-input::placeholder {
+	font-size: 0.88rem;
 }
 
 #header-search-overlay .search-submit {
@@ -582,10 +587,15 @@ header .header-avatar {
 	font-size: 0.95rem;
 }
 
-/* 可访问性：确保页眉/页脚内链接具有足够对比度 */
+/* 可访问性：仅在键盘导航时显示焦点样式，点击链接不显示蓝框 */
 header a:focus,
 footer a:focus {
-	outline: 3px solid rgba(3,102,214,0.18);
+	outline: none;
+}
+
+header a:focus-visible,
+footer a:focus-visible {
+	outline: 2px solid var(--border-color);
 	outline-offset: 2px;
 }
 
