@@ -8,9 +8,9 @@
 footer {
 	background-color: var(--secondary-bg);
 	color: var(--text-color);
-	padding: 1rem 1.25rem;
+	padding: 0.5rem 1rem;
 	text-align: center;
-	font-size: 0.95rem;
+	font-size: 0.75rem;
 	border-top: 1px solid var(--border-color);
 	transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 	width: 100%;

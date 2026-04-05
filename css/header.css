@@ -89,7 +89,7 @@ body.wallpaper-loading .page-loading-indicator {
 	}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 360px) {
 	header {
 		height: var(--header-height);
 		max-height: var(--header-height);
