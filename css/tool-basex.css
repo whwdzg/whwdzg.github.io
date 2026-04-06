@@ -1,7 +1,7 @@
 /*
- * [站点注释 Site Note]
- * 文件: D:\Documents\GitHub\whwdzg.github.io\css\tool-basex.css
- * 作用: 页面样式与布局规则，按模块拆分维护。
+ * [绔欑偣娉ㄩ噴 Site Note]
+ * 鏂囦欢: D:\Documents\GitHub\whwdzg.github.io\css\tool-basex.css
+ * 浣滅敤: 椤甸潰鏍峰紡涓庡竷灞€瑙勫垯锛屾寜妯″潡鎷嗗垎缁存姢銆?
  * English: Module-level styles for layout and presentation.
  */
 .basex-tool-card {
@@ -53,6 +53,7 @@
 }
 
 .basex-dropdown .settings-dropdown-toggle {
+  cursor: pointer;
   width: 100%;
   justify-content: space-between;
   padding: 0.65rem 0.85rem;
@@ -61,6 +62,18 @@
   background: var(--input-bg, #f9fafb);
   color: var(--text-color, #111827);
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+}
+
+.basex-dropdown .settings-dropdown-toggle .toggle-icon,
+.basex-dropdown .component-dropdown-toggle .toggle-icon {
+  transform: translateY(-50%) rotate(-90deg) !important;
+}
+
+.basex-dropdown .settings-dropdown-toggle[aria-expanded="true"] .toggle-icon,
+.basex-dropdown .component-dropdown-toggle[aria-expanded="true"] .toggle-icon,
+.basex-dropdown.open .settings-dropdown-toggle .toggle-icon,
+.basex-dropdown.open .component-dropdown-toggle .toggle-icon {
+  transform: translateY(-50%) rotate(90deg) !important;
 }
 
 body.dark-mode .basex-mode-row {
@@ -76,10 +89,26 @@ body.dark-mode .basex-dropdown .settings-dropdown-toggle {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.38);
 }
 
-.basex-dropdown .settings-dropdown-list { display: none; }
+.basex-dropdown .settings-dropdown-list,
+.basex-dropdown .component-dropdown-list {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.settings-dropdown-portal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1900;
+}
+
+.settings-dropdown-portal.hidden {
+  display: none !important;
+  pointer-events: none;
+}
 
 .basex-dropdown-portal {
-  z-index: 1400;
+  z-index: 1900;
   min-width: 220px;
   border: none;
   background: transparent;
@@ -87,16 +116,44 @@ body.dark-mode .basex-dropdown .settings-dropdown-toggle {
   padding: 0;
 }
 
-.basex-dropdown-portal .settings-dropdown-list {
+.basex-dropdown-portal .settings-dropdown-list,
+.basex-dropdown-portal .component-dropdown-list {
+  display: block;
   margin-top: 0;
   background: var(--card-bg);
   border: 1px solid var(--border-color, rgba(0, 0, 0, 0.12));
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
   padding: 6px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-4px) scale(0.99);
+  pointer-events: none;
+  transition: max-height 180ms ease, opacity 180ms ease, transform 180ms ease;
 }
 
-body.dark-mode .basex-dropdown-portal .settings-dropdown-list {
+.basex-dropdown-portal .component-dropdown-list.component-dropdown-list--portal,
+.basex-dropdown-portal .settings-dropdown-list.component-dropdown-list--portal {
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  min-width: 100%;
+  width: max-content;
+}
+
+.basex-dropdown-portal .settings-dropdown-list.open,
+.basex-dropdown-portal .component-dropdown-list.open,
+.basex-dropdown-portal .component-dropdown-list.is-open {
+  max-height: min(320px, calc(100vh - 24px));
+  overflow-y: auto;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+body.dark-mode .basex-dropdown-portal .settings-dropdown-list,
+body.dark-mode .basex-dropdown-portal .component-dropdown-list {
   background: var(--card-bg);
   border-color: var(--border-color);
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
@@ -107,33 +164,20 @@ body.dark-mode .basex-dropdown-portal .settings-dropdown-list {
   border-radius: 10px;
 }
 
-.basex-tool-panel textarea {
+.basex-tool-panel .component-textarea {
   width: 100%;
   max-width: 100%;
   min-height: 140px;
   font-family: var(--font-mono, "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif);
   font-size: 1rem;
-  border-radius: 10px;
   padding: 0.95rem;
-  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
-  background: var(--card-bg, #ffffff);
-  color: var(--text-color, #111827);
   resize: vertical;
-  box-shadow: 0 10px 30px var(--shadow-color, rgba(15, 23, 42, 0.18));
-  backdrop-filter: blur(6px);
-  transition: border 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   box-sizing: border-box;
 }
 
-.basex-tool-panel textarea::-webkit-resizer { display: none; }
-.basex-tool-panel textarea::-moz-resizer { display: none; }
+.basex-tool-panel .component-textarea::-webkit-resizer { display: none; }
+.basex-tool-panel .component-textarea::-moz-resizer { display: none; }
 
-.basex-tool-panel textarea:focus {
-  outline: none;
-  border-color: var(--border-color);
-  background: var(--input-focus-bg);
-  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
-}
 
 .basex-textarea-wrapper {
   position: relative;
@@ -203,48 +247,39 @@ body.dark-mode .basex-result-table th {
   gap: 0.45rem;
 }
 
-.unicode-decode-row input {
+.unicode-decode-row .component-dialog__input {
   width: 100%;
-  border-radius: 10px;
-  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
-  background: var(--card-bg, #ffffff);
-  color: var(--text-color, #111827);
-  padding: 0.65rem 0.8rem;
-  box-shadow: 0 6px 18px var(--shadow-color, rgba(15, 23, 42, 0.12));
 }
 
-.unicode-decode-row input:focus {
-  outline: none;
-  border-color: var(--border-color);
-  background: var(--input-focus-bg);
-  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
-}
-
-.basex-copy-btn {
+.basex-textarea-wrapper .copy-btn,
+.basex-list-wrapper .copy-btn,
+.calc-latex-wrapper .copy-btn {
   position: absolute;
   top: 0.6rem;
   right: 0.6rem;
-  background: rgba(180, 180, 180, 0.2);
-  border: none;
-  border-radius: 6px;
-  padding: 0.35rem 0.75rem;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  transition: background 0.2s ease, transform 0.2s ease;
   z-index: 2;
 }
 
-.basex-copy-btn:hover { background: rgba(180, 180, 180, 0.4); }
+.basex-textarea-wrapper .copy-btn.component-icon-btn,
+.basex-list-wrapper .copy-btn.component-icon-btn {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
+}
 
-.basex-copy-btn.copied {
+
+.basex-textarea-wrapper .copy-btn.copied,
+.basex-list-wrapper .copy-btn.copied,
+.calc-latex-wrapper .copy-btn.copied {
   background: var(--color-secondary, #10b981);
+  border-color: transparent;
   color: #fff;
 }
 
-.basex-copy-btn .fluent-icon {
+.basex-textarea-wrapper .copy-btn .fluent-icon,
+.basex-list-wrapper .copy-btn .fluent-icon,
+.calc-latex-wrapper .copy-btn .fluent-icon {
   font-family: 'FluentSystemIcons-Regular';
   font-size: 1rem;
   pointer-events: none;
@@ -265,34 +300,10 @@ body.dark-mode .basex-result-table th {
   gap: 0.75rem;
 }
 
-.basex-tool-actions button {
+.basex-tool-actions .component-btn {
   flex: 1 1 150px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  padding: 0.65rem 1rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
 }
 
-.basex-tool-actions button[data-basex-action="encode"] {
-  background: var(--color-accent, #3b82f6);
-  color: #fff;
-}
-
-.basex-tool-actions button[data-basex-action="decode"] {
-  background: var(--color-secondary, #10b981);
-  color: #fff;
-}
-
-.basex-tool-actions button[data-basex-action="clear"] {
-  background: transparent;
-  border-color: var(--border-color, rgba(0, 0, 0, 0.2));
-  color: var(--neutral-color, #1f2937);
-}
-
-.basex-tool-actions button:hover { filter: brightness(1.08); }
 
 .basex-tool-feedback {
   min-height: 1.5rem;
@@ -303,3 +314,5 @@ body.dark-mode .basex-result-table th {
 
 .basex-tool-feedback[data-state="success"] { color: var(--color-secondary, #10b981); }
 .basex-tool-feedback[data-state="error"] { color: var(--color-danger, #ef4444); }
+
+

@@ -239,7 +239,7 @@
 }
 
 /* 视图切换按钮样式（正方形+居中图标） */
-.settings-action-btn {
+.video-archive-view-switch .component-btn {
   width: 40px !important;
   height: 40px !important;
   min-width: 40px !important;
@@ -258,7 +258,7 @@
   cursor: pointer;
   transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease, opacity 120ms ease;
 }
-.settings-action-btn i {
+.video-archive-view-switch .component-btn i {
   font-size: 1.5rem;
   display: flex;
   align-items: center;
@@ -273,7 +273,7 @@
   border: 1px solid var(--border-color);
   padding: 2px;
 }
-.video-archive-view-switch .settings-action-btn {
+.video-archive-view-switch .component-btn {
   border: none;
   background: transparent;
   box-shadow: none;
@@ -281,14 +281,15 @@
   border-radius: 8px;
   transition: background 0.15s, color 0.15s;
 }
-.video-archive-view-switch .settings-action-btn.active,
-.video-archive-view-switch .settings-action-btn:focus {
-  background: var(--view-switch-active-bg, #fff);
+.video-archive-view-switch .component-btn.active,
+.video-archive-view-switch .component-btn:focus {
+  background: color-mix(in srgb, var(--primary-color, #2563eb) 16%, transparent);
   color: var(--primary-color, #2563eb);
-  box-shadow: 0 0 0 2px var(--primary-color, #2563eb) inset;
+  border-color: transparent;
+  box-shadow: none;
 }
-.video-archive-view-switch .settings-action-btn:not(.active):hover {
-  background: transparent;
+.video-archive-view-switch .component-btn:not(.active):hover {
+  background: color-mix(in srgb, var(--primary-color, #2563eb) 9%, transparent);
 }
 
 /* 修正 grid masonry 下 .video-card 宽度自适应 */

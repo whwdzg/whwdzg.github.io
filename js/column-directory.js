@@ -28,7 +28,7 @@
 
     content.innerHTML = '';
     var list = document.createElement('ul');
-    list.className = 'column-directory__list';
+    list.className = 'component-directory__list';
 
     entries.forEach(function(entry, index){
         if (!entry.node) return;
@@ -40,10 +40,10 @@
         }
 
         var item = document.createElement('li');
-        item.className = 'column-directory__item column-directory__level-' + entry.level;
+        item.className = 'component-directory__item level-' + entry.level;
 
         var link = document.createElement('a');
-        link.className = 'column-directory__link';
+        link.className = 'component-directory__link';
         link.href = '#' + entry.node.id;
         link.textContent = entry.text;
 

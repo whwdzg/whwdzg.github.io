@@ -21,15 +21,8 @@
   max-width: 100%;
   font-family: var(--font-mono, "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif);
   font-size: 1rem;
-  border-radius: 10px;
   padding: 0.95rem;
-  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
-  background: var(--card-bg, #ffffff);
-  color: var(--text-color, #111827);
   resize: vertical;
-  box-shadow: 0 10px 30px var(--shadow-color, rgba(15, 23, 42, 0.18));
-  backdrop-filter: blur(6px);
-  transition: border 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   box-sizing: border-box;
   min-height: 110px;
 }
@@ -38,13 +31,6 @@
   min-height: 88px;
 }
 
-#calc-input:focus,
-#calc-latex-raw:focus {
-  outline: none;
-  border-color: var(--border-color);
-  background: var(--input-focus-bg);
-  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
-}
 
 #calc-latex-raw[readonly] {
   opacity: 0.96;
@@ -83,23 +69,11 @@
   color: var(--text-color, #111827);
 }
 
-.calc-func-row input {
+.calc-func-row .component-dialog__input {
   width: 100%;
-  border-radius: 10px;
-  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
-  background: var(--card-bg, #ffffff);
-  color: var(--text-color, #111827);
-  padding: 0.5rem 0.65rem;
-  box-shadow: 0 6px 18px var(--shadow-color, rgba(15, 23, 42, 0.12));
   box-sizing: border-box;
 }
 
-.calc-func-row input:focus {
-  outline: none;
-  border-color: var(--border-color);
-  background: var(--input-focus-bg);
-  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
-}
 
 body.dark-mode .calc-result {
   color: var(--text-color, #f3f4f6);
@@ -123,10 +97,9 @@ body.dark-mode .calc-func-row label {
   color: var(--text-color, #f3f4f6);
 }
 
-body.dark-mode .calc-func-row input {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: var(--input-bg, #1f2937);
-  color: var(--text-color, #f3f4f6);
+body.dark-mode .calc-func-row .component-dialog__input {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .calc-grid {

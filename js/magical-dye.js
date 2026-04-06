@@ -89,7 +89,7 @@
         hashPending: true,
         filter: "all"
     };
-    var JSON_CACHE_VERSION = "2.0.3.8-20260405";
+    var JSON_CACHE_VERSION = "2.0.3.9-20260406";
     var JSON_CACHE_PREFIX = "pack-json:" + JSON_CACHE_VERSION + ":";
     var fetchTextCache = new Map();
 
@@ -786,6 +786,55 @@
         renderRecipes();
     }
 
+    function announceFilter(mode) {
+        var labels = {
+            all: '全部',
+            shapeless: '工作台 · 无序合成'
+        };
+        var message = '已筛选：' + (labels[mode] || '全部');
+        if (window.componentToast && typeof window.componentToast.show === 'function') {
+            window.componentToast.show(message, 'info', 'icon-ic_fluent_filter_24_regular');
+            return;
+        }
+        var componentToastEl = document.querySelector('[data-component-toast]');
+        if (componentToastEl) {
+            var componentToastIcon = componentToastEl.querySelector('.component-toast__icon');
+            var componentToastMessage = componentToastEl.querySelector('.component-toast__message');
+            if (componentToastMessage) componentToastMessage.textContent = message;
+            componentToastEl.classList.remove('component-toast--success', 'component-toast--warning', 'component-toast--error');
+            componentToastEl.classList.add('component-toast--info');
+            if (componentToastIcon) {
+                componentToastIcon.className = 'component-toast__icon fluent-icon icon-ic_fluent_filter_24_regular';
+            }
+            componentToastEl.classList.add('show');
+            if (window.__componentFilterToastTimer) clearTimeout(window.__componentFilterToastTimer);
+            window.__componentFilterToastTimer = setTimeout(function () {
+                componentToastEl.classList.remove('show');
+            }, 1600);
+            return;
+        }
+        if (window.globalCopyToast && typeof window.globalCopyToast.show === 'function') {
+            window.globalCopyToast.show(message, 'success', 'icon-ic_fluent_filter_24_regular');
+            return;
+        }
+        var toastEl = document.getElementById('global-copy-toast');
+        if (!toastEl) return;
+        var iconEl = toastEl.querySelector('.global-toast-icon');
+        var messageEl = toastEl.querySelector('.global-toast-message');
+        if (messageEl) messageEl.textContent = message;
+        toastEl.classList.remove('global-copy-toast--error');
+        toastEl.classList.add('global-copy-toast--success');
+        if (iconEl) {
+            iconEl.classList.remove('icon-ic_fluent_error_circle_24_regular');
+            iconEl.classList.add('icon-ic_fluent_filter_24_regular');
+        }
+        toastEl.classList.add('show');
+        if (window.__filterToastTimer) clearTimeout(window.__filterToastTimer);
+        window.__filterToastTimer = setTimeout(function () {
+            toastEl.classList.remove('show');
+        }, 1600);
+    }
+
     function describeRecipeType(type) {
         if (type === "minecraft:crafting_shaped") return "有序合成";
         if (type === "minecraft:crafting_shapeless") return "无序合成";
@@ -952,6 +1001,7 @@
             btn.addEventListener('click', function () {
                 var mode = btn.getAttribute('data-filter') || 'all';
                 applyFilter(mode);
+                announceFilter(mode);
             });
         });
     }

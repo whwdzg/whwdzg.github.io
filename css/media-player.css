@@ -215,9 +215,46 @@ body {
 .danmaku-layer {
     position: absolute;
     inset: 0;
+    z-index: 8;
     pointer-events: none;
     overflow: hidden;
     contain: layout paint;
+}
+
+.subtitle-layer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: max(1.1rem, env(safe-area-inset-bottom, 0px));
+    z-index: 9;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    padding: 0 1rem;
+}
+
+.subtitle-layer.hidden {
+    display: none;
+}
+
+.subtitle-cue {
+    max-width: min(88vw, 980px);
+    width: fit-content;
+    padding: 0.36rem 0.78rem;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.48);
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.36;
+    font-size: clamp(14px, 2.1vw, 24px);
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.subtitle-line + .subtitle-line {
+    margin-top: 0.18rem;
 }
 
 .danmaku-item {
@@ -269,10 +306,10 @@ body {
         opacity: 0;
     }
     10% {
-        opacity: 1;
+        opacity: var(--danmaku-opacity, 1);
     }
     90% {
-        opacity: 1;
+        opacity: var(--danmaku-opacity, 1);
     }
     100% {
         opacity: 0;
@@ -434,7 +471,7 @@ body {
 .lyric-karaoke .karaoke-fill {
     display: block;
     line-height: inherit;
-    white-space: normal;
+    white-space: pre-wrap;
     overflow-wrap: anywhere;
     word-break: break-word;
 }
@@ -447,11 +484,21 @@ body {
     position: absolute;
     inset: 0;
     color: var(--lyric-karaoke-done, #fff);
-    clip-path: inset(0 calc(100% - var(--karaoke-progress, 0%)) 0 0);
-    -webkit-clip-path: inset(0 calc(100% - var(--karaoke-progress, 0%)) 0 0);
-    transition: clip-path 90ms linear, -webkit-clip-path 90ms linear;
     text-shadow: none;
     pointer-events: none;
+}
+
+.lyric-karaoke .karaoke-partial-char {
+    color: transparent;
+    background: linear-gradient(
+        90deg,
+        var(--lyric-karaoke-done, #fff) 0,
+        var(--lyric-karaoke-done, #fff) var(--karaoke-char-progress, 0%),
+        rgba(255, 255, 255, 0) var(--karaoke-char-progress, 0%),
+        rgba(255, 255, 255, 0) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
 }
 
 .player-dock {
@@ -493,6 +540,7 @@ body {
 }
 
 .music-page .track-author,
+.music-page .track-album,
 .music-page .track-time,
 .music-page .quality,
 .music-page .lyric-translation,
@@ -652,6 +700,7 @@ body {
 }
 
 .track-author,
+.track-album,
 .track-time {
     font-size: 0.78rem;
     color: var(--text-muted);
@@ -1050,6 +1099,14 @@ body.video-fullscreen.show-dock .player-dock {
     pointer-events: auto;
 }
 
+body.video-fullscreen .subtitle-layer {
+    bottom: max(1.4rem, env(safe-area-inset-bottom, 0px));
+}
+
+body.video-fullscreen.show-dock .subtitle-layer {
+    bottom: max(6.6rem, env(safe-area-inset-bottom, 0px));
+}
+
 .playlist-search {
     width: 100%;
     border-radius: 8px;
@@ -1179,6 +1236,9 @@ body.video-fullscreen.show-dock .player-dock {
 .play-author-right {
     font-size: 0.7rem;
     color: rgba(228, 236, 255, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .hidden {
@@ -1398,6 +1458,7 @@ body.dynamic-off .dynamic-bg {
     }
 
     .track-author,
+    .track-album,
     .track-time {
         font-size: 0.72rem;
     }

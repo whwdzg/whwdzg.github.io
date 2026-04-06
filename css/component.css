@@ -295,6 +295,15 @@ body:has(.component-demo-page) {
   gap: 0.6rem;
 }
 
+.component-dialog__actions .component-btn {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
 /* Input and search bottom line */
 .component-input,
 .component-search-wrap {
@@ -575,13 +584,18 @@ body:has(.component-demo-page) {
 }
 
 .component-dropdown-toggle .toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%) rotate(0deg);
+  transform-origin: 50% 50%;
   transition: transform 220ms cubic-bezier(.2,.8,.2,1);
   width: 20px;
   height: 20px;
+  line-height: 1;
   font-size: 14px;
   color: var(--text-muted);
 }
@@ -592,6 +606,7 @@ body:has(.component-demo-page) {
 }
 
 .component-dropdown-list {
+  display: none;
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
@@ -614,6 +629,7 @@ body:has(.component-demo-page) {
 }
 
 .component-dropdown.open .component-dropdown-list {
+  display: block;
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
@@ -630,6 +646,7 @@ body:has(.component-demo-page) {
 }
 
 .component-dropdown-list.component-dropdown-list--portal {
+  display: block;
   position: fixed;
   left: 0;
   top: 0;
@@ -967,7 +984,8 @@ a.component-avatar {
 .component-filter-chip.active {
   background: linear-gradient(135deg, rgba(var(--primary-color-rgb, 51,204,153), 0.95), rgba(var(--primary-color-rgb, 51,204,153), 0.72));
   color: #fff;
-  box-shadow: 0 0 0 1px rgba(var(--primary-color-rgb, 51,204,153), 0.88) inset, 0 8px 18px rgba(0,0,0,0.14);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 /* Display bar */
@@ -1246,7 +1264,7 @@ a.component-avatar {
   bottom: 12px;
   transform: translateX(-50%);
   width: min(920px, calc(100vw - 1.2rem));
-  z-index: 1700;
+  z-index: 1590;
   padding: 0.7rem 0.9rem;
   background: color-mix(in srgb, var(--card-bg) 84%, transparent);
   border: 1px solid var(--border-color);
@@ -1254,14 +1272,22 @@ a.component-avatar {
   box-shadow: 0 14px 30px var(--shadow-color);
   backdrop-filter: blur(10px);
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;
   gap: 0.7rem;
-  align-items: center;
+  align-items: stretch;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transform: translate(-50%, 10px) scale(0.98);
   transition: opacity 220ms cubic-bezier(.2,.8,.2,1), transform 240ms cubic-bezier(.2,.8,.2,1), visibility 220ms cubic-bezier(.2,.8,.2,1);
+}
+
+body.no-scroll-lightbox .component-audio-dock,
+body.settings-modal-open .component-audio-dock {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .component-audio-dock.show {
@@ -1280,7 +1306,23 @@ a.component-avatar {
 
 .component-audio-main {
   display: grid;
-  gap: 0.22rem;
+  gap: 0.16rem;
+  min-width: 0;
+}
+
+.component-audio-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.component-audio-info {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
 }
 
 .component-audio-symbol {
@@ -1318,29 +1360,52 @@ a.component-avatar {
   font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.2;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .component-audio-author {
   color: var(--text-muted);
   font-size: 0.82rem;
   line-height: 1.2;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.component-audio-album {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .component-audio-time {
   color: var(--text-muted);
   font-size: 0.88rem;
-}
-
-.component-audio-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .component-audio-progress {
   width: 100%;
+}
+
+.component-audio-actions {
+  width: auto;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin: 0;
 }
 
 .component-video-controls {
@@ -1554,8 +1619,178 @@ a.component-avatar {
   .component-dialog__panel {
     padding: 1rem 1.1rem;
   }
+  .component-dialog__actions {
+    flex-wrap: wrap;
+  }
+  .component-dialog__actions .component-btn {
+    width: 100%;
+    justify-content: center;
+  }
   .component-demo-controls {
     min-width: 0;
     width: 100%;
+  }
+
+  .component-audio-dock {
+    left: calc(env(safe-area-inset-left, 0px) + 0.85rem);
+    right: calc(env(safe-area-inset-right, 0px) + 0.85rem);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+    width: auto;
+    max-width: none;
+    padding: 0.52rem 0.72rem 0.62rem;
+    transform: translateY(10px) scale(0.98);
+    row-gap: 0.52rem;
+    overflow: hidden;
+  }
+
+  .component-audio-dock.show {
+    transform: translateY(0) scale(1);
+  }
+
+  .component-audio-dock.is-closing {
+    transform: translateY(12px) scale(0.98);
+  }
+
+  .component-audio-symbol {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  .component-audio-main {
+    display: grid;
+    gap: 0.16rem;
+    min-width: 0;
+  }
+
+  .component-audio-name,
+  .component-audio-author,
+  .component-audio-album,
+  .component-audio-time {
+    padding-right: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .component-audio-progress {
+    width: 100%;
+    margin: 0;
+    height: 10px;
+    border-radius: 999px;
+  }
+
+  .component-audio-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.52rem;
+    align-items: start;
+  }
+
+  .component-audio-info {
+    gap: 0.52rem;
+    align-items: start;
+  }
+
+  .component-audio-actions {
+    width: auto;
+    justify-content: flex-end;
+    gap: 0.22rem;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: 0;
+  }
+
+  .component-audio-actions .component-btn {
+    min-width: 30px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+  }
+
+  .component-audio-actions .component-btn.component-icon-btn {
+    width: 30px;
+    min-width: 30px;
+    padding: 0;
+  }
+
+  .component-audio-actions a[href*="/media/music.html"],
+  .component-audio-actions a[href*="/media/video.html"] {
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    padding: 0;
+    gap: 0;
+    justify-content: center;
+    font-size: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .component-audio-actions a[href*="/media/music.html"] i,
+  .component-audio-actions a[href*="/media/video.html"] i {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .component-video-meta a[href*="/media/video.html"] {
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    padding: 0;
+    gap: 0;
+    justify-content: center;
+    font-size: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .component-video-meta a[href*="/media/video.html"] i {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .component-audio-dock {
+    left: calc(env(safe-area-inset-left, 0px) + 0.62rem);
+    right: calc(env(safe-area-inset-right, 0px) + 0.62rem);
+    padding: 0.46rem 0.56rem 0.56rem;
+    row-gap: 0.44rem;
+  }
+
+  .component-audio-symbol {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+  }
+
+  .component-audio-info {
+    gap: 0.44rem;
+  }
+
+  .component-audio-actions .component-btn,
+  .component-audio-actions .component-btn.component-icon-btn,
+  .component-audio-actions a[href*="/media/music.html"],
+  .component-audio-actions a[href*="/media/video.html"] {
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+  }
+
+  .component-audio-actions a[href*="/media/music.html"] i,
+  .component-audio-actions a[href*="/media/video.html"] i {
+    font-size: 15px;
+  }
+
+  .component-video-meta a[href*="/media/video.html"] {
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+  }
+
+  .component-video-meta a[href*="/media/video.html"] i {
+    font-size: 15px;
   }
 }

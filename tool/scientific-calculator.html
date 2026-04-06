@@ -148,15 +148,15 @@
                         <p class="field-hint">表达式 / 解方程 / 函数图像</p>
                     </div>
                     <input type="hidden" id="calc-work-mode" value="expr">
-                    <div class="settings-dropdown basex-dropdown" data-open="false" data-calc-dropdown="mode">
-                        <button type="button" class="settings-dropdown-toggle" id="calc-work-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                    <div class="settings-dropdown component-dropdown basex-dropdown" data-open="false" data-calc-dropdown="mode">
+                        <button type="button" class="settings-dropdown-toggle component-dropdown-toggle" id="calc-work-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
                             <span class="toggle-label" id="calc-work-mode-label">表达式</span>
                             <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
                         </button>
-                        <div class="settings-dropdown-list" id="calc-work-mode-list" role="listbox">
-                            <div class="dropdown-item selected" role="option" data-value="expr" aria-selected="true">表达式</div>
-                            <div class="dropdown-item" role="option" data-value="equation">解方程</div>
-                            <div class="dropdown-item" role="option" data-value="graph">函数图像</div>
+                        <div class="settings-dropdown-list component-dropdown-list" id="calc-work-mode-list" role="listbox">
+                            <div class="dropdown-item component-dropdown-item selected" role="option" data-value="expr" aria-selected="true">表达式</div>
+                            <div class="dropdown-item component-dropdown-item" role="option" data-value="equation">解方程</div>
+                            <div class="dropdown-item component-dropdown-item" role="option" data-value="graph">函数图像</div>
                         </div>
                     </div>
                 </div>
@@ -167,14 +167,14 @@
                         <p class="field-hint">三角函数计算角度</p>
                     </div>
                     <input type="hidden" id="calc-angle-mode" value="deg">
-                    <div class="settings-dropdown basex-dropdown" data-open="false" data-calc-dropdown="angle">
-                        <button type="button" class="settings-dropdown-toggle" id="calc-angle-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                    <div class="settings-dropdown component-dropdown basex-dropdown" data-open="false" data-calc-dropdown="angle">
+                        <button type="button" class="settings-dropdown-toggle component-dropdown-toggle" id="calc-angle-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
                             <span class="toggle-label" id="calc-angle-mode-label">DEG</span>
                             <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
                         </button>
-                        <div class="settings-dropdown-list" id="calc-angle-mode-list" role="listbox">
-                            <div class="dropdown-item selected" role="option" data-value="deg" aria-selected="true">DEG</div>
-                            <div class="dropdown-item" role="option" data-value="rad">RAD</div>
+                        <div class="settings-dropdown-list component-dropdown-list" id="calc-angle-mode-list" role="listbox">
+                            <div class="dropdown-item component-dropdown-item selected" role="option" data-value="deg" aria-selected="true">DEG</div>
+                            <div class="dropdown-item component-dropdown-item" role="option" data-value="rad">RAD</div>
                         </div>
                     </div>
                 </div>
@@ -185,14 +185,14 @@
                         <p class="field-hint">是否包含虚数解（仅解方程模式有效）</p>
                     </div>
                     <input type="hidden" id="calc-complex-mode" value="real">
-                    <div class="settings-dropdown basex-dropdown" data-open="false" data-calc-dropdown="complex">
-                        <button type="button" class="settings-dropdown-toggle" id="calc-complex-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                    <div class="settings-dropdown component-dropdown basex-dropdown" data-open="false" data-calc-dropdown="complex">
+                        <button type="button" class="settings-dropdown-toggle component-dropdown-toggle" id="calc-complex-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
                             <span class="toggle-label" id="calc-complex-mode-label">仅实数解</span>
                             <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
                         </button>
-                        <div class="settings-dropdown-list" id="calc-complex-mode-list" role="listbox">
-                            <div class="dropdown-item selected" role="option" data-value="real" aria-selected="true">仅实数解</div>
-                            <div class="dropdown-item" role="option" data-value="complex">包含虚数解</div>
+                        <div class="settings-dropdown-list component-dropdown-list" id="calc-complex-mode-list" role="listbox">
+                            <div class="dropdown-item component-dropdown-item selected" role="option" data-value="real" aria-selected="true">仅实数解</div>
+                            <div class="dropdown-item component-dropdown-item" role="option" data-value="complex">包含虚数解</div>
                         </div>
                     </div>
                 </div>
@@ -200,13 +200,13 @@
                 <div class="calc-ans">Ans: <span id="calc-ans">0</span></div>
 
                 <label for="calc-input">输入</label>
-                <textarea id="calc-input" rows="4" spellcheck="false" placeholder="表达式：sin(30)+2^3；方程：x^2+2x+5=0；图像：sin(x)+x/3"></textarea>
+                <textarea id="calc-input" class="component-textarea" rows="4" spellcheck="false" placeholder="表达式：sin(30)+2^3；方程：x^2+2x+5=0；图像：sin(x)+x/3"></textarea>
 
                 <div class="calc-func-row" aria-label="自定义函数">
                     <label for="calc-fx">f(x)</label>
-                    <input id="calc-fx" type="text" spellcheck="false" placeholder="例如：x^2+1">
+                    <input id="calc-fx" class="component-dialog__input" type="text" spellcheck="false" placeholder="例如：x^2+1">
                     <label for="calc-gx">g(x)</label>
-                    <input id="calc-gx" type="text" spellcheck="false" placeholder="例如：sin(x)">
+                    <input id="calc-gx" class="component-dialog__input" type="text" spellcheck="false" placeholder="例如：sin(x)">
                 </div>
 
                 <div id="calc-result" class="calc-result" aria-live="polite">结果: -</div>
@@ -267,13 +267,13 @@
 
                 <label for="calc-latex-raw">LaTeX</label>
                 <div class="basex-textarea-wrapper calc-latex-wrapper">
-                    <button type="button" class="basex-copy-btn" data-copy-target="calc-latex-raw" title="复制 LaTeX 文本">
+                    <button type="button" class="basex-copy-btn copy-btn component-btn component-btn--flat" data-copy-target="calc-latex-raw" title="复制 LaTeX 文本">
                         <span class="fluent-icon"></span>
                         <span>复制</span>
                     </button>
                     <div id="calc-latex-render" class="calc-latex-render" aria-live="polite">\text{等待生成}</div>
                 </div>
-                <textarea id="calc-latex-raw" rows="3" readonly hidden></textarea>
+                <textarea id="calc-latex-raw" class="component-textarea" rows="3" readonly hidden></textarea>
 
                 <div class="calc-steps-card">
                     <h3>求解步骤</h3>

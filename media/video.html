@@ -39,6 +39,7 @@
         <section class="video-stage" id="video-stage">
             <video id="main-media" playsinline></video>
             <div class="danmaku-layer" id="danmaku-layer"></div>
+            <div class="subtitle-layer hidden" id="subtitle-layer" aria-live="polite"></div>
         </section>
     </main>
 
@@ -60,6 +61,7 @@
                 <div class="track-meta">
                     <div id="track-title" class="track-title">未导入视频</div>
                     <div id="track-author" class="track-author">作者：-</div>
+                    <div id="track-album" class="track-album hidden"></div>
                     <div class="track-time"><span id="running-time">00:00</span> / <span id="total-time">00:00</span></div>
                 </div>
             </div>
@@ -153,13 +155,6 @@
                 </label>
             </div>
             <div class="setting-row">
-                <label for="block-bottom-danmaku">屏蔽下方弹幕</label>
-                <label class="component-switch" aria-label="屏蔽下方弹幕开关">
-                    <input id="block-bottom-danmaku" class="component-switch__input" type="checkbox">
-                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
-                </label>
-            </div>
-            <div class="setting-row">
                 <label for="danmaku-layout">排布模式</label>
                 <div class="component-dropdown" id="danmaku-layout-dropdown">
                     <button class="component-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="listbox" aria-controls="danmaku-layout-list">
@@ -216,6 +211,20 @@
                     <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
                 </label>
             </div>
+            <div class="setting-row">
+                <label for="toggle-subtitle">开启字幕</label>
+                <label class="component-switch" aria-label="开启字幕开关">
+                    <input id="toggle-subtitle" class="component-switch__input" type="checkbox" checked>
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <label for="subtitle-opacity">字幕透明度</label>
+                <div class="setting-control">
+                    <input id="subtitle-opacity" class="component-slider component-range-slider" type="range" min="0.2" max="1" step="0.05" value="1">
+                    <input class="setting-value-input component-dialog__input" id="subtitle-opacity-value" type="text" value="100%">
+                </div>
+            </div>
         </div>
 
         <div id="volume-panel" class="floating-panel" aria-label="音量面板">
@@ -251,7 +260,7 @@
             </div>
         </div>
 
-        <input id="import-file-input" class="hidden" type="file" multiple accept="video/*,.mp4,.mkv,.webm,.mov,.avi,.xml">
+        <input id="import-file-input" class="hidden" type="file" multiple accept="video/*,.mp4,.mkv,.webm,.mov,.avi,.xml,.ass,.ssa,.srt,.vtt">
         <input id="import-folder-input" class="hidden" type="file" multiple webkitdirectory directory>
     </section>
 

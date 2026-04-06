@@ -18,7 +18,7 @@
     <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
     <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
     <link rel="preload" href="/css/variables.css" as="style">
-    <link rel="preload" href="/includes/shell.html?v=2.0.3.8-20260405" as="fetch" crossorigin>
+    <link rel="preload" href="/includes/shell.html?v=2.0.3.9-20260406" as="fetch" crossorigin>
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="/css/variables.css">
@@ -115,7 +115,7 @@
                     move();
                 }
             }
-            var SHELL_VERSION = '2.0.3.8-20260405';
+            var SHELL_VERSION = '2.0.3.9-20260406';
             var SHELL_CACHE_KEY = 'shell-html:' + SHELL_VERSION;
             function withVersion(url) {
                 if (location.protocol === 'file:') return url;
@@ -179,10 +179,10 @@
                         <h2 style="margin:0;">总览</h2>
                         <p class="article-subtitle" id="ench-subtitle">正在读取附魔...</p>
                     </div>
-                    <div class="recipe-filter-row" id="ench-filter" aria-label="筛选附魔类型">
-                        <button class="filter-chip active" data-filter="all">全部</button>
-                        <button class="filter-chip" data-filter="armor">护甲</button>
-                        <button class="filter-chip" data-filter="any">泛用</button>
+                    <div class="recipe-filter-row component-filter-row" id="ench-filter" aria-label="筛选附魔类型">
+                        <button class="filter-chip component-filter-chip active" data-filter="all">全部</button>
+                        <button class="filter-chip component-filter-chip" data-filter="armor">护甲</button>
+                        <button class="filter-chip component-filter-chip" data-filter="any">泛用</button>
                     </div>
                 </div>
                 <div class="recipe-stat-grid" id="ench-stats">

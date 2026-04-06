@@ -219,6 +219,7 @@ function parseLrcText(rawLrc) {
         if (inlineTimed) {
             entries.push({
                 time: inlineTimed.time,
+                anchorTime: inlineTimed.time,
                 text: inlineTimed.text,
                 words: inlineTimed.words,
                 translations: [],
@@ -245,6 +246,7 @@ function parseLrcText(rawLrc) {
             const sec = Number(match[1]) * 60 + Number(match[2]);
             entries.push({
                 time: sec,
+                anchorTime: sec,
                 text: mainText,
                 words: wordList,
                 translations: [],
@@ -274,6 +276,7 @@ function parseLrcText(rawLrc) {
         } else {
             grouped.push({
                 time: item.time,
+                anchorTime: Number(item.anchorTime ?? item.time),
                 text: item.text,
                 words: item.words,
                 translations: [...(item.translations || [])],
@@ -315,6 +318,7 @@ function parseSyncedLyrics(raw, encodingByte = 0) {
         if (compact || words.length) {
             lines.push({
                 time: current.time,
+                anchorTime: current.time,
                 text: compact || words.map((w) => w.text).join(""),
                 words: words.length ? words : null,
                 translations: [],
@@ -348,26 +352,36 @@ function parseSyncedLyrics(raw, encodingByte = 0) {
 
     pushCurrent();
 
-    // Merge identical timestamps as translation lines, keeping the first line
-    // as the primary karaoke line.
-    const grouped = [];
+    // Keep every lyric line and normalize timeline to avoid same-timestamp lines
+    // being skipped by active-line lookup during playback.
+    const normalized = [];
     for (const line of lines) {
-        const last = grouped[grouped.length - 1];
-        if (last && Math.abs(last.time - line.time) < 0.001) {
-            if (line.text && line.text !== last.text && !last.translations.includes(line.text)) {
-                last.translations.push(line.text);
-            }
+        const rawTime = Number(line?.time || 0);
+        const baseText = String(line?.text || "").trim();
+        const words = Array.isArray(line?.words) && line.words.length ? line.words : null;
+        const text = baseText || (words ? words.map((w) => String(w.text || "")).join("").trim() : "");
+        if (!text && !words) continue;
+
+        const prev = normalized[normalized.length - 1];
+        if (prev && Math.abs(prev.anchorTime - rawTime) < 0.001 && isLikelySameLyricText(prev.text, text)) {
+            if (!prev.words && words) prev.words = words;
             continue;
         }
-        grouped.push({
-            time: line.time,
-            text: line.text,
-            words: line.words,
+
+        let time = Number.isFinite(rawTime) ? rawTime : (prev ? prev.time + 0.001 : 0);
+        if (prev && time <= prev.time) {
+            time = prev.time + 0.001;
+        }
+        normalized.push({
+            time,
+            anchorTime: Number.isFinite(rawTime) ? rawTime : time,
+            text,
+            words,
             translations: [...(line.translations || [])],
         });
     }
 
-    return grouped;
+    return normalized;
 }
 
 function timedTrackMeta(lines) {
@@ -443,6 +457,158 @@ function collectLyricCandidates(line) {
     return list;
 }
 
+function getLyricLineAnchorTime(line) {
+    const anchorTime = Number(line?.anchorTime);
+    if (Number.isFinite(anchorTime)) return anchorTime;
+    const wordTime = Number(line?.words?.[0]?.time);
+    if (Number.isFinite(wordTime)) return wordTime;
+    const lineTime = Number(line?.time);
+    if (Number.isFinite(lineTime)) return lineTime;
+    return 0;
+}
+
+function buildLyricAnchorLookup(lines) {
+    const lookup = new Map();
+    (lines || []).forEach((line, index) => {
+        const key = Math.round(getLyricLineAnchorTime(line) * 1000);
+        if (!Number.isFinite(key)) return;
+        if (!lookup.has(key)) lookup.set(key, []);
+        lookup.get(key).push(index);
+    });
+    return lookup;
+}
+
+function findLyricAnchorMatchedIndex(lookup, time, preferredIndex = 0) {
+    if (!lookup || !lookup.size || !Number.isFinite(time)) return -1;
+    const key = Math.round(Number(time) * 1000);
+    const candidates = lookup.get(key);
+    if (!candidates || !candidates.length) return -1;
+    let best = candidates[0];
+    let bestDist = Math.abs(best - preferredIndex);
+    for (let i = 1; i < candidates.length; i += 1) {
+        const idx = candidates[i];
+        const dist = Math.abs(idx - preferredIndex);
+        if (dist < bestDist) {
+            best = idx;
+            bestDist = dist;
+        }
+    }
+    return best;
+}
+
+function normalizeLyricCompareText(text) {
+    return String(text || "")
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .replace(/[，。！？、,.!?;:：；'"`~\-_=+()\[\]{}<>《》【】「」『』]/g, "");
+}
+
+function isLikelySameLyricText(a, b) {
+    const ta = normalizeLyricCompareText(a);
+    const tb = normalizeLyricCompareText(b);
+    if (!ta || !tb) return false;
+    if (ta === tb) return true;
+    if (ta.includes(tb) || tb.includes(ta)) {
+        const minLen = Math.min(ta.length, tb.length);
+        const maxLen = Math.max(ta.length, tb.length);
+        return (minLen / Math.max(maxLen, 1)) >= 0.72;
+    }
+    return false;
+}
+
+function detectLyricScript(text) {
+    const source = String(text || "");
+    let cjk = 0;
+    let latin = 0;
+    let kana = 0;
+    let hangul = 0;
+    let cyrillic = 0;
+    for (const ch of source) {
+        const cp = ch.codePointAt(0) || 0;
+        if ((cp >= 0x4e00 && cp <= 0x9fff) || (cp >= 0x3400 && cp <= 0x4dbf)) {
+            cjk += 1;
+        } else if ((cp >= 0x3040 && cp <= 0x30ff) || (cp >= 0x31f0 && cp <= 0x31ff)) {
+            kana += 1;
+        } else if (cp >= 0xac00 && cp <= 0xd7af) {
+            hangul += 1;
+        } else if (cp >= 0x0400 && cp <= 0x04ff) {
+            cyrillic += 1;
+        } else if ((cp >= 0x0041 && cp <= 0x007a) || (cp >= 0x00c0 && cp <= 0x024f)) {
+            latin += 1;
+        }
+    }
+    const max = Math.max(cjk, latin, kana, hangul, cyrillic);
+    if (max <= 0) return "unknown";
+    if (max === cjk) return "cjk";
+    if (max === latin) return "latin";
+    if (max === kana) return "kana";
+    if (max === hangul) return "hangul";
+    return "cyrillic";
+}
+
+function pickSingleTranslationCandidate(line, baseText = "") {
+    const pool = [line?.text, ...(line?.translations || [])];
+    for (let i = 0; i < pool.length; i += 1) {
+        const text = String(pool[i] || "").trim();
+        if (!text) continue;
+        if (baseText && isLikelySameLyricText(text, baseText)) continue;
+        return text;
+    }
+    return "";
+}
+
+function sanitizeLyricsForDisplay(lines) {
+    const sanitized = (lines || []).map((line) => ({
+        ...line,
+        translations: [...(line?.translations || [])],
+    }));
+
+    let diffScriptPairs = 0;
+    let totalPairs = 0;
+    sanitized.forEach((line) => {
+        const baseText = String(line?.text || "").trim();
+        const unique = [];
+        (line.translations || []).forEach((raw) => {
+            const text = String(raw || "").trim();
+            if (!text) return;
+            if (isLikelySameLyricText(text, baseText)) return;
+            if (unique.some((item) => isLikelySameLyricText(item, text))) return;
+            unique.push(text);
+        });
+        line.translations = unique.slice(0, 1);
+        if (!baseText || !line.translations.length) return;
+        const baseScript = detectLyricScript(baseText);
+        line.translations.forEach((trans) => {
+            totalPairs += 1;
+            const transScript = detectLyricScript(trans);
+            if (baseScript !== "unknown" && transScript !== "unknown" && baseScript !== transScript) {
+                diffScriptPairs += 1;
+            }
+        });
+    });
+
+    if (!totalPairs || diffScriptPairs <= 0) {
+        sanitized.forEach((line) => {
+            line.translations = [];
+        });
+    }
+
+    // Ensure strictly increasing timestamps to avoid same-time lines being skipped.
+    let lastTime = -Infinity;
+    sanitized.forEach((line) => {
+        const rawTime = Number(line?.time);
+        let safeTime = Number.isFinite(rawTime) ? rawTime : (Number.isFinite(lastTime) ? lastTime + 0.001 : 0);
+        if (safeTime <= lastTime) safeTime = lastTime + 0.001;
+        if (!Number.isFinite(Number(line.anchorTime))) {
+            line.anchorTime = Number.isFinite(rawTime) ? rawTime : safeTime;
+        }
+        line.time = safeTime;
+        lastTime = safeTime;
+    });
+
+    return sanitized;
+}
+
 function backfillMissingTranslationsByIndex(baseLines, extraLines, options = {}) {
     const base = baseLines || [];
     const extras = extraLines || [];
@@ -501,6 +667,7 @@ function mergeSyncedLyricTracks(trackList) {
         if (exact) return exact;
         const base = {
             time: line.time,
+            anchorTime: Number(line.anchorTime ?? getLyricLineAnchorTime(line)),
             text: line.text,
             words: line.words || null,
             translations: [...(line.translations || [])],
@@ -529,61 +696,62 @@ function mergeSyncedLyricTracks(trackList) {
         };
     };
 
-    // First SYLT track is the base karaoke line.
-    tracks[0].forEach((line) => ensureBase(line));
+    const scoreTrack = (track) => {
+        let textChars = 0;
+        let wordCount = 0;
+        (track || []).forEach((line) => {
+            textChars += [...String(line?.text || "")].length;
+            wordCount += Array.isArray(line?.words) ? line.words.length : 0;
+        });
+        return textChars + (track.length * 6) + (wordCount * 2);
+    };
+
+    let baseTrackIndex = 0;
+    let bestScore = -Infinity;
+    for (let i = 0; i < tracks.length; i += 1) {
+        const score = scoreTrack(tracks[i]);
+        if (score > bestScore) {
+            bestScore = score;
+            baseTrackIndex = i;
+        }
+    }
+
+    // Use the richest SYLT track as the base karaoke line.
+    tracks[baseTrackIndex].forEach((line) => ensureBase(line));
+    const baseAnchorLookup = buildLyricAnchorLookup(merged);
 
     // Remaining SYLT tracks are treated as translation candidates.
-    for (let i = 1; i < tracks.length; i += 1) {
+    for (let i = 0; i < tracks.length; i += 1) {
+        if (i === baseTrackIndex) continue;
         let cursor = 0;
         const candidateTrack = tracks[i];
-        const allowIndexFallback = canUseIndexFallback(merged, candidateTrack);
         const trackShift = estimateTrackTimeShift(merged, candidateTrack);
-        tracks[i].forEach((line, lineIndex) => {
+        tracks[i].forEach((line) => {
             let base = null;
+            const anchorTime = getLyricLineAnchorTime(line);
+            const exactIndex = findLyricAnchorMatchedIndex(baseAnchorLookup, anchorTime, cursor);
+            if (exactIndex >= 0) {
+                base = merged[exactIndex];
+                cursor = exactIndex;
+            }
             const shiftedTime = Number(line.time || 0) + trackShift;
             const expected = estimateIndexByTime(merged, candidateTrack, shiftedTime);
-            const narrowCursor = Math.max(0, Math.min(cursor, expected + 2));
-            const { target, index, diff } = findNearestBaseInWindow(shiftedTime, narrowCursor);
-            if (target && diff <= 1.2) {
-                base = target;
-                cursor = Math.max(0, index);
-            } else if (allowIndexFallback && merged.length) {
-                // Only allow index fallback when line count and timeline span are close.
-                const ratio = candidateTrack.length > 1 ? lineIndex / Math.max(candidateTrack.length - 1, 1) : 0;
-                const mapped = Math.round(ratio * Math.max(merged.length - 1, 0));
-                const mappedIndex = Math.min(Math.max(mapped, expected - 1), Math.min(expected + 1, merged.length - 1));
-                base = merged[mappedIndex];
-                cursor = mappedIndex;
-            } else {
-                // Relaxed rescue for shifted tracks: only within tiny neighborhood.
-                const left = Math.max(0, expected - 1);
-                const right = Math.min(merged.length - 1, expected + 1);
-                let pick = -1;
-                let pickDiff = Infinity;
-                for (let k = left; k <= right; k += 1) {
-                    const d = Math.abs(Number(merged[k].time || 0) - shiftedTime);
-                    if (d < pickDiff) {
-                        pick = k;
-                        pickDiff = d;
-                    }
-                }
-                if (pick >= 0 && pickDiff <= 1.8) {
-                    base = merged[pick];
-                    cursor = pick;
+            if (!base) {
+                const narrowCursor = Math.max(0, Math.min(cursor, expected + 2));
+                const { target, index, diff } = findNearestBaseInWindow(shiftedTime, narrowCursor);
+                if (target && diff <= 0.75) {
+                    base = target;
+                    cursor = Math.max(0, index);
                 } else {
                     return;
                 }
             }
-            const candidates = collectLyricCandidates(line);
-            if (!candidates.length) return;
-            candidates.forEach((text) => {
-                if (text === base.text) return;
-                if (!base.translations.includes(text)) {
-                    base.translations.push(text);
-                }
-            });
+            const candidate = pickSingleTranslationCandidate(line, base.text);
+            if (!candidate || candidate === base.text) return;
+            if (!base.translations.includes(candidate)) {
+                base.translations.push(candidate);
+            }
         });
-        backfillMissingTranslationsByIndex(merged, candidateTrack, { radius: 2, maxPerLine: 1 });
     }
 
     merged.sort((a, b) => a.time - b.time);
@@ -593,6 +761,7 @@ function mergeSyncedLyricTracks(trackList) {
 function mergeTimedLyricsNearest(baseLines, extraLines) {
     const base = (baseLines || []).map((line) => ({
         time: line.time,
+        anchorTime: Number(line.anchorTime ?? getLyricLineAnchorTime(line)),
         text: line.text,
         words: line.words || null,
         translations: [...(line.translations || [])],
@@ -601,12 +770,19 @@ function mergeTimedLyricsNearest(baseLines, extraLines) {
     if (!base.length || !extras.length) return base;
 
     let cursor = 0;
-    const tolerance = 1.2;
-    const allowIndexFallback = canUseIndexFallback(base, extras);
+    const tolerance = 0.7;
     const trackShift = estimateTrackTimeShift(base, extras);
+    const baseAnchorLookup = buildLyricAnchorLookup(base);
 
-    const findTarget = (time, fallbackIndex) => {
+    const findTarget = (line) => {
         if (!base.length) return null;
+        const anchorTime = getLyricLineAnchorTime(line);
+        const directAnchorIndex = findLyricAnchorMatchedIndex(baseAnchorLookup, anchorTime, cursor);
+        if (directAnchorIndex >= 0) {
+            cursor = directAnchorIndex;
+            return base[directAnchorIndex];
+        }
+        const time = Number(line?.time || 0);
         const shiftedTime = Number(time || 0) + trackShift;
         const expected = estimateIndexByTime(base, extras, shiftedTime);
         const left = Math.max(0, Math.min(cursor, expected) - 2);
@@ -626,47 +802,19 @@ function mergeTimedLyricsNearest(baseLines, extraLines) {
             return base[bestIndex];
         }
 
-        if (!allowIndexFallback) return null;
-        const ratio = base.length > 1 && extras.length > 1
-            ? fallbackIndex / Math.max(extras.length - 1, 1)
-            : 0;
-        const mapped = Math.round(ratio * Math.max(base.length - 1, 0));
-        const idx = Math.min(Math.max(mapped, expected - 1), Math.min(expected + 1, base.length - 1));
-        cursor = idx;
-        return base[idx];
+        return null;
     };
 
-    extras.forEach((line, i) => {
-        const candidates = collectLyricCandidates(line);
-        if (!candidates.length) return;
-        let target = findTarget(line.time, i);
-        if (!target) {
-            const shiftedTime = Number(line.time || 0) + trackShift;
-            const expected = estimateIndexByTime(base, extras, shiftedTime);
-            const left = Math.max(0, expected - 1);
-            const right = Math.min(base.length - 1, expected + 1);
-            let pick = -1;
-            let pickDiff = Infinity;
-            for (let k = left; k <= right; k += 1) {
-                const d = Math.abs(Number(base[k].time || 0) - shiftedTime);
-                if (d < pickDiff) {
-                    pick = k;
-                    pickDiff = d;
-                }
-            }
-            if (pick >= 0 && pickDiff <= 1.8) {
-                target = base[pick];
-            }
-        }
+    extras.forEach((line) => {
+        const candidate = pickSingleTranslationCandidate(line);
+        if (!candidate) return;
+        let target = findTarget(line);
         if (!target) return;
-        candidates.forEach((text) => {
-            if (text === target.text) return;
-            if (!target.translations.includes(text)) {
-                target.translations.push(text);
-            }
-        });
+        if (candidate === target.text) return;
+        if (!target.translations.includes(candidate)) {
+            target.translations.push(candidate);
+        }
     });
-    backfillMissingTranslationsByIndex(base, extras, { radius: 1, maxPerLine: 1 });
     return base;
 }
 
@@ -1034,45 +1182,347 @@ function parseDanmakuXml(text) {
     return items.sort((a, b) => a.time - b.time);
 }
 
+function parseAssDanmakuColor(rawText) {
+    const source = String(rawText || "");
+    const matches = [...source.matchAll(/\\(?:1?c|c)&H([0-9A-Fa-f]{1,8})&/gi)];
+    if (!matches.length) return "#ffffff";
+    const bgr = String(matches[matches.length - 1][1] || "")
+        .toUpperCase()
+        .padStart(6, "0")
+        .slice(-6);
+    return `#${bgr.slice(4, 6)}${bgr.slice(2, 4)}${bgr.slice(0, 2)}`;
+}
+
+function normalizeDanmakuAssText(rawText) {
+    return String(rawText || "")
+        .replace(/\{[^}]*\}/g, "")
+        .replace(/\\[Nn]/g, " ")
+        .replace(/\\h/g, " ")
+        .replace(/\\[{}]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function parseDanmakuAssMode(rawText, styleName = "") {
+    const source = String(rawText || "");
+    const alignMatches = [...source.matchAll(/\\an([1-9])/gi)];
+    if (alignMatches.length) {
+        const align = Number(alignMatches[alignMatches.length - 1][1]);
+        if ([7, 8, 9].includes(align)) return "top";
+        if ([1, 2, 3].includes(align)) return "bottom";
+    }
+
+    const style = String(styleName || "").toLowerCase();
+    if (/(^|[^a-z])(top|upper|up)($|[^a-z])/.test(style) || /上/.test(style)) return "top";
+    if (/(^|[^a-z])(bottom|lower|down)($|[^a-z])/.test(style) || /下/.test(style)) return "bottom";
+    return "scroll";
+}
+
+function parseDanmakuAss(rawText) {
+    const source = String(rawText || "").replace(/\r/g, "").replace(/^\uFEFF/, "");
+    if (!source) return [];
+
+    const items = [];
+    const lines = source.split("\n");
+    let inEvents = false;
+    let formatFields = [];
+
+    for (let i = 0; i < lines.length; i += 1) {
+        const line = String(lines[i] || "").trim();
+        if (!line) continue;
+
+        if (/^\[Events\]/i.test(line)) {
+            inEvents = true;
+            continue;
+        }
+        if (/^\[[^\]]+\]/.test(line) && !/^\[Events\]/i.test(line)) {
+            inEvents = false;
+            continue;
+        }
+        if (!inEvents) continue;
+
+        if (/^Format\s*:/i.test(line)) {
+            formatFields = line
+                .replace(/^Format\s*:/i, "")
+                .split(",")
+                .map((field) => field.trim().toLowerCase());
+            continue;
+        }
+        if (!/^Dialogue\s*:/i.test(line)) continue;
+
+        const payload = line.replace(/^Dialogue\s*:\s*/i, "");
+        const parts = payload.split(",");
+        if (parts.length < 2) continue;
+
+        let startRaw = "";
+        let styleRaw = "";
+        let textRaw = "";
+
+        if (formatFields.length && parts.length >= formatFields.length) {
+            const getFieldValue = (name) => {
+                const idx = formatFields.indexOf(name);
+                return idx >= 0 ? String(parts[idx] || "").trim() : "";
+            };
+            const textIdx = formatFields.indexOf("text");
+            startRaw = getFieldValue("start");
+            styleRaw = getFieldValue("style");
+            if (textIdx >= 0) {
+                textRaw = parts.slice(textIdx).join(",");
+            } else {
+                textRaw = parts.slice(formatFields.length - 1).join(",");
+            }
+        } else {
+            if (parts.length < 10) continue;
+            startRaw = String(parts[1] || "").trim();
+            styleRaw = String(parts[3] || "").trim();
+            textRaw = parts.slice(9).join(",");
+        }
+
+        const time = parseSubtitleTimecode(startRaw);
+        if (!Number.isFinite(time)) continue;
+
+        const text = normalizeDanmakuAssText(textRaw);
+        if (!text) continue;
+
+        items.push({
+            time,
+            text,
+            mode: parseDanmakuAssMode(textRaw, styleRaw),
+            color: parseAssDanmakuColor(textRaw),
+        });
+    }
+
+    return items.sort((a, b) => a.time - b.time);
+}
+
+function parseSubtitleTimecode(raw) {
+    const text = String(raw || "").trim().replace(",", ".");
+    const match = text.match(/(?:(\d{1,2}):)?(\d{1,2}):(\d{1,2})(?:\.(\d{1,3}))?/);
+    if (!match) return NaN;
+    const h = Number(match[1] || 0);
+    const m = Number(match[2] || 0);
+    const s = Number(match[3] || 0);
+    const ms = Number(String(match[4] || "0").padEnd(3, "0"));
+    if (![h, m, s, ms].every((v) => Number.isFinite(v))) return NaN;
+    return h * 3600 + m * 60 + s + (ms / 1000);
+}
+
+function normalizeSubtitleText(text) {
+    return String(text || "")
+        .replace(/\uFEFF/g, "")
+        .replace(/\r/g, "")
+        .replace(/\{[^}]*\}/g, "")
+        .replace(/\\N/g, "\n")
+        .split("\n")
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0)
+        .join("\n")
+        .trim();
+}
+
+function parseVttCues(rawText) {
+    const source = String(rawText || "").replace(/\r/g, "").replace(/^\uFEFF/, "").trim();
+    if (!source) return [];
+    const blocks = source.split(/\n{2,}/);
+    const cues = [];
+
+    blocks.forEach((block) => {
+        const lines = block.split("\n").map((line) => String(line || "").trimEnd());
+        if (!lines.length) return;
+        if (/^WEBVTT/i.test(lines[0])) return;
+        if (/^NOTE\b/i.test(lines[0])) return;
+        const timingIndex = lines.findIndex((line) => line.includes("-->"));
+        if (timingIndex < 0) return;
+        const timingLine = lines[timingIndex];
+        const pair = timingLine.split("-->");
+        if (pair.length < 2) return;
+
+        const start = parseSubtitleTimecode(pair[0]);
+        const endRaw = String(pair[1] || "").trim().split(/\s+/)[0] || "";
+        let end = parseSubtitleTimecode(endRaw);
+        if (!Number.isFinite(start)) return;
+        if (!Number.isFinite(end) || end <= start) end = start + 2;
+
+        const text = normalizeSubtitleText(lines.slice(timingIndex + 1).join("\n"));
+        if (!text) return;
+        cues.push({ start, end, text });
+    });
+
+    return cues.sort((a, b) => a.start - b.start);
+}
+
+function parseSrtCues(rawText) {
+    const source = String(rawText || "").replace(/\r/g, "").replace(/^\uFEFF/, "").trim();
+    if (!source) return [];
+    const blocks = source.split(/\n{2,}/);
+    const cues = [];
+
+    blocks.forEach((block) => {
+        const lines = block.split("\n").map((line) => String(line || "").trimEnd());
+        if (!lines.length) return;
+        const timingIndex = lines.findIndex((line) => line.includes("-->"));
+        if (timingIndex < 0) return;
+        const timingLine = lines[timingIndex];
+        const pair = timingLine.split("-->");
+        if (pair.length < 2) return;
+
+        const start = parseSubtitleTimecode(pair[0]);
+        const endRaw = String(pair[1] || "").trim().split(/\s+/)[0] || "";
+        let end = parseSubtitleTimecode(endRaw);
+        if (!Number.isFinite(start)) return;
+        if (!Number.isFinite(end) || end <= start) end = start + 2;
+
+        const text = normalizeSubtitleText(lines.slice(timingIndex + 1).join("\n"));
+        if (!text) return;
+        cues.push({ start, end, text });
+    });
+
+    return cues.sort((a, b) => a.start - b.start);
+}
+
+function parseAssCues(rawText) {
+    const source = String(rawText || "").replace(/\r/g, "").replace(/^\uFEFF/, "");
+    if (!source) return [];
+    const cues = [];
+
+    source.split("\n").forEach((line) => {
+        if (!/^Dialogue\s*:/i.test(line)) return;
+        const payload = String(line || "").replace(/^Dialogue\s*:\s*/i, "");
+        const parts = payload.split(",");
+        if (parts.length < 10) return;
+        const start = parseSubtitleTimecode(parts[1]);
+        let end = parseSubtitleTimecode(parts[2]);
+        if (!Number.isFinite(start)) return;
+        if (!Number.isFinite(end) || end <= start) end = start + 2;
+        const text = normalizeSubtitleText(parts.slice(9).join(","));
+        if (!text) return;
+        cues.push({ start, end, text });
+    });
+
+    return cues.sort((a, b) => a.start - b.start);
+}
+
+function parseSubtitleCues(rawText, filename = "") {
+    const lower = String(filename || "").toLowerCase();
+    if (lower.endsWith(".vtt")) return parseVttCues(rawText);
+    if (lower.endsWith(".srt")) return parseSrtCues(rawText);
+    if (lower.endsWith(".ass") || lower.endsWith(".ssa")) return parseAssCues(rawText);
+    const vtt = parseVttCues(rawText);
+    if (vtt.length) return vtt;
+    const srt = parseSrtCues(rawText);
+    if (srt.length) return srt;
+    return parseAssCues(rawText);
+}
+
+function mergeBilingualSubtitleCues(primary, secondary) {
+    const a = Array.isArray(primary) ? primary : [];
+    const b = Array.isArray(secondary) ? secondary : [];
+    if (!a.length) return b;
+    if (!b.length) return a;
+
+    const merged = [];
+    let cursor = 0;
+    for (let i = 0; i < a.length; i += 1) {
+        const cue = a[i];
+        while (cursor < b.length && b[cursor].end < cue.start - 0.4) {
+            cursor += 1;
+        }
+
+        let bestIndex = -1;
+        let bestScore = -Infinity;
+        for (let j = cursor; j < b.length; j += 1) {
+            const other = b[j];
+            if (other.start > cue.end + 0.6) break;
+            const overlap = Math.min(cue.end, other.end) - Math.max(cue.start, other.start);
+            const startDiff = Math.abs(other.start - cue.start);
+            if (overlap < -0.12 && startDiff > 0.35) continue;
+            const score = overlap - (startDiff * 0.5);
+            if (score > bestScore) {
+                bestScore = score;
+                bestIndex = j;
+            }
+        }
+
+        let text = cue.text;
+        let end = cue.end;
+        if (bestIndex >= 0) {
+            const other = b[bestIndex];
+            end = Math.max(end, other.end);
+            if (other.text && !isLikelySameLyricText(text, other.text)) {
+                text = `${text}\n${other.text}`;
+            }
+        }
+        merged.push({ start: cue.start, end, text: normalizeSubtitleText(text) });
+    }
+
+    return merged;
+}
+
 function extractColorsFromDataUrl(dataUrl) {
     return new Promise((resolve) => {
+        const fallback = ["#1e2a4a", "#15303a", "#2d1f45"];
+        let settled = false;
+        const finish = (colors) => {
+            if (settled) return;
+            settled = true;
+            resolve(colors || fallback);
+        };
         if (!dataUrl) {
-            resolve(["#1e2a4a", "#15303a", "#2d1f45"]);
+            finish(fallback);
             return;
         }
         const img = new Image();
+        let timeoutId = null;
+        const clearTimer = () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+            }
+        };
+        timeoutId = setTimeout(() => {
+            clearTimer();
+            finish(fallback);
+        }, 1800);
         img.crossOrigin = "anonymous";
         img.onload = () => {
-            const c = document.createElement("canvas");
-            c.width = 64;
-            c.height = 64;
-            const ctx = c.getContext("2d");
-            if (!ctx) {
-                resolve(["#1e2a4a", "#15303a", "#2d1f45"]);
-                return;
+            clearTimer();
+            try {
+                const c = document.createElement("canvas");
+                c.width = 64;
+                c.height = 64;
+                const ctx = c.getContext("2d");
+                if (!ctx) {
+                    finish(fallback);
+                    return;
+                }
+                ctx.drawImage(img, 0, 0, 64, 64);
+                const raw = ctx.getImageData(0, 0, 64, 64).data;
+                const bucket = [];
+                for (let i = 0; i < raw.length; i += 32) {
+                    const r = raw[i];
+                    const g = raw[i + 1];
+                    const b = raw[i + 2];
+                    bucket.push([r, g, b]);
+                }
+                const avg = bucket.reduce((acc, rgb) => {
+                    acc[0] += rgb[0];
+                    acc[1] += rgb[1];
+                    acc[2] += rgb[2];
+                    return acc;
+                }, [0, 0, 0]).map((v) => Math.round(v / Math.max(bucket.length, 1)));
+                const tint = (v, delta) => clamp(v + delta, 0, 255);
+                const c1 = `rgb(${avg[0]}, ${avg[1]}, ${avg[2]})`;
+                const c2 = `rgb(${tint(avg[0], -38)}, ${tint(avg[1], -24)}, ${tint(avg[2], 20)})`;
+                const c3 = `rgb(${tint(avg[0], 32)}, ${tint(avg[1], -12)}, ${tint(avg[2], -30)})`;
+                finish([c1, c2, c3]);
+            } catch (error) {
+                finish(fallback);
             }
-            ctx.drawImage(img, 0, 0, 64, 64);
-            const raw = ctx.getImageData(0, 0, 64, 64).data;
-            const bucket = [];
-            for (let i = 0; i < raw.length; i += 32) {
-                const r = raw[i];
-                const g = raw[i + 1];
-                const b = raw[i + 2];
-                bucket.push([r, g, b]);
-            }
-            const avg = bucket.reduce((acc, rgb) => {
-                acc[0] += rgb[0];
-                acc[1] += rgb[1];
-                acc[2] += rgb[2];
-                return acc;
-            }, [0, 0, 0]).map((v) => Math.round(v / Math.max(bucket.length, 1)));
-            const tint = (v, delta) => clamp(v + delta, 0, 255);
-            const c1 = `rgb(${avg[0]}, ${avg[1]}, ${avg[2]})`;
-            const c2 = `rgb(${tint(avg[0], -38)}, ${tint(avg[1], -24)}, ${tint(avg[2], 20)})`;
-            const c3 = `rgb(${tint(avg[0], 32)}, ${tint(avg[1], -12)}, ${tint(avg[2], -30)})`;
-            resolve([c1, c2, c3]);
         };
-        img.onerror = () => resolve(["#1e2a4a", "#15303a", "#2d1f45"]);
+        img.onerror = () => {
+            clearTimer();
+            finish(fallback);
+        };
         img.src = dataUrl;
     });
 }
@@ -1123,6 +1573,7 @@ export class MediaPlayerCore {
         this.karaokeLineNodes = [];
         this.lastKaraokeProgress = -1;
         this.karaokeEnabled = true;
+        this.showTranslation = true;
         this.lyricBlur = true;
         this.dynamicBg = true;
         this.danmakuEnabled = false;
@@ -1144,6 +1595,19 @@ export class MediaPlayerCore {
         this.danmakuCursor = 0;
         this.lastDanmakuTime = -1;
         this.lastDanmakuRenderAt = 0;
+        this.subtitleEnabled = true;
+        this.subtitleOpacity = 1;
+        this.subtitleCues = [];
+        this.subtitleLookupIndex = 0;
+        this.currentSubtitleText = "";
+        this.pauseFadeEnabled = false;
+        this.pauseFadeDurationMs = 220;
+        this.pauseFadeRafId = 0;
+        this.deferPlaylistRender = false;
+        this.pendingPlaylistFilter = "";
+        this.lastRenderedRunningSecond = -1;
+        this.lastRenderedTotalSecond = -1;
+        this.coverColorCache = new Map();
 
         this.objectUrls = new Set();
         this.playOrder = [];
@@ -1211,6 +1675,7 @@ export class MediaPlayerCore {
         if (this.ui.danmakuWeight) this.danmakuWeight = Number(this.ui.danmakuWeight.value || this.danmakuWeight);
         if (this.ui.danmakuSpeed) this.danmakuSpeed = Number(this.ui.danmakuSpeed.value || this.danmakuSpeed);
         if (this.ui.danmakuOpacity) this.danmakuOpacity = Number(this.ui.danmakuOpacity.value || this.danmakuOpacity);
+        if (this.ui.subtitleOpacity) this.subtitleOpacity = Number(this.ui.subtitleOpacity.value || this.subtitleOpacity);
         this.initPlaylistCoverObserver();
         this.refreshSettingValueBadges();
         this.applyThemeFromCover(this.lastThemeColors);
@@ -1263,6 +1728,7 @@ export class MediaPlayerCore {
             danmakuOpacityValue: document.getElementById("danmaku-opacity-value"),
             title: document.getElementById("track-title"),
             author: document.getElementById("track-author"),
+            trackAlbum: document.getElementById("track-album"),
             runningTime: document.getElementById("running-time"),
             totalTime: document.getElementById("total-time"),
             preview: document.getElementById("progress-preview"),
@@ -1282,8 +1748,14 @@ export class MediaPlayerCore {
             gestureToast: document.getElementById("gesture-toast"),
             gestureToastIcon: document.getElementById("gesture-toast-icon"),
             gestureToastMessage: document.getElementById("gesture-toast-message"),
+            subtitleLayer: document.getElementById("subtitle-layer"),
             dynamicBg: document.getElementById("toggle-dynamic-bg"),
+            subtitleToggle: document.getElementById("toggle-subtitle"),
+            subtitleOpacity: document.getElementById("subtitle-opacity"),
+            subtitleOpacityValue: document.getElementById("subtitle-opacity-value"),
+            pauseFadeToggle: document.getElementById("toggle-pause-fade"),
             karaoke: document.getElementById("toggle-karaoke"),
+            showTranslation: document.getElementById("toggle-translation"),
             lyricBlur: document.getElementById("toggle-lyric-blur"),
             volumeValue: document.getElementById("volume-value"),
             lyricSize: document.getElementById("lyric-size"),
@@ -1431,16 +1903,60 @@ export class MediaPlayerCore {
             this.saveSetting("dynamicBg", this.dynamicBg);
         });
 
+        if (this.ui.subtitleToggle) {
+            this.ui.subtitleToggle.addEventListener("change", () => {
+                if (!Array.isArray(this.subtitleCues) || !this.subtitleCues.length) {
+                    this.ui.subtitleToggle.checked = false;
+                    this.renderSubtitles();
+                    return;
+                }
+                this.subtitleEnabled = this.ui.subtitleToggle.checked;
+                this.saveSetting("subtitleEnabled", this.subtitleEnabled);
+                this.renderSubtitles();
+            });
+        }
+
+        if (this.ui.subtitleOpacity) {
+            this.ui.subtitleOpacity.addEventListener("input", () => {
+                this.subtitleOpacity = clamp(Number(this.ui.subtitleOpacity.value || 1), 0.2, 1);
+                this.applySubtitleOpacity();
+                this.saveSetting("subtitleOpacity", this.subtitleOpacity);
+                this.refreshSettingValueBadges();
+            });
+        }
+
+        if (this.ui.pauseFadeToggle) {
+            this.ui.pauseFadeToggle.addEventListener("change", () => {
+                this.pauseFadeEnabled = this.ui.pauseFadeToggle.checked;
+                this.saveSetting("pauseFadeEnabled", this.pauseFadeEnabled);
+                if (!this.pauseFadeEnabled) {
+                    this.cancelPauseFadeAnimation();
+                    this.restoreMasterGainForPlayback();
+                }
+            });
+        }
+
         if (this.ui.karaoke) {
             this.ui.karaoke.addEventListener("change", () => {
                 this.karaokeEnabled = this.ui.karaoke.checked;
                 this.saveSetting("karaoke", this.karaokeEnabled);
+                this.renderLyrics();
+                this.refreshLyrics();
+            });
+        }
+        if (this.ui.showTranslation) {
+            this.ui.showTranslation.addEventListener("change", () => {
+                this.showTranslation = this.ui.showTranslation.checked;
+                this.saveSetting("showTranslation", this.showTranslation);
+                this.renderLyrics();
+                this.refreshLyrics();
             });
         }
         if (this.ui.lyricBlur) {
             this.ui.lyricBlur.addEventListener("change", () => {
                 this.lyricBlur = this.ui.lyricBlur.checked;
                 this.saveSetting("lyricBlur", this.lyricBlur);
+                this.refreshLyrics();
             });
         }
         if (this.ui.lyricSize) {
@@ -1699,6 +2215,9 @@ export class MediaPlayerCore {
         if (this.ui.danmakuOpacityValue && this.ui.danmakuOpacity) {
             setNodeValue(this.ui.danmakuOpacityValue, `${Math.round(Number(this.ui.danmakuOpacity.value || 0.9) * 100)}%`);
         }
+        if (this.ui.subtitleOpacityValue && this.ui.subtitleOpacity) {
+            setNodeValue(this.ui.subtitleOpacityValue, `${Math.round(Number(this.ui.subtitleOpacity.value || 1) * 100)}%`);
+        }
         if (this.ui.lyricSizeValue && this.ui.lyricSize) {
             setNodeValue(this.ui.lyricSizeValue, `${Number(this.ui.lyricSize.value || 36)} px`);
         }
@@ -1840,6 +2359,12 @@ export class MediaPlayerCore {
             parse: (text, fallback) => parseFloatFromText(text, fallback),
         });
         bind(this.ui.danmakuOpacityValue, this.ui.danmakuOpacity, {
+            min: 0.2,
+            max: 1,
+            step: 0.05,
+            parse: (text, fallback) => parsePercentOrRatio(text, fallback),
+        });
+        bind(this.ui.subtitleOpacityValue, this.ui.subtitleOpacity, {
             min: 0.2,
             max: 1,
             step: 0.05,
@@ -2155,6 +2680,16 @@ export class MediaPlayerCore {
         if (this.ui.dynamicBg) this.ui.dynamicBg.checked = this.dynamicBg;
         document.body.classList.toggle("dynamic-off", !this.dynamicBg);
 
+        this.subtitleEnabled = !!this.loadSetting("subtitleEnabled", true);
+        if (this.ui.subtitleToggle) this.ui.subtitleToggle.checked = this.subtitleEnabled;
+        this.subtitleOpacity = Number(this.loadSetting("subtitleOpacity", this.subtitleOpacity));
+        this.subtitleOpacity = clamp(this.subtitleOpacity, 0.2, 1);
+        if (this.ui.subtitleOpacity) this.ui.subtitleOpacity.value = String(this.subtitleOpacity);
+        this.applySubtitleOpacity();
+
+        this.pauseFadeEnabled = !!this.loadSetting("pauseFadeEnabled", false);
+        if (this.ui.pauseFadeToggle) this.ui.pauseFadeToggle.checked = this.pauseFadeEnabled;
+
         this.loopMode = this.loadSetting("loopMode", "none");
         if (!LOOP_MODES.includes(this.loopMode)) {
             this.loopMode = "none";
@@ -2163,6 +2698,8 @@ export class MediaPlayerCore {
 
         this.karaokeEnabled = !!this.loadSetting("karaoke", true);
         if (this.ui.karaoke) this.ui.karaoke.checked = this.karaokeEnabled;
+        this.showTranslation = !!this.loadSetting("showTranslation", true);
+        if (this.ui.showTranslation) this.ui.showTranslation.checked = this.showTranslation;
         this.lyricBlur = !!this.loadSetting("lyricBlur", true);
         if (this.ui.lyricBlur) this.ui.lyricBlur.checked = this.lyricBlur;
 
@@ -2206,6 +2743,7 @@ export class MediaPlayerCore {
             this.ui.brightnessRange.value = String(this.brightnessLevel);
         }
         this.applyBrightness();
+        this.syncSubtitleToggleAvailability();
     }
 
     async importFiles(files) {
@@ -2224,7 +2762,11 @@ export class MediaPlayerCore {
     async importVideoFiles(files) {
         const xmlMap = new Map();
         const xmlCandidates = [];
+        const assDanmakuCandidates = [];
+        const subtitleCandidates = [];
         const videos = [];
+        const isDanmakuAssName = (stem) => /(danmaku|弹幕|(^|[._-])dm([._-]|$))/i.test(stem);
+
         for (const file of files) {
             const lower = file.name.toLowerCase();
             if (lower.endsWith(".xml")) {
@@ -2233,6 +2775,22 @@ export class MediaPlayerCore {
                 xmlMap.set(stem, file);
                 xmlMap.set(norm, file);
                 xmlCandidates.push({ stem, norm, file });
+            }
+            if (/\.(ass|ssa)$/i.test(lower)) {
+                const stem = lower.replace(/\.(ass|ssa)$/i, "");
+                assDanmakuCandidates.push({
+                    stem,
+                    norm: normalizeMediaStem(stem),
+                    file,
+                });
+            }
+            if (/\.(srt|vtt|ass|ssa)$/i.test(lower)) {
+                const stem = lower.replace(/\.(srt|vtt|ass|ssa)$/i, "");
+                subtitleCandidates.push({
+                    stem,
+                    norm: normalizeMediaStem(stem),
+                    file,
+                });
             }
             if (file.type.startsWith("video/") || /\.(mp4|mkv|webm|mov|avi)$/i.test(lower)) {
                 videos.push(file);
@@ -2245,41 +2803,136 @@ export class MediaPlayerCore {
 
         const appendStart = this.tracks.length;
         let appendedCount = 0;
-        for (let i = 0; i < videos.length; i += 1) {
-            const file = videos[i];
-            const name = file.name.replace(/\.[^.]+$/, "");
-            const url = URL.createObjectURL(file);
-            this.objectUrls.add(url);
-            const keyLower = name.toLowerCase();
-            const keyNorm = normalizeMediaStem(name);
-            let danmakuFile = xmlMap.get(keyLower) || xmlMap.get(keyNorm) || null;
-            if (!danmakuFile) {
-                const fuzzy = xmlCandidates.find((entry) => entry.norm.includes(keyNorm) || keyNorm.includes(entry.norm));
-                danmakuFile = fuzzy?.file || null;
-            }
-            this.tracks.push({
-                type: "video",
-                title: name,
-                author: `本地导入 · ${danmakuFile ? "含弹幕" : "无弹幕"}`,
-                coverUrl: "",
-                sourceUrl: url,
-                danmakuFile,
-            });
-            appendedCount += 1;
+        const currentFilter = this.ui.playlistSearch.value.trim().toLowerCase();
+        this.deferPlaylistRender = true;
 
-            this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
-            if (this.currentIndex < 0) {
-                await this.selectTrack(this.tracks.length - 1);
-            }
+        const pickDanmakuAssFile = (keyLower, keyNorm) => {
+            const ranked = assDanmakuCandidates
+                .map((entry) => {
+                    const marked = isDanmakuAssName(entry.stem);
+                    let score = 0;
+                    if (entry.stem === keyLower || entry.norm === keyNorm) {
+                        score = marked ? 120 : 88;
+                    } else if (entry.stem.startsWith(`${keyLower}.`) || entry.norm.startsWith(keyNorm)) {
+                        score = marked ? 112 : 80;
+                    } else if (entry.norm.includes(keyNorm) || keyNorm.includes(entry.norm)) {
+                        score = marked ? 96 : 0;
+                    }
+                    return { ...entry, score };
+                })
+                .filter((entry) => entry.score > 0)
+                .sort((a, b) => b.score - a.score || a.stem.localeCompare(b.stem));
+            return ranked[0]?.file || null;
+        };
 
-            const percent = Math.round(((i + 1) / videos.length) * 100);
-            this.setStatus(`正在解析视频与弹幕... ${percent}%`, { mode: "progress" });
-            await Promise.resolve();
+        const pickSubtitleFiles = (keyLower, keyNorm, excludedDanmakuFile = null) => {
+            const ranked = subtitleCandidates
+                .map((entry) => {
+                    let score = 0;
+                    if (entry.stem === keyLower || entry.norm === keyNorm) {
+                        score = 100;
+                    } else if (entry.stem.startsWith(`${keyLower}.`) || entry.stem.startsWith(`${keyNorm}.`)) {
+                        score = 92;
+                    } else if (entry.norm.startsWith(keyNorm)) {
+                        score = 86;
+                    } else if (entry.norm.includes(keyNorm) || keyNorm.includes(entry.norm)) {
+                        score = 72;
+                    }
+                    return { ...entry, score };
+                })
+                .filter((entry) => {
+                    if (entry.score <= 0) return false;
+                    if (excludedDanmakuFile && entry.file === excludedDanmakuFile) return false;
+                    if (/\.(ass|ssa)$/i.test(String(entry.file?.name || "")) && isDanmakuAssName(entry.stem)) return false;
+                    return true;
+                })
+                .sort((a, b) => b.score - a.score || a.stem.localeCompare(b.stem));
+
+            const selected = [];
+            const seen = new Set();
+            for (let i = 0; i < ranked.length; i += 1) {
+                const subFile = ranked[i].file;
+                if (!subFile || seen.has(subFile)) continue;
+                selected.push(subFile);
+                seen.add(subFile);
+                if (selected.length >= 2) break;
+            }
+            return selected;
+        };
+
+        try {
+            for (let i = 0; i < videos.length; i += 1) {
+                const file = videos[i];
+                const name = file.name.replace(/\.[^.]+$/, "");
+                const url = URL.createObjectURL(file);
+                this.objectUrls.add(url);
+                const keyLower = name.toLowerCase();
+                const keyNorm = normalizeMediaStem(name);
+                let danmakuFile = xmlMap.get(keyLower) || xmlMap.get(keyNorm) || null;
+                if (!danmakuFile) {
+                    const fuzzy = xmlCandidates.find((entry) => entry.norm.includes(keyNorm) || keyNorm.includes(entry.norm));
+                    danmakuFile = fuzzy?.file || null;
+                }
+                if (!danmakuFile) {
+                    danmakuFile = pickDanmakuAssFile(keyLower, keyNorm);
+                }
+                const subtitleFiles = pickSubtitleFiles(keyLower, keyNorm, danmakuFile);
+                this.tracks.push({
+                    type: "video",
+                    title: name,
+                    author: `本地导入 · ${danmakuFile ? "含弹幕" : "无弹幕"}${subtitleFiles.length ? ` · 字幕 ${subtitleFiles.length} 轨` : ""}`,
+                    coverUrl: "",
+                    sourceUrl: url,
+                    danmakuFile,
+                    subtitleFiles,
+                    localImport: true,
+                });
+                appendedCount += 1;
+
+                this.renderPlaylist(currentFilter);
+                if (this.currentIndex < 0) {
+                    await this.selectTrack(this.tracks.length - 1);
+                }
+
+                const percent = Math.round(((i + 1) / videos.length) * 100);
+                this.setStatus(`正在解析视频、弹幕与 CC 字幕... ${percent}%`, { mode: "progress" });
+                await Promise.resolve();
+            }
+        } finally {
+            this.deferPlaylistRender = false;
+            const filter = this.pendingPlaylistFilter || currentFilter;
+            this.pendingPlaylistFilter = "";
+            this.renderPlaylist(filter);
         }
         if (this.currentIndex < 0 && this.tracks.length) {
             await this.selectTrack(appendStart);
         }
         this.setStatus(`已新增 ${appendedCount} 个视频（共 ${this.tracks.length} 个）`);
+    }
+
+    async loadSubtitleCuesFromFiles(files) {
+        const input = Array.isArray(files) ? files : [];
+        const cueTracks = [];
+        for (let i = 0; i < input.length; i += 1) {
+            const file = input[i];
+            if (!file) continue;
+            try {
+                const rawText = await fileToText(file);
+                const cues = parseSubtitleCues(rawText, file.name);
+                if (cues.length) cueTracks.push(cues);
+            } catch (error) {
+                // Ignore single subtitle parse failures.
+            }
+        }
+        if (!cueTracks.length) return [];
+        if (cueTracks.length === 1) return cueTracks[0];
+
+        const scoreTrack = (cues) => cues.reduce((sum, cue) => {
+            return sum + [...String(cue.text || "")].length;
+        }, 0) + (cues.length * 6);
+
+        cueTracks.sort((a, b) => scoreTrack(b) - scoreTrack(a));
+        return mergeBilingualSubtitleCues(cueTracks[0], cueTracks[1]);
     }
 
     async importMusicFiles(files) {
@@ -2301,58 +2954,67 @@ export class MediaPlayerCore {
 
         const appendStart = this.tracks.length;
         const appended = [];
-        for (let i = 0; i < audioFiles.length; i += 1) {
-            const file = audioFiles[i];
-            const ab = await fileToArrayBuffer(file);
-            const lower = file.name.toLowerCase();
-            const id3Meta = parseId3Tag(ab);
-            const flacMeta = lower.endsWith(".flac") ? parseFlacMetadata(ab) : null;
-            const meta = {
-                title: id3Meta.title || flacMeta?.title || "",
-                artist: id3Meta.artist || flacMeta?.artist || "",
-                album: id3Meta.album || flacMeta?.album || "",
-                coverUrl: id3Meta.coverUrl || flacMeta?.coverUrl || "",
-                unsyncedLyrics: id3Meta.unsyncedLyrics || flacMeta?.unsyncedLyrics || "",
-                syncedLyrics: id3Meta.syncedLyrics || [],
-            };
-            const stem = file.name.toLowerCase().replace(/\.[^.]+$/, "");
-            let rawLyrics = meta.unsyncedLyrics || "";
-            if (!rawLyrics && lrcMap.has(stem)) {
-                rawLyrics = await fileToText(lrcMap.get(stem));
-            }
-            const parsedLrc = rawLyrics ? parseLrcText(rawLyrics) : [];
-            const url = URL.createObjectURL(file);
-            this.objectUrls.add(url);
-            if (meta.coverUrl && meta.coverUrl.startsWith("blob:")) {
-                this.objectUrls.add(meta.coverUrl);
-            }
-            let mergedLyrics = parsedLrc;
-            if (meta.syncedLyrics.length) {
-                mergedLyrics = this.mergeLyricsWithTranslations(meta.syncedLyrics, parsedLrc);
-            }
+        const currentFilter = this.ui.playlistSearch.value.trim().toLowerCase();
+        this.deferPlaylistRender = true;
+        try {
+            for (let i = 0; i < audioFiles.length; i += 1) {
+                const file = audioFiles[i];
+                const ab = await fileToArrayBuffer(file);
+                const lower = file.name.toLowerCase();
+                const id3Meta = parseId3Tag(ab);
+                const flacMeta = lower.endsWith(".flac") ? parseFlacMetadata(ab) : null;
+                const meta = {
+                    title: id3Meta.title || flacMeta?.title || "",
+                    artist: id3Meta.artist || flacMeta?.artist || "",
+                    album: id3Meta.album || flacMeta?.album || "",
+                    coverUrl: id3Meta.coverUrl || flacMeta?.coverUrl || "",
+                    unsyncedLyrics: id3Meta.unsyncedLyrics || flacMeta?.unsyncedLyrics || "",
+                    syncedLyrics: id3Meta.syncedLyrics || [],
+                };
+                const stem = file.name.toLowerCase().replace(/\.[^.]+$/, "");
+                let rawLyrics = meta.unsyncedLyrics || "";
+                if (!rawLyrics && lrcMap.has(stem)) {
+                    rawLyrics = await fileToText(lrcMap.get(stem));
+                }
+                const parsedLrc = rawLyrics ? parseLrcText(rawLyrics) : [];
+                const url = URL.createObjectURL(file);
+                this.objectUrls.add(url);
+                if (meta.coverUrl && meta.coverUrl.startsWith("blob:")) {
+                    this.objectUrls.add(meta.coverUrl);
+                }
+                let mergedLyrics = parsedLrc;
+                if (meta.syncedLyrics.length) {
+                    mergedLyrics = this.mergeLyricsWithTranslations(meta.syncedLyrics, parsedLrc);
+                }
 
-            const track = {
-                type: "music",
-                title: meta.title || file.name.replace(/\.[^.]+$/, ""),
-                author: meta.artist || "未知作者",
-                album: meta.album || "",
-                coverUrl: meta.coverUrl || "",
-                sourceUrl: url,
-                lyrics: mergedLyrics,
-                quality: file.type || "local",
-                sampleRate: null,
-                sourceFile: file,
-            };
-            appended.push(track);
-            this.tracks.push(track);
+                const track = {
+                    type: "music",
+                    title: meta.title || file.name.replace(/\.[^.]+$/, ""),
+                    author: meta.artist || "未知作者",
+                    album: meta.album || "",
+                    coverUrl: meta.coverUrl || "",
+                    sourceUrl: url,
+                    lyrics: mergedLyrics,
+                    quality: file.type || "local",
+                    sampleRate: null,
+                    sourceFile: file,
+                };
+                appended.push(track);
+                this.tracks.push(track);
 
-            this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
-            if (this.currentIndex < 0) {
-                await this.selectTrack(this.tracks.length - 1);
+                this.renderPlaylist(currentFilter);
+                if (this.currentIndex < 0) {
+                    await this.selectTrack(this.tracks.length - 1);
+                }
+
+                const percent = Math.round(((i + 1) / audioFiles.length) * 100);
+                this.setStatus(`正在解析音乐标签与歌词... ${percent}%`, { mode: "progress" });
             }
-
-            const percent = Math.round(((i + 1) / audioFiles.length) * 100);
-            this.setStatus(`正在解析音乐标签与歌词... ${percent}%`, { mode: "progress" });
+        } finally {
+            this.deferPlaylistRender = false;
+            const filter = this.pendingPlaylistFilter || currentFilter;
+            this.pendingPlaylistFilter = "";
+            this.renderPlaylist(filter);
         }
         if (this.currentIndex < 0 && this.tracks.length) {
             await this.selectTrack(appendStart);
@@ -2361,6 +3023,10 @@ export class MediaPlayerCore {
     }
 
     renderPlaylist(filter) {
+        if (this.deferPlaylistRender) {
+            this.pendingPlaylistFilter = String(filter || "");
+            return;
+        }
         const target = this.ui.playlistList;
         const fallbackCover = defaultCover(this.type);
         target.innerHTML = "";
@@ -2370,11 +3036,13 @@ export class MediaPlayerCore {
             : this.tracks.map((_, idx) => idx);
         order.forEach((trackIndex) => {
             const track = this.tracks[trackIndex];
-            if (filter && !(`${track.title} ${track.author}`.toLowerCase().includes(filter))) return;
+            if (filter && !(`${track.title} ${track.author} ${track.album || ""}`.toLowerCase().includes(filter))) return;
             const item = document.createElement("li");
             item.className = `play-item${trackIndex === this.currentIndex ? " active" : ""}`;
             item.dataset.trackIndex = String(trackIndex);
             const realCover = track.coverUrl || fallbackCover;
+            const authorText = this.formatTrackAuthorText(track);
+            const albumText = this.formatTrackAlbumText(track);
             item.innerHTML = `
                 <div class="play-cover" draggable="true" title="按住拖动调整播放位置" aria-label="拖动封面排序">
                     <img src="${fallbackCover}" data-src="${realCover}" loading="lazy" alt="cover" draggable="false">
@@ -2384,7 +3052,8 @@ export class MediaPlayerCore {
                 </div>
                 <div class="play-item-main">
                     <div class="play-name">${track.title}</div>
-                    <div class="play-author">${track.author}</div>
+                    <div class="play-author">${authorText}</div>
+                    ${albumText ? `<div class="play-author-right">${albumText}</div>` : ""}
                 </div>
             `;
             item.addEventListener("click", async () => {
@@ -2537,6 +3206,16 @@ export class MediaPlayerCore {
         this.danmakuCursor = 0;
         this.lastDanmakuTime = -1;
         this.lastDanmakuTick = -1;
+        this.subtitleCues = [];
+        this.subtitleLookupIndex = 0;
+        this.currentSubtitleText = "";
+        this.syncSubtitleToggleAvailability();
+        this.lastRenderedRunningSecond = -1;
+        this.lastRenderedTotalSecond = -1;
+        if (this.ui.subtitleLayer) {
+            this.ui.subtitleLayer.classList.add("hidden");
+            this.ui.subtitleLayer.innerHTML = "";
+        }
         const track = this.tracks[index];
         if (this.type === "video" && this.artPlayer) {
             try {
@@ -2551,7 +3230,7 @@ export class MediaPlayerCore {
             this.media.playbackRate = Number(this.ui.speedRange.value || 1);
         }
         this.ui.title.textContent = track.title;
-        this.ui.author.textContent = this.formatTrackAuthorText(track);
+        this.refreshTrackMetaDisplay(track);
         this.ui.runningTime.textContent = "00:00";
         this.ui.totalTime.textContent = "00:00";
 
@@ -2560,7 +3239,7 @@ export class MediaPlayerCore {
             this.updateCoverShape(this.cover, this.cover.src);
         }
 
-        const colors = await extractColorsFromDataUrl(track.coverUrl || this.cover?.src || "");
+        const colors = await this.getTrackThemeColors(track.coverUrl || this.cover?.src || "");
         if (this.dynamicBg) {
             document.documentElement.style.setProperty("--bg-a", colors[0]);
             document.documentElement.style.setProperty("--bg-b", colors[1]);
@@ -2573,27 +3252,51 @@ export class MediaPlayerCore {
             this.lastDanmakuTick = -1;
             if (track.danmakuFile) {
                 try {
-                    const danmakuBuffer = await fileToArrayBuffer(track.danmakuFile);
-                    const xml = decodeDanmakuXmlBuffer(danmakuBuffer);
-                    this.danmakuList = parseDanmakuXml(xml);
+                    const danmakuName = String(track.danmakuFile.name || "").toLowerCase();
+                    if (/\.(ass|ssa)$/i.test(danmakuName)) {
+                        const assText = await fileToText(track.danmakuFile);
+                        this.danmakuList = parseDanmakuAss(assText);
+                    } else {
+                        const danmakuBuffer = await fileToArrayBuffer(track.danmakuFile);
+                        const xml = decodeDanmakuXmlBuffer(danmakuBuffer);
+                        this.danmakuList = parseDanmakuXml(xml);
+                    }
                     track.author = `本地导入 · 弹幕 ${this.danmakuList.length} 条`;
-                    this.ui.author.textContent = this.formatTrackAuthorText(track);
+                    this.refreshTrackMetaDisplay(track);
                     this.setStatus(`检测到 ${this.danmakuList.length} 条弹幕`);
                     this.syncDanmakuRenderer();
                 } catch (error) {
                     track.author = "本地导入 · 弹幕读取失败";
-                    this.ui.author.textContent = this.formatTrackAuthorText(track);
+                    this.refreshTrackMetaDisplay(track);
                     this.setStatus("弹幕读取失败");
                     this.syncDanmakuRenderer();
                 }
-            } else {
+            } else if (track.localImport) {
                 track.author = "本地导入 · 无弹幕";
-                this.ui.author.textContent = this.formatTrackAuthorText(track);
+                this.refreshTrackMetaDisplay(track);
+                this.syncDanmakuRenderer();
+            } else {
                 this.syncDanmakuRenderer();
             }
+
+            if (Array.isArray(track.subtitleFiles) && track.subtitleFiles.length) {
+                try {
+                    this.subtitleCues = await this.loadSubtitleCuesFromFiles(track.subtitleFiles);
+                    if (this.subtitleCues.length) {
+                        this.setStatus(`检测到 CC 字幕 ${this.subtitleCues.length} 条`);
+                    } else {
+                        this.setStatus("CC 字幕读取失败或为空");
+                    }
+                } catch (error) {
+                    this.subtitleCues = [];
+                    this.setStatus("CC 字幕读取失败");
+                }
+            }
+            this.syncSubtitleToggleAvailability();
+            this.renderSubtitles();
         }
 
-        this.currentLyrics = track.lyrics || [];
+        this.currentLyrics = sanitizeLyricsForDisplay(track.lyrics || []);
         this.lastLyricLookupIndex = 0;
         this.renderLyrics();
         this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
@@ -2602,6 +3305,7 @@ export class MediaPlayerCore {
             this.applyMusicReadableTheme(colors);
         }
         this.updateMediaSession(track);
+        this.restoreMasterGainForPlayback();
         await this.media.play().catch(() => {});
         this.setPlayVisual(!this.media.paused);
         this.ensureEq();
@@ -2618,9 +3322,29 @@ export class MediaPlayerCore {
     formatTrackAuthorText(track) {
         const authorRaw = String(track?.author || "").trim() || "未知作者";
         if (track?.type !== "music") return authorRaw;
+        return `作者：${authorRaw}`;
+    }
+
+    formatTrackAlbumText(track) {
+        if (track?.type !== "music") return "";
         const albumRaw = String(track?.album || "").trim();
-        if (!albumRaw) return `作者：${authorRaw}`;
-        return `作者：${authorRaw} · 专辑：${albumRaw}`;
+        return `专辑：${albumRaw || "-"}`;
+    }
+
+    refreshTrackMetaDisplay(track) {
+        if (!track) return;
+        if (this.ui.author) {
+            this.ui.author.textContent = this.formatTrackAuthorText(track);
+        }
+        if (!this.ui.trackAlbum) return;
+        const albumText = this.formatTrackAlbumText(track);
+        if (albumText) {
+            this.ui.trackAlbum.textContent = albumText;
+            this.ui.trackAlbum.classList.remove("hidden");
+            return;
+        }
+        this.ui.trackAlbum.textContent = "";
+        this.ui.trackAlbum.classList.add("hidden");
     }
 
     async resolveTrackSampleRate(track) {
@@ -2643,6 +3367,7 @@ export class MediaPlayerCore {
     mergeLyricsWithTranslations(baseLyrics, extraLyrics) {
         const base = (baseLyrics || []).map((line) => ({
             time: line.time,
+            anchorTime: Number(line.anchorTime ?? getLyricLineAnchorTime(line)),
             text: line.text,
             words: line.words || null,
             translations: [...(line.translations || [])],
@@ -2650,12 +3375,19 @@ export class MediaPlayerCore {
         if (!extraLyrics || !extraLyrics.length) return base;
 
         let cursor = 0;
-        const tolerance = 0.65;
-        const allowIndexFallback = canUseIndexFallback(base, extraLyrics);
+        const tolerance = 0.45;
         const trackShift = estimateTrackTimeShift(base, extraLyrics);
+        const baseAnchorLookup = buildLyricAnchorLookup(base);
 
-        const findTarget = (time, fallbackIndex) => {
+        const findTarget = (line) => {
             if (!base.length) return null;
+            const anchorTime = getLyricLineAnchorTime(line);
+            const directAnchorIndex = findLyricAnchorMatchedIndex(baseAnchorLookup, anchorTime, cursor);
+            if (directAnchorIndex >= 0) {
+                cursor = directAnchorIndex;
+                return base[directAnchorIndex];
+            }
+            const time = Number(line?.time || 0);
             const shiftedTime = Number(time || 0) + trackShift;
             const expected = estimateIndexByTime(base, extraLyrics, shiftedTime);
             let bestIndex = -1;
@@ -2675,47 +3407,19 @@ export class MediaPlayerCore {
                 cursor = bestIndex;
                 return base[bestIndex];
             }
-            if (!allowIndexFallback) return null;
-            const ratio = base.length > 1 && extraLyrics.length > 1
-                ? fallbackIndex / Math.max(extraLyrics.length - 1, 1)
-                : 0;
-            const mapped = Math.round(ratio * Math.max(base.length - 1, 0));
-            const idx = Math.min(Math.max(mapped, expected - 1), Math.min(expected + 1, base.length - 1));
-            cursor = idx;
-            return base[idx];
+            return null;
         };
 
-        extraLyrics.forEach((line, idx) => {
-            const candidates = collectLyricCandidates(line);
-            if (!candidates.length) return;
-            let target = findTarget(line.time, idx);
-            if (!target) {
-                const shiftedTime = Number(line.time || 0) + trackShift;
-                const expected = estimateIndexByTime(base, extraLyrics, shiftedTime);
-                const left = Math.max(0, expected - 1);
-                const right = Math.min(base.length - 1, expected + 1);
-                let pick = -1;
-                let pickDiff = Infinity;
-                for (let k = left; k <= right; k += 1) {
-                    const d = Math.abs(Number(base[k].time || 0) - shiftedTime);
-                    if (d < pickDiff) {
-                        pick = k;
-                        pickDiff = d;
-                    }
-                }
-                if (pick >= 0 && pickDiff <= 1.4) {
-                    target = base[pick];
-                }
-            }
+        extraLyrics.forEach((line) => {
+            const candidate = pickSingleTranslationCandidate(line);
+            if (!candidate) return;
+            let target = findTarget(line);
             if (!target) return;
-            candidates.forEach((text) => {
-                if (text === target.text) return;
-                if (!target.translations.includes(text)) {
-                    target.translations.push(text);
-                }
-            });
+            if (candidate === target.text) return;
+            if (!target.translations.includes(candidate)) {
+                target.translations.push(candidate);
+            }
         });
-        backfillMissingTranslationsByIndex(base, extraLyrics, { radius: 1, maxPerLine: 1 });
         return base;
     }
 
@@ -2729,8 +3433,8 @@ export class MediaPlayerCore {
                 album: this.type === "video" ? "视频" : "音乐",
                 artwork,
             });
-            navigator.mediaSession.setActionHandler("play", () => this.media.play());
-            navigator.mediaSession.setActionHandler("pause", () => this.media.pause());
+            navigator.mediaSession.setActionHandler("play", () => this.playMediaWithOptionalFade());
+            navigator.mediaSession.setActionHandler("pause", () => this.pauseMediaWithOptionalFade());
             navigator.mediaSession.setActionHandler("previoustrack", () => this.playPrev());
             navigator.mediaSession.setActionHandler("nexttrack", () => this.playNext());
         } catch (error) {
@@ -2741,13 +3445,88 @@ export class MediaPlayerCore {
     togglePlay() {
         if (!this.media.src) return;
         if (this.media.paused) {
-            this.media.play().catch(() => {});
-            this.setPlayVisual(true);
-            this.ensureEq();
+            this.playMediaWithOptionalFade();
         } else {
-            this.media.pause();
-            this.setPlayVisual(false);
+            this.pauseMediaWithOptionalFade();
         }
+    }
+
+    restoreMasterGainForPlayback() {
+        const master = this.eqNodes?.master;
+        if (!master) return;
+        try {
+            if (this.audioCtx?.state === "running") {
+                master.gain.cancelScheduledValues(this.audioCtx.currentTime);
+            }
+        } catch (error) {
+            // ignore gain scheduler errors
+        }
+        master.gain.value = 1;
+    }
+
+    cancelPauseFadeAnimation() {
+        if (!this.pauseFadeRafId) return;
+        cancelAnimationFrame(this.pauseFadeRafId);
+        this.pauseFadeRafId = 0;
+    }
+
+    animateMasterGain(from, to, duration, done) {
+        const master = this.eqNodes?.master;
+        if (!master) {
+            if (typeof done === "function") done();
+            return;
+        }
+        this.cancelPauseFadeAnimation();
+        const start = performance.now();
+        const safeDuration = Math.max(60, Number(duration || 0));
+        const tick = (now) => {
+            const ratio = clamp((now - start) / safeDuration, 0, 1);
+            master.gain.value = from + ((to - from) * ratio);
+            if (ratio >= 1) {
+                this.pauseFadeRafId = 0;
+                if (typeof done === "function") done();
+                return;
+            }
+            this.pauseFadeRafId = requestAnimationFrame(tick);
+        };
+        this.pauseFadeRafId = requestAnimationFrame(tick);
+    }
+
+    async playMediaWithOptionalFade() {
+        this.ensureEq();
+        const useFade = this.type === "music" && this.pauseFadeEnabled && !!this.eqNodes?.master;
+        this.cancelPauseFadeAnimation();
+
+        if (useFade) {
+            if (this.audioCtx?.state === "suspended") {
+                await this.audioCtx.resume().catch(() => {});
+            }
+            const master = this.eqNodes?.master;
+            if (master) master.gain.value = 0;
+        } else {
+            this.restoreMasterGainForPlayback();
+        }
+
+        await this.media.play().catch(() => {});
+
+        if (useFade && !this.media.paused && this.eqNodes?.master) {
+            this.animateMasterGain(0, 1, this.pauseFadeDurationMs);
+        }
+    }
+
+    pauseMediaWithOptionalFade() {
+        if (this.media.paused) return;
+        this.ensureEq();
+        const useFade = this.type === "music" && this.pauseFadeEnabled && !!this.eqNodes?.master;
+        if (!useFade) {
+            this.media.pause();
+            return;
+        }
+
+        const from = clamp(Number(this.eqNodes?.master?.gain?.value ?? 1), 0, 1);
+        this.animateMasterGain(from, 0, this.pauseFadeDurationMs, () => {
+            if (!this.media.paused) this.media.pause();
+        });
     }
 
     seekBy(delta) {
@@ -2813,8 +3592,17 @@ export class MediaPlayerCore {
             this.ui.seek.value = String(cur);
         }
         this.setProgressVisual(cur, total);
-        this.ui.runningTime.textContent = formatTime(cur);
-        this.ui.totalTime.textContent = formatTime(total);
+        const curSec = Math.floor(cur);
+        if (curSec !== this.lastRenderedRunningSecond) {
+            this.lastRenderedRunningSecond = curSec;
+            this.ui.runningTime.textContent = formatTime(cur);
+        }
+        const totalSec = Math.floor(total);
+        if (totalSec !== this.lastRenderedTotalSecond) {
+            this.lastRenderedTotalSecond = totalSec;
+            this.ui.totalTime.textContent = formatTime(total);
+        }
+        this.renderSubtitles();
     }
 
     handlePreviewMove(evt) {
@@ -2922,7 +3710,7 @@ export class MediaPlayerCore {
                 track.coverUrl = captured;
                 if (this.cover) this.cover.src = captured;
                 if (this.cover) this.updateCoverShape(this.cover, captured);
-                const colors = await extractColorsFromDataUrl(captured);
+                    const colors = await this.getTrackThemeColors(captured);
                 if (this.dynamicBg) {
                     document.documentElement.style.setProperty("--bg-a", colors[0]);
                     document.documentElement.style.setProperty("--bg-b", colors[1]);
@@ -3042,28 +3830,36 @@ export class MediaPlayerCore {
             div.className = "lyric-line";
             div.dataset.index = String(index);
             if (line.words && line.words.length) {
+                const lyricText = String(line.text || "...");
                 const karaoke = document.createElement("div");
                 karaoke.className = "lyric-karaoke";
                 const base = document.createElement("span");
                 base.className = "karaoke-base";
-                base.textContent = line.text || "...";
+                base.textContent = lyricText;
                 const fill = document.createElement("span");
                 fill.className = "karaoke-fill";
-                fill.textContent = line.text || "...";
-                karaoke.style.setProperty("--karaoke-progress", "0%");
+                fill.textContent = "";
                 karaoke.append(base, fill);
                 div.appendChild(karaoke);
-                this.karaokeLineNodes.push(karaoke);
+                this.karaokeLineNodes.push({
+                    root: karaoke,
+                    fill,
+                    chars: Array.from(lyricText),
+                    lastSolidCount: -1,
+                    lastPartialPercent: -1,
+                });
             } else {
                 div.textContent = line.text || "...";
                 this.karaokeLineNodes.push(null);
             }
-            line.translations?.forEach((trans) => {
-                const t = document.createElement("div");
-                t.className = "lyric-translation";
-                t.textContent = trans;
-                div.appendChild(t);
-            });
+            if (this.showTranslation) {
+                line.translations?.forEach((trans) => {
+                    const t = document.createElement("div");
+                    t.className = "lyric-translation";
+                    t.textContent = trans;
+                    div.appendChild(t);
+                });
+            }
             div.addEventListener("click", () => {
                 this.media.currentTime = Math.max(0, Number(line.time || 0));
                 this.refreshTime();
@@ -3073,6 +3869,46 @@ export class MediaPlayerCore {
             this.lyricsList.appendChild(div);
             this.lyricLineNodes.push(div);
         });
+    }
+
+    setKaraokeFillProgress(karaokeEntry, progress) {
+        if (!karaokeEntry || !karaokeEntry.fill) return;
+        const chars = Array.isArray(karaokeEntry.chars) ? karaokeEntry.chars : [];
+        if (!chars.length) {
+            karaokeEntry.fill.textContent = "";
+            karaokeEntry.lastSolidCount = 0;
+            karaokeEntry.lastPartialPercent = 0;
+            return;
+        }
+        const clampedProgress = clamp(Number(progress || 0), 0, 1);
+        const doneFloat = clampedProgress * chars.length;
+        const solidCount = Math.floor(doneFloat);
+        const partialPercent = solidCount < chars.length ? Math.round((doneFloat - solidCount) * 100) : 0;
+        if (solidCount === karaokeEntry.lastSolidCount && partialPercent === karaokeEntry.lastPartialPercent) {
+            return;
+        }
+        karaokeEntry.lastSolidCount = solidCount;
+        karaokeEntry.lastPartialPercent = partialPercent;
+
+        const fill = karaokeEntry.fill;
+        const fullText = chars.join("");
+        if (solidCount >= chars.length) {
+            fill.textContent = fullText;
+            return;
+        }
+
+        const prefix = chars.slice(0, solidCount).join("");
+        fill.textContent = "";
+        if (prefix) {
+            fill.appendChild(document.createTextNode(prefix));
+        }
+        if (partialPercent > 0) {
+            const partialChar = document.createElement("span");
+            partialChar.className = "karaoke-partial-char";
+            partialChar.style.setProperty("--karaoke-char-progress", `${partialPercent}%`);
+            partialChar.textContent = chars[solidCount];
+            fill.appendChild(partialChar);
+        }
     }
 
     centerLyricLine(node) {
@@ -3143,10 +3979,10 @@ export class MediaPlayerCore {
 
             // Sync karaoke masks only when active line changes.
             for (let i = 0; i < this.karaokeLineNodes.length; i += 1) {
-                const node = this.karaokeLineNodes[i];
-                if (!node) continue;
+                const entry = this.karaokeLineNodes[i];
+                if (!entry) continue;
                 const progress = this.karaokeEnabled ? (i < active ? 100 : 0) : 0;
-                node.style.setProperty("--karaoke-progress", `${progress}%`);
+                this.setKaraokeFillProgress(entry, progress / 100);
             }
             if (previousActive !== active) this.lastKaraokeProgress = -1;
         }
@@ -3158,7 +3994,7 @@ export class MediaPlayerCore {
             : 0;
         if (Math.abs(progress - this.lastKaraokeProgress) < 0.002) return;
         this.lastKaraokeProgress = progress;
-        activeKaraoke.style.setProperty("--karaoke-progress", `${(progress * 100).toFixed(2)}%`);
+        this.setKaraokeFillProgress(activeKaraoke, progress);
     }
 
     findActiveLyricIndex(now) {
@@ -3322,7 +4158,8 @@ export class MediaPlayerCore {
             this.media = this.artPlayer.video;
             this.artDanmukuReady = true;
             if (this.ui.danmakuLayer) {
-                this.ui.danmakuLayer.style.display = "none";
+                this.ui.danmakuLayer.style.display = "";
+                this.ui.danmakuLayer.innerHTML = "";
             }
         } catch (error) {
             this.artPlayer = null;
@@ -3336,12 +4173,22 @@ export class MediaPlayerCore {
     }
 
     getFilteredDanmakuItems() {
+        return this.getFilteredDanmakuItemsWithOptions();
+    }
+
+    getFilteredDanmakuItemsWithOptions(options = {}) {
+        const includeTop = options.includeTop !== false;
+        const includeBottom = options.includeBottom !== false;
+        const includeScroll = options.includeScroll !== false;
         const list = (this.danmakuList || []).filter((item) => item && item.text);
         return list.filter((item) => {
             const mode = item.mode || "scroll";
             if (mode === "scroll" && this.blockScrollDanmaku) return false;
             if (mode === "top" && this.blockTopDanmaku) return false;
             if (mode === "bottom" && this.blockBottomDanmaku) return false;
+            if (mode === "top" && !includeTop) return false;
+            if (mode === "bottom" && !includeBottom) return false;
+            if (mode === "scroll" && !includeScroll) return false;
             return true;
         }).map((item) => ({
             text: item.text,
@@ -3358,6 +4205,12 @@ export class MediaPlayerCore {
             try {
                 if (!this.danmakuEnabled) {
                     if (typeof plugin.hide === "function") plugin.hide();
+                    if (this.danmakuLayer) this.danmakuLayer.innerHTML = "";
+                    this.danmakuCursor = 0;
+                    this.lastDanmakuTime = -1;
+                    this.danmakuLaneEndTime.scroll.fill(0);
+                    this.danmakuLaneEndTime.top.fill(0);
+                    this.danmakuLaneEndTime.bottom.fill(0);
                     return;
                 }
                 if (typeof plugin.show === "function") plugin.show();
@@ -3369,7 +4222,7 @@ export class MediaPlayerCore {
                         antiOverlap: this.danmakuLayoutMode === "no-overlap",
                     });
                 }
-                const items = this.getFilteredDanmakuItems();
+                const items = this.getFilteredDanmakuItemsWithOptions({ includeTop: false, includeScroll: false });
                 if (typeof plugin.load === "function") {
                     plugin.load(items);
                 }
@@ -3383,6 +4236,9 @@ export class MediaPlayerCore {
             this.danmakuLayer.innerHTML = "";
             this.danmakuCursor = 0;
             this.lastDanmakuTime = -1;
+            this.danmakuLaneEndTime.scroll.fill(0);
+            this.danmakuLaneEndTime.top.fill(0);
+            this.danmakuLaneEndTime.bottom.fill(0);
         }
     }
 
@@ -3403,8 +4259,125 @@ export class MediaPlayerCore {
         return answer;
     }
 
+    findActiveSubtitleIndex(now) {
+        const list = this.subtitleCues || [];
+        if (!list.length) return -1;
+
+        let idx = clamp(this.subtitleLookupIndex, 0, list.length - 1);
+        const isActive = (i) => i >= 0
+            && i < list.length
+            && now >= Number(list[i].start || 0)
+            && now <= Number(list[i].end || 0);
+
+        if (isActive(idx)) return idx;
+        if (isActive(idx + 1)) {
+            this.subtitleLookupIndex = idx + 1;
+            return idx + 1;
+        }
+
+        let left = 0;
+        let right = list.length - 1;
+        let best = -1;
+        while (left <= right) {
+            const mid = (left + right) >> 1;
+            if (Number(list[mid].start || 0) <= now) {
+                best = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        if (best >= 0 && now <= Number(list[best].end || 0)) {
+            this.subtitleLookupIndex = best;
+            return best;
+        }
+        return -1;
+    }
+
+    syncSubtitleToggleAvailability() {
+        if (this.type !== "video") return;
+        const hasSubtitle = Array.isArray(this.subtitleCues) && this.subtitleCues.length > 0;
+        if (this.ui.subtitleToggle) {
+            this.ui.subtitleToggle.disabled = !hasSubtitle;
+            this.ui.subtitleToggle.checked = hasSubtitle ? !!this.subtitleEnabled : false;
+        }
+        this.applySubtitleOpacity();
+        if (!hasSubtitle && this.ui.subtitleLayer) {
+            this.currentSubtitleText = "";
+            this.ui.subtitleLayer.classList.add("hidden");
+            if (this.ui.subtitleLayer.childElementCount) {
+                this.ui.subtitleLayer.innerHTML = "";
+            }
+        }
+    }
+
+    applySubtitleOpacity() {
+        if (!this.ui.subtitleLayer) return;
+        const opacity = clamp(Number(this.subtitleOpacity || 1), 0.2, 1);
+        this.subtitleOpacity = opacity;
+        this.ui.subtitleLayer.style.opacity = String(opacity);
+    }
+
+    renderSubtitles() {
+        if (this.type !== "video" || !this.ui.subtitleLayer) return;
+        const layer = this.ui.subtitleLayer;
+        if (!this.subtitleEnabled || !Array.isArray(this.subtitleCues) || !this.subtitleCues.length) {
+            if (this.currentSubtitleText || !layer.classList.contains("hidden") || layer.childElementCount) {
+                this.currentSubtitleText = "";
+                layer.classList.add("hidden");
+                layer.innerHTML = "";
+            }
+            return;
+        }
+
+        const now = Number(this.media.currentTime || 0);
+        const active = this.findActiveSubtitleIndex(now);
+        if (active < 0) {
+            if (this.currentSubtitleText || !layer.classList.contains("hidden") || layer.childElementCount) {
+                this.currentSubtitleText = "";
+                layer.classList.add("hidden");
+                layer.innerHTML = "";
+            }
+            return;
+        }
+
+        const cue = this.subtitleCues[active];
+        const text = normalizeSubtitleText(cue?.text || "");
+        if (!text) {
+            if (this.currentSubtitleText || !layer.classList.contains("hidden") || layer.childElementCount) {
+                this.currentSubtitleText = "";
+                layer.classList.add("hidden");
+                layer.innerHTML = "";
+            }
+            return;
+        }
+
+        if (text !== this.currentSubtitleText) {
+            this.currentSubtitleText = text;
+            layer.innerHTML = "";
+
+            const cueNode = document.createElement("div");
+            cueNode.className = "subtitle-cue";
+            const lines = text.split(/\n+/).slice(0, 2);
+            if (!lines.length) {
+                cueNode.textContent = text;
+            } else {
+                lines.forEach((line) => {
+                    const lineNode = document.createElement("div");
+                    lineNode.className = "subtitle-line";
+                    lineNode.textContent = line;
+                    cueNode.appendChild(lineNode);
+                });
+            }
+
+            layer.appendChild(cueNode);
+        }
+
+        layer.classList.remove("hidden");
+    }
+
     renderDanmaku() {
-        if (this.artDanmukuReady) return;
         if (this.type !== "video" || !this.danmakuEnabled || !this.danmakuLayer || !this.danmakuList.length) return;
         const nowTick = Math.floor((this.media.currentTime || 0) * 10);
         if (nowTick === this.lastDanmakuTick) return;
@@ -3415,6 +4388,8 @@ export class MediaPlayerCore {
 
         if (this.lastDanmakuTime < 0 || currentTime < this.lastDanmakuTime - 0.2) {
             this.danmakuCursor = this.findDanmakuStartIndex(windowStart);
+            this.danmakuLaneEndTime.scroll.fill(0);
+            this.danmakuLaneEndTime.top.fill(0);
         }
         this.lastDanmakuTime = currentTime;
 
@@ -3428,6 +4403,7 @@ export class MediaPlayerCore {
             const time = Number(item?.time || 0);
             if (time > windowEnd) break;
             const mode = item.mode || "scroll";
+            const renderNatively = mode === "top" || mode === "scroll";
             if (mode === "scroll" && this.blockScrollDanmaku) {
                 idx += 1;
                 continue;
@@ -3440,6 +4416,10 @@ export class MediaPlayerCore {
                 idx += 1;
                 continue;
             }
+            if (this.artDanmukuReady && !renderNatively) {
+                idx += 1;
+                continue;
+            }
 
             const span = document.createElement("span");
             span.className = `danmaku-item mode-${mode}`;
@@ -3448,22 +4428,51 @@ export class MediaPlayerCore {
             span.style.fontSize = `${this.danmakuSize}px`;
             span.style.fontWeight = String(this.danmakuWeight);
             span.style.opacity = String(this.danmakuOpacity);
+            span.style.setProperty("--danmaku-opacity", String(this.danmakuOpacity));
 
             let duration = (12 + Math.random() * 4) / Math.max(0.5, this.danmakuSpeed);
             if (mode === "top") {
-                span.style.top = "6%";
                 duration = 4 / Math.max(0.5, this.danmakuSpeed);
+                const layerHeight = Math.max(this.danmakuLayer.clientHeight || 0, this.media.clientHeight || 0, 280);
+                const laneHeight = Math.max(24, Math.round(this.danmakuSize * 1.35));
+                const maxTopLanes = Math.max(1, Math.min(10, Math.floor((layerHeight * 0.46) / laneHeight)));
+                if (this.danmakuLaneEndTime.top.length !== maxTopLanes) {
+                    const nextLanes = Array.from({ length: maxTopLanes }, (_, lane) => Number(this.danmakuLaneEndTime.top[lane] || 0));
+                    this.danmakuLaneEndTime.top = nextLanes;
+                }
+                const laneIndex = this.danmakuLaneEndTime.top.findIndex((endAt) => Number(endAt || 0) <= currentTime);
+                if (laneIndex < 0) {
+                    idx += 1;
+                    continue;
+                }
+                this.danmakuLaneEndTime.top[laneIndex] = currentTime + duration + 0.06;
+                span.style.top = `${8 + (laneIndex * laneHeight)}px`;
             } else if (mode === "bottom") {
                 span.style.top = "86%";
                 duration = 4 / Math.max(0.5, this.danmakuSpeed);
             } else {
-                span.style.top = `${Math.random() * 76}%`;
+                const layerHeight = Math.max(this.danmakuLayer.clientHeight || 0, this.media.clientHeight || 0, 280);
+                const laneHeight = Math.max(22, Math.round(this.danmakuSize * 1.28));
+                const maxScrollLanes = Math.max(1, Math.min(30, Math.floor((layerHeight * 0.78) / laneHeight)));
+                if (this.danmakuLaneEndTime.scroll.length !== maxScrollLanes) {
+                    const nextLanes = Array.from({ length: maxScrollLanes }, (_, lane) => Number(this.danmakuLaneEndTime.scroll[lane] || 0));
+                    this.danmakuLaneEndTime.scroll = nextLanes;
+                }
+                const laneIndex = this.danmakuLaneEndTime.scroll.findIndex((endAt) => Number(endAt || 0) <= currentTime);
+                if (laneIndex < 0) {
+                    idx += 1;
+                    continue;
+                }
+                this.danmakuLaneEndTime.scroll[laneIndex] = currentTime + duration + 0.06;
+                span.style.top = `${6 + (laneIndex * laneHeight)}px`;
             }
 
             span.style.animationDuration = `${duration}s`;
             span.style.animationPlayState = this.media.paused ? "paused" : "running";
             this.danmakuLayer.appendChild(span);
-            setTimeout(() => span.remove(), Math.ceil(duration * 1000) + 200);
+            span.addEventListener("animationend", () => {
+                span.remove();
+            }, { once: true });
             idx += 1;
         }
         this.danmakuCursor = idx;
@@ -3484,16 +4493,34 @@ export class MediaPlayerCore {
             const high = this.audioCtx.createBiquadFilter();
             high.type = "highshelf";
             high.frequency.value = 4000;
+            const master = this.audioCtx.createGain();
+            master.gain.value = 1;
             source.connect(low);
             low.connect(mid);
             mid.connect(high);
-            high.connect(this.audioCtx.destination);
-            this.eqNodes = { low, mid, high };
+            high.connect(master);
+            master.connect(this.audioCtx.destination);
+            this.eqNodes = { low, mid, high, master };
             this.eqInited = true;
             this.updateEq();
         } catch (error) {
             this.setStatus("均衡器初始化失败，浏览器可能限制自动播放音频上下文");
         }
+    }
+
+    async getTrackThemeColors(coverSource) {
+        const key = String(coverSource || "").trim();
+        if (!key) return extractColorsFromDataUrl(coverSource);
+        if (this.coverColorCache.has(key)) {
+            return this.coverColorCache.get(key);
+        }
+        const colors = await extractColorsFromDataUrl(coverSource);
+        this.coverColorCache.set(key, colors);
+        if (this.coverColorCache.size > 96) {
+            const oldestKey = this.coverColorCache.keys().next().value;
+            this.coverColorCache.delete(oldestKey);
+        }
+        return colors;
     }
 
     updateEq() {
@@ -3707,4 +4734,4 @@ export function defaultCover(type) {
     return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Crect width='320' height='320' fill='%2322304a'/%3E%3Ctext x='160' y='170' fill='%23ffffff' text-anchor='middle' font-size='34'%3E${type === "video" ? "VIDEO" : "MUSIC"}%3C/text%3E%3C/svg%3E`;
 }
 
-export { formatTime, LOOP_MODES };
+export { formatTime, LOOP_MODES, parseId3Tag, parseFlacMetadata };

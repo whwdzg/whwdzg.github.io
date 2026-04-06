@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const lbAttr = (img.getAttribute('data-lightbox') || '').toLowerCase();
 		if (lbAttr === 'false' || lbAttr === 'off') return false;
 		if (img.classList.contains('no-lightbox')) return false;
+		if (img.closest('.component-comment-card') || img.closest('.component-comment-list')) return false;
 		if (img.closest('.comment-card') || img.closest('.comment-list')) return false;
 		return true;
 	};

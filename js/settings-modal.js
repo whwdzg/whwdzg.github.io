@@ -22,6 +22,9 @@ const SETTINGS_URL_CANDIDATES = [
 ];
 const COMPONENT_CSS_URL = '/css/component.css';
 const COMPONENT_JS_URL = '/js/component.js';
+const SITE_LICENSE_CONSENT_KEY = 'site-license-consent-v1';
+const SITE_LICENSE_CONSENT_VALUE = 'accepted';
+const SITE_LICENSE_DIALOG_ID = 'site-license-consent-dialog';
 let __settingsTemplateHtml = null; // in-memory cache of fetched template
 let __settingsTemplatePromise = null; // inflight promise to avoid duplicate fetches
 let __componentAssetsPromise = null;
@@ -234,7 +237,7 @@ function formatCurrentTime() {
 }
 
 function getSiteVersionMarkup() {
-  return '当前版本：<strong>2.0.3.8-20260405</strong>';
+  return '当前版本：<strong>2.0.3.9-20260406</strong>';
 }
 
 function stopCurrentTimeTicker() {
@@ -307,6 +310,119 @@ function ensureComponentAssets() {
     setTimeout(finalize, 1500);
   });
   return __componentAssetsPromise;
+}
+
+function hasSiteLicenseConsent() {
+  try {
+    return localStorage.getItem(SITE_LICENSE_CONSENT_KEY) === SITE_LICENSE_CONSENT_VALUE;
+  } catch (_) {
+    return false;
+  }
+}
+
+function saveSiteLicenseConsent() {
+  try {
+    localStorage.setItem(SITE_LICENSE_CONSENT_KEY, SITE_LICENSE_CONSENT_VALUE);
+  } catch (_) {}
+}
+
+function ensureSiteLicenseDialog() {
+  let dialog = document.getElementById(SITE_LICENSE_DIALOG_ID);
+  if (dialog) return dialog;
+
+  dialog = document.createElement('div');
+  dialog.id = SITE_LICENSE_DIALOG_ID;
+  dialog.className = 'component-dialog';
+  dialog.setAttribute('role', 'dialog');
+  dialog.setAttribute('aria-modal', 'true');
+  dialog.setAttribute('aria-labelledby', 'site-license-consent-title');
+  dialog.innerHTML = [
+    '<div class="component-dialog__backdrop" aria-hidden="true"></div>',
+    '<div class="component-dialog__panel" role="document">',
+    '  <h3 class="component-dialog__title" id="site-license-consent-title">访问协议确认</h3>',
+    '  <p class="component-dialog__text">首次访问本站即表示你确认并遵守本站使用的 GNU GENERAL PUBLIC LICENSE v3.0 协议与 CC BY-NC-SA 4.0 协议。</p>',
+    '  <div class="component-dialog__actions site-license-consent-links">',
+    '    <a class="component-btn component-btn--flat" href="/LICENSE" target="_blank" rel="noopener noreferrer">查看 GPL v3 协议</a>',
+    '    <a class="component-btn component-btn--flat" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">查看 CC BY-NC-SA 4.0 协议</a>',
+    '  </div>',
+    '  <div class="component-dialog__actions site-license-consent-actions">',
+    '    <button class="component-btn component-btn--flat" type="button" data-license-consent-decline>不同意并离开</button>',
+    '    <button class="component-btn component-btn--standard" type="button" data-license-consent-accept>同意并继续</button>',
+    '  </div>',
+    '</div>'
+  ].join('');
+
+  document.body.appendChild(dialog);
+  return dialog;
+}
+
+function tryLeaveSite() {
+  try {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+  } catch (_) {}
+  window.location.replace('about:blank');
+}
+
+function openSiteLicenseConsentDialog() {
+  if (hasSiteLicenseConsent()) return;
+
+  try {
+    if (!document.querySelector('link[data-component-style]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = COMPONENT_CSS_URL;
+      link.dataset.componentStyle = 'true';
+      document.head.appendChild(link);
+    }
+  } catch (_) {}
+
+  const dialog = ensureSiteLicenseDialog();
+  const acceptBtn = dialog.querySelector('[data-license-consent-accept]');
+  const declineBtn = dialog.querySelector('[data-license-consent-decline]');
+
+  if (!dialog.dataset.bound) {
+    dialog.dataset.bound = 'true';
+
+    const stopEsc = (event) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    const closeDialog = () => {
+      dialog.classList.remove('is-open');
+      document.removeEventListener('keydown', stopEsc, true);
+    };
+
+    if (acceptBtn) {
+      acceptBtn.addEventListener('click', () => {
+        saveSiteLicenseConsent();
+        closeDialog();
+      });
+    }
+
+    if (declineBtn) {
+      declineBtn.addEventListener('click', () => {
+        closeDialog();
+        tryLeaveSite();
+      });
+    }
+
+    dialog.__openWithGuard = () => {
+      dialog.classList.add('is-open');
+      document.addEventListener('keydown', stopEsc, true);
+      if (acceptBtn) acceptBtn.focus();
+    };
+  }
+
+  if (typeof dialog.__openWithGuard === 'function') {
+    dialog.__openWithGuard();
+  } else {
+    dialog.classList.add('is-open');
+  }
 }
 
 async function fetchSettingsTemplate({ allowAbort } = {}) {
@@ -1171,7 +1287,7 @@ function buildSettingsLayout(sectionMap, settingsStrings) {
   const layout = document.createElement('div');
   layout.className = 'settings-layout';
   const nav = document.createElement('div');
-  nav.className = 'settings-layout-nav component-row';
+  nav.className = 'settings-layout-nav component-filter-row';
   nav.setAttribute('role', 'tablist');
   const panels = document.createElement('div');
   panels.className = 'settings-layout-panels';
@@ -1186,7 +1302,7 @@ function buildSettingsLayout(sectionMap, settingsStrings) {
   categories.forEach(category => {
     const tab = document.createElement('button');
     tab.type = 'button';
-    tab.className = 'settings-category-tab component-btn component-btn--flat';
+    tab.className = 'settings-category-tab component-filter-chip';
     tab.dataset.category = category.key;
     tab.setAttribute('role', 'tab');
     tab.setAttribute('aria-selected', 'false');
@@ -1235,8 +1351,6 @@ function buildSettingsLayout(sectionMap, settingsStrings) {
     tabs.forEach(tab => {
       const active = tab.dataset.category === key;
       tab.classList.toggle('active', active);
-      tab.classList.toggle('component-btn--flat', !active);
-      tab.classList.toggle('component-btn--immersive-tint', active);
       tab.setAttribute('aria-selected', active ? 'true' : 'false');
       tab.tabIndex = active ? 0 : -1;
     });
@@ -1349,6 +1463,7 @@ function showModal(){
   const modal = document.getElementById('settings-modal');
   if (backdrop) backdrop.classList.add('show');
   if (modal) modal.classList.add('show');
+  if (document.body) document.body.classList.add('settings-modal-open');
 }
 
 function closeModal(){
@@ -1372,6 +1487,7 @@ function closeModal(){
       __settingsClearTimeoutId = null;
     }, 200);
   }
+  if (document.body) document.body.classList.remove('settings-modal-open');
 }
 
 async function openModal(){
@@ -1536,6 +1652,13 @@ document.addEventListener('DOMContentLoaded', () => {
       requestIdleCallback(kickOffPrefetch, { timeout: 1200 });
     } else {
       setTimeout(kickOffPrefetch, 800);
+    }
+  } catch (e) {}
+
+  // 首次访问弹出协议确认：同意后记录本地状态，不再重复提示。
+  try {
+    if (!hasSiteLicenseConsent()) {
+      openSiteLicenseConsentDialog();
     }
   } catch (e) {}
 });

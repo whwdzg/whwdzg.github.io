@@ -5,7 +5,33 @@
  * English: Implements client-side interactions and feature logic.
  */
 (() => {
-    const toastApi = window.globalCopyToast || { show () {} };
+    const toastApi = {
+        show(message, variant, iconClass) {
+            const tone = variant || 'info';
+            if (window.componentToast && typeof window.componentToast.show === 'function') {
+                window.componentToast.show(message, tone, iconClass);
+                return;
+            }
+            const toastEl = document.querySelector('[data-component-toast]');
+            if (toastEl) {
+                const iconEl = toastEl.querySelector('.component-toast__icon');
+                const messageEl = toastEl.querySelector('.component-toast__message');
+                if (messageEl) messageEl.textContent = message || '';
+                toastEl.classList.remove('component-toast--success', 'component-toast--warning', 'component-toast--error', 'component-toast--info');
+                toastEl.classList.add('component-toast--' + tone);
+                if (iconEl) {
+                    iconEl.className = 'component-toast__icon fluent-icon ' + (iconClass || 'icon-ic_fluent_info_24_regular');
+                }
+                toastEl.classList.add('show');
+                if (window.__toolComponentToastTimer) clearTimeout(window.__toolComponentToastTimer);
+                window.__toolComponentToastTimer = setTimeout(() => toastEl.classList.remove('show'), 1600);
+                return;
+            }
+            if (window.globalCopyToast && typeof window.globalCopyToast.show === 'function') {
+                window.globalCopyToast.show(message, tone === 'info' ? 'success' : tone, iconClass);
+            }
+        }
+    };
 
     let inputEl = null;
     let decodeInputEl = null;
@@ -202,11 +228,15 @@
     function expandDropdown() {
         if (!modeDropdown || !modePortalListEl || !modeToggleEl || !modePortalEl) return;
         modeDropdown.classList.add('open');
-        modePortalListEl.classList.add('open');
-        modePortalListEl.style.maxHeight = modePortalListEl.scrollHeight + 'px';
         modePortalEl.classList.remove('hidden');
+        modePortalListEl.classList.add('open');
+        modePortalListEl.style.maxHeight = '0px';
         modeToggleEl.setAttribute('aria-expanded', 'true');
-        positionPortal();
+        requestAnimationFrame(() => {
+            if (!modeDropdown.classList.contains('open')) return;
+            modePortalListEl.style.maxHeight = modePortalListEl.scrollHeight + 'px';
+            positionPortal();
+        });
     }
 
     function toggleDropdown() {
@@ -244,6 +274,7 @@
             decodeInputEl.value = '';
             renderTable(['序号', '字符', '结果'], []);
             setFeedback('输入输出已清空', 'info');
+            toastApi.show('已清空输入和输出', 'info', 'icon-ic_fluent_delete_24_regular');
             return;
         }
         try {
@@ -285,14 +316,15 @@
         if (modeDropdown.dataset.bound === '1') return;
 
         modePortalEl = document.createElement('div');
-        modePortalEl.className = 'settings-dropdown-portal basex-dropdown-portal hidden';
+        modePortalEl.className = 'settings-dropdown-portal component-dropdown-portal basex-dropdown-portal hidden';
         modePortalListEl = document.createElement('div');
-        modePortalListEl.className = 'settings-dropdown-list';
+        modePortalListEl.className = 'settings-dropdown-list component-dropdown-list component-dropdown-list--portal';
         modePortalEl.appendChild(modePortalListEl);
         document.body.appendChild(modePortalEl);
 
         modeListEl.querySelectorAll('.dropdown-item').forEach((item) => {
             const clone = item.cloneNode(true);
+            clone.classList.add('component-dropdown-item');
             clone.addEventListener('click', () => {
                 const val = clone.dataset.value || 'codepoint';
                 setModeValue(val, clone.textContent || val);

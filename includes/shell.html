@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/css/component.css" data-component-style>
 <header>
     <h1>
-        <button class="sidebar-collapse-btn header-collapse-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
+        <button class="sidebar-collapse-btn header-collapse-btn component-btn component-btn--standard component-icon-btn" aria-controls="sidebar" aria-expanded="true" title="折叠/展开侧边栏">
             <i class="icon-ic_fluent_list_24_regular item-icon" aria-hidden="true"></i>
         </button>
         <span class="header-title">
@@ -20,14 +20,14 @@
             <span id="page-loading-indicator" class="page-loading-indicator" aria-hidden="true"></span>
         </span>
         <div class="header-actions">
-        <button class="header-search-btn" id="header-search-btn" aria-label="搜索" title="搜索">
+        <button class="header-search-btn component-btn component-btn--standard component-icon-btn" id="header-search-btn" aria-label="搜索" title="搜索">
             <i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>
         </button>
-        <button class="theme-toggle-btn" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
+        <button class="theme-toggle-btn component-btn component-btn--standard component-icon-btn" aria-label="切换深色/浅色模式" title="切换深色/浅色模式">
             <i class="fluent-font" aria-hidden="true">&#xF87E;</i>
         </button>
         <div class="theme-settings-container">
-            <button class="theme-settings-btn" aria-label="设置" title="设置">
+            <button class="theme-settings-btn component-btn component-btn--standard component-icon-btn" aria-label="设置" title="设置">
                 <i class="fluent-font" aria-hidden="true">&#xF6AA;</i>
             </button>
         </div>
@@ -188,9 +188,7 @@
 <footer>
     <div class="footer-main">
         <p>Copyright (c) 2022-2026 滄海水魚</p>
-        <p>本站代码采用 GNU GENERAL PUBLIC LICENSE v3.0 协议</p>
-        <p>本站文本内容采用 CC BY-NC-SA 4.0 协议</p>
-        <p>当前版本：<strong>2.0.3.8-20260405</strong></p>
+        <p>当前版本：<strong>2.0.3.9-20260406</strong></p>
     </div>
     <div class="footer-badges" aria-label="许可证与托管信息">
         <a class="footer-badge" href="/LICENSE"><i class="fluent-icon icon-ic_fluent_shield_24_regular" aria-hidden="true"></i>GNU General Public License v3.0</a>
@@ -203,6 +201,13 @@
     <span class="global-toast-message"></span>
     <button type="button" class="global-toast-close" aria-label="关闭提示">×</button>
     <span class="global-toast-progress" aria-hidden="true"></span>
+</div>
+<div id="global-component-toast" class="component-toast component-toast--info" data-component-toast role="status" aria-live="polite">
+    <i class="component-toast__icon fluent-icon icon-ic_fluent_info_24_regular" aria-hidden="true"></i>
+    <span class="component-toast__message">提示</span>
+    <button class="component-toast__close" type="button" aria-label="关闭">
+        <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+    </button>
 </div>
 <!-- 分步加载 & 轻量懒加载库 -->
 <script src="/js/copy-toast.js" defer></script>
@@ -235,6 +240,7 @@
             // 先加载 avatar-loader（模块），并调用初始化
             import('/js/avatar-loader.js').then(function(m){ try{ m.initAvatarLoader && m.initAvatarLoader(); }catch(e){} }).catch(()=>{});
             import('/js/component.js').catch(()=>{});
+            import('/js/component-bridge.js').catch(()=>{});
             import('/js/avatar.js').catch(()=>{});
             import('/js/theme.js').catch(()=>{});
             import('/js/sidebar.js').catch(()=>{});
@@ -242,7 +248,7 @@
             import('/js/settings-modal.js').catch(()=>{});
         } else {
             // 回退：按需创建 script 标签
-            var toLoad = ['/js/image-loader.nomodule.js','/js/component.js','/js/avatar.js','/js/theme.js','/js/sidebar.js','/js/scroll-to-top.js','/js/settings-modal.js'];
+            var toLoad = ['/js/image-loader.nomodule.js','/js/component.js','/js/component-bridge.js','/js/avatar.js','/js/theme.js','/js/sidebar.js','/js/scroll-to-top.js','/js/settings-modal.js'];
             toLoad.forEach(function(p){
                 var sc = document.createElement('script');
                 sc.src = p;
