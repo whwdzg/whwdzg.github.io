@@ -118,6 +118,7 @@
   flex: 0 1 auto;
   min-height: 0;
   max-height: calc(100vh - 150px);
+  background: var(--secondary-bg);
   overflow-y: auto;
 }
 
@@ -130,62 +131,30 @@
 .settings-layout-nav {
   display: flex;
   gap: 10px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 6px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  padding: 2px 0 10px;
+  overflow: visible;
   position: sticky;
   top: 0;
-  z-index: 2;
-  background: transparent;
-}
-
-.settings-layout-nav::-webkit-scrollbar {
-  height: 6px;
-}
-
-.settings-layout-nav::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.2);
-  border-radius: 999px;
+  z-index: 4;
+  background: var(--secondary-bg);
+  isolation: isolate;
 }
 
 .settings-category-tab {
-  border: none;
-  border-radius: 999px;
-  padding: 6px 16px;
-  cursor: pointer;
-  background: var(--secondary-bg);
-  color: var(--text-color);
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: 1px solid transparent;
-  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
   flex: 0 0 auto;
 }
 
-.settings-category-tab.component-btn {
-  border-radius: 999px;
-  padding: 6px 16px;
+.settings-category-tab.component-filter-chip {
   min-height: 0;
   line-height: 1.2;
-}
-
-.settings-category-tab:hover {
-  background: var(--hover-bg);
-  border-color: var(--border-color);
+  font-size: 0.95rem;
 }
 
 .settings-category-tab:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
-}
-
-.settings-category-tab.active {
-  background: linear-gradient(135deg, var(--primary-color), rgba(var(--primary-color-rgb, 51,204,153), 0.55));
-  color: #ffffff;
-  border-color: transparent;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .settings-layout-panels {
@@ -298,6 +267,22 @@
   max-width: 100%;
 }
 
+/* Standalone dropdowns in settings sections should shrink to text width. */
+.settings-section > .component-dropdown {
+  width: fit-content;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.settings-section > .component-dropdown > .component-dropdown-toggle {
+  width: auto;
+  max-width: 100%;
+}
+
+.settings-section > .component-dropdown > .component-dropdown-toggle .toggle-label {
+  flex: 0 1 auto;
+}
+
 .settings-action-row {
   display: flex;
   align-items: center;
@@ -374,13 +359,6 @@
 .color-option.selected {
   box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb, 51,204,153), 0.16);
   transform: translateY(-1px);
-}
-
-/* 缁熶竴锛歴ettings 妯℃€佷腑鎵€鏈夐€変腑椤逛娇鐢ㄥ渾瑙掗珮鍏?*/
-.settings-section .component-dropdown-item.selected,
-.settings-section .settings-toggle-row .selected {
-  background: var(--hover-bg);
-  border-radius: 8px;
 }
 
 /* Show theme-color outline (ring) only when hovered or focused for .color-option */
@@ -486,27 +464,25 @@ body.dark-mode .color-swatch.focus {
   background: #b6b6b6;
 }
 
-.color-floating-panel {
+.settings-color-panel {
   position: absolute;
   top: 48px;
   right: 0;
   width: min(360px, calc(100vw - 120px));
-  background: var(--secondary-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  box-shadow: 0 14px 40px rgba(0,0,0,0.25);
-  padding: 12px;
+  background: var(--card-bg);
+  border-radius: 12px;
   z-index: 20;
   display: grid;
   gap: 10px;
+  padding: 10px 12px;
 }
 
-.color-panel-header {
-  font-weight: 600;
+.settings-color-panel__title {
+  margin: 0;
   font-size: 0.95rem;
 }
 
-.color-preview {
+.settings-color-panel__preview {
   width: 100%;
   height: 32px;
   border-radius: 8px;
@@ -514,7 +490,7 @@ body.dark-mode .color-swatch.focus {
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
 }
 
-.color-slider-row {
+.settings-color-row {
   display: grid;
   grid-template-columns: 46px 1fr;
   align-items: center;
@@ -522,7 +498,11 @@ body.dark-mode .color-swatch.focus {
   font-size: 0.9rem;
 }
 
-.color-slider {
+.settings-color-row__label {
+  color: var(--text-muted);
+}
+
+.settings-color-slider {
   width: 100%;
   accent-color: var(--primary-color);
   height: 6px;
@@ -531,7 +511,7 @@ body.dark-mode .color-swatch.focus {
   appearance: none;
 }
 
-.color-slider::-webkit-slider-thumb {
+.settings-color-slider::-webkit-slider-thumb {
   appearance: none;
   width: 14px;
   height: 14px;
@@ -542,7 +522,7 @@ body.dark-mode .color-swatch.focus {
   cursor: pointer;
 }
 
-.color-slider::-moz-range-thumb {
+.settings-color-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
@@ -552,17 +532,7 @@ body.dark-mode .color-swatch.focus {
   cursor: pointer;
 }
 
-.color-custom-panel {
-  width: 100%;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 10px 12px;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-  display: grid;
-  gap: 10px;
-}
-.color-swatch-grid {
+.settings-color-swatch-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(18px, 1fr));
   gap: 8px;
@@ -581,85 +551,10 @@ body.dark-mode .color-swatch.focus {
 .color-swatch:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
 .color-swatch:active { transform: translateY(0); box-shadow: none; }
 
-.color-custom-actions {
+.settings-color-actions {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px;
-}
-.component-dropdown-list .component-dropdown-item.selected::before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 10px;
-  bottom: 10px;
-  width: 4px;
-  border-radius: 4px; /* 涓ょ鍦嗚 */
-  background: var(--primary-color);
-}
-/* Rounded highlight background for selected item */
-.component-dropdown-list .component-dropdown-item.selected {
-  background: var(--hover-bg);
-  border-radius: 8px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  margin: 6px 0; /* create space so rounded corners are visible */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-}
-
-/* Click animation for dropdown items (applied via JS by adding .click-anim) */
-@keyframes dropdownClick {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.96); }
-  100% { transform: scale(1); }
-}
-.component-dropdown-list .component-dropdown-item.click-anim {
-  animation: dropdownClick 180ms ease;
-}
-
-/* 浣?dropdown-item 鏇村儚椤电湁閾炬帴锛堟洿缁嗙殑琛岄珮涓庡唴杈硅窛锛?*/
-.component-dropdown-list .component-dropdown-item {
-  padding: 8px 12px;
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
-/* 褰?list 楂樺害鍙楅檺鏃朵娇鍏跺彲婊氬姩 */
-.component-dropdown-list.scrollable {
-  overflow-y: auto;
-}
-
-/* 娣辫壊妯″紡閫傞厤锛氫笅鎷夐€夋嫨妗?*/
-.dark-mode .component-dropdown-list .component-dropdown-item {
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-.dark-mode .component-dropdown-list .component-dropdown-item:hover {
-  background: rgba(255,255,255,0.06);
-}
-.dark-mode .component-dropdown-list .component-dropdown-item.selected {
-  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-}
-.dark-mode .component-dropdown-list .component-dropdown-item.selected {
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-/* Dropdown items and selected visuals in dark mode should use subtle light overlays */
-body.dark-mode .component-dropdown-list .component-dropdown-item {
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  color: var(--text-color);
-}
-body.dark-mode .component-dropdown-list .component-dropdown-item:hover {
-  background: rgba(255,255,255,0.03);
-}
-body.dark-mode .component-dropdown-list .component-dropdown-item.selected {
-  background: var(--hover-bg);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-}
-
-/* Dark mode: make the left accent bar use a lighter alpha of primary color for contrast */
-body.dark-mode .component-dropdown-list .component-dropdown-item.selected::before {
-  /* use primary color in dark mode for clear accent */
-  background: rgba(var(--primary-color-rgb, 51,204,153), 0.95);
 }
 
 /* Use primary color as outline for selected color-option in dark mode */
@@ -682,4 +577,52 @@ body.dark-mode .color-option {
    (ring is only applied on hover/focus via the selectors above) */
 body.dark-mode .color-core {
   color: var(--text-color);
+}
+
+/* 首访协议确认弹窗：链接按钮化 + 窄视图适配 */
+#site-license-consent-dialog .component-dialog__panel {
+  width: min(560px, calc(100vw - 1.5rem));
+  padding: 1.1rem 1.2rem;
+}
+
+#site-license-consent-dialog .site-license-consent-links,
+#site-license-consent-dialog .site-license-consent-actions {
+  flex-wrap: wrap;
+}
+
+#site-license-consent-dialog .site-license-consent-links .component-btn,
+#site-license-consent-dialog .site-license-consent-actions .component-btn {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  #site-license-consent-dialog {
+    align-items: flex-end;
+    padding: 0 0.5rem 0.75rem;
+  }
+
+  #site-license-consent-dialog .component-dialog__panel {
+    width: 100%;
+    max-width: none;
+    border-radius: 14px;
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  #site-license-consent-dialog .site-license-consent-links,
+  #site-license-consent-dialog .site-license-consent-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #site-license-consent-dialog .site-license-consent-links .component-btn,
+  #site-license-consent-dialog .site-license-consent-actions .component-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }

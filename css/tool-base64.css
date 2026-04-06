@@ -24,72 +24,50 @@
   color: var(--text-color, #111827);
 }
 
-.base64-tool-panel textarea {
+.base64-tool-panel .component-textarea {
   width: 100%;
   max-width: 100%;
   min-height: 140px;
   font-family: var(--font-mono, "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif);
   font-size: 1rem;
-  border-radius: 10px;
   padding: 0.95rem;
-  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
-  background: var(--card-bg, #ffffff);
-  color: var(--text-color, #111827);
   resize: vertical;
-  box-shadow: 0 10px 30px var(--shadow-color, rgba(15, 23, 42, 0.18));
-  backdrop-filter: blur(6px);
-  transition: border 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
   box-sizing: border-box;
 }
 
-.base64-tool-panel textarea::-webkit-resizer {
+.base64-tool-panel .component-textarea::-webkit-resizer {
   display: none;
 }
 
-.base64-tool-panel textarea::-moz-resizer {
+.base64-tool-panel .component-textarea::-moz-resizer {
   display: none;
-}
-
-.base64-tool-panel textarea:focus {
-  outline: none;
-  border-color: var(--border-color);
-  background: var(--input-focus-bg);
-  box-shadow: 0 -2px 0 0 var(--primary-color) inset, 0 0 0 1px var(--hover-bg);
 }
 
 .base64-textarea-wrapper {
   position: relative;
 }
 
-.base64-copy-btn {
+.base64-textarea-wrapper .copy-btn {
   position: absolute;
   top: 0.6rem;
   right: 0.6rem;
-  background: rgba(180, 180, 180, 0.2);
-  border: none;
-  border-radius: 6px;
-  padding: 0.35rem 0.75rem;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  transition: background 0.2s ease, transform 0.2s ease;
   z-index: 2;
 }
 
-.base64-copy-btn:hover {
-  background: rgba(180, 180, 180, 0.4);
+.base64-textarea-wrapper .copy-btn.component-icon-btn {
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0;
 }
 
-.base64-copy-btn.copied {
+.base64-textarea-wrapper .copy-btn.copied {
   background: var(--color-secondary, #10b981);
+  border-color: transparent;
   color: #fff;
 }
 
-.base64-copy-btn .fluent-icon {
-  font-family: 'FluentSystemIcons-Regular';
-  font-size: 1rem;
+.base64-textarea-wrapper .copy-btn .fluent-icon {
   pointer-events: none;
 }
 
@@ -102,42 +80,14 @@
   display: inline-flex;
 }
 
-
 .base64-tool-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.base64-tool-actions button {
+.base64-tool-actions .component-btn {
   flex: 1 1 150px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  padding: 0.65rem 1rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.base64-tool-actions button[data-base64-action="encode"] {
-  background: var(--color-accent, #3b82f6);
-  color: #fff;
-}
-
-.base64-tool-actions button[data-base64-action="decode"] {
-  background: var(--color-secondary, #10b981);
-  color: #fff;
-}
-
-.base64-tool-actions button[data-base64-action="clear"] {
-  background: transparent;
-  border-color: var(--border-color, rgba(0, 0, 0, 0.2));
-  color: var(--neutral-color, #1f2937);
-}
-
-.base64-tool-actions button:hover {
-  filter: brightness(1.08);
 }
 
 .base64-tool-feedback {

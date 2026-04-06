@@ -217,7 +217,7 @@
   flex: 0 0 120px;
   max-width: 160px;
 }
-.mcproj-speed .styled-input {
+.mcproj-speed .component-dialog__input {
   text-align: center;
 }
 .mcproj-speed label {

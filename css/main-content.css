@@ -203,39 +203,10 @@ main .spa-plain-text {
 	gap: 0.75rem;
 }
 
-.hero-btn {
-	padding: 0.75rem 1.25rem;
-	border-radius: 999px;
-	border: 1px solid transparent;
-	font-weight: 600;
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
-	text-decoration: none;
-	white-space: nowrap;
-	flex: 1 1 180px;
-	min-width: 120px;
-	text-align: center;
-}
-
-.hero-btn.primary {
-	background: var(--primary-color, #4A90E2);
-	color: #fff;
-	box-shadow: 0 12px 24px rgba(74, 144, 226, 0.3);
-}
-
-.hero-btn.secondary {
-	background: var(--secondary-bg);
-	color: var(--text-color);
-	border-color: var(--border-color);
-}
-
-.hero-btn.ghost {
-	color: var(--text-color);
-	border-color: var(--border-color);
-	background: transparent;
-}
-
-.hero-btn:hover {
-	transform: translateY(-2px);
+.hero-actions .component-btn {
+flex: 1 1 180px;
+min-width: 120px;
+justify-content: center;
 }
 
 .hero-meta {
@@ -393,7 +364,7 @@ main .spa-plain-text {
 		align-items: stretch;
 	}
 
-	.hero-btn {
+	.hero-actions .component-btn {
 		flex: 1 1 auto;
 		min-width: 0;
 	}
@@ -442,29 +413,21 @@ main .spa-plain-text {
 }
 
 .code-block .copy-btn {
-	position: absolute;
-	top: 0.7em;
-	right: 1em;
-	background: rgba(180, 180, 180, 0.3);
-	border: none;
-	border-radius: 6px;
-	padding: 0.3em 0.7em;
-	cursor: pointer;
-	transition: background 0.2s;
-	z-index: 2;
-	display: flex;
-	align-items: center;
+position: absolute;
+top: 0.7em;
+right: 1em;
+z-index: 2;
 }
 
-.code-block .copy-btn:hover {
-	background: rgba(180, 180, 180, 0.5);
+.code-block .copy-btn.component-btn {
+min-width: 34px;
+width: 34px;
+height: 34px;
+padding: 0;
 }
 
 .code-block .copy-btn .fluent-icon {
-	font-family: 'FluentSystemIcons-Regular';
-	font-size: 1.2em;
-	color: #fff;
-	pointer-events: none;
+pointer-events: none;
 }
 
 .global-copy-toast {

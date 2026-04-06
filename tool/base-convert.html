@@ -21,7 +21,7 @@
     <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
     <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
     <link rel="preload" href="/css/variables.css" as="style">
-    <link rel="preload" href="/includes/shell.html?v=2.0.3.8-20260405" as="fetch" crossorigin>
+    <link rel="preload" href="/includes/shell.html?v=2.0.3.9-20260406" as="fetch" crossorigin>
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="/css/variables.css">
@@ -122,7 +122,7 @@
             function withVersion(url){
                 if (location.protocol === 'file:') return url;
                 var sep = url.indexOf('?') === -1 ? '?' : '&';
-                return url + sep + 'v=2.0.3.8-20260405';
+                return url + sep + 'v=2.0.3.9-20260406';
             }
             try {
                 var xhr = new XMLHttpRequest();
@@ -169,12 +169,12 @@
                             <p class="field-hint">数字当前使用的进制</p>
                         </div>
                         <input type="hidden" id="base-from" value="10">
-                        <div class="settings-dropdown basex-dropdown" data-open="false" data-base-role="from">
-                            <button type="button" class="settings-dropdown-toggle" id="base-from-toggle" aria-haspopup="listbox" aria-expanded="false">
+                        <div class="settings-dropdown component-dropdown basex-dropdown" data-open="false" data-base-role="from">
+                            <button type="button" class="settings-dropdown-toggle component-dropdown-toggle" id="base-from-toggle" aria-haspopup="listbox" aria-expanded="false">
                                 <span class="toggle-label" id="base-from-label">Base10（十进制）</span>
                                 <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
                             </button>
-                            <div class="settings-dropdown-list" id="base-from-list" role="listbox"></div>
+                            <div class="settings-dropdown-list component-dropdown-list" id="base-from-list" role="listbox"></div>
                         </div>
                     </div>
 
@@ -183,8 +183,8 @@
                             <label for="base-input">输入区</label>
                             <p class="field-hint">输入源进制数字，支持前导负号和常见前缀（0b/0o/0x）。</p>
                             <div class="basex-textarea-wrapper">
-                                <textarea id="base-input" spellcheck="false" rows="6" placeholder="例如：11111111、255、7F、-101010"></textarea>
-                                <button type="button" class="copy-btn basex-copy-btn" data-copy-target="base-input" aria-label="复制输入内容">
+                                <textarea id="base-input" class="component-textarea" spellcheck="false" rows="6" placeholder="例如：11111111、255、7F、-101010"></textarea>
+                                <button type="button" class="copy-btn basex-copy-btn component-btn component-btn--flat component-icon-btn" data-copy-target="base-input" aria-label="复制输入内容">
                                     <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
                                 </button>
                             </div>
@@ -197,16 +197,16 @@
                                     <thead id="base-output-head"></thead>
                                     <tbody id="base-output-body"></tbody>
                                 </table>
-                                <button type="button" class="copy-btn basex-copy-btn" data-copy-target="base-output-table" aria-label="复制输出内容">
+                                <button type="button" class="copy-btn basex-copy-btn component-btn component-btn--flat component-icon-btn" data-copy-target="base-output-table" aria-label="复制输出内容">
                                     <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="basex-tool-actions">
-                        <button type="button" data-base-action="convert" data-basex-action="encode">展示四种进制</button>
-                        <button type="button" data-base-action="copy" data-basex-action="decode">复制结果</button>
-                        <button type="button" data-base-action="clear" data-basex-action="clear">清空</button>
+                        <button type="button" class="component-btn component-btn--flat" data-base-action="convert" data-basex-action="encode">展示四种进制</button>
+                        <button type="button" class="component-btn component-btn--flat" data-base-action="copy" data-basex-action="decode">复制结果</button>
+                        <button type="button" class="component-btn component-btn--flat" data-base-action="clear" data-basex-action="clear">清空</button>
                     </div>
                     <div id="base-feedback" class="basex-tool-feedback" aria-live="polite" data-state="info">等待操作</div>
                 </div>

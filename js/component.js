@@ -569,7 +569,14 @@
       if (!toggle || !list) return;
 
       const label = toggle.querySelector('.toggle-label');
-      const sample = list.querySelector('.component-dropdown-item') || label || toggle;
+      const sample = label || toggle || list.querySelector('.component-dropdown-item');
+      const textStyle = label ? getComputedStyle(label) : getComputedStyle(toggle);
+      // Keep expanded menu text visually identical to collapsed current-label text.
+      list.style.fontFamily = textStyle.fontFamily;
+      list.style.fontSize = textStyle.fontSize;
+      list.style.fontWeight = textStyle.fontWeight;
+      list.style.letterSpacing = textStyle.letterSpacing;
+      list.style.lineHeight = textStyle.lineHeight;
       const normalizedLabel = label ? (label.textContent || '').replace(/\s+/g, ' ').trim() : '';
       let maxTextWidth = normalizedLabel ? measureTextWidth(normalizedLabel, sample) : 0;
       list.querySelectorAll('.component-dropdown-item').forEach((item) => {
@@ -706,8 +713,18 @@
         dropdown.classList.add('open');
         toggle.setAttribute('aria-expanded', 'true');
         const list = getListEl(dropdown);
-        if (list) list.classList.add('is-open');
+        if (!list) {
+          placeDropdown(dropdown);
+          return;
+        }
+        // Open on next frame so CSS transition can animate from hidden state.
+        list.classList.remove('is-open');
         placeDropdown(dropdown);
+        window.requestAnimationFrame(() => {
+          if (!dropdown.classList.contains('open')) return;
+          list.classList.add('is-open');
+          placeDropdown(dropdown);
+        });
       });
 
       items.forEach((item) => {
@@ -904,7 +921,7 @@
   }
 
   function parseId3Metadata(bytes) {
-    const result = { title: '', artist: '', coverUrl: '' };
+    const result = { title: '', artist: '', album: '', coverUrl: '' };
     if (!bytes || bytes.length < 10) return result;
     if (String.fromCharCode(bytes[0], bytes[1], bytes[2]) !== 'ID3') return result;
 
@@ -924,11 +941,12 @@
 
       const frameData = bytes.slice(frameStart, frameEnd);
       if (frameData.length) {
-        if (frameId === 'TIT2' || frameId === 'TPE1') {
+        if (frameId === 'TIT2' || frameId === 'TPE1' || frameId === 'TALB') {
           const encoding = frameData[0];
           const text = decodeTagText(frameData.slice(1), encoding);
           if (frameId === 'TIT2' && text) result.title = text;
           if (frameId === 'TPE1' && text) result.artist = text;
+          if (frameId === 'TALB' && text) result.album = text;
         }
 
         if (frameId === 'APIC' && !result.coverUrl) {
@@ -1038,6 +1056,14 @@
       nameEl.insertAdjacentElement('afterend', authorEl);
     }
 
+    let albumEl = dock.querySelector('[data-audio-album]');
+    if (!albumEl) {
+      albumEl = document.createElement('span');
+      albumEl.className = 'component-audio-album';
+      albumEl.setAttribute('data-audio-album', 'true');
+      authorEl.insertAdjacentElement('afterend', albumEl);
+    }
+
     let coverEl = symbolEl ? symbolEl.querySelector('.component-audio-cover') : null;
     if (!coverEl && symbolEl) {
       coverEl = document.createElement('img');
@@ -1052,6 +1078,7 @@
         src: '/resource/aud/MyGO!!!!! - %E3%82%A8%E3%82%AC%E3%82%AF%E3%83%9F%E3%83%A9%E3%82%A4.mp3',
         title: '',
         author: '',
+        album: '',
         cover: ''
       },
       {
@@ -1059,6 +1086,7 @@
         src: '/resource/aud/MyGO!!!!! - %E3%82%A8%E3%82%AC%E3%82%AF%E3%83%9F%E3%83%A9%E3%82%A4.mp3',
         title: '',
         author: '',
+        album: '',
         cover: ''
       }
     ];
@@ -1073,6 +1101,7 @@
       const inferred = inferTrackIdentity(track.name, track.src);
       track.title = String(track.title || inferred.title || '未命名音频').trim();
       track.author = String(track.author || inferred.author || '未知作者').trim();
+      track.album = String(track.album || '').trim();
       track.cover = String(track.cover || fallbackCover).trim();
       return track;
     };
@@ -1082,6 +1111,7 @@
       ensureTrackFallback(track);
       nameEl.textContent = track.title;
       if (authorEl) authorEl.textContent = `作者：${track.author}`;
+      if (albumEl) albumEl.textContent = `专辑：${track.album || '-'}`;
       if (coverEl) {
         coverEl.src = track.cover;
         coverEl.alt = track.title || 'cover';
@@ -1107,6 +1137,7 @@
               const id3 = parseId3Metadata(bytes);
               if (id3.title) track.title = id3.title;
               if (id3.artist) track.author = id3.artist;
+              if (id3.album) track.album = id3.album;
               if (id3.coverUrl) track.cover = id3.coverUrl;
             }
           }
@@ -1125,6 +1156,7 @@
       const params = new URLSearchParams();
       params.set('title', track.title || track.name || '未命名音频');
       params.set('author', track.author || '未知作者');
+      params.set('album', track.album || '');
       params.set('src', track.src || '');
       params.set('cover', track.cover || fallbackCover);
       openPageLink.href = '/media/music.html?' + params.toString();
@@ -1216,6 +1248,10 @@
 
     seek.addEventListener('input', () => {
       const next = Number(seek.value || 0);
+      const duration = Number(audio.duration) || 0;
+      if (duration > 0) {
+        audio.currentTime = Math.max(0, Math.min(duration, next));
+      }
       timeEl.textContent = formatTime(next) + ' / ' + formatTime(audio.duration);
     });
 
@@ -1230,7 +1266,9 @@
 
     seek.addEventListener('change', commitSeek);
     seek.addEventListener('pointerup', commitSeek);
+    seek.addEventListener('mouseup', commitSeek);
     seek.addEventListener('touchend', commitSeek, { passive: true });
+    seek.addEventListener('blur', commitSeek);
     seek.addEventListener('pointercancel', () => {
       isSeeking = false;
       updateAudioUi();

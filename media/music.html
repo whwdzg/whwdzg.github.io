@@ -67,6 +67,7 @@
                 <div class="track-meta">
                     <div id="track-title" class="track-title">未导入音乐</div>
                     <div id="track-author" class="track-author">作者：-</div>
+                    <div id="track-album" class="track-album">专辑：-</div>
                     <div class="track-time"><span id="running-time">00:00</span> / <span id="total-time">00:00</span></div>
                 </div>
             </div>
@@ -144,6 +145,20 @@
                 <label for="toggle-karaoke">逐字歌词</label>
                 <label class="component-switch" aria-label="逐字歌词开关">
                     <input id="toggle-karaoke" class="component-switch__input" type="checkbox" checked>
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <label for="toggle-translation">显示翻译</label>
+                <label class="component-switch" aria-label="显示翻译开关">
+                    <input id="toggle-translation" class="component-switch__input" type="checkbox" checked>
+                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <label for="toggle-pause-fade">暂停淡入淡出</label>
+                <label class="component-switch" aria-label="暂停淡入淡出开关">
+                    <input id="toggle-pause-fade" class="component-switch__input" type="checkbox">
                     <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
                 </label>
             </div>

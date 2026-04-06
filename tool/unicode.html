@@ -21,7 +21,7 @@
     <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
     <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
     <link rel="preload" href="/css/variables.css" as="style">
-    <link rel="preload" href="/includes/shell.html?v=2.0.3.8-20260405" as="fetch" crossorigin>
+    <link rel="preload" href="/includes/shell.html?v=2.0.3.9-20260406" as="fetch" crossorigin>
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="/css/variables.css">
@@ -122,7 +122,7 @@
             function withVersion(url){
                 if (location.protocol === 'file:') return url;
                 var sep = url.indexOf('?') === -1 ? '?' : '&';
-                return url + sep + 'v=2.0.3.8-20260405';
+                return url + sep + 'v=2.0.3.9-20260406';
             }
             try {
                 var xhr = new XMLHttpRequest();
@@ -168,15 +168,15 @@
                             <p class="field-hint">编码为文本时使用的目标格式</p>
                         </div>
                         <input type="hidden" id="unicode-mode" value="codepoint">
-                        <div class="settings-dropdown basex-dropdown" data-open="false">
-                            <button type="button" class="settings-dropdown-toggle" id="unicode-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                        <div class="settings-dropdown component-dropdown basex-dropdown" data-open="false">
+                            <button type="button" class="settings-dropdown-toggle component-dropdown-toggle" id="unicode-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
                                 <span class="toggle-label" id="unicode-mode-label">U+XXXX（码点）</span>
                                 <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
                             </button>
-                            <div class="settings-dropdown-list" id="unicode-mode-list" role="listbox">
-                                <div class="dropdown-item" role="option" data-value="escape">\\uXXXX（转义）</div>
-                                <div class="dropdown-item selected" role="option" data-value="codepoint" aria-selected="true">U+XXXX（码点）</div>
-                                <div class="dropdown-item" role="option" data-value="html">&#xXXXX;（HTML 实体）</div>
+                            <div class="settings-dropdown-list component-dropdown-list" id="unicode-mode-list" role="listbox">
+                                <div class="dropdown-item component-dropdown-item" role="option" data-value="escape">\\uXXXX（转义）</div>
+                                <div class="dropdown-item component-dropdown-item selected" role="option" data-value="codepoint" aria-selected="true">U+XXXX（码点）</div>
+                                <div class="dropdown-item component-dropdown-item" role="option" data-value="html">&#xXXXX;（HTML 实体）</div>
                             </div>
                         </div>
                     </div>
@@ -185,14 +185,14 @@
                             <label for="unicode-input">输入区</label>
                             <p class="field-hint">字符转 Unicode 使用此输入框。</p>
                             <div class="basex-textarea-wrapper">
-                                <textarea id="unicode-input" spellcheck="false" rows="6" placeholder="输入普通文本后点击“字符转 Unicode”。"></textarea>
-                                <button type="button" class="copy-btn basex-copy-btn" data-copy-target="unicode-input" aria-label="复制输入内容">
+                                <textarea id="unicode-input" class="component-textarea" spellcheck="false" rows="6" placeholder="输入普通文本后点击“字符转 Unicode”。"></textarea>
+                                <button type="button" class="copy-btn basex-copy-btn component-btn component-btn--flat component-icon-btn" data-copy-target="unicode-input" aria-label="复制输入内容">
                                     <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
                                 </button>
                             </div>
                             <div class="unicode-decode-row">
                                 <label for="unicode-decode-input">Unicode 转字符（独立输入）</label>
-                                <input id="unicode-decode-input" type="text" placeholder="输入 \\uXXXX / U+XXXX / &#xXXXX; 后点击“Unicode 转字符”" spellcheck="false">
+                                <input id="unicode-decode-input" class="component-dialog__input" type="text" placeholder="输入 \\uXXXX / U+XXXX / &#xXXXX; 后点击“Unicode 转字符”" spellcheck="false">
                             </div>
                         </div>
                         <div>
@@ -203,16 +203,16 @@
                                     <thead id="unicode-output-head"></thead>
                                     <tbody id="unicode-output-body"></tbody>
                                 </table>
-                                <button type="button" class="copy-btn basex-copy-btn" data-copy-target="unicode-output-table" aria-label="复制输出内容">
+                                <button type="button" class="copy-btn basex-copy-btn component-btn component-btn--flat component-icon-btn" data-copy-target="unicode-output-table" aria-label="复制输出内容">
                                     <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="basex-tool-actions">
-                        <button type="button" data-unicode-action="encode" data-basex-action="encode">字符转 Unicode</button>
-                        <button type="button" data-unicode-action="decode" data-basex-action="decode">Unicode 转字符</button>
-                        <button type="button" data-unicode-action="clear" data-basex-action="clear">清空</button>
+                        <button type="button" class="component-btn component-btn--flat" data-unicode-action="encode" data-basex-action="encode">字符转 Unicode</button>
+                        <button type="button" class="component-btn component-btn--flat" data-unicode-action="decode" data-basex-action="decode">Unicode 转字符</button>
+                        <button type="button" class="component-btn component-btn--flat" data-unicode-action="clear" data-basex-action="clear">清空</button>
                     </div>
                     <div id="unicode-feedback" class="basex-tool-feedback" aria-live="polite" data-state="info">等待操作</div>
                 </div>

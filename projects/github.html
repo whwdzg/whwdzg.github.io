@@ -18,7 +18,7 @@
     <link rel="preload" href="/resource/img/shell/shuiyu.avif" as="image" type="image/avif">
     <link rel="preload" href="/resource/img/shell/bg/bg-light-1.png" as="image" type="image/png">
     <link rel="preload" href="/css/variables.css" as="style">
-    <link rel="preload" href="/includes/shell.html?v=2.0.3.8-20260405" as="fetch" crossorigin>
+    <link rel="preload" href="/includes/shell.html?v=2.0.3.9-20260406" as="fetch" crossorigin>
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="prefetch" href="/projects/better-crafting-recipes.html">
     <link rel="prefetch" href="/projects/better-enchantments.html">
@@ -118,7 +118,7 @@
                     move();
                 }
             }
-            var SHELL_VERSION = '2.0.3.8-20260405';
+            var SHELL_VERSION = '2.0.3.9-20260406';
             var SHELL_CACHE_KEY = 'shell-html:' + SHELL_VERSION;
             function withVersion(url) {
                 if (location.protocol === 'file:') return url;
@@ -157,10 +157,10 @@
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
                     <h2 style="margin:0;">仓库</h2>
                     <div class="project-archive-view-switch" style="display:flex;align-items:center;gap:8px;">
-                        <button id="grid-view-btn" class="settings-action-btn" title="大网格视图" style="padding:8px 12px;">
+                        <button id="grid-view-btn" class="component-btn component-btn--flat component-icon-btn" title="大网格视图">
                             <i class="icon-ic_fluent_grid_24_regular" aria-hidden="true"></i>
                         </button>
-                        <button id="list-view-btn" class="settings-action-btn" title="条形视图" style="padding:8px 12px;">
+                        <button id="list-view-btn" class="component-btn component-btn--flat component-icon-btn" title="条形视图">
                             <i class="icon-ic_fluent_list_24_regular" aria-hidden="true"></i>
                         </button>
                     </div>

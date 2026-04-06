@@ -67,7 +67,7 @@
   flex-wrap: wrap;
   gap: 0.5rem;
 }
-.filter-chip {
+.recipe-filter-row .filter-chip:not(.component-filter-chip) {
   border: 1px solid var(--border-color);
   background: var(--secondary-bg);
   color: var(--text-color);
@@ -77,7 +77,7 @@
   transition: background 160ms ease, box-shadow 160ms ease, color 160ms ease;
   font-weight: 600;
 }
-.filter-chip.active {
+.recipe-filter-row .filter-chip.active:not(.component-filter-chip) {
   background: var(--primary-color, #2563eb);
   color: #fff;
   box-shadow: 0 0 0 2px var(--primary-color, #2563eb) inset;
@@ -785,33 +785,6 @@ img[src^="/resource/minecraft/"] {
     .project-card { padding: 0.7rem; }
 }
 
-/* 视图切换按钮样式（正方形+居中图标） */
-.settings-action-btn {
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  min-height: 40px !important;
-  max-width: 40px !important;
-  max-height: 40px !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: var(--secondary-bg);
-  color: var(--text-color);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 160ms ease, box-shadow 160ms ease, transform 120ms ease, opacity 120ms ease;
-}
-.settings-action-btn i {
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* 仅限项目页面的视图切换按钮组 segment 样式，避免全局冲突 */
 .project-archive-view-switch {
   display: inline-flex;
@@ -820,7 +793,14 @@ img[src^="/resource/minecraft/"] {
   border: 1px solid var(--border-color);
   padding: 2px;
 }
-.project-archive-view-switch .settings-action-btn {
+.project-archive-view-switch .component-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  max-width: 40px;
+  max-height: 40px;
+  padding: 0;
   border: none;
   background: transparent;
   box-shadow: none;
@@ -828,14 +808,21 @@ img[src^="/resource/minecraft/"] {
   border-radius: 8px;
   transition: background 0.15s, color 0.15s;
 }
-.project-archive-view-switch .settings-action-btn.active,
-.project-archive-view-switch .settings-action-btn:focus {
-  background: var(--view-switch-active-bg, #fff);
-  color: var(--primary-color, #2563eb);
-  box-shadow: 0 0 0 2px var(--primary-color, #2563eb) inset;
+.project-archive-view-switch .component-btn i {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.project-archive-view-switch .settings-action-btn:not(.active):hover {
-  background: var(--view-switch-hover-bg, #e5eaf1);
+.project-archive-view-switch .component-btn.active,
+.project-archive-view-switch .component-btn:focus {
+  background: color-mix(in srgb, var(--primary-color, #2563eb) 16%, transparent);
+  color: var(--primary-color, #2563eb);
+  border-color: transparent;
+  box-shadow: none;
+}
+.project-archive-view-switch .component-btn:not(.active):hover {
+  background: color-mix(in srgb, var(--primary-color, #2563eb) 9%, transparent);
 }
 
 /* 修正 grid masonry 下 .project-card 宽度自适应 */

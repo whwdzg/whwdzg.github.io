@@ -1,5 +1,31 @@
 (() => {
-    const toastApi = window.globalCopyToast || { show () {} };
+    const toastApi = {
+        show(message, variant, iconClass) {
+            const tone = variant || 'info';
+            if (window.componentToast && typeof window.componentToast.show === 'function') {
+                window.componentToast.show(message, tone, iconClass);
+                return;
+            }
+            const toastEl = document.querySelector('[data-component-toast]');
+            if (toastEl) {
+                const iconEl = toastEl.querySelector('.component-toast__icon');
+                const messageEl = toastEl.querySelector('.component-toast__message');
+                if (messageEl) messageEl.textContent = message || '';
+                toastEl.classList.remove('component-toast--success', 'component-toast--warning', 'component-toast--error', 'component-toast--info');
+                toastEl.classList.add('component-toast--' + tone);
+                if (iconEl) {
+                    iconEl.className = 'component-toast__icon fluent-icon ' + (iconClass || 'icon-ic_fluent_info_24_regular');
+                }
+                toastEl.classList.add('show');
+                if (window.__toolComponentToastTimer) clearTimeout(window.__toolComponentToastTimer);
+                window.__toolComponentToastTimer = setTimeout(() => toastEl.classList.remove('show'), 1600);
+                return;
+            }
+            if (window.globalCopyToast && typeof window.globalCopyToast.show === 'function') {
+                window.globalCopyToast.show(message, tone === 'info' ? 'success' : tone, iconClass);
+            }
+        }
+    };
 
     let inputEl = null;
     let latexRawEl = null;
@@ -885,6 +911,7 @@
             setLatex('');
             pushSteps([]);
             setResult('结果: -', true);
+            toastApi.show('已清空输入与结果', 'info', 'icon-ic_fluent_delete_24_regular');
             return;
         }
         if (action === 'del') {
@@ -951,15 +978,16 @@
         if (old && old.parentNode) old.parentNode.removeChild(old);
 
         const portalEl = document.createElement('div');
-        portalEl.className = 'settings-dropdown-portal basex-dropdown-portal hidden';
+        portalEl.className = 'settings-dropdown-portal component-dropdown-portal basex-dropdown-portal hidden';
         portalEl.id = portalId;
         const portalList = document.createElement('div');
-        portalList.className = 'settings-dropdown-list';
+        portalList.className = 'settings-dropdown-list component-dropdown-list component-dropdown-list--portal';
         portalEl.appendChild(portalList);
         document.body.appendChild(portalEl);
 
         listEl.querySelectorAll('.dropdown-item').forEach((item) => {
             const clone = item.cloneNode(true);
+            clone.classList.add('component-dropdown-item');
             clone.addEventListener('click', () => {
                 setDropdownValueMulti(hiddenEl, labelEl, [listEl, portalList], clone.dataset.value || '', clone.textContent || '');
                 close();
@@ -993,10 +1021,14 @@
         const open = () => {
             dropdown.classList.add('open');
             toggle.setAttribute('aria-expanded', 'true');
-            portalList.classList.add('open');
-            portalList.style.maxHeight = portalList.scrollHeight + 'px';
             portalEl.classList.remove('hidden');
-            positionPortal();
+            portalList.classList.add('open');
+            portalList.style.maxHeight = '0px';
+            requestAnimationFrame(() => {
+                if (!dropdown.classList.contains('open')) return;
+                portalList.style.maxHeight = portalList.scrollHeight + 'px';
+                positionPortal();
+            });
         };
 
         toggle.addEventListener('click', () => {

@@ -1,10 +1,10 @@
-/*
- * [站点注释 Site Note]
- * 文件: D:\Documents\GitHub\whwdzg.github.io\css\header.css
- * 作用: 页面样式与布局规则，按模块拆分维护。
+﻿/*
+ * [绔欑偣娉ㄩ噴 Site Note]
+ * 鏂囦欢: D:\Documents\GitHub\whwdzg.github.io\css\header.css
+ * 浣滅敤: 椤甸潰鏍峰紡涓庡竷灞€瑙勫垯锛屾寜妯″潡鎷嗗垎缁存姢銆?
  * English: Module-level styles for layout and presentation.
  */
-/* 页眉样式 */
+/* 椤电湁鏍峰紡 */
 header {
 	background-color: var(--bg-color);
 	color: var(--text-color);
@@ -17,8 +17,8 @@ header {
 	top: 0;
 	left: 0;
 	right: 0;
-	z-index: 1500; /* 高于遮罩与设置弹窗，保持始终可见 */
-	overflow: visible; /* 允许下拉菜单正常显示；进度条已在底部不会影响布局 */
+	z-index: 1500; /* 楂樹簬閬僵涓庤缃脊绐楋紝淇濇寔濮嬬粓鍙 */
+	overflow: visible; /* 鍏佽涓嬫媺鑿滃崟姝ｅ父鏄剧ず锛涜繘搴︽潯宸插湪搴曢儴涓嶄細褰卞搷甯冨眬 */
 	min-height: var(--header-height);
 }
 
@@ -78,10 +78,10 @@ body.wallpaper-loading .page-loading-indicator {
 	flex-shrink: 0;
 }
 
-/* 窄屏时只显示 logo 图标，隐藏标题文字以腾出右侧空间 */
+/* 绐勫睆鏃跺彧鏄剧ず logo 鍥炬爣锛岄殣钘忔爣棰樻枃瀛椾互鑵惧嚭鍙充晶绌洪棿 */
 @media (max-width: 480px) {
 	.header-title a {
-		padding: 0.5rem; /* 收窄间距 */
+		padding: 0.5rem; /* 鏀剁獎闂磋窛 */
 		gap: 0;
 	}
 	.header-title .title-text {
@@ -134,7 +134,7 @@ body.wallpaper-loading .page-loading-indicator {
 	align-self: center;
 	gap: 0.5rem;
 	flex-wrap: nowrap;
-	margin-left: auto; /* 将操作区推到右上角 */
+	margin-left: auto; /* 灏嗘搷浣滃尯鎺ㄥ埌鍙充笂瑙?*/
 }
 
 header a {
@@ -142,7 +142,7 @@ header a {
 	text-decoration: none;
 }
 
-/* 页眉 / logo 图标 */
+/* 椤电湁 / logo 鍥炬爣 */
 header .logo {
 	width: var(--header-logo-size);
 	height: var(--header-logo-size);
@@ -155,81 +155,40 @@ header .logo {
 	-webkit-user-drag: none;
 }
 
-/* 页眉头像防拖拽保存 */
+/* 椤电湁澶村儚闃叉嫋鎷戒繚瀛?*/
 header .header-avatar {
 	user-select: none;
 	-webkit-user-select: none;
 	-webkit-user-drag: none;
-	draggable: false;
 }
 
-/* 主题切换按钮 */
-.theme-toggle-btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: var(--header-action-size);
-	height: var(--header-action-size);
-	min-width: var(--header-action-size);
-	min-height: var(--header-action-size);
-	padding: 0;
-	margin: 0;
-	background: var(--secondary-bg);
-	border: 1px solid var(--border-color);
-	border-radius: 10px;
-	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-	cursor: pointer;
-	font-size: 1.2rem;
-	color: var(--text-color);
-	transition: background 0.18s, border 0.18s, transform 0.18s;
+/* 椤堕儴鍔ㄤ綔鎸夐挳缁熶竴浣跨敤 component-btn锛屼粎淇濈暀灏哄涓庢帓鐗堥€傞厤 */
+.header-actions .header-search-btn.component-btn,
+.header-actions .theme-toggle-btn.component-btn,
+.header-actions .theme-settings-btn.component-btn {
+width: var(--header-action-size);
+height: var(--header-action-size);
+min-width: var(--header-action-size);
+min-height: var(--header-action-size);
+padding: 0;
+border-radius: 10px;
+margin: 0;
+font-size: 1.1rem;
 }
 
-/* 顶部搜索按钮，继承主题按钮风格 */
-.header-search-btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: var(--header-action-size);
-	height: var(--header-action-size);
-	min-width: var(--header-action-size);
-	min-height: var(--header-action-size);
-	padding: 0;
-	margin: 0;
-	background: var(--secondary-bg);
-	border: 1px solid var(--border-color);
-	border-radius: 10px;
-	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-	cursor: pointer;
-	font-size: 1.1rem;
-	color: var(--text-color);
-	transition: background 0.18s, border 0.18s, transform 0.18s;
+.header-actions .theme-toggle-btn.component-btn,
+.header-actions .theme-settings-btn.component-btn {
+font-size: 1.2rem;
 }
 
-.header-search-btn i {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	line-height: 1;
-}
-
-.header-search-btn:hover {
-	background: var(--hover-bg);
-	border-color: var(--border-color);
-}
-
-.header-search-btn:active {
-	transform: scale(0.95);
-	background: var(--active-bg);
-}
-
-/* 搜索框浮层，样式对齐 lightbox 百分比输入 */
+/* 鎼滅储妗嗘诞灞傦紝鏍峰紡瀵归綈 lightbox 鐧惧垎姣旇緭鍏?*/
 #header-search-overlay {
 	position: fixed;
 	top: calc(var(--header-height, 64px) + 8px);
 	right: 24px;
 	z-index: 1501;
 	max-width: 480px;
-	width: calc(100vw - 48px); /* 窄视图下限制宽度 */
+	width: calc(100vw - 48px); /* 绐勮鍥句笅闄愬埗瀹藉害 */
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
@@ -255,12 +214,12 @@ header .header-avatar {
 	padding: 8px 10px;
 	box-shadow: 0 10px 30px var(--shadow-color);
 	backdrop-filter: blur(6px);
-	min-width: 240px; /* 体积与 lightbox 侧边指标相仿 */
+	min-width: 240px; /* 浣撶Н涓?lightbox 渚ц竟鎸囨爣鐩镐豢 */
 	width: 100%;
 	box-sizing: border-box;
 }
 
-/* 搜索结果列表 */
+/* 鎼滅储缁撴灉鍒楄〃 */
 .search-results {
 	margin-top: 8px;
 	background: var(--card-bg);
@@ -362,13 +321,13 @@ header .header-avatar {
 .result-tag {
 	display: inline-block;
  	padding: 2px 6px;
- 	/* 使用主题色（默认蓝）作为文字颜色 */
+ 	/* 浣跨敤涓婚鑹诧紙榛樿钃濓級浣滀负鏂囧瓧棰滆壊 */
  	color: var(--primary-color, #4A90E2);
  	border-radius: 4px;
  	font-size: 0.85rem;
  	font-weight: 500;
  	margin-right: 6px;
- 	/* 背景使用 --primary-color-rgb (若未定义回退到蓝色透明) */
+ 	/* 鑳屾櫙浣跨敤 --primary-color-rgb (鑻ユ湭瀹氫箟鍥為€€鍒拌摑鑹查€忔槑) */
  	background: rgba(var(--primary-color-rgb, 74,144,226), 0.12);
 }
 
@@ -422,7 +381,7 @@ header .header-avatar {
 	background: var(--active-bg);
 }
 
-/* 搜索高亮 */
+/* 鎼滅储楂樹寒 */
 @keyframes search-highlight-blink {
 	0%, 100% {
 		box-shadow: 0 0 0 3px var(--primary-color);
@@ -435,55 +394,20 @@ header .header-avatar {
 .search-highlight {
 	box-shadow: 0 0 0 3px var(--primary-color);
 	border-radius: 8px;
-	animation: search-highlight-blink 0.6s ease-in-out 6 forwards; /* 闪烁 6 次 (3 秒) */
+	animation: search-highlight-blink 0.6s ease-in-out 6 forwards; /* 闂儊 6 娆?(3 绉? */
 	transition: box-shadow 0.3s ease;
 }
 
-.theme-toggle-btn:hover {
-	background: var(--hover-bg);
-	border-color: var(--border-color);
-}
-.theme-toggle-btn:active {
-	transform: scale(0.95);
-	background: var(--active-bg);
-}
 
-/* 主题设置容器 */
+
+/* 涓婚璁剧疆瀹瑰櫒 */
 .theme-settings-container {
 	position: relative;
 	display: inline-block;
 	margin: 0;
 }
 
-.theme-settings-btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: var(--header-action-size);
-	height: var(--header-action-size);
-	min-width: var(--header-action-size);
-	min-height: var(--header-action-size);
-	padding: 0;
-	margin: 0;
-	background: var(--secondary-bg);
-	border: 1px solid var(--border-color);
-	border-radius: 10px;
-	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-	cursor: pointer;
-	font-size: 1.2rem;
-	color: var(--text-color);
-	transition: background 0.18s, border 0.18s, transform 0.18s;
-}
 
-.theme-settings-btn:hover {
-	background: var(--hover-bg);
-	border-color: var(--border-color);
-}
-
-.theme-settings-btn:active {
-	transform: scale(0.95);
-	background: var(--active-bg);
-}
 
 .theme-settings-menu {
 	display: block;
@@ -512,7 +436,7 @@ header .header-avatar {
 	visibility: visible;
 }
 
-/* 头部头像和菜单 */
+/* 澶撮儴澶村儚鍜岃彍鍗?*/
 #avatar-btn {
 	cursor: pointer;
 	transition: transform 0.2s ease;
@@ -534,7 +458,7 @@ header .header-avatar {
 	background: var(--active-bg);
 }
 
-/* 页眉底部进度条（启用时显示） */
+/* 椤电湁搴曢儴杩涘害鏉★紙鍚敤鏃舵樉绀猴級 */
 .header-progress {
 	position: absolute;
 	left: 0;
@@ -550,7 +474,7 @@ header .header-avatar {
 	z-index: 1110;
 }
 
-/* 容器用于进度背景（隐藏时仍保留高度） */
+/* 瀹瑰櫒鐢ㄤ簬杩涘害鑳屾櫙锛堥殣钘忔椂浠嶄繚鐣欓珮搴︼級 */
 .header-progress-bg {
 	position: absolute;
 	left: 0;
@@ -587,7 +511,7 @@ header .header-avatar {
 	font-size: 0.95rem;
 }
 
-/* 可访问性：仅在键盘导航时显示焦点样式，点击链接不显示蓝框 */
+/* 鍙闂€э細浠呭湪閿洏瀵艰埅鏃舵樉绀虹劍鐐规牱寮忥紝鐐瑰嚮閾炬帴涓嶆樉绀鸿摑妗?*/
 header a:focus,
 footer a:focus {
 	outline: none;
@@ -599,10 +523,11 @@ footer a:focus-visible {
 	outline-offset: 2px;
 }
 
-/* 小屏幕：减少内边距 */
+/* 灏忓睆骞曪細鍑忓皯鍐呰竟璺?*/
 @media (max-width: 480px) {
 	header, footer {
 		padding-left: 0.75rem;
 		padding-right: 0.75rem;
 	}
 }
+

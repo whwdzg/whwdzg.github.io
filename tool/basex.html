@@ -162,18 +162,18 @@
                             <p class="field-hint">Base16 / Base32 / Base58 / Base64 / Base85 / Base91</p>
                         </div>
                         <input type="hidden" id="basex-mode" value="base64">
-                        <div class="settings-dropdown basex-dropdown" data-open="false">
-                            <button type="button" class="settings-dropdown-toggle" id="basex-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
+                        <div class="settings-dropdown component-dropdown basex-dropdown" data-open="false">
+                            <button type="button" class="settings-dropdown-toggle component-dropdown-toggle" id="basex-mode-toggle" aria-haspopup="listbox" aria-expanded="false">
                                 <span class="toggle-label" id="basex-mode-label">Base64</span>
                                 <i class="toggle-icon icon-ic_fluent_chevron_right_24_regular" aria-hidden="true"></i>
                             </button>
-                            <div class="settings-dropdown-list" id="basex-mode-list" role="listbox">
-                                <div class="dropdown-item" role="option" data-value="base16">Base16（Hex）</div>
-                                <div class="dropdown-item" role="option" data-value="base32">Base32</div>
-                                <div class="dropdown-item" role="option" data-value="base58">Base58</div>
-                                <div class="dropdown-item selected" role="option" data-value="base64" aria-selected="true">Base64</div>
-                                <div class="dropdown-item" role="option" data-value="base85">Base85（Ascii85）</div>
-                                <div class="dropdown-item" role="option" data-value="base91">Base91</div>
+                            <div class="settings-dropdown-list component-dropdown-list" id="basex-mode-list" role="listbox">
+                                <div class="dropdown-item component-dropdown-item" role="option" data-value="base16">Base16（Hex）</div>
+                                <div class="dropdown-item component-dropdown-item" role="option" data-value="base32">Base32</div>
+                                <div class="dropdown-item component-dropdown-item" role="option" data-value="base58">Base58</div>
+                                <div class="dropdown-item component-dropdown-item selected" role="option" data-value="base64" aria-selected="true">Base64</div>
+                                <div class="dropdown-item component-dropdown-item" role="option" data-value="base85">Base85（Ascii85）</div>
+                                <div class="dropdown-item component-dropdown-item" role="option" data-value="base91">Base91</div>
                             </div>
                         </div>
                     </div>
@@ -182,8 +182,8 @@
                             <label for="basex-input">输入区</label>
                             <p class="field-hint">输入 UTF-8 文本或 BaseX 字符串（可包含空格、换行）。</p>
                             <div class="basex-textarea-wrapper">
-                                <textarea id="basex-input" spellcheck="false" rows="6" placeholder="粘贴或键入原文 / BaseX 字符串，选择操作后查看输出。"></textarea>
-                                <button type="button" class="copy-btn basex-copy-btn" data-copy-target="basex-input" aria-label="复制输入内容">
+                                <textarea id="basex-input" class="component-textarea" spellcheck="false" rows="6" placeholder="粘贴或键入原文 / BaseX 字符串，选择操作后查看输出。"></textarea>
+                                <button type="button" class="copy-btn basex-copy-btn component-btn component-btn--flat component-icon-btn" data-copy-target="basex-input" aria-label="复制输入内容">
                                     <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
                                 </button>
                             </div>
@@ -192,17 +192,17 @@
                             <label for="basex-output">输出区</label>
                             <p class="field-hint">操作完成后自动填充，可直接复制使用。</p>
                             <div class="basex-textarea-wrapper">
-                                <textarea id="basex-output" rows="6" readonly spellcheck="false"></textarea>
-                                <button type="button" class="copy-btn basex-copy-btn" data-copy-target="basex-output" aria-label="复制输出内容">
+                                <textarea id="basex-output" class="component-textarea" rows="6" readonly spellcheck="false"></textarea>
+                                <button type="button" class="copy-btn basex-copy-btn component-btn component-btn--flat component-icon-btn" data-copy-target="basex-output" aria-label="复制输出内容">
                                     <span class="fluent-icon icon-ic_fluent_copy_24_regular" aria-hidden="true"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
                     <div class="basex-tool-actions">
-                        <button type="button" data-basex-action="encode">编码为 BaseX</button>
-                        <button type="button" data-basex-action="decode">解码为文本</button>
-                        <button type="button" data-basex-action="clear">清空</button>
+                        <button type="button" class="component-btn component-btn--flat" data-basex-action="encode">编码为 BaseX</button>
+                        <button type="button" class="component-btn component-btn--flat" data-basex-action="decode">解码为文本</button>
+                        <button type="button" class="component-btn component-btn--flat" data-basex-action="clear">清空</button>
                     </div>
                     <div id="basex-feedback" class="basex-tool-feedback" aria-live="polite" data-state="info">等待操作</div>
                 </div>
