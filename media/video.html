@@ -22,7 +22,8 @@
     <link rel="modulepreload" href="/js/media/common.js">
     <link rel="modulepreload" href="/js/media/video.js">
     <link rel="stylesheet" href="/css/component.css">
-    <link rel="stylesheet" href="/css/media-player.css">
+    <link rel="stylesheet" href="/css/media-player.css?v=20260728a">
+    <link rel="stylesheet" href="/css/lightbox.css?v=20260728a">
     <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
     <script src="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/artplayer-plugin-danmuku/dist/artplayer-plugin-danmuku.js" defer></script>
@@ -38,9 +39,12 @@
     <main class="content-area">
         <section class="video-stage" id="video-stage">
             <video id="main-media" playsinline></video>
+            <iframe id="bilibili-player" class="hidden" title="哔哩哔哩播放器" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+            <div id="bilibili-click-guard" class="bilibili-click-guard hidden" aria-hidden="true"></div>
             <div class="danmaku-layer" id="danmaku-layer"></div>
             <div class="subtitle-layer hidden" id="subtitle-layer" aria-live="polite"></div>
         </section>
+        <div id="video-meta-bar" class="video-meta-bar">清晰度：- · SDR · 音质：-</div>
     </main>
 
     <section class="player-dock">
@@ -59,8 +63,8 @@
             <div class="info-left">
                 <img id="cover-image" alt="封面" decoding="async">
                 <div class="track-meta">
-                    <div id="track-title" class="track-title">未导入视频</div>
-                    <div id="track-author" class="track-author">作者：-</div>
+                    <a id="track-title" class="track-title">未导入视频</a>
+                    <a id="track-author" class="track-author">作者：-</a>
                     <div id="track-album" class="track-album hidden"></div>
                     <div class="track-time"><span id="running-time">00:00</span> / <span id="total-time">00:00</span></div>
                 </div>
@@ -121,11 +125,16 @@
                     <i class="fluent-icon icon-ic_fluent_document_24_regular" aria-hidden="true"></i>
                     <span>导入视频文件</span>
                 </button>
+                <button id="import-bilibili-btn" class="panel-action-btn component-btn component-btn--flat" type="button">
+                    <i class="fluent-icon icon-ic_fluent_play_circle_24_regular" aria-hidden="true"></i>
+                    <span>导入哔哩哔哩视频（有限支持）</span>
+                </button>
             </div>
         </div>
 
         <div id="danmaku-settings-panel" class="floating-panel" aria-label="弹幕设置面板">
             <div class="setting-row setting-row-title">弹幕设置</div>
+            <div class="floating-panel-divider" aria-hidden="true"></div>
             <div class="setting-row">
                 <label for="danmaku-size">大小</label>
                 <div class="setting-control">
@@ -200,7 +209,7 @@
             <div class="setting-row">
                 <label for="brightness-range">亮度</label>
                 <div class="setting-control">
-                    <input id="brightness-range" class="component-slider component-range-slider" type="range" min="0.4" max="1.6" step="0.01" value="1">
+                    <input id="brightness-range" class="component-slider component-range-slider" type="range" min="0" max="100" step="1" value="100">
                     <input class="setting-value-input component-dialog__input" id="brightness-value" type="text" value="100%">
                 </div>
             </div>
@@ -212,11 +221,54 @@
                 </label>
             </div>
             <div class="setting-row">
-                <label for="toggle-subtitle">开启字幕</label>
-                <label class="component-switch" aria-label="开启字幕开关">
-                    <input id="toggle-subtitle" class="component-switch__input" type="checkbox" checked>
-                    <span class="component-switch__track"><span class="component-switch__thumb"></span></span>
-                </label>
+                <label for="subtitle-mode">字幕</label>
+                <div class="component-dropdown media-select-dropdown" id="subtitle-mode-dropdown">
+                    <button class="component-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="listbox" aria-controls="subtitle-mode-list">
+                        <span id="subtitle-mode-label" class="toggle-label">开启</span>
+                        <i class="toggle-icon fluent-icon icon-ic_fluent_chevron_down_24_regular" aria-hidden="true"></i>
+                    </button>
+                    <div class="component-dropdown-list" id="subtitle-mode-list" role="listbox" aria-label="字幕">
+                        <div class="component-dropdown-item selected" role="option" aria-selected="true" data-value="on">开启</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="off">关闭</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="bilibili">由哔哩哔哩播放器控制</div>
+                    </div>
+                    <select id="subtitle-mode" class="hidden component-dialog__input" tabindex="-1" aria-hidden="true">
+                        <option value="on" selected>开启</option>
+                        <option value="off">关闭</option>
+                        <option value="bilibili">由哔哩哔哩播放器控制</option>
+                    </select>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label for="quality-select">清晰度</label>
+                <div class="component-dropdown media-select-dropdown" id="quality-select-dropdown">
+                    <button class="component-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="listbox" aria-controls="quality-select-list">
+                        <span id="quality-select-label" class="toggle-label">自动</span>
+                        <i class="toggle-icon fluent-icon icon-ic_fluent_chevron_down_24_regular" aria-hidden="true"></i>
+                    </button>
+                    <div class="component-dropdown-list" id="quality-select-list" role="listbox" aria-label="清晰度">
+                        <div class="component-dropdown-item selected" role="option" aria-selected="true" data-value="0">自动</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="16">360P</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="32">480P</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="64">720P</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="80">1080P</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="112">1080P 高码率</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="120">4K</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="127">8K</div>
+                        <div class="component-dropdown-item" role="option" aria-selected="false" data-value="125">HDR</div>
+                    </div>
+                    <select id="quality-select" class="hidden component-dialog__input" tabindex="-1" aria-hidden="true">
+                        <option value="0" selected>自动</option>
+                        <option value="16">360P</option>
+                        <option value="32">480P</option>
+                        <option value="64">720P</option>
+                        <option value="80">1080P</option>
+                        <option value="112">1080P 高码率</option>
+                        <option value="120">4K</option>
+                        <option value="127">8K</option>
+                        <option value="125">HDR</option>
+                    </select>
+                </div>
             </div>
             <div class="setting-row">
                 <label for="subtitle-opacity">字幕透明度</label>
@@ -264,21 +316,39 @@
         <input id="import-folder-input" class="hidden" type="file" multiple webkitdirectory directory>
     </section>
 
-    <div class="status-tip" id="status-tip">点击导入按钮后选择“文件”或“文件夹”</div>
-    <div class="component-toast component-toast--info gesture-toast" id="gesture-toast" role="status" aria-live="polite">
-        <i id="gesture-toast-icon" class="component-toast__icon fluent-icon icon-ic_fluent_speaker_2_24_regular" aria-hidden="true"></i>
-        <span id="gesture-toast-message" class="component-toast__message">音量 100%</span>
+    <div id="media-notice-log-stack" class="media-notice-stack media-notice-stack--log" aria-live="polite" aria-atomic="false">
+        <div class="status-tip" id="status-tip">点击导入按钮后选择“文件”或“文件夹”</div>
+    </div>
+    <div id="media-notice-toast-stack" class="media-notice-stack media-notice-stack--toast" aria-live="polite" aria-atomic="false">
+        <div class="component-toast component-toast--info gesture-toast" id="gesture-toast" role="status" aria-live="polite">
+            <i id="gesture-toast-icon" class="component-toast__icon fluent-icon icon-ic_fluent_speaker_2_24_regular" aria-hidden="true"></i>
+            <span id="gesture-toast-message" class="component-toast__message">音量 100%</span>
+        </div>
     </div>
 
     <aside class="playlist-drawer" id="playlist-drawer" aria-label="播放列表">
         <div class="playlist-head">
             <div class="playlist-head-top">
                 <div class="playlist-title">播放列表</div>
-                <button class="playlist-close-btn component-btn component-btn--immersive component-icon-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
-                    <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
-                </button>
+                <div class="playlist-head-actions">
+                    <button class="playlist-head-btn component-btn component-btn--immersive component-icon-btn" id="playlist-locate-btn" type="button" title="定位到当前播放项" aria-label="定位到当前播放项">
+                        <i class="fluent-icon icon-ic_fluent_locate_24_regular" aria-hidden="true"></i>
+                    </button>
+                    <button class="playlist-head-btn component-btn component-btn--immersive component-icon-btn" id="playlist-edit-btn" type="button" title="删除项目" aria-label="删除项目">
+                        <i class="fluent-icon icon-ic_fluent_delete_24_regular" aria-hidden="true"></i>
+                    </button>
+                    <button class="playlist-close-btn component-btn component-btn--immersive component-icon-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
+                        <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
             <div class="playlist-head-divider" aria-hidden="true"></div>
+            <div id="playlist-edit-toolbar" class="playlist-edit-toolbar hidden" aria-label="播放列表编辑工具栏">
+                <button id="playlist-select-all-btn" class="component-filter-chip" type="button">全选</button>
+                <button id="playlist-invert-btn" class="component-filter-chip" type="button">反选</button>
+                <button id="playlist-delete-selected-btn" class="component-filter-chip" type="button">删除已选</button>
+                <button id="playlist-edit-done-btn" class="component-filter-chip" type="button">完成</button>
+            </div>
             <div class="loop-row">
                 <button class="loop-btn component-filter-chip active" data-loop="none" type="button">不循环</button>
                 <button class="loop-btn component-filter-chip" data-loop="all" type="button">全部循环</button>
@@ -295,6 +365,8 @@
         <ul id="playlist-list" class="playlist-list"></ul>
     </aside>
 
-    <script type="module" src="/js/media/video.js"></script>
+    <script src="/js/component.js?v=20260726e" defer></script>
+    <script src="/js/lightbox.js?v=20260728a" defer></script>
+    <script type="module" src="/js/media/video.js?v=20260728a"></script>
 </body>
 </html>

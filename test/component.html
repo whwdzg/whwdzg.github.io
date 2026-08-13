@@ -24,7 +24,7 @@
     <link rel="preload" href="/resource/font/FluentSystemIcons-Regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="stylesheet" href="/css/variables.css">
-	<link rel="stylesheet" href="/css/component.css?v=20260405d">
+	<link rel="stylesheet" href="/css/component.css?v=20260726l">
     <link rel="stylesheet" href="/css/input.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/sidebar.css">
@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="/resource/font/FluentSystemIcons-Regular.css">
 
     <script src="/js/pwa/register-sw.js" defer></script>
-	<script src="/js/component.js?v=20260405e" defer></script>
+	<script src="/js/component.js?v=20260726e" defer></script>
     <script src="/js/theme.js" defer></script>
     <script src="/js/sidebar.js" defer></script>
     <script src="/js/lightbox.js" defer></script>
@@ -51,87 +51,7 @@
     </head>
 <body class="component-demo">
      <div id="shell-root"></div>
-        <script>
-            (function(){
-                var container = document.getElementById('shell-root');
-                function normalize(pathname) {
-                    var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
-                    return p === '' ? '/' : p;
-                }
-                function markCurrentNav() {
-                    var current = normalize(location.pathname);
-                    var sidebar = document.getElementById('sidebar');
-                    if (!sidebar) return;
-                    sidebar.querySelectorAll('.current, .selected').forEach(function(el){
-                        el.classList.remove('current','selected');
-                        if (el.tagName === 'A') el.removeAttribute('aria-current');
-                    });
-                    document.querySelectorAll('#sidebar a[href]').forEach(function(a){
-                        var href = a.getAttribute('href');
-                        if (!href) return;
-                        var target = normalize(new URL(href, location.origin).pathname);
-                        if (target === current) {
-                            var parent = a.closest('.has-children');
-                            var toggle = parent ? parent.querySelector('.toggle') : null;
-                            var submenu = parent ? parent.querySelector('.submenu') : null;
-                            var parentOpen = !!(parent && parent.classList.contains('open'));
-
-                            if (parent && !parentOpen) {
-                                parent.classList.add('current');
-                                if (toggle) toggle.classList.add('current');
-                                return;
-                            }
-
-                            a.classList.add('current','selected');
-                            a.setAttribute('aria-current','page');
-                            if (parent) {
-                                if (toggle) {
-                                    toggle.classList.add('current');
-                                    toggle.setAttribute('aria-expanded','true');
-                                }
-                                if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
-                            }
-                        }
-                    });
-                }
-                function attachShell(html) {
-                    if (!container || !html) return;
-                    container.innerHTML = html;
-                    var move = function() {
-                        var main = document.querySelector('main');
-                        if (!main) return;
-                        var footer = container.querySelector('footer');
-                        if (footer && footer.parentNode !== main.parentNode) {
-                            footer.setAttribute('data-shell-moved', '1');
-                            main.insertAdjacentElement('afterend', footer);
-                        }
-                        markCurrentNav();
-                    };
-                    if (document.readyState === 'loading') {
-                        document.addEventListener('DOMContentLoaded', move, { once: true });
-                    } else {
-                        move();
-                    }
-                }
-                function bust(url){
-                    if (location.protocol === 'file:') return url;
-                    var sep = url.indexOf('?') === -1 ? '?' : '&';
-                    return url + sep + 'ts=' + Date.now();
-                }
-                try {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('GET', bust('/includes/shell.html'), false);
-                    xhr.send(null);
-                    if (xhr.status === 200 || xhr.status === 0) {
-                        attachShell(xhr.responseText);
-                        return;
-                    }
-                } catch (e) {}
-                fetch(bust('/includes/shell.html'), { cache: 'no-store' })
-                    .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
-                    .then(function(html){ attachShell(html); });
-            })();
-        </script>
+	 <script src="/js/shell-loader.js"></script>
 
         <main>
 	<div class="component-demo-page">
@@ -195,35 +115,6 @@
 		</section>
 
 		<section class="component-section">
-			<h2 class="component-section-title">搜索输入框</h2>
-			<div class="component-search-wrap">
-				<div class="component-search">
-					<input class="component-search__input" type="text" placeholder="输入关键词，例如 better、base64、video">
-					<button class="component-btn component-btn--immersive-tint component-icon-btn component-search__button" style="--btn-rgb:239,68,68;" type="button" data-search-clear>
-						<i class="icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
-					</button>
-					<button class="component-btn component-btn--immersive-tint component-icon-btn component-search__button" style="--btn-rgb:59,130,246;" type="button" data-search-submit aria-label="搜索">
-						<i class="icon-ic_fluent_search_24_regular" aria-hidden="true"></i>
-					</button>
-				</div>
-				<div class="search-results visible" data-search-results>
-					<div class="search-result-item" data-search-item="better mob drop 数据包">
-						<span class="search-result-text">Better Mob Drop</span>
-						<span class="search-result-indicator">></span>
-					</div>
-					<div class="search-result-item" data-search-item="base64 tool 编码 解码">
-						<span class="search-result-text">Base64 工具</span>
-						<span class="search-result-indicator">></span>
-					</div>
-					<div class="search-result-item" data-search-item="video archive bilibili 视频">
-						<span class="search-result-text">视频归档</span>
-						<span class="search-result-indicator">></span>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="component-section">
 			<h2 class="component-section-title">滑块开关</h2>
 			<div class="component-row">
 				<label class="component-switch">
@@ -243,7 +134,11 @@
 			</div>
 			<div class="component-slider-row">
 				<input class="component-range-slider" type="range" min="0" max="100" value="36" data-range-demo>
-				<input class="component-range-value component-dialog__input" type="number" min="0" max="100" value="36" data-range-value>
+				<div class="component-number-field" data-number-field>
+					<input class="component-range-value component-dialog__input" type="number" min="0" max="100" value="36" data-range-value>
+					<button class="component-number-step" type="button" data-number-step="up" aria-label="增加数值"><i class="icon-ic_fluent_chevron_up_24_regular" aria-hidden="true"></i></button>
+					<button class="component-number-step" type="button" data-number-step="down" aria-label="减少数值"><i class="icon-ic_fluent_chevron_down_24_regular" aria-hidden="true"></i></button>
+				</div>
 			</div>
 		</section>
 
@@ -283,22 +178,22 @@
 						<div class="component-spectrum-row">
 							<label for="component-r-range">R</label>
 							<input id="component-r-range" class="component-range-slider" type="range" min="0" max="255" value="51" data-rgb-range="r">
-							<input class="component-dialog__input" type="number" min="0" max="255" value="51" data-rgb-input="r">
+							<div class="component-number-field" data-number-field><input class="component-dialog__input" type="number" min="0" max="255" value="51" data-rgb-input="r"><button class="component-number-step" type="button" data-number-step="up" aria-label="增加红色"><i class="icon-ic_fluent_chevron_up_24_regular" aria-hidden="true"></i></button><button class="component-number-step" type="button" data-number-step="down" aria-label="减少红色"><i class="icon-ic_fluent_chevron_down_24_regular" aria-hidden="true"></i></button></div>
 						</div>
 						<div class="component-spectrum-row">
 							<label for="component-g-range">G</label>
 							<input id="component-g-range" class="component-range-slider" type="range" min="0" max="255" value="204" data-rgb-range="g">
-							<input class="component-dialog__input" type="number" min="0" max="255" value="204" data-rgb-input="g">
+							<div class="component-number-field" data-number-field><input class="component-dialog__input" type="number" min="0" max="255" value="204" data-rgb-input="g"><button class="component-number-step" type="button" data-number-step="up" aria-label="增加绿色"><i class="icon-ic_fluent_chevron_up_24_regular" aria-hidden="true"></i></button><button class="component-number-step" type="button" data-number-step="down" aria-label="减少绿色"><i class="icon-ic_fluent_chevron_down_24_regular" aria-hidden="true"></i></button></div>
 						</div>
 						<div class="component-spectrum-row">
 							<label for="component-b-range">B</label>
 							<input id="component-b-range" class="component-range-slider" type="range" min="0" max="255" value="153" data-rgb-range="b">
-							<input class="component-dialog__input" type="number" min="0" max="255" value="153" data-rgb-input="b">
+							<div class="component-number-field" data-number-field><input class="component-dialog__input" type="number" min="0" max="255" value="153" data-rgb-input="b"><button class="component-number-step" type="button" data-number-step="up" aria-label="增加蓝色"><i class="icon-ic_fluent_chevron_up_24_regular" aria-hidden="true"></i></button><button class="component-number-step" type="button" data-number-step="down" aria-label="减少蓝色"><i class="icon-ic_fluent_chevron_down_24_regular" aria-hidden="true"></i></button></div>
 						</div>
 					</div>
 					<div class="component-hex-row component-hex-row--actions">
 						<input class="component-hex-input" type="text" value="#33cc99" data-theme-hex placeholder="#33cc99" aria-label="输入16进制色值">
-						<button type="button" class="component-btn component-btn--standard" data-theme-apply>应用色值</button>
+						<button type="button" class="component-btn component-btn--tinted-standard" data-theme-apply>应用色值</button>
 						<button type="button" class="component-btn component-btn--immersive" data-theme-cancel>取消</button>
 					</div>
 				</div>
@@ -328,14 +223,18 @@
 			<h2 class="component-section-title">评论区</h2>
 			<div class="component-comment-list">
 				<article class="component-comment-card">
-					<img class="component-comment-avatar" src="/resource/img/shell/shuiyu.avif" alt="头像">
+					<a class="component-avatar component-comment-avatar" href="/user/%E6%BB%84%E6%B5%B7%E6%B0%B4%E9%AD%9A.html" aria-label="访问滄海水魚的作者页">
+						<img src="/resource/img/shell/shuiyu.avif" alt="滄海水魚的头像">
+					</a>
 					<div class="component-comment-meta">
 						<p class="component-comment-author">滄海水魚</p>
 						<p class="component-comment-date">刚刚</p>
 					</div>
 					<p class="component-comment-text">这是顶级评论示例，展示内容排版与间距。</p>
 					<div class="component-comment-reply">
-						<img src="/resource/img/shell/shuiyu.avif" alt="头像">
+						<a class="component-avatar component-comment-avatar component-comment-avatar--reply" href="/user/%E6%BB%84%E6%B5%B7%E6%B0%B4%E9%AD%9A.html" aria-label="访问回复者的作者页">
+							<img src="/resource/img/shell/shuiyu.avif" alt="回复者的头像">
+						</a>
 						<div class="component-comment-meta">
 							<p class="component-comment-author">回复者</p>
 							<p class="component-comment-date">1 分钟前</p>
@@ -391,6 +290,9 @@
 			<div class="component-row">
 				<button class="component-btn component-btn--standard" type="button">
 					<i class="icon-ic_fluent_info_24_regular" aria-hidden="true"></i>标准式
+				</button>
+				<button class="component-btn component-btn--tinted-standard" type="button">
+					<i class="icon-ic_fluent_color_24_regular" aria-hidden="true"></i>染色标准式
 				</button>
 				<button class="component-btn component-btn--flat" type="button" style="--component-flat-bg: rgba(37, 99, 235, 0.14); --component-flat-color: #2563eb; --component-flat-border: rgba(37, 99, 235, 0.36);">
 					<i class="icon-ic_fluent_flash_24_regular" aria-hidden="true"></i>扁平式
@@ -485,6 +387,7 @@
 		<button class="component-toast__close" type="button" aria-label="关闭">
 			<i class="icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
 		</button>
+		<span class="component-toast__progress" aria-hidden="true"></span>
 	</div>
 
 	<div class="component-dialog" id="component-dialog-basic" role="dialog" aria-modal="true" aria-labelledby="component-dialog-basic-title">
@@ -494,7 +397,7 @@
 			<p class="component-dialog__text">这是一段用于测试的对话提示文本，可用于说明操作影响。</p>
 			<div class="component-dialog__actions">
 				<button class="component-btn component-btn--standard" type="button" data-dialog-cancel>取消</button>
-				<button class="component-btn component-btn--standard" type="button" data-dialog-confirm>确认</button>
+				<button class="component-btn component-btn--tinted-standard" type="button" data-dialog-confirm>确认</button>
 			</div>
 		</div>
 	</div>
@@ -507,7 +410,7 @@
 			<input class="component-dialog__input" type="text" placeholder="输入内容">
 			<div class="component-dialog__actions">
 				<button class="component-btn component-btn--standard" type="button" data-dialog-cancel>取消</button>
-				<button class="component-btn component-btn--standard" type="button" data-dialog-confirm>提交</button>
+				<button class="component-btn component-btn--tinted-standard" type="button" data-dialog-confirm>提交</button>
 			</div>
 		</div>
 	</div>

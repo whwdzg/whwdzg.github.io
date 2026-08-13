@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// create/init lightbox so it can be called after SPA swaps
 	function initLightbox() {
 		console.log('[lightbox] initLightbox: scanning candidates');
-		candidates = Array.from(document.querySelectorAll('main img')).filter(isEligibleForLightbox);
+		candidates = Array.from(new Set(Array.from(document.querySelectorAll('main img, img[data-lightbox="on"]')))).filter(isEligibleForLightbox);
 		// rebuild captions for the new candidates
 		buildCaptions();
 		// if overlay was removed by SPA cleanup, re-create by re-running the init block
@@ -178,9 +178,15 @@ document.addEventListener('DOMContentLoaded', function () {
 	let zoomInBtn = null;
 	let zoomOutBtn = null;
 	let zoomInput = null;
+	let rotateBtn = null;
 	let gestureSurfaceBound = null;
 	const onOverlayClickCapture = (e) => {
 		if (!overlay) return;
+		if (Date.now() < suppressBackgroundCloseUntil) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
 		const inFullscreen = !!document.fullscreenElement || !!document.webkitFullscreenElement;
 		const isControl = e.target.closest && e.target.closest('button, .lightbox-controls, .lightbox-nav');
 		if (inFullscreen && !isControl) {
@@ -214,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		zoomInBtn = overlay.querySelector('.lightbox-zoom-in');
 		zoomOutBtn = overlay.querySelector('.lightbox-zoom-out');
 		zoomInput = overlay.querySelector('.zoom-input');
+		rotateBtn = overlay.querySelector('.lightbox-rotate-btn');
 		filmstrip = overlay.querySelector('.lightbox-filmstrip') || filmstrip;
 		// keep overlay interactive
 		overlay.style.pointerEvents = 'auto';
@@ -233,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		zoomBox.className = 'lightbox-zoom-indicator';
 		zoomBox.innerHTML = `
 			<button class="lightbox-zoom-out" aria-label="Zoom out"><i class="icon-ic_fluent_zoom_out_24_regular" aria-hidden="true"></i></button>
+			<button class="lightbox-rotate-btn" aria-label="Rotate 90°" title="Rotate 90°"><i class="icon-ic_fluent_rotate_right_24_regular" aria-hidden="true"></i></button>
 			<input class="zoom-input styled-input" type="text" inputmode="numeric" placeholder="100%" aria-label="Zoom percentage">
 			<button class="lightbox-zoom-in" aria-label="Zoom in"><i class="icon-ic_fluent_zoom_in_24_regular" aria-hidden="true"></i></button>
 		`;
@@ -240,12 +248,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		// re-query buttons now they exist inside zoomBox
 		zoomInBtn = zoomBox.querySelector('.lightbox-zoom-in');
 		zoomOutBtn = zoomBox.querySelector('.lightbox-zoom-out');
+		rotateBtn = zoomBox.querySelector('.lightbox-rotate-btn');
 	}
 	zoomInput = zoomBox.querySelector('.zoom-input');
 	let currentIndex = 0;
 	let currentScale = 1;
 	let panX = 0;
 	let panY = 0;
+	let currentRotation = 0;
 	let isPanning = false;
 	let startPointerX = 0;
 	let startPointerY = 0;
@@ -258,6 +268,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	let pinchStartPanY = 0;
 	let pinchStartMidX = 0;
 	let pinchStartMidY = 0;
+	let suppressBackgroundCloseUntil = 0;
+	const pullToCloseThreshold = 130;
 	let swipeStartX = 0, swipeStartY = 0, swipeEndX = 0, swipeEndY = 0, isSwipePossible = false;
 	const activePointers = new Map();
 	const applyLightboxLabels = () => {
@@ -281,6 +293,11 @@ document.addEventListener('DOMContentLoaded', function () {
 				zoomInput.placeholder = strings.zoomInputPlaceholder;
 			}
 		}
+		if (rotateBtn) {
+			const rotateLabel = strings.rotateImage || strings.rotate || 'Rotate 90°';
+			rotateBtn.setAttribute('aria-label', rotateLabel);
+			rotateBtn.setAttribute('title', rotateLabel);
+		}
 		// prev/next/fullscreen labels
 		const prevBtn = overlay.querySelector('.lightbox-prev');
 		const nextBtn = overlay.querySelector('.lightbox-next');
@@ -297,26 +314,34 @@ document.addEventListener('DOMContentLoaded', function () {
 		overlayImg.style.cursor = currentScale > 1 ? (dragging ? 'grabbing' : 'grab') : 'default';
 	};
 
-	const clampPan = () => {
+	const getPanLimits = () => {
 		const wrapperRect = imageWrapper.getBoundingClientRect();
 		const naturalWidth = overlayImg.naturalWidth || overlayImg.width;
 		const naturalHeight = overlayImg.naturalHeight || overlayImg.height;
-		if (!naturalWidth || !naturalHeight || !wrapperRect.width || !wrapperRect.height) return;
+		if (!naturalWidth || !naturalHeight || !wrapperRect.width || !wrapperRect.height) return null;
 		const fitScale = Math.min(wrapperRect.width / naturalWidth, wrapperRect.height / naturalHeight, 1);
 		const baseWidth = naturalWidth * fitScale;
 		const baseHeight = naturalHeight * fitScale;
 		const scaledWidth = baseWidth * currentScale;
 		const scaledHeight = baseHeight * currentScale;
-		const limitX = Math.max(0, (scaledWidth - wrapperRect.width) / 2);
-		const limitY = Math.max(0, (scaledHeight - wrapperRect.height) / 2);
-		panX = Math.min(limitX, Math.max(-limitX, panX));
-		panY = Math.min(limitY, Math.max(-limitY, panY));
+		return {
+			x: Math.max(0, (scaledWidth - wrapperRect.width) / 2),
+			y: Math.max(0, (scaledHeight - wrapperRect.height) / 2)
+		};
+	};
+
+	const clampPan = () => {
+		const limits = getPanLimits();
+		if (!limits) return;
+		panX = Math.min(limits.x, Math.max(-limits.x, panX));
+		panY = Math.min(limits.y, Math.max(-limits.y, panY));
 	};
 
 	const applyTransform = (options = {}) => {
 		const { clamp = true } = options;
 		if (clamp) clampPan();
-		overlayImg.style.transform = `translate(${panX}px, ${panY}px) scale(${currentScale})`;
+		overlayImg.style.transformOrigin = 'center center';
+		overlayImg.style.transform = `translate(${panX}px, ${panY}px) rotate(${currentRotation}deg) scale(${currentScale})`;
 		updateZoomDisplay();
 		updateCursor();
 	};
@@ -325,7 +350,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		currentScale = 1;
 		panX = 0;
 		panY = 0;
-		overlayImg.style.transform = 'translate(0px, 0px) scale(1)';
+		currentRotation = 0;
+		overlayImg.style.transformOrigin = 'center center';
+		overlayImg.style.transform = 'translate(0px, 0px) rotate(0deg) scale(1)';
 		updateZoomDisplay();
 		updateCursor();
 	};
@@ -353,9 +380,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Gestures: pan / pinch + swipe fallback (restore swipe detection)
 	const onPointerDown = (e) => {
+		if (e.target.closest && e.target.closest('button, input, .lightbox-controls, .lightbox-nav, .lightbox-filmstrip')) return;
 	    debugCounters.down++; ensureDebugPanel();
 	    activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-	    try { if (overlayImg && overlayImg.setPointerCapture) overlayImg.setPointerCapture(e.pointerId); } catch (_) { }
+		if (activePointers.size >= 2) suppressBackgroundCloseUntil = Date.now() + 450;
+	    try { if (gestureSurfaceBound && gestureSurfaceBound.setPointerCapture) gestureSurfaceBound.setPointerCapture(e.pointerId); } catch (_) { }
 	    updateCursor();
 		// swipe start for single-pointer when not zoomed
 		if (activePointers.size === 1 && currentScale <= 1) {
@@ -413,6 +442,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	        const dy = e.clientY - startPointerY;
 	        panX = startPanX + dx;
 	        panY = startPanY + dy;
+			const limits = getPanLimits();
+			if (limits && dy > 0 && panY > limits.y && panY - limits.y >= pullToCloseThreshold) {
+				closeOverlay();
+				return;
+			}
 	        applyTransform({ clamp: false });
 	    }
 		// track swipe while not zoomed (decide on pointerup)
@@ -438,7 +472,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	    } else if (!isPinching) {
 	        applyTransform();
 	    }
-	    try { if (overlayImg && overlayImg.releasePointerCapture) overlayImg.releasePointerCapture(e.pointerId); } catch (_) { }
+	    try { if (gestureSurfaceBound && gestureSurfaceBound.releasePointerCapture) gestureSurfaceBound.releasePointerCapture(e.pointerId); } catch (_) { }
 	    updateCursor();
 		// swipe decision on last pointer up (only when not zoomed)
 		if (isSwipePossible && activePointers.size === 0 && currentScale <= 1) {
@@ -584,6 +618,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				currentScale = 1;
 				panX = 0;
 				panY = 0;
+				currentRotation = 0;
 				const target = candidates[currentIndex];
 				if (target) {
 					overlayImg.src = target.src;
@@ -632,6 +667,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			currentScale = 1;
 			panX = 0;
 			panY = 0;
+			currentRotation = 0;
 			const target = candidates[currentIndex];
 			if (target) {
 				overlayImg.src = target.src;
@@ -753,12 +789,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	function refreshAll(){
 		console.log('[lightbox] refreshAll called');
-		console.log('[lightbox] candidates before refresh: ' + document.querySelectorAll('main img').length);
+		console.log('[lightbox] candidates before refresh: ' + document.querySelectorAll('main img, img[data-lightbox="on"]').length);
 		ensureOverlay();
 		// show debug panel ASAP when enabled (even if pointer events never fire)
 		try { ensureDebugPanel(); } catch (e) { /* ignore */ }
 		refreshOverlayRefs();
-		candidates = Array.from(document.querySelectorAll('main img')).filter(isEligibleForLightbox);
+		candidates = Array.from(new Set(Array.from(document.querySelectorAll('main img, img[data-lightbox="on"]')))).filter(isEligibleForLightbox);
 		// clear previous attachment markers so we rebind cleanly after SPA swaps
 		document.querySelectorAll('img[data-lightbox-attached]').forEach(i => delete i.dataset.lightboxAttached);
 		console.log('[lightbox] candidates after query: ' + candidates.length);
@@ -783,6 +819,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const zoomInBtnLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.lightbox-zoom-in');
 		const zoomOutBtnLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.lightbox-zoom-out');
 		const zoomInputLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.zoom-input');
+		const rotateBtnLocal = zoomBoxLocal && zoomBoxLocal.querySelector('.lightbox-rotate-btn');
 		const overlayImgLocal = overlay.querySelector('img');
 		const imageWrapperLocal = overlay.querySelector('.lightbox-image-wrapper');
 
@@ -822,6 +859,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			zoomOutBtnLocal.removeEventListener('click', zoomOutHandler);
 			zoomOutBtnLocal.addEventListener('click', zoomOutHandler);
 		}
+		if (rotateBtnLocal) {
+			rotateBtnLocal.removeEventListener('click', rotateHandler);
+			rotateBtnLocal.addEventListener('click', rotateHandler);
+		}
 		if (zoomInputLocal) {
 			zoomInputLocal.removeEventListener('keydown', zoomInputKeyHandler);
 			zoomInputLocal.addEventListener('keydown', zoomInputKeyHandler);
@@ -840,8 +881,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			overlayImgLocal.addEventListener('contextmenu', preventDefaultFalse);
 		}
 
-		// Bind gestures to the CURRENT wrapper as primary surface (avoid stale refs)
-		const gestureSurface = imageWrapperLocal || overlayImgLocal;
+		// Bind gestures to the overlay so either touch can begin outside the image.
+		const gestureSurface = overlay;
 		if (gestureSurface && gestureSurfaceBound !== gestureSurface) {
 			// unbind from previous surface (if any)
 			if (gestureSurfaceBound) {
@@ -881,6 +922,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	function nextClickHandler(e){ e.stopPropagation(); const next = Math.min(candidates.length - 1, currentIndex + 1); if (next !== currentIndex) openOverlay(next); }
 	function zoomInHandler(e){ e.stopPropagation(); currentScale = clampScale(currentScale + 0.15); applyTransform(); }
 	function zoomOutHandler(e){ e.stopPropagation(); currentScale = clampScale(currentScale - 0.15); applyTransform(); }
+	function rotateHandler(e){ e.stopPropagation(); currentRotation = (currentRotation + 90) % 360; applyTransform(); }
 	function zoomInputKeyHandler(e){ if (e.key === 'Enter') { e.preventDefault(); applyZoomFromInput(); } if (e.key === 'Escape') { e.preventDefault(); updateZoomDisplay(); e.target.blur(); } }
 	function zoomInputChangeHandler(e){ let val = e.target.value.trim(); if (val && /^\d+(\.\d+)?$/.test(val)) { e.target.value = `${val}%`; applyZoomFromInput(); } }
 

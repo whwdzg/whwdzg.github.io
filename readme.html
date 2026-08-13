@@ -144,58 +144,7 @@
 </head>
 <body>
   <div id="shell-root"></div>
-  <script>
-    (function loadShell() {
-      var root = document.getElementById('shell-root');
-      if (!root) return;
-      var inlineShell = '\n  <header id="site-header"></header>\n  <footer id="site-footer"></footer>\n';
-
-      function arrangeShell(){
-        var main = document.getElementById('page-root');
-        var header = root.querySelector('header');
-        var sidebar = root.querySelector('nav.sidebar');
-        var footer = root.querySelector('footer');
-
-        // Promote shell children to body so layout matches other pages
-        if (header && header.parentNode !== document.body && main) {
-          document.body.insertBefore(header, main);
-        }
-        if (sidebar && sidebar.parentNode !== document.body && main) {
-          document.body.insertBefore(sidebar, main);
-        }
-        if (footer) {
-          var target = main;
-          if (target && footer.parentNode !== document.body) {
-            footer.remove();
-            document.body.insertBefore(footer, target.nextSibling);
-          } else if (target && footer.previousElementSibling !== target) {
-            target.insertAdjacentElement('afterend', footer);
-          }
-        }
-      }
-
-      try {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/includes/shell.html', false);
-        xhr.send(null);
-        if (xhr.status >= 200 && xhr.status < 300 && xhr.responseText) {
-          root.innerHTML = xhr.responseText;
-          arrangeShell();
-          return;
-        }
-      } catch (e) {}
-      fetch('/includes/shell.html').then(function(resp) {
-        if (!resp.ok) throw new Error('shell fetch failed');
-        return resp.text();
-      }).then(function(html) {
-        root.innerHTML = html;
-        arrangeShell();
-      }).catch(function() {
-        root.innerHTML = inlineShell;
-        arrangeShell();
-      });
-    })();
-  </script>
+  <script src="/js/shell-loader.js"></script>
 
   <main id="page-root">
     <section class="readme-card readme-hero">

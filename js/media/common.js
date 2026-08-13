@@ -1,4 +1,32 @@
 const LOOP_MODES = ["none", "all", "one", "shuffle"];
+const BILIBILI_QUALITY_LABELS = {
+    "0": "自动",
+    "16": "360P",
+    "32": "480P",
+    "64": "720P",
+    "80": "1080P",
+    "112": "1080P 高码率",
+    "120": "4K",
+    "125": "HDR",
+    "127": "8K",
+};
+
+function bilibiliQualityLabel(value) {
+    return BILIBILI_QUALITY_LABELS[String(value || "0")] || "自动";
+}
+
+function inferResolutionLabel(width, height) {
+    const w = Number(width || 0);
+    const h = Number(height || 0);
+    const maxEdge = Math.max(w, h);
+    if (maxEdge >= 7680) return "8K";
+    if (maxEdge >= 3840) return "4K";
+    if (maxEdge >= 1920) return "1080P";
+    if (maxEdge >= 1280) return "720P";
+    if (maxEdge >= 854) return "480P";
+    if (maxEdge >= 640) return "360P";
+    return maxEdge > 0 ? `${w}x${h}` : "未知";
+}
 
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -1414,6 +1442,33 @@ function parseSubtitleCues(rawText, filename = "") {
     return parseAssCues(rawText);
 }
 
+function parseBilibiliJsonSubtitleCues(rawJson) {
+    if (!rawJson) return [];
+    let payload = rawJson;
+    if (typeof payload === "string") {
+        try {
+            payload = JSON.parse(payload);
+        } catch (error) {
+            return [];
+        }
+    }
+    const body = Array.isArray(payload?.body) ? payload.body : [];
+    return body
+        .map((item) => {
+            const start = Number(item?.from);
+            const end = Number(item?.to);
+            const text = normalizeSubtitleText(item?.content || "");
+            if (!Number.isFinite(start) || !Number.isFinite(end) || !text) return null;
+            return {
+                start,
+                end: end > start ? end : (start + 2),
+                text,
+            };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.start - b.start);
+}
+
 function mergeBilingualSubtitleCues(primary, secondary) {
     const a = Array.isArray(primary) ? primary : [];
     const b = Array.isArray(secondary) ? secondary : [];
@@ -1651,10 +1706,30 @@ export class MediaPlayerCore {
         this.fullscreenGestureToastNextSibling = null;
         this.statusHideTimer = null;
         this.gestureToastHideTimer = null;
-        this.brightnessLevel = 1;
+        this.brightnessLevel = 100;
         this.gestureState = null;
         this.lyricScrollbarTimer = null;
         this.lyricAutoScrollUntil = 0;
+        this.rightKeyHoldTimer = null;
+        this.rightKeyHoldActive = false;
+        this.rightKeyOriginalRate = 1;
+        this.queuePersistTimer = null;
+        this.playlistEditing = false;
+        this.playlistSelectedSet = new Set();
+        this.embeddedSyncTimer = null;
+        this.embeddedTimeHint = 0;
+        this.embeddedFallbackHandled = false;
+        this.embeddedState = {
+            currentTime: 0,
+            duration: 0,
+            paused: true,
+            ended: false,
+            qualityLabel: "自动",
+            dynamicRange: "SDR",
+            audioQuality: "未知",
+        };
+        this.onEmbeddedMessage = (evt) => this.handleEmbeddedPlayerMessage(evt);
+        window.addEventListener("message", this.onEmbeddedMessage);
 
         this.bindDom();
         this.tryInitArtDanmakuEngine();
@@ -1679,6 +1754,11 @@ export class MediaPlayerCore {
         this.initPlaylistCoverObserver();
         this.refreshSettingValueBadges();
         this.applyThemeFromCover(this.lastThemeColors);
+        if (this.type === "video") {
+            setTimeout(() => {
+                this.restoreQueueFromStorage();
+            }, 0);
+        }
     }
 
     bindDom() {
@@ -1707,6 +1787,13 @@ export class MediaPlayerCore {
             playlistList: document.getElementById("playlist-list"),
             playlistSearch: document.getElementById("playlist-search"),
             playlistSearchClear: document.getElementById("playlist-search-clear"),
+            playlistLocateBtn: document.getElementById("playlist-locate-btn"),
+            playlistEditBtn: document.getElementById("playlist-edit-btn"),
+            playlistEditToolbar: document.getElementById("playlist-edit-toolbar"),
+            playlistSelectAllBtn: document.getElementById("playlist-select-all-btn"),
+            playlistInvertBtn: document.getElementById("playlist-invert-btn"),
+            playlistDeleteSelectedBtn: document.getElementById("playlist-delete-selected-btn"),
+            playlistEditDoneBtn: document.getElementById("playlist-edit-done-btn"),
             fullscreenBtn: document.getElementById("fullscreen-btn"),
             fullscreenIcon: document.querySelector("#fullscreen-btn .fluent-icon"),
             danmakuBtn: document.getElementById("danmaku-btn"),
@@ -1750,7 +1837,10 @@ export class MediaPlayerCore {
             gestureToastMessage: document.getElementById("gesture-toast-message"),
             subtitleLayer: document.getElementById("subtitle-layer"),
             dynamicBg: document.getElementById("toggle-dynamic-bg"),
-            subtitleToggle: document.getElementById("toggle-subtitle"),
+            bilibiliPlayer: document.getElementById("bilibili-player"),
+            bilibiliClickGuard: document.getElementById("bilibili-click-guard"),
+            subtitleMode: document.getElementById("subtitle-mode"),
+            qualitySelect: document.getElementById("quality-select"),
             subtitleOpacity: document.getElementById("subtitle-opacity"),
             subtitleOpacityValue: document.getElementById("subtitle-opacity-value"),
             pauseFadeToggle: document.getElementById("toggle-pause-fade"),
@@ -1764,6 +1854,9 @@ export class MediaPlayerCore {
             lyricWeightValue: document.getElementById("lyric-weight-value"),
             videoStage: document.getElementById("video-stage"),
             playerDock: document.querySelector(".player-dock"),
+            videoMetaBar: document.getElementById("video-meta-bar"),
+            noticeLogStack: document.getElementById("media-notice-log-stack"),
+            noticeToastStack: document.getElementById("media-notice-toast-stack"),
         };
     }
 
@@ -1786,7 +1879,14 @@ export class MediaPlayerCore {
             const time = Number(this.ui.seek.value);
             if (Number.isFinite(time)) {
                 this.isSeeking = true;
-                this.media.currentTime = time;
+                const track = this.tracks[this.currentIndex];
+                if (track?.embedUrl) {
+                    this.embeddedState.currentTime = Math.max(0, time);
+                    this.embeddedTimeHint = this.embeddedState.currentTime;
+                    this.postEmbeddedCommand("seek", { time: this.embeddedState.currentTime });
+                } else {
+                    this.media.currentTime = time;
+                }
                 this.refreshTime();
             }
         });
@@ -1821,14 +1921,51 @@ export class MediaPlayerCore {
         this.ui.playlistBtn.addEventListener("click", () => {
             this.ui.playlistDrawer.classList.toggle("show");
             if (this.ui.playlistDrawer.classList.contains("show")) {
+                this.syncPlaylistEditingVisualState();
                 this.loadVisiblePlaylistCovers();
             }
         });
         if (this.ui.playlistCloseBtn) {
             this.ui.playlistCloseBtn.addEventListener("click", () => this.ui.playlistDrawer.classList.remove("show"));
         }
+        if (this.ui.playlistLocateBtn) {
+            this.ui.playlistLocateBtn.addEventListener("click", () => this.scrollPlaylistToCurrent());
+        }
+        if (this.ui.playlistEditBtn) {
+            this.ui.playlistEditBtn.addEventListener("click", () => this.togglePlaylistEditing());
+        }
+        if (this.ui.playlistEditDoneBtn) {
+            this.ui.playlistEditDoneBtn.addEventListener("click", () => this.togglePlaylistEditing(false));
+        }
+        if (this.ui.playlistSelectAllBtn) {
+            this.ui.playlistSelectAllBtn.addEventListener("click", () => this.selectAllPlaylistItems());
+        }
+        if (this.ui.playlistInvertBtn) {
+            this.ui.playlistInvertBtn.addEventListener("click", () => this.invertPlaylistSelection());
+        }
+        if (this.ui.playlistDeleteSelectedBtn) {
+            this.ui.playlistDeleteSelectedBtn.addEventListener("click", () => this.deleteSelectedPlaylistItems());
+        }
         if (this.ui.playlistList) {
             this.ui.playlistList.addEventListener("scroll", () => this.loadVisiblePlaylistCovers(), { passive: true });
+        }
+        if (this.cover) {
+            this.cover.setAttribute("data-lightbox", "on");
+            this.cover.addEventListener("click", () => {
+                const lightbox = window.siteLightbox;
+                if (!lightbox || typeof lightbox.refresh !== "function" || typeof lightbox.open !== "function") return;
+                const currentTrack = this.tracks[this.currentIndex];
+                const src = currentTrack?.coverUrl || this.cover?.src || "";
+                if (!src) return;
+                if (this.cover.src !== src) this.cover.src = src;
+                lightbox.refresh();
+                const allCandidates = Array.from(document.querySelectorAll("main img, img[data-lightbox='on']")).filter((img) => {
+                    const lb = String(img.getAttribute("data-lightbox") || "").toLowerCase();
+                    return lb !== "false" && lb !== "off";
+                });
+                const idx = allCandidates.indexOf(this.cover);
+                if (idx >= 0) lightbox.open(idx);
+            });
         }
         if (this.ui.danmakuSettingsBtn && this.ui.danmakuSettingsPanel) {
             this.ui.danmakuSettingsBtn.addEventListener("click", () => this.togglePanel(this.ui.danmakuSettingsPanel));
@@ -1879,12 +2016,12 @@ export class MediaPlayerCore {
 
         if (this.ui.brightnessRange) {
             this.ui.brightnessRange.addEventListener("input", () => {
-                this.brightnessLevel = clamp(Number(this.ui.brightnessRange.value || 1), 0.4, 1.6);
+                this.brightnessLevel = clamp(Number(this.ui.brightnessRange.value || 100), 0, 100);
                 this.applyBrightness();
                 this.saveSetting("brightness", this.brightnessLevel);
                 this.refreshSettingValueBadges();
                 if (this.type === "video") {
-                    this.showGestureToast(`亮度 ${(this.brightnessLevel * 100).toFixed(0)}%`, "brightness");
+                    this.showGestureToast(`亮度 ${Math.round(this.brightnessLevel)}%`, "brightness");
                 }
             });
         }
@@ -1903,16 +2040,24 @@ export class MediaPlayerCore {
             this.saveSetting("dynamicBg", this.dynamicBg);
         });
 
-        if (this.ui.subtitleToggle) {
-            this.ui.subtitleToggle.addEventListener("change", () => {
-                if (!Array.isArray(this.subtitleCues) || !this.subtitleCues.length) {
-                    this.ui.subtitleToggle.checked = false;
-                    this.renderSubtitles();
-                    return;
-                }
-                this.subtitleEnabled = this.ui.subtitleToggle.checked;
-                this.saveSetting("subtitleEnabled", this.subtitleEnabled);
+        if (this.ui.subtitleMode) {
+            this.ui.subtitleMode.addEventListener("change", () => {
+                const mode = this.ui.subtitleMode.value || "on";
+                this.subtitleEnabled = mode === "on";
+                this.saveSetting("subtitleMode", mode);
                 this.renderSubtitles();
+            });
+        }
+
+        if (this.ui.qualitySelect) {
+            this.ui.qualitySelect.addEventListener("change", () => {
+                this.saveSetting("bilibiliQuality", this.ui.qualitySelect.value || "0");
+                const track = this.tracks[this.currentIndex];
+                if (track?.embedUrl) {
+                    this.embeddedState.qualityLabel = bilibiliQualityLabel(this.ui.qualitySelect.value || "0");
+                    this.refreshTrackMetaDisplay(track);
+                    this.refreshEmbeddedPlayer(track, { resetToStart: false });
+                }
             });
         }
 
@@ -1987,6 +2132,7 @@ export class MediaPlayerCore {
                 }
                 this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
                 this.saveSetting("loopMode", this.loopMode);
+                this.scheduleQueuePersistence();
             });
         });
 
@@ -2080,6 +2226,8 @@ export class MediaPlayerCore {
             }
         });
 
+        this.media.addEventListener("progress", () => this.refreshTime());
+
         this.media.addEventListener("play", () => {
             this.setPlayVisual(true);
             this.toggleDanmakuPauseState(false);
@@ -2099,6 +2247,8 @@ export class MediaPlayerCore {
 
         this.bindValueInputEditors();
         this.bindDanmakuLayoutDropdown();
+        this.bindMediaSelectDropdown("subtitle-mode-dropdown", this.ui.subtitleMode, "subtitle-mode-label");
+        this.bindMediaSelectDropdown("quality-select-dropdown", this.ui.qualitySelect, "quality-select-label");
         this.syncComponentRangeVisuals();
 
         if (this.type === "video" && this.ui.videoStage) {
@@ -2120,6 +2270,7 @@ export class MediaPlayerCore {
             const inImportTrigger = !!(this.ui.importBtn && this.ui.importBtn.contains(target));
 
             this.handleDanmakuLayoutDropdownOutsideClick(target);
+            this.closeMediaSelectDropdowns(target);
 
             if (!this.ui.settingsPanel.contains(target) && !inSettingsTrigger) {
                 this.ui.settingsPanel.classList.remove("show");
@@ -2149,13 +2300,49 @@ export class MediaPlayerCore {
             }
             if (evt.key === "ArrowRight") {
                 evt.preventDefault();
-                this.seekBy(10);
+                if (!evt.repeat && !this.rightKeyHoldActive) {
+                    this.seekBy(10);
+                }
+                this.beginRightArrowHold();
             }
             if (evt.key === " ") {
                 evt.preventDefault();
                 this.togglePlay();
             }
         });
+
+        window.addEventListener("keyup", (evt) => {
+            if (evt.key === "ArrowRight") {
+                this.endRightArrowHold();
+            }
+        });
+
+        window.addEventListener("blur", () => this.endRightArrowHold());
+    }
+
+    beginRightArrowHold() {
+        if (this.rightKeyHoldActive) return;
+        if (this.rightKeyHoldTimer) clearTimeout(this.rightKeyHoldTimer);
+        this.rightKeyHoldTimer = setTimeout(() => {
+            this.rightKeyHoldTimer = null;
+            const currentRate = Number(this.media?.playbackRate || 1);
+            this.rightKeyOriginalRate = Number.isFinite(currentRate) ? currentRate : 1;
+            this.media.playbackRate = 2;
+            this.rightKeyHoldActive = true;
+            this.showGestureToast("临时 2.00x", "speed");
+        }, 260);
+    }
+
+    endRightArrowHold() {
+        if (this.rightKeyHoldTimer) {
+            clearTimeout(this.rightKeyHoldTimer);
+            this.rightKeyHoldTimer = null;
+        }
+        if (!this.rightKeyHoldActive) return;
+        const restore = Number(this.rightKeyOriginalRate || 1);
+        this.media.playbackRate = clamp(restore, 0.5, 2);
+        this.rightKeyHoldActive = false;
+        this.showGestureToast(`恢复 ${this.media.playbackRate.toFixed(2)}x`, "speed");
     }
 
     togglePanel(panel) {
@@ -2186,7 +2373,7 @@ export class MediaPlayerCore {
             setNodeValue(this.ui.speedValue, `${Number(this.ui.speedRange.value || 1).toFixed(2)}x`);
         }
         if (this.ui.brightnessValue) {
-            setNodeValue(this.ui.brightnessValue, `${Math.round(this.brightnessLevel * 100)}%`);
+            setNodeValue(this.ui.brightnessValue, `${Math.round(this.brightnessLevel)}%`);
         }
         if (this.ui.volumeValue && this.ui.volumeRange) {
             setNodeValue(this.ui.volumeValue, `${Math.round(Number(this.ui.volumeRange.value || 1) * 100)}%`);
@@ -2295,13 +2482,12 @@ export class MediaPlayerCore {
             parse: (text, fallback) => parseFloatFromText(text, fallback),
         });
         bind(this.ui.brightnessValue, this.ui.brightnessRange, {
-            min: 0.4,
-            max: 1.6,
-            step: 0.01,
+            min: 0,
+            max: 100,
+            step: 1,
             parse: (text, fallback) => {
                 const n = parseFloatFromText(text, fallback);
-                if (!Number.isFinite(n)) return fallback;
-                return String(text).includes("%") ? n / 100 : n;
+                return Number.isFinite(n) ? n : fallback;
             },
         });
         bind(this.ui.volumeValue, this.ui.volumeRange, {
@@ -2550,6 +2736,62 @@ export class MediaPlayerCore {
         this.syncDanmakuLayoutDropdownLabel(select.value || "all");
     }
 
+    bindMediaSelectDropdown(dropdownId, select, labelId) {
+        const dropdown = document.getElementById(dropdownId);
+        const label = document.getElementById(labelId);
+        if (!dropdown || !select || !label) return;
+        const sync = () => this.syncMediaSelectDropdown(dropdown, select, label);
+        if (dropdown.dataset.boundMediaSelect === "true") {
+            sync();
+            return;
+        }
+        dropdown.dataset.boundMediaSelect = "true";
+        const toggle = dropdown.querySelector(".component-dropdown-toggle");
+        if (!toggle) return;
+        toggle.addEventListener("click", () => {
+            if (select.disabled) return;
+            const willOpen = !dropdown.classList.contains("open");
+            this.closeMediaSelectDropdowns(dropdown);
+            dropdown.classList.toggle("open", willOpen);
+            toggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+        });
+        dropdown.querySelectorAll(".component-dropdown-item[data-value]").forEach((item) => {
+            item.addEventListener("click", () => {
+                const value = item.dataset.value || select.value;
+                if (select.value !== value) {
+                    select.value = value;
+                    select.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+                sync();
+                dropdown.classList.remove("open");
+                toggle.setAttribute("aria-expanded", "false");
+            });
+        });
+        select.addEventListener("change", sync);
+        sync();
+    }
+
+    syncMediaSelectDropdown(dropdown, select, label) {
+        if (!dropdown || !select || !label) return;
+        const option = Array.from(select.options).find((item) => item.value === select.value) || select.options[0];
+        if (!option) return;
+        label.textContent = option.textContent.trim();
+        dropdown.querySelectorAll(".component-dropdown-item[data-value]").forEach((item) => {
+            const selected = item.dataset.value === option.value;
+            item.classList.toggle("selected", selected);
+            item.setAttribute("aria-selected", selected ? "true" : "false");
+        });
+    }
+
+    closeMediaSelectDropdowns(except = null) {
+        document.querySelectorAll(".media-select-dropdown.open").forEach((dropdown) => {
+            if (dropdown === except || (except && dropdown.contains(except))) return;
+            dropdown.classList.remove("open");
+            const toggle = dropdown.querySelector(".component-dropdown-toggle");
+            if (toggle) toggle.setAttribute("aria-expanded", "false");
+        });
+    }
+
     closeDanmakuLayoutDropdown() {
         const dropdown = this.ui.danmakuLayoutDropdown;
         if (!dropdown || !dropdown.classList.contains("open")) return;
@@ -2577,14 +2819,18 @@ export class MediaPlayerCore {
         if (this.ui.gestureToastIcon) {
             const icon = mode === "brightness"
                 ? "icon-ic_fluent_brightness_high_24_regular"
-                : "icon-ic_fluent_speaker_2_24_regular";
+                : (mode === "speed"
+                    ? "icon-ic_fluent_flash_24_regular"
+                    : "icon-ic_fluent_speaker_2_24_regular");
             this.ui.gestureToastIcon.className = `component-toast__icon fluent-icon ${icon}`;
         }
 
         toast.classList.add("show");
+        if (this.ui.noticeToastStack) this.ui.noticeToastStack.classList.add("show");
         if (this.gestureToastHideTimer) clearTimeout(this.gestureToastHideTimer);
         this.gestureToastHideTimer = setTimeout(() => {
             if (this.ui.gestureToast) this.ui.gestureToast.classList.remove("show");
+            if (this.ui.noticeToastStack) this.ui.noticeToastStack.classList.remove("show");
         }, 900);
     }
 
@@ -2594,10 +2840,12 @@ export class MediaPlayerCore {
         this.status.textContent = text;
         this.status.classList.toggle("progress", mode === "progress");
         this.status.classList.add("show");
+        if (this.ui.noticeLogStack) this.ui.noticeLogStack.classList.add("show");
         if (this.statusHideTimer) clearTimeout(this.statusHideTimer);
         if (mode !== "progress") {
             this.statusHideTimer = setTimeout(() => {
                 if (this.status) this.status.classList.remove("show");
+                if (this.ui.noticeLogStack) this.ui.noticeLogStack.classList.remove("show");
             }, 5000);
         }
     }
@@ -2607,6 +2855,19 @@ export class MediaPlayerCore {
         const width = Math.round(Number(this.media.videoWidth || 0));
         const height = Math.round(Number(this.media.videoHeight || 0));
         if (!width || !height) return;
+        const currentTrack = this.tracks[this.currentIndex];
+        if (currentTrack && !currentTrack.embedUrl) {
+            currentTrack.videoWidth = width;
+            currentTrack.videoHeight = height;
+            currentTrack.videoQualityLabel = inferResolutionLabel(width, height);
+            currentTrack.videoDynamicRange = "SDR";
+            if (!currentTrack.audioQuality) {
+                currentTrack.audioQuality = currentTrack.sampleRate
+                    ? `${(Number(currentTrack.sampleRate) / 1000).toFixed(1)} kHz`
+                    : "本地音轨";
+            }
+            this.refreshTrackMetaDisplay(currentTrack);
+        }
 
         const gcd = (a, b) => {
             let x = Math.abs(a);
@@ -2680,8 +2941,11 @@ export class MediaPlayerCore {
         if (this.ui.dynamicBg) this.ui.dynamicBg.checked = this.dynamicBg;
         document.body.classList.toggle("dynamic-off", !this.dynamicBg);
 
-        this.subtitleEnabled = !!this.loadSetting("subtitleEnabled", true);
-        if (this.ui.subtitleToggle) this.ui.subtitleToggle.checked = this.subtitleEnabled;
+        const subtitleMode = this.loadSetting("subtitleMode", this.loadSetting("subtitleEnabled", true) ? "on" : "off");
+        this.subtitleEnabled = subtitleMode === "on";
+        if (this.ui.subtitleMode) this.ui.subtitleMode.value = subtitleMode;
+        const bilibiliQuality = String(this.loadSetting("bilibiliQuality", "0"));
+        if (this.ui.qualitySelect) this.ui.qualitySelect.value = bilibiliQuality;
         this.subtitleOpacity = Number(this.loadSetting("subtitleOpacity", this.subtitleOpacity));
         this.subtitleOpacity = clamp(this.subtitleOpacity, 0.2, 1);
         if (this.ui.subtitleOpacity) this.ui.subtitleOpacity.value = String(this.subtitleOpacity);
@@ -2737,8 +3001,11 @@ export class MediaPlayerCore {
         if (this.ui.lyricWeight) this.ui.lyricWeight.value = String(clamp(this.lyricWeight, 500, 900));
         this.applyLyricTypography();
 
-        this.brightnessLevel = Number(this.loadSetting("brightness", 1));
-        this.brightnessLevel = clamp(this.brightnessLevel, 0.4, 1.6);
+        this.brightnessLevel = Number(this.loadSetting("brightness", 100));
+        if (Number.isFinite(this.brightnessLevel) && this.brightnessLevel <= 2) {
+            this.brightnessLevel *= 100;
+        }
+        this.brightnessLevel = clamp(this.brightnessLevel, 0, 100);
         if (this.ui.brightnessRange) {
             this.ui.brightnessRange.value = String(this.brightnessLevel);
         }
@@ -2887,6 +3154,8 @@ export class MediaPlayerCore {
                     subtitleFiles,
                     localImport: true,
                 });
+                const insertedIndex = this.tracks.length - 1;
+                this.primeTrackCoverAsync(this.tracks[insertedIndex], insertedIndex);
                 appendedCount += 1;
 
                 this.renderPlaylist(currentFilter);
@@ -2907,6 +3176,7 @@ export class MediaPlayerCore {
         if (this.currentIndex < 0 && this.tracks.length) {
             await this.selectTrack(appendStart);
         }
+        this.scheduleQueuePersistence();
         this.setStatus(`已新增 ${appendedCount} 个视频（共 ${this.tracks.length} 个）`);
     }
 
@@ -2933,6 +3203,87 @@ export class MediaPlayerCore {
 
         cueTracks.sort((a, b) => scoreTrack(b) - scoreTrack(a));
         return mergeBilingualSubtitleCues(cueTracks[0], cueTracks[1]);
+    }
+
+    async loadSubtitleCuesFromRemote(track) {
+        if (!track || !Array.isArray(track.remoteSubtitleUrls) || !track.remoteSubtitleUrls.length) return [];
+        const cueTracks = [];
+        for (let i = 0; i < track.remoteSubtitleUrls.length; i += 1) {
+            const entry = track.remoteSubtitleUrls[i];
+            const url = String(entry?.url || "").trim();
+            if (!url) continue;
+            try {
+                const response = await fetch(url, { credentials: "omit", mode: "cors" });
+                if (!response.ok) continue;
+                const text = await response.text();
+                let cues = parseBilibiliJsonSubtitleCues(text);
+                if (!cues.length) {
+                    cues = parseSubtitleCues(text, url);
+                }
+                if (cues.length) cueTracks.push(cues);
+            } catch (error) {
+                // Ignore single remote subtitle source failures.
+            }
+        }
+        if (!cueTracks.length) return [];
+        if (cueTracks.length === 1) return cueTracks[0];
+
+        const scoreTrack = (cues) => cues.reduce((sum, cue) => {
+            return sum + [...String(cue.text || "")].length;
+        }, 0) + (cues.length * 6);
+
+        cueTracks.sort((a, b) => scoreTrack(b) - scoreTrack(a));
+        return mergeBilingualSubtitleCues(cueTracks[0], cueTracks[1]);
+    }
+
+    refreshEmbeddedQualityOptions(track) {
+        if (!this.ui?.qualitySelect || this.type !== "video") return;
+        const select = this.ui.qualitySelect;
+        const dropdownList = document.getElementById("quality-select-list");
+        const options = Array.isArray(track?.bilibiliQualityOptions) ? track.bilibiliQualityOptions : [];
+        if (!options.length) return;
+
+        const prev = String(select.value || "0");
+        select.innerHTML = "";
+        if (dropdownList) dropdownList.innerHTML = "";
+
+        const normalized = [{ value: "0", label: "自动" }, ...options.filter((item) => String(item.value) !== "0")];
+        const unique = [];
+        const seen = new Set();
+        normalized.forEach((item) => {
+            const value = String(item?.value || "");
+            if (!value || seen.has(value)) return;
+            seen.add(value);
+            unique.push({
+                value,
+                label: String(item?.label || value).trim() || value,
+            });
+        });
+
+        unique.forEach((item, index) => {
+            const option = document.createElement("option");
+            option.value = item.value;
+            option.textContent = item.label;
+            select.appendChild(option);
+
+            if (dropdownList) {
+                const row = document.createElement("div");
+                row.className = "component-dropdown-item" + (index === 0 ? " selected" : "");
+                row.setAttribute("role", "option");
+                row.setAttribute("aria-selected", index === 0 ? "true" : "false");
+                row.dataset.value = item.value;
+                row.textContent = item.label;
+                dropdownList.appendChild(row);
+            }
+        });
+
+        const fallback = unique.some((item) => item.value === prev) ? prev : "0";
+        select.value = fallback;
+        this.syncMediaSelectDropdown(
+            document.getElementById("quality-select-dropdown"),
+            select,
+            document.getElementById("quality-select-label")
+        );
     }
 
     async importMusicFiles(files) {
@@ -3038,14 +3389,19 @@ export class MediaPlayerCore {
             const track = this.tracks[trackIndex];
             if (filter && !(`${track.title} ${track.author} ${track.album || ""}`.toLowerCase().includes(filter))) return;
             const item = document.createElement("li");
-            item.className = `play-item${trackIndex === this.currentIndex ? " active" : ""}`;
+            item.className = `play-item${trackIndex === this.currentIndex ? " active" : ""}${this.playlistEditing ? " editing" : ""}`;
             item.dataset.trackIndex = String(trackIndex);
             const realCover = track.coverUrl || fallbackCover;
             const authorText = this.formatTrackAuthorText(track);
             const albumText = this.formatTrackAlbumText(track);
+            const checked = this.playlistSelectedSet.has(trackIndex) ? "checked" : "";
+            const selectCell = this.playlistEditing
+                ? `<input class="play-select" type="checkbox" data-role="playlist-select" data-track-index="${trackIndex}" ${checked} aria-label="选择 ${track.title}">`
+                : "";
             item.innerHTML = `
+                ${selectCell}
                 <div class="play-cover" draggable="true" title="按住拖动调整播放位置" aria-label="拖动封面排序">
-                    <img src="${fallbackCover}" data-src="${realCover}" loading="lazy" alt="cover" draggable="false">
+                    <img src="${fallbackCover}" data-src="${realCover}" data-lightbox="on" loading="lazy" alt="cover" draggable="false">
                     <span class="play-cover-overlay" aria-hidden="true">
                         <i class="fluent-icon icon-ic_fluent_apps_list_24_regular"></i>
                     </span>
@@ -3057,14 +3413,41 @@ export class MediaPlayerCore {
                 </div>
             `;
             item.addEventListener("click", async () => {
+                if (this.playlistEditing) return;
                 await this.selectTrack(trackIndex);
                 this.ui.playlistDrawer.classList.remove("show");
             });
+
+            if (this.playlistEditing) {
+                const checkbox = item.querySelector('input[data-role="playlist-select"]');
+                if (checkbox) {
+                    checkbox.addEventListener("click", (evt) => evt.stopPropagation());
+                    checkbox.addEventListener("change", () => {
+                        if (checkbox.checked) {
+                            this.playlistSelectedSet.add(trackIndex);
+                        } else {
+                            this.playlistSelectedSet.delete(trackIndex);
+                        }
+                    });
+                }
+            }
             const cover = item.querySelector(".play-cover");
             if (cover) {
                 const coverImg = cover.querySelector("img");
                 if (coverImg) {
                     coverImg.addEventListener("dragstart", (evt) => evt.preventDefault());
+                    coverImg.addEventListener("click", (evt) => {
+                        evt.stopPropagation();
+                        const lightbox = window.siteLightbox;
+                        if (!lightbox || typeof lightbox.refresh !== "function" || typeof lightbox.open !== "function") return;
+                        lightbox.refresh();
+                        const allCandidates = Array.from(document.querySelectorAll("main img, img[data-lightbox='on']")).filter((img) => {
+                            const lb = String(img.getAttribute("data-lightbox") || "").toLowerCase();
+                            return lb !== "false" && lb !== "off";
+                        });
+                        const idx = allCandidates.indexOf(coverImg);
+                        if (idx >= 0) lightbox.open(idx);
+                    });
                 }
                 cover.addEventListener("dragstart", (evt) => {
                     this.draggedTrackIndex = trackIndex;
@@ -3107,6 +3490,7 @@ export class MediaPlayerCore {
             }
             target.appendChild(item);
         });
+        this.syncPlaylistEditingVisualState();
         this.loadVisiblePlaylistCovers();
     }
 
@@ -3114,6 +3498,101 @@ export class MediaPlayerCore {
         if (!this.ui.playlistSearchClear || !this.ui.playlistSearch) return;
         const hasText = String(this.ui.playlistSearch.value || "").trim().length > 0;
         this.ui.playlistSearchClear.classList.toggle("hidden", !hasText);
+    }
+
+    syncPlaylistEditingVisualState() {
+        if (this.ui.playlistDrawer) {
+            this.ui.playlistDrawer.classList.toggle("editing", !!this.playlistEditing);
+        }
+        if (this.ui.playlistEditToolbar) {
+            this.ui.playlistEditToolbar.classList.toggle("hidden", !this.playlistEditing);
+        }
+        if (this.ui.playlistEditBtn) {
+            this.ui.playlistEditBtn.setAttribute("aria-pressed", this.playlistEditing ? "true" : "false");
+        }
+    }
+
+    togglePlaylistEditing(force) {
+        const next = typeof force === "boolean" ? force : !this.playlistEditing;
+        this.playlistEditing = next;
+        if (!next) this.playlistSelectedSet.clear();
+        this.syncPlaylistEditingVisualState();
+        this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+    }
+
+    selectAllPlaylistItems() {
+        if (!this.playlistEditing) return;
+        this.playlistSelectedSet.clear();
+        this.tracks.forEach((_, idx) => this.playlistSelectedSet.add(idx));
+        this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+    }
+
+    invertPlaylistSelection() {
+        if (!this.playlistEditing) return;
+        const next = new Set();
+        this.tracks.forEach((_, idx) => {
+            if (!this.playlistSelectedSet.has(idx)) next.add(idx);
+        });
+        this.playlistSelectedSet = next;
+        this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+    }
+
+    async deleteSelectedPlaylistItems() {
+        if (!this.playlistEditing || !this.playlistSelectedSet.size) return;
+        const removeSet = new Set(this.playlistSelectedSet);
+        const keepTracks = [];
+        let nextCurrent = -1;
+        for (let i = 0; i < this.tracks.length; i += 1) {
+            if (removeSet.has(i)) continue;
+            if (i === this.currentIndex) nextCurrent = keepTracks.length;
+            keepTracks.push(this.tracks[i]);
+        }
+        const removed = this.tracks.length - keepTracks.length;
+        this.tracks = keepTracks;
+        this.playlistSelectedSet.clear();
+
+        if (!this.tracks.length) {
+            this.currentIndex = -1;
+            this.media.pause();
+            this.media.removeAttribute("src");
+            this.media.load();
+            this.setPlayVisual(false);
+            this.ui.runningTime.textContent = "00:00";
+            this.ui.totalTime.textContent = "00:00";
+            this.ui.title.textContent = this.type === "video" ? "未导入视频" : "未导入音乐";
+            this.ui.author.textContent = this.type === "video" ? "作者：-" : "作者：-";
+            this.syncPlaylistEditingVisualState();
+            this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+            this.setStatus(`已删除 ${removed} 项，播放列表为空`);
+            this.scheduleQueuePersistence();
+            return;
+        }
+
+        if (nextCurrent < 0) {
+            nextCurrent = clamp(this.currentIndex, 0, this.tracks.length - 1);
+        }
+        this.ensurePlaybackOrder({ force: true });
+        this.currentIndex = -1;
+        this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+        this.togglePlaylistEditing(false);
+        await this.selectTrack(nextCurrent, { autoplay: false });
+        this.setStatus(`已删除 ${removed} 项`);
+        this.scheduleQueuePersistence();
+    }
+
+    scrollPlaylistToCurrent() {
+        if (!this.ui.playlistDrawer || !this.ui.playlistList) return;
+        if (!this.ui.playlistDrawer.classList.contains("show")) {
+            this.ui.playlistDrawer.classList.add("show");
+        }
+        const node = this.ui.playlistList.querySelector(`.play-item[data-track-index="${this.currentIndex}"]`);
+        if (!node) {
+            this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+        }
+        const target = this.ui.playlistList.querySelector(`.play-item[data-track-index="${this.currentIndex}"]`);
+        if (target) {
+            target.scrollIntoView({ block: "center", behavior: "smooth" });
+        }
     }
 
     ensurePlaybackOrder(options = {}) {
@@ -3183,6 +3662,7 @@ export class MediaPlayerCore {
             });
         }
         this.ensurePlaybackOrder();
+        this.scheduleQueuePersistence();
     }
 
     moveTrackInPlayOrder(fromTrackIndex, toTrackIndex) {
@@ -3194,10 +3674,12 @@ export class MediaPlayerCore {
         const [moved] = this.playOrder.splice(fromPos, 1);
         this.playOrder.splice(toPos, 0, moved);
         this.playOrderCursor = this.playOrder.indexOf(this.currentIndex);
+        this.scheduleQueuePersistence();
     }
 
-    async selectTrack(index) {
+    async selectTrack(index, options = {}) {
         if (index < 0 || index >= this.tracks.length) return;
+        const shouldAutoplay = options.autoplay !== false;
         this.currentIndex = index;
         this.ensurePlaybackOrder();
         this.danmakuLaneEndTime.scroll.fill(0);
@@ -3217,15 +3699,33 @@ export class MediaPlayerCore {
             this.ui.subtitleLayer.innerHTML = "";
         }
         const track = this.tracks[index];
-        if (this.type === "video" && this.artPlayer) {
+        const isEmbeddedVideo = this.type === "video" && !!track.embedUrl;
+        if (isEmbeddedVideo) {
+            this.refreshEmbeddedQualityOptions(track);
+        }
+        this.setEmbeddedVideoMode(isEmbeddedVideo);
+        if (isEmbeddedVideo) {
+            this.resetEmbeddedState();
+            this.refreshEmbeddedPlayer(track, { resetToStart: true });
+        }
+        if (this.type === "video" && this.artPlayer && !isEmbeddedVideo) {
             try {
                 this.artPlayer.url = track.sourceUrl;
             } catch (error) {
                 // fallback below uses native media source assignment
             }
         }
-        this.media.src = track.sourceUrl;
-        this.media.load();
+        if (isEmbeddedVideo) {
+            this.media.pause();
+            this.media.removeAttribute("src");
+            this.media.load();
+        } else {
+            this.media.src = track.sourceUrl;
+            this.media.load();
+        }
+        if (!isEmbeddedVideo && this.type === "video") {
+            this.bindDirectVideoFallback(track);
+        }
         if (this.ui.speedRange) {
             this.media.playbackRate = Number(this.ui.speedRange.value || 1);
         }
@@ -3250,7 +3750,10 @@ export class MediaPlayerCore {
         if (this.type === "video") {
             this.danmakuList = [];
             this.lastDanmakuTick = -1;
-            if (track.danmakuFile) {
+            if (isEmbeddedVideo) {
+                // B 站官方播放器负责其弹幕和 CC 字幕，跨域 iframe 无法由本站读取播放时间。
+                this.syncDanmakuRenderer();
+            } else if (track.danmakuFile) {
                 try {
                     const danmakuName = String(track.danmakuFile.name || "").toLowerCase();
                     if (/\.(ass|ssa)$/i.test(danmakuName)) {
@@ -3291,6 +3794,15 @@ export class MediaPlayerCore {
                     this.subtitleCues = [];
                     this.setStatus("CC 字幕读取失败");
                 }
+            } else if (Array.isArray(track.remoteSubtitleUrls) && track.remoteSubtitleUrls.length) {
+                try {
+                    this.subtitleCues = await this.loadSubtitleCuesFromRemote(track);
+                    if (this.subtitleCues.length) {
+                        this.setStatus(`检测到远程字幕 ${this.subtitleCues.length} 条`);
+                    }
+                } catch (error) {
+                    this.subtitleCues = [];
+                }
             }
             this.syncSubtitleToggleAvailability();
             this.renderSubtitles();
@@ -3306,8 +3818,24 @@ export class MediaPlayerCore {
         }
         this.updateMediaSession(track);
         this.restoreMasterGainForPlayback();
-        await this.media.play().catch(() => {});
-        this.setPlayVisual(!this.media.paused);
+        if (isEmbeddedVideo) {
+            if (shouldAutoplay) {
+                this.postEmbeddedCommand("play");
+                this.setPlayVisual(true);
+                this.toggleDanmakuPauseState(false);
+            } else {
+                this.postEmbeddedCommand("pause");
+                this.setPlayVisual(false);
+                this.toggleDanmakuPauseState(true);
+            }
+        } else if (shouldAutoplay) {
+            await this.media.play().catch(() => {});
+            this.setPlayVisual(!this.media.paused);
+        } else {
+            this.media.pause();
+            this.setPlayVisual(false);
+            this.toggleDanmakuPauseState(true);
+        }
         this.ensureEq();
 
         if (this.type === "video") {
@@ -3317,6 +3845,7 @@ export class MediaPlayerCore {
         if (this.type === "music" && !track.sampleRate && track.sourceFile) {
             this.resolveTrackSampleRate(track);
         }
+        this.scheduleQueuePersistence();
     }
 
     formatTrackAuthorText(track) {
@@ -3326,6 +3855,14 @@ export class MediaPlayerCore {
     }
 
     formatTrackAlbumText(track) {
+        if (track?.type === "video") {
+            const quality = String(track?.videoQualityLabel || "").trim() || (track?.embedUrl
+                ? bilibiliQualityLabel(this.ui.qualitySelect?.value || "0")
+                : inferResolutionLabel(track?.videoWidth, track?.videoHeight));
+            const dynamicRange = String(track?.videoDynamicRange || "").trim() || "SDR";
+            const audioQuality = String(track?.audioQuality || "").trim() || (track?.embedUrl ? "B站音轨" : "本地音轨");
+            return `清晰度：${quality} · ${dynamicRange} · 音质：${audioQuality}`;
+        }
         if (track?.type !== "music") return "";
         const albumRaw = String(track?.album || "").trim();
         return `专辑：${albumRaw || "-"}`;
@@ -3333,8 +3870,10 @@ export class MediaPlayerCore {
 
     refreshTrackMetaDisplay(track) {
         if (!track) return;
-        if (this.ui.author) {
-            this.ui.author.textContent = this.formatTrackAuthorText(track);
+        this.updateTrackMetaLink(this.ui.title, track.title || "未命名视频", track.bilibiliUrl);
+        this.updateTrackMetaLink(this.ui.author, this.formatTrackAuthorText(track), track.bilibiliUrl);
+        if (this.ui.videoMetaBar && track.type === "video") {
+            this.ui.videoMetaBar.textContent = this.formatTrackAlbumText(track);
         }
         if (!this.ui.trackAlbum) return;
         const albumText = this.formatTrackAlbumText(track);
@@ -3347,6 +3886,22 @@ export class MediaPlayerCore {
         this.ui.trackAlbum.classList.add("hidden");
     }
 
+    updateTrackMetaLink(node, text, href) {
+        if (!node) return;
+        node.textContent = text;
+        if (href) {
+            node.href = href;
+            node.target = "_blank";
+            node.rel = "noopener noreferrer";
+            node.classList.add("is-external-link");
+            return;
+        }
+        node.removeAttribute("href");
+        node.removeAttribute("target");
+        node.removeAttribute("rel");
+        node.classList.remove("is-external-link");
+    }
+
     async resolveTrackSampleRate(track) {
         if (!track || track.sampleRate || !track.sourceFile || track._sampling) return;
         track._sampling = true;
@@ -3354,8 +3909,12 @@ export class MediaPlayerCore {
             const ab = await fileToArrayBuffer(track.sourceFile);
             const sr = await this.getSampleRateFromBuffer(ab);
             track.sampleRate = sr || null;
+            if (track.type === "video" && track.sampleRate) {
+                track.audioQuality = `${(track.sampleRate / 1000).toFixed(1)} kHz`;
+            }
             if (this.currentIndex >= 0 && this.tracks[this.currentIndex] === track) {
                 this.setStatus(`音质信息：${track.sampleRate ? `${(track.sampleRate / 1000).toFixed(1)} kHz` : "未知采样率"}`);
+                this.refreshTrackMetaDisplay(track);
             }
         } catch (error) {
             track.sampleRate = null;
@@ -3443,6 +4002,21 @@ export class MediaPlayerCore {
     }
 
     togglePlay() {
+        const track = this.tracks[this.currentIndex];
+        if (track?.embedUrl) {
+            if (this.embeddedState.paused) {
+                this.postEmbeddedCommand("play");
+                this.embeddedState.paused = false;
+                this.toggleDanmakuPauseState(false);
+                this.setPlayVisual(true);
+            } else {
+                this.postEmbeddedCommand("pause");
+                this.embeddedState.paused = true;
+                this.toggleDanmakuPauseState(true);
+                this.setPlayVisual(false);
+            }
+            return;
+        }
         if (!this.media.src) return;
         if (this.media.paused) {
             this.playMediaWithOptionalFade();
@@ -3493,6 +4067,14 @@ export class MediaPlayerCore {
     }
 
     async playMediaWithOptionalFade() {
+        const track = this.tracks[this.currentIndex];
+        if (track?.embedUrl) {
+            this.postEmbeddedCommand("play");
+            this.embeddedState.paused = false;
+            this.setPlayVisual(true);
+            this.toggleDanmakuPauseState(false);
+            return;
+        }
         this.ensureEq();
         const useFade = this.type === "music" && this.pauseFadeEnabled && !!this.eqNodes?.master;
         this.cancelPauseFadeAnimation();
@@ -3515,6 +4097,14 @@ export class MediaPlayerCore {
     }
 
     pauseMediaWithOptionalFade() {
+        const track = this.tracks[this.currentIndex];
+        if (track?.embedUrl) {
+            this.postEmbeddedCommand("pause");
+            this.embeddedState.paused = true;
+            this.setPlayVisual(false);
+            this.toggleDanmakuPauseState(true);
+            return;
+        }
         if (this.media.paused) return;
         this.ensureEq();
         const useFade = this.type === "music" && this.pauseFadeEnabled && !!this.eqNodes?.master;
@@ -3530,6 +4120,16 @@ export class MediaPlayerCore {
     }
 
     seekBy(delta) {
+        const track = this.tracks[this.currentIndex];
+        if (track?.embedUrl) {
+            const total = Number(this.embeddedState.duration || this.media.duration || 0);
+            const next = clamp((this.embeddedState.currentTime || 0) + delta, 0, total || Infinity);
+            this.embeddedState.currentTime = next;
+            this.embeddedTimeHint = next;
+            this.postEmbeddedCommand("seek", { time: next });
+            this.refreshEmbeddedProgressFromHint();
+            return;
+        }
         this.media.currentTime = clamp((this.media.currentTime || 0) + delta, 0, this.media.duration || Infinity);
         this.refreshTime();
     }
@@ -3569,9 +4169,24 @@ export class MediaPlayerCore {
     }
 
     onTrackEnded() {
+        const track = this.tracks[this.currentIndex];
+        if (track?.embedUrl) {
+            this.embeddedState.paused = true;
+        }
         if (this.loopMode === "one") {
-            this.media.currentTime = 0;
-            this.media.play().catch(() => {});
+            if (track?.embedUrl) {
+                this.embeddedState.ended = false;
+                this.embeddedState.currentTime = 0;
+                this.embeddedTimeHint = 0;
+                this.postEmbeddedCommand("seek", { time: 0 });
+                this.postEmbeddedCommand("play");
+                this.embeddedState.paused = false;
+                this.toggleDanmakuPauseState(false);
+                this.setPlayVisual(true);
+            } else {
+                this.media.currentTime = 0;
+                this.media.play().catch(() => {});
+            }
             return;
         }
         if (this.loopMode === "all" || this.loopMode === "shuffle") {
@@ -3586,12 +4201,19 @@ export class MediaPlayerCore {
     }
 
     refreshTime() {
+        const track = this.tracks[this.currentIndex];
+        if (track?.embedUrl) {
+            this.refreshEmbeddedProgressFromHint();
+            this.renderSubtitles();
+            return;
+        }
         const cur = this.media.currentTime || 0;
         const total = this.media.duration || 0;
         if (!this.isSeeking) {
             this.ui.seek.value = String(cur);
         }
         this.setProgressVisual(cur, total);
+        this.setBufferedProgressVisual(cur, total);
         const curSec = Math.floor(cur);
         if (curSec !== this.lastRenderedRunningSecond) {
             this.lastRenderedRunningSecond = curSec;
@@ -3605,19 +4227,48 @@ export class MediaPlayerCore {
         this.renderSubtitles();
     }
 
+    setBufferedProgressVisual(cur, total) {
+        if (!this.ui.seek || !total || !this.media?.buffered?.length) return;
+        let bufferedEnd = 0;
+        for (let index = 0; index < this.media.buffered.length; index += 1) {
+            const start = this.media.buffered.start(index);
+            if (start <= cur + 0.1) bufferedEnd = Math.max(bufferedEnd, this.media.buffered.end(index));
+        }
+        const ratio = clamp(bufferedEnd / total, 0, 1);
+        this.ui.seek.style.setProperty("--buffered-percent", `${(ratio * 100).toFixed(3)}%`);
+    }
+
     handlePreviewMove(evt) {
         const rect = this.ui.seek.getBoundingClientRect();
         const ratio = clamp((evt.clientX - rect.left) / rect.width, 0, 1);
-        const time = (this.media.duration || 0) * ratio;
+        const currentTrack = this.tracks[this.currentIndex];
+        const duration = currentTrack?.embedUrl
+            ? Number(this.embeddedState.duration || this.media.duration || 0)
+            : Number(this.media.duration || 0);
+        const time = duration * ratio;
         this.showProgressPreview(time, ratio);
     }
 
     showProgressPreview(time, ratio) {
         const seekRect = this.ui.seek.getBoundingClientRect();
+        const zoneRect = this.ui.seek.parentElement
+            ? this.ui.seek.parentElement.getBoundingClientRect()
+            : seekRect;
         this.ui.preview.classList.add("show");
-        this.ui.preview.style.left = `${clamp(ratio, 0, 1) * seekRect.width}px`;
+        const previewWidth = Number(this.ui.preview.offsetWidth || 164);
+        const half = previewWidth / 2;
+        const seekOffset = seekRect.left - zoneRect.left;
+        const minCenter = half + seekOffset;
+        const maxCenter = seekOffset + seekRect.width - half;
+        const targetCenter = seekOffset + clamp(ratio, 0, 1) * seekRect.width;
+        const safeLeft = clamp(targetCenter, minCenter, Math.max(minCenter, maxCenter));
+        this.ui.preview.style.left = `${safeLeft}px`;
         this.ui.previewTime.textContent = formatTime(time);
-        this.ui.previewTotal.textContent = formatTime(this.media.duration || 0);
+        const currentTrack = this.tracks[this.currentIndex];
+        const duration = currentTrack?.embedUrl
+            ? Number(this.embeddedState.duration || this.media.duration || 0)
+            : Number(this.media.duration || 0);
+        this.ui.previewTotal.textContent = formatTime(duration);
 
         if (this.type === "video") {
             this.updateVideoPreview(time);
@@ -3733,6 +4384,12 @@ export class MediaPlayerCore {
         };
 
         const onClick = (evt) => {
+            const track = this.tracks[this.currentIndex];
+            if (track?.embedUrl) {
+                evt.preventDefault();
+                evt.stopPropagation();
+                return;
+            }
             if (!document.fullscreenElement) return;
             if (isDockInteractiveTarget(evt.target)) return;
             document.body.classList.add("show-dock");
@@ -3779,11 +4436,11 @@ export class MediaPlayerCore {
             }
             const delta = -dy / Math.max(gs.height, 1);
             if (gs.mode === "brightness") {
-                this.brightnessLevel = clamp(gs.startBrightness + delta, 0.4, 1.6);
+                this.brightnessLevel = clamp(gs.startBrightness + (delta * 100), 0, 100);
                 this.applyBrightness();
                 if (this.ui.brightnessRange) this.ui.brightnessRange.value = String(this.brightnessLevel);
                 this.refreshSettingValueBadges();
-                this.showGestureToast(`亮度 ${(this.brightnessLevel * 100).toFixed(0)}%`, "brightness");
+                this.showGestureToast(`亮度 ${Math.round(this.brightnessLevel)}%`, "brightness");
             } else {
                 this.media.volume = clamp(gs.startVolume + delta, 0, 1);
                 if (this.ui.volumeRange) this.ui.volumeRange.value = String(this.media.volume);
@@ -4001,12 +4658,15 @@ export class MediaPlayerCore {
         const list = this.currentLyrics;
         if (!list.length) return 0;
 
+        // Advance exactly at next line start to avoid lingering on previous line tail.
+        const epsilon = 0.0001;
+
         // Fast path for adjacent playback movement.
         let idx = clamp(this.lastLyricLookupIndex, 0, list.length - 1);
-        if (now >= list[idx].time && now < (list[idx + 1]?.time ?? Infinity)) {
+        if (now >= list[idx].time - epsilon && now < ((list[idx + 1]?.time ?? Infinity) - epsilon)) {
             return idx;
         }
-        if (idx + 1 < list.length && now >= list[idx + 1].time && now < (list[idx + 2]?.time ?? Infinity)) {
+        if (idx + 1 < list.length && now >= list[idx + 1].time - epsilon && now < ((list[idx + 2]?.time ?? Infinity) - epsilon)) {
             this.lastLyricLookupIndex = idx + 1;
             return idx + 1;
         }
@@ -4017,7 +4677,7 @@ export class MediaPlayerCore {
         let best = 0;
         while (left <= right) {
             const mid = (left + right) >> 1;
-            if (list[mid].time <= now) {
+            if (list[mid].time - epsilon <= now) {
                 best = mid;
                 left = mid + 1;
             } else {
@@ -4167,6 +4827,98 @@ export class MediaPlayerCore {
         }
     }
 
+    setEmbeddedVideoMode(isEmbeddedVideo) {
+        if (this.ui.videoStage) this.ui.videoStage.classList.toggle("is-embedded-video", isEmbeddedVideo);
+        if (this.ui.bilibiliClickGuard) {
+            this.ui.bilibiliClickGuard.classList.toggle("hidden", !isEmbeddedVideo);
+        }
+        if (this.ui.bilibiliPlayer && !isEmbeddedVideo) {
+            this.ui.bilibiliPlayer.classList.add("hidden");
+            this.ui.bilibiliPlayer.src = "";
+        }
+        [this.ui.volumeRange].forEach((control) => {
+            if (control) control.disabled = isEmbeddedVideo;
+        });
+        if (this.ui.qualitySelect) this.ui.qualitySelect.disabled = !isEmbeddedVideo;
+        if (isEmbeddedVideo) {
+            this.stopProgressAnimation();
+            this.startEmbeddedSyncTimer();
+            this.setPlayVisual(false);
+            if (this.ui.seek) {
+                this.ui.seek.value = "0";
+                this.ui.seek.style.setProperty("--progress-percent", "0%");
+                this.ui.seek.style.setProperty("--buffered-percent", "0%");
+            }
+            this.ui.runningTime.textContent = "00:00";
+            this.ui.totalTime.textContent = "00:00";
+            this.postEmbeddedCommand("requestState");
+            return;
+        }
+        this.stopEmbeddedSyncTimer();
+    }
+
+    refreshEmbeddedPlayer(track, options = {}) {
+        if (!track?.embedUrl || !this.ui.bilibiliPlayer) return;
+        const quality = this.ui.qualitySelect?.value || "0";
+        const url = new URL(track.embedUrl);
+        url.searchParams.set("qn", quality);
+        url.searchParams.set("high_quality", "1");
+        url.searchParams.set("fnval", "4048");
+        if (["120", "125", "127"].includes(String(quality))) {
+            url.searchParams.set("fourk", "1");
+        }
+        if (options.resetToStart !== false) {
+            url.searchParams.set("start_progress", "0");
+            this.embeddedState.currentTime = 0;
+            this.embeddedTimeHint = 0;
+        }
+        this.embeddedState.qualityLabel = bilibiliQualityLabel(quality);
+        this.embeddedState.dynamicRange = String(quality) === "125" ? "HDR" : "SDR";
+        this.refreshEmbeddedStatusText();
+        this.ui.bilibiliPlayer.src = url.href;
+        this.ui.bilibiliPlayer.classList.remove("hidden");
+        this.ui.bilibiliPlayer.onload = () => {
+            this.postEmbeddedCommand("seek", { time: 0 });
+            this.postEmbeddedCommand("requestState");
+            this.postEmbeddedCommand("getState");
+            if (!this.embeddedState.paused) {
+                this.postEmbeddedCommand("play");
+            }
+            this.refreshEmbeddedProgressFromHint();
+        };
+    }
+
+    bindDirectVideoFallback(track) {
+        if (this.type !== "video" || !track || track._directFallbackBound) return;
+        track._directFallbackBound = true;
+        const media = this.media;
+        const fail = () => {
+            if (this.embeddedFallbackHandled) return;
+            this.embeddedFallbackHandled = true;
+            this.setStatus("直链播放失效，正在回退到 B 站播放器...");
+            if (track.bilibiliUrl) {
+                track.embedUrl = `https://player.bilibili.com/player.html?bvid=${encodeURIComponent(track.bvid || "")}&page=1&high_quality=1&danmaku=1&autoplay=0`;
+                this.refreshEmbeddedQualityOptions(track);
+                this.setEmbeddedVideoMode(true);
+                this.resetEmbeddedState();
+                this.refreshEmbeddedPlayer(track, { resetToStart: true });
+                return;
+            }
+            if (track.bilibiliUrl) {
+                window.open(track.bilibiliUrl, "_blank", "noopener,noreferrer");
+                this.setStatus("已切换到外链打开，继续在新页面播放");
+                return;
+            }
+            this.setStatus("视频直链失效，且没有可用的 B 站回退链接");
+        };
+
+        media.addEventListener("error", fail, { once: true });
+        media.addEventListener("stalled", () => {
+            if (Number(media.currentTime || 0) > 0 || media.readyState > 2) return;
+            fail();
+        }, { once: true });
+    }
+
     getArtDanmakuPlugin() {
         if (!this.artDanmukuReady || !this.artPlayer?.plugins) return null;
         return this.artPlayer.plugins.artplayerPluginDanmuku || null;
@@ -4298,9 +5050,21 @@ export class MediaPlayerCore {
     syncSubtitleToggleAvailability() {
         if (this.type !== "video") return;
         const hasSubtitle = Array.isArray(this.subtitleCues) && this.subtitleCues.length > 0;
-        if (this.ui.subtitleToggle) {
-            this.ui.subtitleToggle.disabled = !hasSubtitle;
-            this.ui.subtitleToggle.checked = hasSubtitle ? !!this.subtitleEnabled : false;
+        const isEmbeddedVideo = !!this.tracks[this.currentIndex]?.embedUrl;
+        if (this.ui.subtitleMode) {
+            this.ui.subtitleMode.disabled = false;
+            if (isEmbeddedVideo) {
+                this.ui.subtitleMode.value = "bilibili";
+            } else if (!hasSubtitle) {
+                this.ui.subtitleMode.value = "off";
+            } else {
+                this.ui.subtitleMode.value = this.subtitleEnabled ? "on" : "off";
+            }
+            this.syncMediaSelectDropdown(
+                document.getElementById("subtitle-mode-dropdown"),
+                this.ui.subtitleMode,
+                document.getElementById("subtitle-mode-label")
+            );
         }
         this.applySubtitleOpacity();
         if (!hasSubtitle && this.ui.subtitleLayer) {
@@ -4322,6 +5086,11 @@ export class MediaPlayerCore {
     renderSubtitles() {
         if (this.type !== "video" || !this.ui.subtitleLayer) return;
         const layer = this.ui.subtitleLayer;
+        if (this.tracks[this.currentIndex]?.embedUrl) {
+            layer.classList.add("hidden");
+            layer.innerHTML = "";
+            return;
+        }
         if (!this.subtitleEnabled || !Array.isArray(this.subtitleCues) || !this.subtitleCues.length) {
             if (this.currentSubtitleText || !layer.classList.contains("hidden") || layer.childElementCount) {
                 this.currentSubtitleText = "";
@@ -4676,13 +5445,18 @@ export class MediaPlayerCore {
 
     applyBrightness() {
         if (this.type !== "video") return;
-        this.media.style.filter = `brightness(${this.brightnessLevel})`;
+        const ratio = clamp(Number(this.brightnessLevel || 100) / 100, 0, 2);
+        this.media.style.filter = `brightness(${ratio})`;
+        if (this.ui.bilibiliPlayer) {
+            this.ui.bilibiliPlayer.style.filter = `brightness(${ratio})`;
+        }
     }
 
     updateCoverShape(target, src) {
         if (!target || !src) return;
         target.classList.remove("cover-rect");
         const probe = new Image();
+        probe.referrerPolicy = "no-referrer";
         probe.onload = () => {
             const w = Number(probe.naturalWidth || 0);
             const h = Number(probe.naturalHeight || 0);
@@ -4695,6 +5469,334 @@ export class MediaPlayerCore {
             }
         };
         probe.src = src;
+    }
+
+    queueStorageKey() {
+        return `${this.settingsPrefix()}queue-v3`;
+    }
+
+    scheduleQueuePersistence() {
+        if (this.type !== "video") return;
+        if (this.queuePersistTimer) clearTimeout(this.queuePersistTimer);
+        this.queuePersistTimer = setTimeout(() => {
+            this.queuePersistTimer = null;
+            this.persistQueueState();
+        }, 120);
+    }
+
+    sanitizeTrackForStorage(track) {
+        if (!track || track.type !== "video") return null;
+        const sourceUrl = String(track.sourceUrl || "");
+        const bilibiliUrl = String(track.bilibiliUrl || "");
+        const embedUrl = String(track.embedUrl || "");
+        if (track.localImport) return null;
+        if (!track.localImport && !bilibiliUrl && !/^https?:\/\//i.test(sourceUrl)) return null;
+        return {
+            type: "video",
+            title: String(track.title || ""),
+            author: String(track.author || ""),
+            coverUrl: String(track.coverUrl || ""),
+            sourceUrl,
+            sourceTag: String(track.sourceTag || ""),
+            localImport: !!track.localImport,
+            embedUrl,
+            bilibiliUrl,
+            bvid: track.bvid || "",
+            aid: track.aid || "",
+            cid: track.cid || "",
+            videoQualityLabel: String(track.videoQualityLabel || ""),
+            videoDynamicRange: String(track.videoDynamicRange || ""),
+            audioQuality: String(track.audioQuality || ""),
+            videoWidth: Number(track.videoWidth || 0) || 0,
+            videoHeight: Number(track.videoHeight || 0) || 0,
+        };
+    }
+
+    persistQueueState() {
+        if (this.type !== "video") return;
+        const tracks = this.tracks
+            .map((track) => this.sanitizeTrackForStorage(track))
+            .filter(Boolean);
+        const payload = {
+            version: 3,
+            tracks,
+            currentIndex: clamp(Number(this.currentIndex || 0), 0, Math.max(0, tracks.length - 1)),
+            loopMode: this.loopMode,
+            quality: String(this.ui.qualitySelect?.value || "0"),
+            updatedAt: Date.now(),
+        };
+        try {
+            localStorage.setItem(this.queueStorageKey(), JSON.stringify(payload));
+        } catch (error) {
+            // ignore storage failures
+        }
+    }
+
+    restoreQueueFromStorage() {
+        if (this.type !== "video" || this.tracks.length) return;
+        let payload = null;
+        try {
+            payload = JSON.parse(localStorage.getItem(this.queueStorageKey()) || "null");
+        } catch (error) {
+            payload = null;
+        }
+        if (!payload || !Array.isArray(payload.tracks) || !payload.tracks.length) return;
+        const restored = payload.tracks
+            .map((raw) => this.sanitizeTrackForStorage(raw))
+            .filter(Boolean)
+            .map((track) => ({
+                ...track,
+                danmakuFile: null,
+                subtitleFiles: [],
+            }));
+        if (!restored.length) return;
+        this.tracks = restored;
+        this.ensurePlaybackOrder({ force: true });
+        if (this.ui.qualitySelect && payload.quality) {
+            this.ui.qualitySelect.value = String(payload.quality);
+            this.syncMediaSelectDropdown(
+                document.getElementById("quality-select-dropdown"),
+                this.ui.qualitySelect,
+                document.getElementById("quality-select-label")
+            );
+        }
+        this.renderPlaylist(this.ui.playlistSearch?.value?.trim().toLowerCase() || "");
+        const index = clamp(Number(payload.currentIndex || 0), 0, restored.length - 1);
+        this.selectTrack(index, { autoplay: false });
+        this.setStatus(`已恢复 ${restored.length} 条播放记录`);
+    }
+
+    primeTrackCoverAsync(track, trackIndex) {
+        if (this.type !== "video" || !track) return;
+        if (track.coverUrl) {
+            this.scheduleQueuePersistence();
+            return;
+        }
+        if (track.embedUrl || track.bilibiliUrl) {
+            if (track.coverUrl) {
+                this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+                this.scheduleQueuePersistence();
+                this.preloadTrackTheme(track);
+            }
+            return;
+        }
+        if (!track.sourceUrl || /^blob:/i.test(track.sourceUrl) === false) return;
+        const probe = document.createElement("video");
+        probe.preload = "metadata";
+        probe.muted = true;
+        probe.src = track.sourceUrl;
+        const finish = () => {
+            probe.src = "";
+            probe.remove();
+        };
+        const onLoaded = async () => {
+            try {
+                const duration = Number(probe.duration || 0);
+                if (!duration || !Number.isFinite(duration)) {
+                    finish();
+                    return;
+                }
+                const canvas = this.previewCanvas;
+                const ctx = canvas.getContext("2d");
+                if (!ctx) {
+                    finish();
+                    return;
+                }
+                probe.currentTime = clamp(duration * 0.3, 0, Math.max(0, duration - 0.1));
+                probe.addEventListener("seeked", async () => {
+                    try {
+                        ctx.drawImage(probe, 0, 0, canvas.width, canvas.height);
+                        const data = canvas.toDataURL("image/jpeg", 0.76);
+                        if (data && this.tracks[trackIndex] === track && !track.coverUrl) {
+                            track.coverUrl = data;
+                            this.updateCoverShape(this.cover, this.cover.src || data);
+                            this.renderPlaylist(this.ui.playlistSearch.value.trim().toLowerCase());
+                            if (this.currentIndex === trackIndex && this.cover) {
+                                this.cover.src = data;
+                                this.preloadTrackTheme(track);
+                            }
+                            this.scheduleQueuePersistence();
+                        }
+                    } catch (error) {
+                        // ignore cover capture failures
+                    } finally {
+                        finish();
+                    }
+                }, { once: true });
+            } catch (error) {
+                finish();
+            }
+        };
+        probe.addEventListener("loadedmetadata", onLoaded, { once: true });
+        probe.addEventListener("error", finish, { once: true });
+    }
+
+    async preloadTrackTheme(track) {
+        if (!track?.coverUrl) return;
+        try {
+            const colors = await this.getTrackThemeColors(track.coverUrl);
+            if (this.currentIndex >= 0 && this.tracks[this.currentIndex] === track && this.dynamicBg) {
+                document.documentElement.style.setProperty("--bg-a", colors[0]);
+                document.documentElement.style.setProperty("--bg-b", colors[1]);
+                document.documentElement.style.setProperty("--bg-c", colors[2]);
+                this.applyThemeFromCover(colors);
+            }
+        } catch (error) {
+            // ignore theme extraction failures
+        }
+    }
+
+    resetEmbeddedState() {
+        this.embeddedTimeHint = 0;
+        this.embeddedState = {
+            currentTime: 0,
+            duration: 0,
+            paused: true,
+            ended: false,
+            qualityLabel: bilibiliQualityLabel(this.ui.qualitySelect?.value || "0"),
+            dynamicRange: String(this.ui.qualitySelect?.value || "0") === "125" ? "HDR" : "SDR",
+            audioQuality: "B站音轨",
+        };
+        this.refreshEmbeddedStatusText();
+    }
+
+    refreshEmbeddedStatusText() {
+        const track = this.tracks[this.currentIndex];
+        if (!track?.embedUrl) return;
+        track.videoQualityLabel = this.embeddedState.qualityLabel;
+        track.videoDynamicRange = this.embeddedState.dynamicRange;
+        track.audioQuality = this.embeddedState.audioQuality;
+        this.refreshTrackMetaDisplay(track);
+    }
+
+    postEmbeddedCommand(command, extra = {}) {
+        const frame = this.ui.bilibiliPlayer;
+        if (!frame || !frame.contentWindow) return;
+        const payload = { command, ...extra };
+        const aliasMap = {
+            play: "player.play",
+            pause: "player.pause",
+            seek: "player.seek",
+            getCurrentTime: "player.getCurrentTime",
+            getDuration: "player.getDuration",
+            requestState: "player.getState",
+            getState: "player.getState",
+        };
+        const commandAlias = aliasMap[command] || command;
+        const payloadVariants = [
+            payload,
+            { method: commandAlias, ...extra },
+            { cmd: commandAlias, ...extra },
+            JSON.stringify(payload),
+        ];
+        try {
+            payloadVariants.forEach((item) => {
+                frame.contentWindow.postMessage(item, "https://player.bilibili.com");
+            });
+        } catch (error) {
+            // ignore postMessage failures
+        }
+    }
+
+    handleEmbeddedPlayerMessage(evt) {
+        if (!this.ui?.bilibiliPlayer || !this.ui.bilibiliPlayer.src) return;
+        if (evt.origin !== "https://player.bilibili.com") return;
+        const activeTrack = this.tracks[this.currentIndex];
+        if (!activeTrack?.embedUrl) return;
+        let data = evt.data;
+        if (typeof data === "string") {
+            try {
+                data = JSON.parse(data);
+            } catch (error) {
+                return;
+            }
+        }
+        if (!data || typeof data !== "object") return;
+        const nested = data.data && typeof data.data === "object" ? data.data : null;
+        const mergedData = nested ? { ...nested, ...data } : data;
+        const eventName = String(mergedData.event || mergedData.type || mergedData.method || "").toLowerCase();
+        if (!eventName) return;
+        if (eventName.includes("time") || eventName.includes("progress") || eventName.includes("play")) {
+            const current = Number(mergedData.currentTime ?? mergedData.time ?? mergedData.progress ?? NaN);
+            if (Number.isFinite(current) && current >= 0) {
+                this.embeddedState.currentTime = current;
+                this.embeddedTimeHint = current;
+            }
+            const duration = Number(mergedData.duration ?? mergedData.total ?? NaN);
+            if (Number.isFinite(duration) && duration > 0) {
+                this.embeddedState.duration = duration;
+            }
+            if (eventName.includes("pause")) {
+                this.embeddedState.paused = true;
+                this.toggleDanmakuPauseState(true);
+                this.setPlayVisual(false);
+            }
+            if (eventName.includes("play")) {
+                this.embeddedState.paused = false;
+                this.toggleDanmakuPauseState(false);
+                this.setPlayVisual(true);
+            }
+            if (eventName.includes("ended") || eventName.includes("complete")) {
+                this.embeddedState.ended = true;
+                this.onTrackEnded();
+            }
+            this.refreshEmbeddedStatusText();
+            this.refreshEmbeddedProgressFromHint();
+        }
+
+        const subtitleEnabled = mergedData.subtitleEnabled;
+        if (typeof subtitleEnabled === "boolean" && this.ui?.subtitleMode && this.tracks[this.currentIndex]?.embedUrl) {
+            this.ui.subtitleMode.value = subtitleEnabled ? "bilibili" : "off";
+            this.syncMediaSelectDropdown(
+                document.getElementById("subtitle-mode-dropdown"),
+                this.ui.subtitleMode,
+                document.getElementById("subtitle-mode-label")
+            );
+        }
+    }
+
+    refreshEmbeddedProgressFromHint() {
+        const track = this.tracks[this.currentIndex];
+        if (!track?.embedUrl) return;
+        const total = Number(this.embeddedState.duration || this.media.duration || 0);
+        const cur = Number(this.embeddedState.currentTime || this.embeddedTimeHint || 0);
+        if (total > 0) {
+            if (this.ui.seek) {
+                this.ui.seek.max = String(total);
+                if (!this.isSeeking) this.ui.seek.value = String(clamp(cur, 0, total));
+                this.ui.seek.style.setProperty("--buffered-percent", "0%");
+            }
+            this.setProgressVisual(cur, total);
+            this.ui.runningTime.textContent = formatTime(cur);
+            this.ui.totalTime.textContent = formatTime(total);
+            return;
+        }
+        this.ui.runningTime.textContent = formatTime(cur);
+    }
+
+    startEmbeddedSyncTimer() {
+        if (this.embeddedSyncTimer) return;
+        this.embeddedSyncTimer = setInterval(() => {
+            const track = this.tracks[this.currentIndex];
+            if (!track?.embedUrl) return;
+            this.embeddedTimeHint += this.embeddedState.paused ? 0 : 0.5;
+            this.embeddedState.currentTime = this.embeddedTimeHint;
+            if (!this.embeddedState.ended && this.embeddedState.duration > 0 && this.embeddedState.currentTime >= this.embeddedState.duration - 0.2) {
+                this.embeddedState.ended = true;
+                this.onTrackEnded();
+                return;
+            }
+            this.refreshEmbeddedProgressFromHint();
+            this.postEmbeddedCommand("getCurrentTime");
+            this.postEmbeddedCommand("getDuration");
+            this.postEmbeddedCommand("requestState");
+        }, 500);
+    }
+
+    stopEmbeddedSyncTimer() {
+        if (!this.embeddedSyncTimer) return;
+        clearInterval(this.embeddedSyncTimer);
+        this.embeddedSyncTimer = null;
     }
 
     async getSampleRateFromBuffer(arrayBuffer) {
@@ -4712,9 +5814,14 @@ export class MediaPlayerCore {
 
     dispose() {
         this.stopProgressAnimation();
+        this.endRightArrowHold();
+        if (this.rightKeyHoldTimer) clearTimeout(this.rightKeyHoldTimer);
+        this.stopEmbeddedSyncTimer();
+        if (this.queuePersistTimer) clearTimeout(this.queuePersistTimer);
         if (this.fullscreenDockHideTimer) clearTimeout(this.fullscreenDockHideTimer);
         if (this.statusHideTimer) clearTimeout(this.statusHideTimer);
         if (this.gestureToastHideTimer) clearTimeout(this.gestureToastHideTimer);
+        window.removeEventListener("message", this.onEmbeddedMessage);
         if (this.artPlayer && typeof this.artPlayer.destroy === "function") {
             this.artPlayer.destroy(false);
         }

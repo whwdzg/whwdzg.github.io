@@ -487,6 +487,10 @@ img.highlighted {
 	background: var(--hover-bg);
 }
 
+#image-lightbox .lightbox-rotate-btn {
+	font-size: 1.04rem;
+}
+
 @media (max-width: 760px) {
 	#image-lightbox .lightbox-zoom-indicator {
 		left: 8px;
