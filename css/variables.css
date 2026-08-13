@@ -83,20 +83,9 @@ body.dark-mode {
 	--input-focus-bg: rgba(255, 255, 255, 0.12);
 }
 
-/* Fluent System Icons font (from microsoft/fluentui-system-icons) */
-@font-face {
-	font-family: 'FluentSystemIcons';
-	src: url('/resource/font/FluentSystemIcons-Regular.woff2') format('woff2'),
-		 url('/resource/font/FluentSystemIcons-Regular.woff') format('woff'),
-		 url('/resource/font/FluentSystemIcons-Regular.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-	font-display: swap;
-}
-
 /* Utility to show icon from font: use an inline element with class .fluent-font to display glyphs */
 .fluent-font {
-	font-family: 'FluentSystemIcons', 'Segoe Fluent Icons', 'Segoe MDL2 Assets', sans-serif;
+	font-family: 'FluentSystemIcons-Regular', sans-serif;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;

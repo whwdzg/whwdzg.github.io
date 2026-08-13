@@ -49,87 +49,7 @@
     </head>
 <body>
      <div id="shell-root"></div>
-        <script>
-            (function(){
-                var container = document.getElementById('shell-root');
-                function normalize(pathname) {
-                    var p = pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '').replace(/\/+$/, '');
-                    return p === '' ? '/' : p;
-                }
-                function markCurrentNav() {
-                    var current = normalize(location.pathname);
-                    var sidebar = document.getElementById('sidebar');
-                    if (!sidebar) return;
-                    sidebar.querySelectorAll('.current, .selected').forEach(function(el){
-                        el.classList.remove('current','selected');
-                        if (el.tagName === 'A') el.removeAttribute('aria-current');
-                    });
-                    document.querySelectorAll('#sidebar a[href]').forEach(function(a){
-                        var href = a.getAttribute('href');
-                        if (!href) return;
-                        var target = normalize(new URL(href, location.origin).pathname);
-                        if (target === current) {
-                            var parent = a.closest('.has-children');
-                            var toggle = parent ? parent.querySelector('.toggle') : null;
-                            var submenu = parent ? parent.querySelector('.submenu') : null;
-                            var parentOpen = !!(parent && parent.classList.contains('open'));
-
-                            if (parent && !parentOpen) {
-                                parent.classList.add('current');
-                                if (toggle) toggle.classList.add('current');
-                                return;
-                            }
-
-                            a.classList.add('current','selected');
-                            a.setAttribute('aria-current','page');
-                            if (parent) {
-                                if (toggle) {
-                                    toggle.classList.add('current');
-                                    toggle.setAttribute('aria-expanded','true');
-                                }
-                                if (submenu) submenu.style.maxHeight = submenu.scrollHeight + 'px';
-                            }
-                        }
-                    });
-                }
-                function attachShell(html) {
-                    if (!container || !html) return;
-                    container.innerHTML = html;
-                    var move = function() {
-                        var main = document.querySelector('main');
-                        if (!main) return;
-                        var footer = container.querySelector('footer');
-                        if (footer && footer.parentNode !== main.parentNode) {
-                            footer.setAttribute('data-shell-moved', '1');
-                            main.insertAdjacentElement('afterend', footer);
-                        }
-                        markCurrentNav();
-                    };
-                    if (document.readyState === 'loading') {
-                        document.addEventListener('DOMContentLoaded', move, { once: true });
-                    } else {
-                        move();
-                    }
-                }
-                function bust(url){
-                    if (location.protocol === 'file:') return url;
-                    var sep = url.indexOf('?') === -1 ? '?' : '&';
-                    return url + sep + 'ts=' + Date.now();
-                }
-                try {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('GET', bust('/includes/shell.html'), false);
-                    xhr.send(null);
-                    if (xhr.status === 200 || xhr.status === 0) {
-                        attachShell(xhr.responseText);
-                        return;
-                    }
-                } catch (e) {}
-                fetch(bust('/includes/shell.html'), { cache: 'no-store' })
-                    .then(function(resp){ return resp.ok ? resp.text() : Promise.reject(new Error('HTTP '+resp.status)); })
-                    .then(function(html){ attachShell(html); });
-            })();
-        </script>
+    <script src="/js/shell-loader.js"></script>
 
         <main>
             <div class="column-stack">
@@ -182,7 +102,7 @@
                     <div class="article-meta">
                         <span class="pill"><i class="icon-ic_fluent_shield_24_regular" aria-hidden="true"></i>GPL v3</span>
                         <span class="pill"><i class="icon-ic_fluent_cloud_24_regular" aria-hidden="true"></i>PWA</span>
-                        <span class="pill"><i class="icon-ic_fluent_arrow_sync_circle_24_regular" aria-hidden="true"></i>2.0.3.9-20260406</span>
+                        <span class="pill"><i class="icon-ic_fluent_arrow_sync_circle_24_regular" aria-hidden="true"></i>2.1.0.0-20260726</span>
                     </div>
                     <p style="margin-top:10px;">本仓库采用 GPL v3 许可证，详见 <a href="/LICENSE">LICENSE</a>。</p>
                     <p style="margin-top:10px;">项目README中有详细的使用说明 <a href="/README.md">README</a>。</p>

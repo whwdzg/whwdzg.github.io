@@ -8,7 +8,7 @@
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
-const CACHE_VERSION = 'shuiyu-pwa-v3';
+const CACHE_VERSION = 'shuiyu-pwa-v4';
 const OFFLINE_URL = '/offline.html';
 const CACHE_NAMES = {
   precache: `${CACHE_VERSION}-precache`,
@@ -56,6 +56,7 @@ const PRECACHE_URLS = Array.from(new Set([
   '/js/media/common.js',
   '/js/media/music.js',
   '/js/media/video.js',
+  '/js/shell-loader.js',
   '/js/video-archive.js',
   '/resource/font/FluentSystemIcons-Regular.css',
   '/resource/font/FluentSystemIcons-Regular.woff2',

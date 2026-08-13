@@ -28,7 +28,7 @@ main {
 
 /* SPA 路由加载态：先隐藏旧内容，再显示 main 中央加载框 */
 main.main-loading > *:not(.main-loading-overlay) {
-	visibility: hidden;
+	display: none;
 }
 
 main.main-loading {

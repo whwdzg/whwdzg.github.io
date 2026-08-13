@@ -7,18 +7,43 @@
 (() => {
   const root = document.documentElement;
   let toastTimer = null;
+  let toastProgressRaf = 0;
   let globalEscBound = false;
   let dropdownGlobalsBound = false;
 
   function getToastParts() {
-    const el = document.querySelector('[data-component-toast]');
-    if (!el) return { el: null, icon: null, message: null, close: null };
+    const el = document.querySelector('body.component-demo > [data-component-toast]')
+      || document.querySelector('[data-component-toast]');
+    if (!el) return { el: null, icon: null, message: null, close: null, progress: null };
     return {
       el,
       icon: el.querySelector('.component-toast__icon'),
       message: el.querySelector('.component-toast__message'),
-      close: el.querySelector('.component-toast__close')
+      close: el.querySelector('.component-toast__close'),
+      progress: el.querySelector('.component-toast__progress')
     };
+  }
+
+  function stopToastProgress() {
+    if (!toastProgressRaf) return;
+    cancelAnimationFrame(toastProgressRaf);
+    toastProgressRaf = 0;
+  }
+
+  function startToastProgress(toastEl, duration) {
+    stopToastProgress();
+    const startedAt = performance.now();
+    const tick = (now) => {
+      const remaining = Math.max(0, duration - (now - startedAt));
+      toastEl.style.setProperty('--component-toast-progress', String(remaining / duration));
+      if (remaining > 0 && toastEl.classList.contains('show')) {
+        toastProgressRaf = requestAnimationFrame(tick);
+      } else {
+        toastProgressRaf = 0;
+      }
+    };
+    toastEl.style.setProperty('--component-toast-progress', '1');
+    toastProgressRaf = requestAnimationFrame(tick);
   }
 
   function hexToRgbTuple(hex) {
@@ -73,13 +98,18 @@
     }
     toastEl.classList.add('show');
     if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+    const duration = 1800;
+    startToastProgress(toastEl, duration);
+    toastTimer = setTimeout(() => hideToast(), duration);
   }
 
   function hideToast() {
     const { el: toastEl } = getToastParts();
     if (!toastEl) return;
     if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = null;
+    stopToastProgress();
+    toastEl.style.setProperty('--component-toast-progress', '0');
     toastEl.classList.remove('show');
   }
 
@@ -139,6 +169,21 @@
     const pct = ((value - min) / (safeMax - min)) * 100;
     const clamped = Math.min(100, Math.max(0, pct));
     rangeEl.style.setProperty('--slider-pct', clamped.toFixed(2) + '%');
+  }
+
+  function updateBufferedVisual(mediaEl, rangeEl) {
+    if (!mediaEl || !rangeEl) return;
+    const duration = Number(mediaEl.duration) || 0;
+    let bufferedEnd = 0;
+    if (duration > 0 && mediaEl.buffered && mediaEl.buffered.length) {
+      for (let index = 0; index < mediaEl.buffered.length; index += 1) {
+        if (mediaEl.buffered.start(index) <= mediaEl.currentTime + 0.1) {
+          bufferedEnd = Math.max(bufferedEnd, mediaEl.buffered.end(index));
+        }
+      }
+    }
+    const bufferedPct = duration > 0 ? Math.min(100, Math.max(0, bufferedEnd / duration * 100)) : 0;
+    rangeEl.style.setProperty('--slider-buffered-pct', bufferedPct.toFixed(2) + '%');
   }
 
   function bindRangeVisuals(scope) {
@@ -442,67 +487,6 @@
     });
   }
 
-  function updateSearchResults(query) {
-    const rows = document.querySelectorAll('[data-search-item]');
-    if (!rows.length) return 0;
-    let count = 0;
-    const normalized = (query || '').trim().toLowerCase();
-    rows.forEach((row) => {
-      const text = (row.dataset.searchItem || row.textContent || '').toLowerCase();
-      const visible = !normalized || text.indexOf(normalized) !== -1;
-      row.classList.toggle('hidden', !visible);
-      if (visible) count += 1;
-    });
-    return count;
-  }
-
-  function bindSearchHandlers() {
-    const searchWrap = document.querySelector('.component-search-wrap');
-    if (!searchWrap) return;
-    const search = searchWrap.querySelector('.component-search');
-    if (!search) return;
-    const input = search.querySelector('.component-search__input');
-    const clearBtn = search.querySelector('[data-search-clear]');
-    const submitBtn = search.querySelector('[data-search-submit]');
-    if (!input || !clearBtn || !submitBtn) return;
-
-    searchWrap.querySelectorAll('.search-result-text').forEach((item) => {
-      item.setAttribute('title', item.textContent || '');
-    });
-
-    const runSearch = () => {
-      const query = input.value.trim();
-      const count = updateSearchResults(query);
-      if (!query) {
-        showToast('已显示全部项目', 'info', 'icon-ic_fluent_search_24_regular');
-        return;
-      }
-      showToast('匹配到 ' + count + ' 项：' + query, 'success', 'icon-ic_fluent_search_24_regular');
-    };
-
-    input.addEventListener('input', () => {
-      if (!input.value.trim()) updateSearchResults('');
-    });
-
-    clearBtn.addEventListener('click', () => {
-      input.value = '';
-      updateSearchResults('');
-      markTintFeedback(clearBtn);
-      showToast('已清空搜索', 'info', 'icon-ic_fluent_delete_24_regular');
-    });
-
-    submitBtn.addEventListener('click', () => {
-      markTintFeedback(submitBtn);
-      runSearch();
-    });
-
-    input.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter') return;
-      markTintFeedback(submitBtn);
-      runSearch();
-    });
-  }
-
   function bindFilterHandlers() {
     const chips = document.querySelectorAll('.component-filter-chip');
     const statusEl = document.querySelector('[data-filter-status]');
@@ -594,7 +578,9 @@
       const maxAllowed = Math.max(120, Math.min(520, viewportMax));
       const width = Math.max(96, Math.min(desired, maxAllowed));
       const menuWidth = Math.ceil(width);
-      // Only resize floating panel; never mutate trigger container width.
+      if (dropdown.closest('.component-demo-page')) {
+        dropdown.style.width = menuWidth + 'px';
+      }
       list.style.minWidth = menuWidth + 'px';
       list.style.width = menuWidth + 'px';
     };
@@ -653,7 +639,9 @@
       const toggleRect = toggle.getBoundingClientRect();
       const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
-      const boundTop = 8;
+      const header = document.querySelector('header');
+      const headerBottom = header ? Math.max(8, Math.ceil(header.getBoundingClientRect().bottom + 8)) : 8;
+      const boundTop = headerBottom;
       const boundBottom = Math.max(8, viewportHeight - 8);
       const spaceBelow = Math.max(0, boundBottom - toggleRect.bottom);
       const spaceAbove = Math.max(0, toggleRect.top - boundTop);
@@ -837,6 +825,24 @@
     value.addEventListener('input', syncFromValue);
     value.addEventListener('change', syncFromValue);
     syncFromRange();
+  }
+
+  function bindNumberFields() {
+    document.querySelectorAll('[data-number-field]').forEach((field) => {
+      if (field.dataset.boundNumberField === 'true') return;
+      const input = field.querySelector('input[type="number"]');
+      if (!input) return;
+      field.dataset.boundNumberField = 'true';
+      field.querySelectorAll('[data-number-step]').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (button.dataset.numberStep === 'up') input.stepUp();
+          else input.stepDown();
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          input.focus();
+        });
+      });
+    });
   }
 
   function bindColorfulImmersiveButtons() {
@@ -1202,6 +1208,7 @@
       if (!isSeeking) seek.value = String(audio.currentTime || 0);
       timeEl.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
       updateSliderVisual(seek);
+      updateBufferedVisual(audio, seek);
       if (icon) {
         icon.className = audio.paused ? 'icon-ic_fluent_play_24_regular' : 'icon-ic_fluent_pause_24_regular';
       }
@@ -1276,6 +1283,7 @@
 
     audio.addEventListener('timeupdate', updateAudioUi);
     audio.addEventListener('loadedmetadata', updateAudioUi);
+    audio.addEventListener('progress', updateAudioUi);
     audio.addEventListener('play', updateAudioUi);
     audio.addEventListener('pause', updateAudioUi);
 
@@ -1327,6 +1335,7 @@
       seek.value = String(video.currentTime || 0);
       timeEl.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
       updateSliderVisual(seek);
+      updateBufferedVisual(video, seek);
       const paused = video.paused;
       if (icon) {
         icon.className = paused ? 'icon-ic_fluent_play_24_regular' : 'icon-ic_fluent_pause_24_regular';
@@ -1369,6 +1378,7 @@
       updateVideoUi();
       refreshIdleCover();
     });
+    video.addEventListener('progress', updateVideoUi);
     video.addEventListener('play', () => {
       updateVideoUi();
       startVideoProgressLoop();
@@ -1419,17 +1429,16 @@
       bindCustomColorPanel,
       bindDialogHandlers,
       bindInputHandlers,
-      bindSearchHandlers,
       bindFilterHandlers,
       bindDropdownHandlers,
       bindMenuHandlers,
       bindRangeValueSync,
+      bindNumberFields,
       bindColorfulImmersiveButtons,
       bindAudioItem,
       bindVideoItem,
       bindToastButtons,
-      bindRangeVisuals,
-      () => updateSearchResults('')
+      bindRangeVisuals
     ];
 
     const { close: toastClose } = getToastParts();
@@ -1485,10 +1494,74 @@
     bindRangeVisuals(target);
   }
 
+  function prompt(options) {
+    const config = options || {};
+    return new Promise((resolve) => {
+      const dialog = document.createElement('div');
+      dialog.className = 'component-dialog';
+      dialog.setAttribute('role', 'dialog');
+      dialog.setAttribute('aria-modal', 'true');
+      dialog.setAttribute('aria-labelledby', 'component-prompt-title');
+
+      const backdrop = document.createElement('div');
+      backdrop.className = 'component-dialog__backdrop';
+      const panel = document.createElement('form');
+      panel.className = 'component-dialog__panel';
+      const title = document.createElement('h2');
+      title.className = 'component-dialog__title';
+      title.id = 'component-prompt-title';
+      title.textContent = config.title || '请输入内容';
+      const text = document.createElement('p');
+      text.className = 'component-dialog__text';
+      text.textContent = config.message || '';
+      const input = document.createElement('input');
+      input.className = 'component-dialog__input';
+      input.type = config.type || 'text';
+      input.value = config.value || '';
+      input.placeholder = config.placeholder || '';
+      input.autocomplete = 'off';
+      const actions = document.createElement('div');
+      actions.className = 'component-dialog__actions';
+      const cancel = document.createElement('button');
+      cancel.className = 'component-btn component-btn--flat';
+      cancel.type = 'button';
+      cancel.textContent = config.cancelText || '取消';
+      const confirm = document.createElement('button');
+      confirm.className = 'component-btn component-btn--primary';
+      confirm.type = 'submit';
+      confirm.textContent = config.confirmText || '确定';
+      actions.append(cancel, confirm);
+      panel.append(title, text, input, actions);
+      dialog.append(backdrop, panel);
+      document.body.appendChild(dialog);
+      dialog.classList.add('is-open');
+
+      const close = (value) => {
+        dialog.classList.remove('is-open');
+        window.setTimeout(() => dialog.remove(), 220);
+        resolve(value);
+      };
+      cancel.addEventListener('click', () => close(null));
+      backdrop.addEventListener('click', () => close(null));
+      panel.addEventListener('submit', (event) => {
+        event.preventDefault();
+        close(input.value.trim());
+      });
+      dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') close(null);
+      });
+      requestAnimationFrame(() => {
+        input.focus();
+        input.select();
+      });
+    });
+  }
+
   window.componentToast = { show: showToast, hide: hideToast, applyThemeColor };
   window.componentUi = {
     init: initSharedUi,
     bindDropdowns: bindDropdownHandlers,
-    bindRanges: bindRangeVisuals
+    bindRanges: bindRangeVisuals,
+    prompt
   };
 })();

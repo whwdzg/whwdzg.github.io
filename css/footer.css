@@ -24,6 +24,10 @@ body > footer {
 	box-sizing: border-box;
 }
 
+body:has(> footer) {
+	padding-bottom: 0 !important;
+}
+
 /* Sticky footer: keep it pinned to viewport bottom when内容偏少 */
 body {
 	display: flex;

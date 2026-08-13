@@ -222,17 +222,39 @@
         <input id="import-folder-input" class="hidden" type="file" multiple webkitdirectory directory>
     </section>
 
-    <div class="status-tip" id="status-tip">点击导入按钮后选择“文件”或“文件夹”</div>
+    <div id="media-notice-log-stack" class="media-notice-stack media-notice-stack--log" aria-live="polite" aria-atomic="false">
+        <div class="status-tip" id="status-tip">点击导入按钮后选择“文件”或“文件夹”</div>
+    </div>
+    <div id="media-notice-toast-stack" class="media-notice-stack media-notice-stack--toast" aria-live="polite" aria-atomic="false">
+        <div class="component-toast component-toast--info gesture-toast" id="gesture-toast" role="status" aria-live="polite">
+            <i id="gesture-toast-icon" class="component-toast__icon fluent-icon icon-ic_fluent_speaker_2_24_regular" aria-hidden="true"></i>
+            <span id="gesture-toast-message" class="component-toast__message">音量 100%</span>
+        </div>
+    </div>
 
     <aside class="playlist-drawer" id="playlist-drawer" aria-label="播放列表">
         <div class="playlist-head">
             <div class="playlist-head-top">
                 <div class="playlist-title">播放列表</div>
-                <button class="playlist-close-btn component-btn component-btn--immersive component-icon-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
-                    <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
-                </button>
+                <div class="playlist-head-actions">
+                    <button class="playlist-head-btn component-btn component-btn--immersive component-icon-btn" id="playlist-locate-btn" type="button" title="定位到当前播放项" aria-label="定位到当前播放项">
+                        <i class="fluent-icon icon-ic_fluent_locate_24_regular" aria-hidden="true"></i>
+                    </button>
+                    <button class="playlist-head-btn component-btn component-btn--immersive component-icon-btn" id="playlist-edit-btn" type="button" title="删除项目" aria-label="删除项目">
+                        <i class="fluent-icon icon-ic_fluent_delete_24_regular" aria-hidden="true"></i>
+                    </button>
+                    <button class="playlist-close-btn component-btn component-btn--immersive component-icon-btn" id="playlist-close-btn" type="button" title="关闭播放列表" aria-label="关闭播放列表">
+                        <i class="fluent-icon icon-ic_fluent_dismiss_24_regular" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
             <div class="playlist-head-divider" aria-hidden="true"></div>
+            <div id="playlist-edit-toolbar" class="playlist-edit-toolbar hidden" aria-label="播放列表编辑工具栏">
+                <button id="playlist-select-all-btn" class="component-filter-chip" type="button">全选</button>
+                <button id="playlist-invert-btn" class="component-filter-chip" type="button">反选</button>
+                <button id="playlist-delete-selected-btn" class="component-filter-chip" type="button">删除已选</button>
+                <button id="playlist-edit-done-btn" class="component-filter-chip" type="button">完成</button>
+            </div>
             <div class="loop-row">
                 <button class="loop-btn component-filter-chip active" data-loop="none" type="button">不循环</button>
                 <button class="loop-btn component-filter-chip" data-loop="all" type="button">全部循环</button>

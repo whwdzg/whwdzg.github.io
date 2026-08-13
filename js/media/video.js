@@ -4,7 +4,8 @@
  * 作用: 前端交互逻辑与功能模块实现。
  * English: Implements client-side interactions and feature logic.
  */
-import { MediaPlayerCore, defaultCover, formatTime } from "/js/media/common.js";
+import { MediaPlayerCore, defaultCover, formatTime } from "/js/media/common.js?v=20260728a";
+import { parseBilibili } from "/js/vendor/bilibili-parse.js?v=20260728a";
 
 const media = document.getElementById("main-media");
 const cover = document.getElementById("cover-image");
@@ -178,5 +179,40 @@ function consumeExternalVideoFromQuery() {
 }
 
 consumeExternalVideoFromQuery();
+
+const bilibiliImportButton = document.getElementById("import-bilibili-btn");
+
+if (bilibiliImportButton) {
+    bilibiliImportButton.addEventListener("click", async () => {
+        const input = await window.componentUi?.prompt?.({
+            title: "导入哔哩哔哩视频",
+            message: "输入视频链接、AV 号或 BV 号",
+            placeholder: "例如 BV1xx411c7mD 或 https://www.bilibili.com/video/BV...",
+            confirmText: "导入",
+        });
+        if (!input) return;
+
+        bilibiliImportButton.disabled = true;
+        player.ui.importPanel?.classList.remove("show");
+        player.setStatus("正在解析哔哩哔哩视频...", { mode: "progress" });
+        try {
+            const result = await parseBilibili(input);
+            const firstIndex = player.tracks.length;
+            player.tracks.push(...result.tracks);
+            result.tracks.forEach((track, offset) => {
+                const index = firstIndex + offset;
+                player.primeTrackCoverAsync?.(track, index);
+                player.preloadTrackTheme?.(track);
+            });
+            player.renderPlaylist(currentPlaylistFilter());
+            player.scheduleQueuePersistence?.();
+            player.setStatus(`已导入 ${result.tracks.length} 个视频到队列末尾：${result.title}`);
+        } catch (error) {
+            player.setStatus(`导入失败：${error?.message || "无法解析该视频"}`);
+        } finally {
+            bilibiliImportButton.disabled = false;
+        }
+    });
+}
 
 window.addEventListener("beforeunload", () => player.dispose());

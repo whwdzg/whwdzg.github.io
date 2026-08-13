@@ -19,7 +19,6 @@
   const SETTINGS_URL = resolve('/includes/setting.html');
   const ROOT_CONTAINER_ID = 'app-root';
   const CONTENT_CONTAINER_ID = 'page-root';
-  const CACHE_BUST = () => Date.now().toString();
   const SPA_BYPASS_PATHS = new Set(['/media/video.html', '/media/music.html']);
 
   const sharedCss = [
@@ -32,7 +31,6 @@
     resolve('/css/lightbox.css'),
     resolve('/css/settings-modal.css'),
     resolve('/css/scroll-to-top.css'),
-    resolve('/css/videoplay.css'),
     resolve('/resource/font/FluentSystemIcons-Regular.css')
   ];
 
@@ -105,7 +103,7 @@
     const fromCache = !!html;
     if (!html || forceReload) {
       if (forceReload) pageCache.delete(url);
-      html = await fetchText(url, true);
+      html = await fetchText(url);
       pageCache.set(url, html);
     }
     const { doc } = extractMain(html);
@@ -163,9 +161,8 @@
     sharedJs.forEach(src => appendOnce('script', src, document.body));
   }
 
-  async function fetchText(url, bust=false){
-    const target = bust ? `${url}${url.includes('?') ? '&' : '?'}v=${CACHE_BUST()}` : url;
-    const resp = await fetch(target, { credentials: 'same-origin', cache: 'no-cache' });
+  async function fetchText(url){
+    const resp = await fetch(url, { credentials: 'same-origin' });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     return resp.text();
   }
@@ -306,7 +303,7 @@
       return;
     }
     const root = document.getElementById(ROOT_CONTAINER_ID);
-    const shellHtml = await fetchText(SHELL_URL, true);
+    const shellHtml = await fetchText(SHELL_URL);
     const shellFrag = document.createElement('div');
     shellFrag.innerHTML = shellHtml;
     root.insertBefore(shellFrag, document.getElementById(CONTENT_CONTAINER_ID));
@@ -315,7 +312,7 @@
   }
 
   async function preloadSettingsTemplate(){
-    try { await fetchText(SETTINGS_URL, true); }
+    try { await fetchText(SETTINGS_URL); }
     catch (err) { console.warn('[spa-router] preload setting.html failed', err); }
   }
 

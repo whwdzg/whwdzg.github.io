@@ -6,9 +6,8 @@
  */
 @font-face {
     font-family: "FluentSystemIcons-Regular";
-    src: url("./FluentSystemIcons-Regular.woff2?1b518f280c260233f6c35a25838caa08") format("woff2"),
-url("./FluentSystemIcons-Regular.woff?1b518f280c260233f6c35a25838caa08") format("woff"),
-url("./FluentSystemIcons-Regular.ttf?1b518f280c260233f6c35a25838caa08") format("truetype");
+    src: url("./FluentSystemIcons-Regular.woff2") format("woff2");
+    font-display: swap;
 }
 
 i[class^="icon-"]:before, i[class*=" icon-"]:before {
