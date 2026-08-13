@@ -231,7 +231,7 @@
   flex: 1;
 }
 .section-icon {
-  font-family: 'FluentSystemIcons-regular', 'Segoe MDL2 Assets', sans-serif;
+  font-family: 'FluentSystemIcons-Regular', 'Segoe MDL2 Assets', sans-serif;
   font-size: 20px;
   color: var(--primary-color);
   display: inline-flex;
@@ -436,7 +436,7 @@ body.dark-mode .color-swatch.focus {
 }
 
 .color-option .fluent-icon {
-  font-family: 'FluentSystemIcons-regular', 'Segoe MDL2 Assets', sans-serif;
+  font-family: 'FluentSystemIcons-Regular', 'Segoe MDL2 Assets', sans-serif;
   font-size: 11px;
   line-height: 1;
   color: #ffffff; /* 鐧借壊鍥炬爣 */
