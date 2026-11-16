@@ -1,0 +1,281 @@
+/**
+ * 侧边栏 / Floating rectangular sidebar.
+ *
+ * 设计要求：
+ * - 直角矩形，不使用圆角卡片式外观；
+ * - 收起时完全移出视口，不保留窄条或图标轨；
+ * - 展开时以浮层覆盖内容（不挤压页面），点击遮罩 / 空白 / Esc 收起；
+ * - 桌面默认展开，窄屏默认收起；路由切换后自动收起。
+ *
+ * 结构上是一个 modal 式抽屉：使用焦点陷阱与滚动锁，保证键盘用户不会
+ * 把焦点移到背后的页面。
+ */
+import { useEffect, useRef, useState } from 'react';
+import {
+  DismissRegular,
+  OpenRegular,
+  ArrowClockwiseRegular,
+  SettingsRegular,
+  WeatherMoonRegular,
+  WeatherSunnyRegular,
+} from '@fluentui/react-icons';
+import { Link, useRouter } from '../../lib/router';
+import { useUi } from '../../hooks/useUi';
+import { useSettings } from '../../hooks/useSettings';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
+import { useLockBodyScroll } from '../../hooks/useLockBodyScroll';
+import { useInstallPrompt } from '../../hooks/useInstallPrompt';
+import { useToast } from '../../hooks/useToast';
+import { ARCHIVE_LINKS, LINKS, PRIMARY_NAV, PROJECTS, SITE } from '../../data/site';
+import { siteMeta } from '../../lib/meta';
+import { FluentIcon } from '../common/FluentIcon';
+
+const GROUPS = [
+  { id: 'projects', label: '项目', icon: 'rocket' },
+  { id: 'archive', label: '归档', icon: 'history' },
+  { id: 'external', label: '外部链接', icon: 'globe' },
+] as const;
+
+export function Sidebar() {
+  const { sidebarOpen, setSidebarOpen, openSettings } = useUi();
+  const { path } = useRouter();
+  const { resolvedTheme, update } = useSettings();
+  const { toast } = useToast();
+  const { canInstall, installed, promptInstall } = useInstallPrompt();
+  const ref = useRef<HTMLElement>(null);
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['projects']));
+
+  const close = () => setSidebarOpen(false);
+  useFocusTrap(ref, sidebarOpen, close);
+  useLockBodyScroll(sidebarOpen);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (node) node.inert = !sidebarOpen;
+  }, [sidebarOpen]);
+
+  const toggleGroup = (id: string) => {
+    setOpenGroups((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const install = async () => {
+    const result = await promptInstall();
+    if (result === 'accepted') toast('已开始安装本站', 'success');
+    else if (result === 'unavailable') toast('当前浏览器没有提供安装入口，可在设置中查看说明', 'info');
+  };
+
+  return (
+    <div className="sidebar-layer" data-open={sidebarOpen || undefined}>
+      <div className="sidebar-scrim" onClick={close} aria-hidden />
+      <aside
+        id="site-sidebar"
+        ref={ref}
+        className="sidebar"
+        role="dialog"
+        aria-modal="true"
+        aria-label="站点导航"
+        aria-hidden={!sidebarOpen}
+        tabIndex={-1}
+      >
+        <div className="sidebar__brand">
+          <Link to="/" className="sidebar__brand-link" onNavigate={close}>
+            <img src="/icons/logo-192.png" alt="" width={32} height={32} />
+            <span>
+              <strong>水鱼 Blog</strong>
+              <small>whwdzg.github.io</small>
+            </span>
+          </Link>
+          <button className="icon-btn" type="button" aria-label="收起侧边栏" onClick={close}>
+            <DismissRegular aria-hidden />
+          </button>
+        </div>
+
+        <div className="sidebar__scroll">
+          <section className="sidebar-user" aria-label="站点作者">
+            <img src={SITE.avatar} alt={SITE.avatarAlt} width={48} height={48} />
+            <div className="sidebar-user__text">
+              <p className="sidebar-user__name">{SITE.name}</p>
+              <p className="sidebar-user__handle">
+                <span className="status-dot" aria-hidden />
+                @{SITE.handle}
+              </p>
+            </div>
+            <div className="sidebar-user__links">
+              <a href={LINKS.bilibili} target="_blank" rel="noopener noreferrer" aria-label="哔哩哔哩空间" title="哔哩哔哩空间">
+                <FluentIcon name="tv" size={17} aria-hidden />
+              </a>
+              <a href={LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+                <FluentIcon name="github" size={17} aria-hidden />
+              </a>
+              <a href={LINKS.modrinth} target="_blank" rel="noopener noreferrer" aria-label="Modrinth" title="Modrinth">
+                <FluentIcon name="globe" size={17} aria-hidden />
+              </a>
+            </div>
+          </section>
+
+          <nav className="sidebar-nav" aria-label="主导航">
+            <p className="sidebar-nav__title">站点</p>
+            <ul className="sidebar-nav__list">
+              {PRIMARY_NAV.map((item) => {
+                const active = path === item.to;
+                return (
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className={`sidebar-nav__item ${active ? 'is-active' : ''}`}
+                      aria-current={active ? 'page' : undefined}
+                      onNavigate={close}
+                    >
+                      <FluentIcon name={item.icon} size={19} aria-hidden />
+                      <span className="sidebar-nav__label">{item.label}</span>
+                      {item.to === '/bilibili/' && <span className="sidebar-nav__badge">43</span>}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <div className="sidebar-groups">
+            {GROUPS.map((group) => {
+              const open = openGroups.has(group.id);
+              return (
+                <section className="sidebar-group" key={group.id}>
+                  <button
+                    type="button"
+                    className="sidebar-group__toggle"
+                    aria-expanded={open}
+                    aria-controls={`sidebar-group-${group.id}`}
+                    onClick={() => toggleGroup(group.id)}
+                  >
+                    <FluentIcon name={group.icon} size={18} aria-hidden />
+                    <span>{group.label}</span>
+                    <FluentIcon name="chevron" size={16} className="sidebar-group__chevron" aria-hidden />
+                  </button>
+                  <div
+                    id={`sidebar-group-${group.id}`}
+                    className="sidebar-group__panel"
+                    data-open={open || undefined}
+                  >
+                    <ul>
+                      {group.id === 'projects' &&
+                        PROJECTS.map((project) => (
+                          <li key={project.id}>
+                            <a
+                              href={project.links[0]?.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="sidebar-group__link"
+                            >
+                              <img src={project.icon} alt="" width={20} height={20} loading="lazy" />
+                              <span>{project.title}</span>
+                              <OpenRegular className="sidebar-group__external" aria-hidden />
+                            </a>
+                          </li>
+                        ))}
+                      {group.id === 'projects' && (
+                        <li>
+                          <a
+                            href={LINKS.modrinth}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="sidebar-group__link sidebar-group__link--more"
+                          >
+                            <FluentIcon name="globe" size={18} aria-hidden />
+                            <span>Modrinth 主页</span>
+                            <OpenRegular className="sidebar-group__external" aria-hidden />
+                          </a>
+                        </li>
+                      )}
+
+                      {group.id === 'archive' &&
+                        ARCHIVE_LINKS.map((link) => (
+                          <li key={link.href}>
+                            <a
+                              href={link.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="sidebar-group__link"
+                              title={link.description}
+                            >
+                              <FluentIcon name="document" size={18} aria-hidden />
+                              <span>{link.label}</span>
+                              <OpenRegular className="sidebar-group__external" aria-hidden />
+                            </a>
+                          </li>
+                        ))}
+
+                      {group.id === 'external' && (
+                        <>
+                          <li>
+                            <a href={LINKS.bilibili} target="_blank" rel="noopener noreferrer" className="sidebar-group__link">
+                              <FluentIcon name="tv" size={18} aria-hidden />
+                              <span>哔哩哔哩空间</span>
+                              <OpenRegular className="sidebar-group__external" aria-hidden />
+                            </a>
+                          </li>
+                          <li>
+                            <a href={LINKS.wiki} target="_blank" rel="noopener noreferrer" className="sidebar-group__link">
+                              <FluentIcon name="globe" size={18} aria-hidden />
+                              <span>来福 Simulation Wiki</span>
+                              <OpenRegular className="sidebar-group__external" aria-hidden />
+                            </a>
+                          </li>
+                          <li>
+                            <a href={LINKS.mcmod} target="_blank" rel="noopener noreferrer" className="sidebar-group__link">
+                              <FluentIcon name="shield" size={18} aria-hidden />
+                              <span>MCMOD 主页</span>
+                              <OpenRegular className="sidebar-group__external" aria-hidden />
+                            </a>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="sidebar__foot">
+          <div className="sidebar-quick">
+            <button
+              type="button"
+              className="sidebar-quick__btn"
+              onClick={() => update({ theme: resolvedTheme === 'dark' ? 'light' : 'dark' })}
+              title={resolvedTheme === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
+            >
+              {resolvedTheme === 'dark' ? <WeatherSunnyRegular aria-hidden /> : <WeatherMoonRegular aria-hidden />}
+              <span>{resolvedTheme === 'dark' ? '浅色' : '深色'}</span>
+            </button>
+            <button type="button" className="sidebar-quick__btn" onClick={openSettings} title="打开设置">
+              <SettingsRegular aria-hidden />
+              <span>设置</span>
+            </button>
+            {canInstall && !installed && (
+              <button type="button" className="sidebar-quick__btn" onClick={install} title="安装为应用">
+                <ArrowClockwiseRegular aria-hidden />
+                <span>安装</span>
+              </button>
+            )}
+          </div>
+          <div className="sidebar__meta">
+            <span>v{siteMeta.version}</span>
+            <span className="dot-sep" aria-hidden />
+            <span>{siteMeta.commitShort || 'dev'}</span>
+            <a href={LINKS.repo} target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  );
+}
+

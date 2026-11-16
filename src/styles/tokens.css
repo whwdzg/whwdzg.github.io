@@ -1,0 +1,142 @@
+/* ============================================================
+   Design tokens / 设计变量
+   Fluent Sun Valley 基础色板 + 可选的液态玻璃层
+   ============================================================ */
+
+:root {
+  --font-sans: 'Segoe UI Variable Text', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Microsoft YaHei UI',
+    'PingFang SC', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
+  --font-display: 'Segoe UI Variable Display', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Microsoft YaHei UI',
+    'PingFang SC', 'Noto Sans SC', sans-serif;
+  --font-mono: 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
+  --accent: #0078d4;
+  --accent-ink: #ffffff;
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-softer: color-mix(in srgb, var(--accent) 7%, transparent);
+  --accent-strong: color-mix(in srgb, var(--accent) 82%, #000 18%);
+  --accent-glow: color-mix(in srgb, var(--accent) 34%, transparent);
+
+  --header-h: 60px;
+  --sidebar-w: 288px;
+  --container: 1200px;
+  --page-pad: clamp(16px, 4vw, 40px);
+  --section-y: clamp(64px, 9vw, 120px);
+
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-2xl: 22px;
+  --r-pill: 999px;
+
+  --dur-fast: 140ms;
+  --dur: 260ms;
+  --dur-slow: 560ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.2, 0.9, 0.25, 1.12);
+
+  --glass-blur: 24px;
+  --header-blur: 22px;
+}
+
+/* ---------- Light ---------- */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f1f3f7;
+  --bg-deep: #e8ecf2;
+  --surface-glass: rgba(255, 255, 255, 0.78);
+  --surface-solid: #ffffff;
+  --surface: var(--surface-glass);
+  --surface-2: rgba(255, 255, 255, 0.64);
+  --surface-3: rgba(246, 248, 251, 0.9);
+  --header-bg: rgba(250, 251, 254, 0.74);
+  --sidebar-bg: rgba(252, 253, 255, 0.86);
+  --text: #16171c;
+  --text-2: #4c5361;
+  --text-3: #7b8494;
+  --stroke: rgba(15, 23, 36, 0.08);
+  --stroke-strong: rgba(15, 23, 36, 0.16);
+  --scrim: rgba(12, 17, 26, 0.34);
+  --glass-border: rgba(255, 255, 255, 0.62);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  --shadow-1: 0 1px 2px rgba(12, 18, 28, 0.05), 0 6px 18px rgba(12, 18, 28, 0.05);
+  --shadow-2: 0 18px 54px rgba(12, 18, 28, 0.15);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --code-bg: #0e131b;
+  --code-bar: #161d28;
+  --code-text: #dce8f7;
+  --code-muted: #8ca0b8;
+  --wallpaper-overlay: linear-gradient(180deg, rgba(243, 245, 249, 0.52) 0%, rgba(243, 245, 249, 0.78) 48%, #f1f3f7 100%);
+  --wallpaper-opacity: 0.62;
+  --grid-line: rgba(15, 23, 36, 0.05);
+}
+
+/* ---------- Dark ---------- */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0b0d12;
+  --bg-deep: #07090d;
+  --surface-glass: rgba(27, 30, 38, 0.74);
+  --surface-solid: #171a21;
+  --surface: var(--surface-glass);
+  --surface-2: rgba(31, 35, 44, 0.62);
+  --surface-3: rgba(34, 38, 48, 0.88);
+  --header-bg: rgba(12, 15, 21, 0.72);
+  --sidebar-bg: rgba(19, 22, 29, 0.9);
+  --text: #f2f5fa;
+  --text-2: #b0b9c8;
+  --text-3: #7f899a;
+  --stroke: rgba(255, 255, 255, 0.09);
+  --stroke-strong: rgba(255, 255, 255, 0.2);
+  --scrim: rgba(0, 0, 0, 0.58);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.28), 0 8px 22px rgba(0, 0, 0, 0.28);
+  --shadow-2: 0 22px 60px rgba(0, 0, 0, 0.55);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --code-bg: #080b10;
+  --code-bar: #11161f;
+  --code-text: #dce8f7;
+  --code-muted: #8296ad;
+  --wallpaper-overlay: linear-gradient(180deg, rgba(7, 9, 13, 0.32) 0%, rgba(7, 9, 13, 0.7) 46%, #0b0d12 100%);
+  --wallpaper-opacity: 0.5;
+  --grid-line: rgba(255, 255, 255, 0.05);
+}
+
+/* ---------- 液态玻璃开关 ---------- */
+:root[data-glass='off'] {
+  --surface: var(--surface-solid);
+  --surface-2: var(--surface-solid);
+  --surface-3: var(--surface-solid);
+  --header-bg: var(--surface-solid);
+  --sidebar-bg: var(--surface-solid);
+  --glass-blur: 0px;
+  --header-blur: 0px;
+  --glass-border: var(--stroke);
+  --glass-highlight: none;
+}
+
+:root[data-glass='off'] .site-header,
+:root[data-glass='off'] .site-footer {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ---------- 动效偏好 ---------- */
+:root[data-motion='reduced'] {
+  --dur-fast: 0.001ms;
+  --dur: 0.001ms;
+  --dur-slow: 0.001ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-motion='system'] {
+    --dur-fast: 0.001ms;
+    --dur: 0.001ms;
+    --dur-slow: 0.001ms;
+  }
+}

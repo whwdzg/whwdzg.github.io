@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://whwdzg.github.io/sitemap.xml

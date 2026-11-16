@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.tmp/
+*.tmpdir/
+*.tsbuildinfo
+*.local
+*.log
+.DS_Store
+.vscode/*
+!.vscode/extensions.json

@@ -1,0 +1,518 @@
+/**
+ * 关于页 / About.
+ *
+ * 除了介绍，这个页面承担两个实际功能：
+ * - 展示版本号、构建时间、当前提交与最近提交历史（构建期快照，可手动刷新）；
+ * - 说明 3.0 的设计与性能策略，方便以后维护时对照。
+ */
+import { useCallback, useMemo, useState } from 'react';
+import {
+  ArrowClockwiseRegular,
+  BranchRegular,
+  CheckmarkCircleRegular,
+  CodeRegular,
+  CopyRegular,
+  DocumentRegular,
+  HistoryRegular,
+  OpenRegular,
+  SettingsRegular,
+  ShieldRegular,
+  SparkleRegular,
+} from '@fluentui/react-icons';
+import { PageIntro } from '../components/layout/PageIntro';
+import { TableOfContents } from '../components/common/TableOfContents';
+import { Reveal } from '../components/common/Reveal';
+import { CodeBlock } from '../components/common/CodeBlock';
+import { Button } from '../components/common/Button';
+import { FluentIcon } from '../components/common/FluentIcon';
+import { useActiveSection } from '../hooks/useActiveSection';
+import { useUi } from '../hooks/useUi';
+import { useToast } from '../hooks/useToast';
+import { copyText } from '../lib/clipboard';
+import { formatDateTime, relativeTime } from '../lib/format';
+import { siteMeta } from '../lib/meta';
+import { LINKS, SITE } from '../data/site';
+
+interface CommitEntry {
+  hash: string;
+  short: string;
+  time: string;
+  author: string;
+  subject: string;
+  url: string;
+}
+
+const TOC_ITEMS = [
+  { id: 'version', label: '版本与构建' },
+  { id: 'commits', label: '最近提交' },
+  { id: 'design', label: '设计理念' },
+  { id: 'tech', label: '技术栈' },
+  { id: 'performance', label: '性能与加载' },
+  { id: 'structure', label: '目录结构' },
+  { id: 'develop', label: '本地开发' },
+  { id: 'license', label: '许可与致谢' },
+];
+
+const TECH_STACK = [
+  { name: 'React 19', note: '并发渲染、Suspense、按需加载页面' },
+  { name: 'Vite 7', note: '多入口构建、代码分割、极速 HMR' },
+  { name: 'TypeScript 5.8', note: '严格模式、可维护的数据类型' },
+  { name: 'Fluent UI Icons', note: '微软 Fluent System Icons，按需 tree-shake' },
+  { name: '原生 CSS', note: 'CSS 变量、color-mix、容器查询、无 UI 框架' },
+  { name: 'Service Worker', note: '静态资源缓存与离线回退' },
+  { name: 'GitHub Actions', note: '构建、测试、Pages 部署' },
+  { name: 'WebP / AVIF', note: '全部本地封面与壁纸，懒加载' },
+];
+
+const LOAD_STEPS = [
+  { step: '01', title: 'HTML + 预绘制脚本', text: '在 CSS/JS 之前读取本地主题，避免深浅色闪烁；首屏只有内联的十几行脚本。' },
+  { step: '02', title: 'React + 图标 chunk', text: '公共运行时单独拆包，颜色主题与布局先渲染，页面内容随后进入。' },
+  { step: '03', title: '当前页面 chunk', text: '首页不加载哔哩哔哩数据与详情弹窗；页面切换时按需 import。' },
+  { step: '04', title: '空闲预取', text: '首屏稳定后预取其他页面 chunk；悬停 / 聚焦导航时也会提前加载。' },
+  { step: '05', title: '壁纸与封面', text: '壁纸在 requestIdleCallback 中解码；封面 loading="lazy" 并固定宽高。' },
+  { step: '06', title: 'Service Worker', text: '安装后缓存静态资源，HTML network-first，重复访问接近瞬时。' },
+];
+
+const CHANGELOG = [
+  {
+    version: '3.0.0',
+    date: '2026-11-16',
+    items: [
+      '从 0 重写为 React + Vite + TypeScript 多入口站点。',
+      'Fluent Design Sun Valley + 可选液态玻璃；矩形悬浮侧栏。',
+      '全屏自动收起页眉、阅读进度、命令面板搜索、PWA。',
+      '哔哩哔哩归档、留言板、关于页与设置面板全部重做。',
+      '封面本地 WebP 化，壁纸重压缩，路由级代码分割。',
+    ],
+  },
+  {
+    version: '2.1.0.0',
+    date: '2026-07-26',
+    items: ['重写音乐与视频控件样式', '优化歌词识别与弹幕 / 字幕', '重写设置页、页尾与全站样式'],
+  },
+  {
+    version: '2.0.3.9',
+    date: '2026-04-06',
+    items: ['2.0 壳层与 SPA 路由稳定版', '多语言 JSON、主题与 PWA 实验'],
+  },
+  {
+    version: '2.0.0',
+    date: '2025',
+    items: ['单页壳层、共享 header/sidebar/footer', '内容归档与工具页整理'],
+  },
+  {
+    version: '1.0.0',
+    date: '2022',
+    items: ['传统静态页面', '最初的个人主页、作品索引与留言板'],
+  },
+];
+
+export default function AboutPage() {
+  const { openSettings } = useUi();
+  const { toast } = useToast();
+  const [commits, setCommits] = useState<CommitEntry[]>(siteMeta.commits);
+  const [head, setHead] = useState(() => ({
+    hash: siteMeta.commit,
+    short: siteMeta.commitShort || 'local',
+    time: siteMeta.commitTime,
+  }));
+  const [refreshing, setRefreshing] = useState(false);
+  const active = useActiveSection(useMemo(() => TOC_ITEMS.map((item) => item.id), []));
+
+  const refreshCommits = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const response = await fetch('https://api.github.com/repos/whwdzg/whwdzg.github.io/commits?per_page=15', {
+        headers: { Accept: 'application/vnd.github+json' },
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = (await response.json()) as Array<{
+        sha: string;
+        html_url: string;
+        commit: { message: string; author: { name: string; date: string } };
+      }>;
+      setCommits(
+        data.map((item) => ({
+          hash: item.sha,
+          short: item.sha.slice(0, 7),
+          time: item.commit.author.date,
+          author: item.commit.author.name,
+          subject: item.commit.message.split('\n')[0],
+          url: item.html_url,
+        })),
+      );
+      if (data[0]) {
+        setHead({ hash: data[0].sha, short: data[0].sha.slice(0, 7), time: data[0].commit.author.date });
+      }
+      toast('已从 GitHub 获取最新提交', 'success');
+    } catch (error) {
+      console.warn(error);
+      toast('获取失败，继续显示构建时快照', 'error');
+    } finally {
+      setRefreshing(false);
+    }
+  }, [toast]);
+
+  const copyVersion = async () => {
+    const ok = await copyText(`whwdzg.github.io v${siteMeta.version} (${head.short})`);
+    toast(ok ? '版本信息已复制' : '复制失败', ok ? 'success' : 'error');
+  };
+
+  return (
+    <div className="page page--about">
+      <PageIntro
+        eyebrow="ABOUT · 3.0"
+        title="关于本站"
+        lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
+        meta={[
+          { icon: 'commit', label: `v${siteMeta.version}` },
+          { icon: 'branch', label: siteMeta.branch || 'main' },
+          { icon: 'clock', label: `构建 ${formatDateTime(siteMeta.buildTime)}` },
+          { icon: 'shield', label: 'GPL-3.0' },
+        ]}
+        actions={
+          <>
+            <Button variant="primary" icon={<HistoryRegular aria-hidden />} onClick={refreshCommits} disabled={refreshing}>
+              {refreshing ? '正在获取…' : '刷新最新提交'}
+            </Button>
+            <Button variant="secondary" icon={<SettingsRegular aria-hidden />} onClick={openSettings}>
+              打开设置
+            </Button>
+            <a className="btn btn--ghost btn--md" href={LINKS.repo} target="_blank" rel="noopener noreferrer">
+              查看源码
+              <OpenRegular aria-hidden />
+            </a>
+          </>
+        }
+        aside={
+          <div className="about-identity">
+            <img src={SITE.avatar} alt={SITE.avatarAlt} width={72} height={72} loading="lazy" />
+            <div>
+              <p className="about-identity__name">{SITE.name}</p>
+              <p className="about-identity__handle">@{SITE.handle}</p>
+              <p className="about-identity__tagline">{SITE.tagline}</p>
+            </div>
+            <span className="badge badge--accent">
+              <span className="status-dot" aria-hidden /> 在线
+            </span>
+          </div>
+        }
+      />
+
+      <div className="container about-layout">
+        <div className="about-main">
+          <Reveal as="section" className="article-card" id="version">
+            <p className="eyebrow">VERSION</p>
+            <h2>版本与构建</h2>
+            <div className="version-hero">
+              <div>
+                <p className="version-hero__number">v{siteMeta.version}</p>
+                <p className="version-hero__label">3.0 · Fluent Sun Valley rebuild</p>
+              </div>
+              <div className="version-hero__actions">
+                <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
+                  复制版本
+                </Button>
+                <a className="btn btn--ghost btn--md" href={`${LINKS.repo}/commit/${head.hash}`} target="_blank" rel="noopener noreferrer">
+                  {head.short} <OpenRegular aria-hidden />
+                </a>
+              </div>
+            </div>
+            <dl className="fact-grid">
+              <div>
+                <dt>当前提交</dt>
+                <dd>{head.short}</dd>
+              </div>
+              <div>
+                <dt>提交时间</dt>
+                <dd>{formatDateTime(head.time)}</dd>
+              </div>
+              <div>
+                <dt>构建时间</dt>
+                <dd>{formatDateTime(siteMeta.buildTime)} <span>{relativeTime(siteMeta.buildTime)}</span></dd>
+              </div>
+              <div>
+                <dt>分支</dt>
+                <dd>{siteMeta.branch || 'main'}</dd>
+              </div>
+              <div>
+                <dt>版本来源</dt>
+                <dd>package.json</dd>
+              </div>
+              <div>
+                <dt>部署</dt>
+                <dd>GitHub Pages · Actions</dd>
+              </div>
+            </dl>
+            <p className="settings-hint">
+              版本号遵循语义化版本：3.0.0 表示一次完整重写；后续修补递增 patch，功能新增递增 minor。
+              每次构建都会把版本、提交与构建时间注入页面。
+            </p>
+          </Reveal>
+
+          <Reveal as="section" className="article-card" id="commits">
+            <div className="article-card__head">
+              <div>
+                <p className="eyebrow">COMMITS</p>
+                <h2>最近提交</h2>
+              </div>
+              <button type="button" className="text-btn" onClick={refreshCommits} disabled={refreshing}>
+                <ArrowClockwiseRegular aria-hidden />
+                {refreshing ? '获取中…' : '刷新'}
+              </button>
+            </div>
+            <p>
+              构建时读取 <code>git log</code> 生成快照；也可以点击刷新从 GitHub API 获取最新记录。
+              每一条都包含提交时间、作者与说明。
+            </p>
+            {commits.length === 0 ? (
+              <div className="empty-inline">
+                <HistoryRegular aria-hidden />
+                <p>当前构建没有嵌入提交历史（可能是浅克隆）。</p>
+                <a href={`${LINKS.repo}/commits/main`} target="_blank" rel="noopener noreferrer">
+                  在 GitHub 查看提交历史 <OpenRegular aria-hidden />
+                </a>
+              </div>
+            ) : (
+              <ol className="commit-list">
+                {commits.map((commit) => (
+                  <li key={commit.hash}>
+                    <a href={commit.url} target="_blank" rel="noopener noreferrer" className="commit-item">
+                      <span className="commit-item__hash">{commit.short}</span>
+                      <span className="commit-item__main">
+                        <strong>{commit.subject}</strong>
+                        <span>
+                          {commit.author} · {formatDateTime(commit.time)} · {relativeTime(commit.time)}
+                        </span>
+                      </span>
+                      <OpenRegular className="commit-item__open" aria-hidden />
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            )}
+            <a className="text-link" href={`${LINKS.repo}/commits/main`} target="_blank" rel="noopener noreferrer">
+              在 GitHub 查看全部提交 <OpenRegular aria-hidden />
+            </a>
+          </Reveal>
+
+          <Reveal as="section" className="article-card" id="design">
+            <p className="eyebrow">DESIGN</p>
+            <h2>设计理念</h2>
+            <p>
+              目标不是复刻某个产品，而是把 Fluent Design Sun Valley 的“安静、分层、可读”与
+              苹果液态玻璃的“悬浮、折射、高光”放在一起，同时保证关掉玻璃后仍然成立。
+            </p>
+            <div className="design-grid">
+              <div className="design-card">
+                <span className="design-card__icon"><SparkleRegular aria-hidden /></span>
+                <h3>Fluent 的秩序</h3>
+                <p>8px 圆角、Segoe UI Variable、Mica / Acrylic 表面、克制的阴影与强调色。</p>
+              </div>
+              <div className="design-card">
+                <span className="design-card__icon"><FluentIcon name="glass" size={22} aria-hidden /></span>
+                <h3>液态玻璃的悬浮</h3>
+                <p>背景模糊 + 饱和度 + 顶部高光。可在设置中关闭，关闭后回到实色表面。</p>
+              </div>
+              <div className="design-card">
+                <span className="design-card__icon"><FluentIcon name="motion" size={22} aria-hidden /></span>
+                <h3>动效有边界</h3>
+                <p>只为状态变化服务；减少动画时关闭揭示、视差与粒子，不做无意义循环。</p>
+              </div>
+            </div>
+            <div className="article-callout">
+              <strong>侧边栏与页眉</strong>
+              <p>
+                侧栏是直角矩形，收起时完全移出视口；展开时以浮层覆盖内容。页眉默认展开，
+                全屏闲置后自动收起，鼠标移向顶部立即恢复，并且可以在设置里关闭或扩展为滚动收起。
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal as="section" className="article-card" id="tech">
+            <p className="eyebrow">STACK</p>
+            <h2>技术栈</h2>
+            <div className="tech-grid">
+              {TECH_STACK.map((tech) => (
+                <div className="tech-card" key={tech.name}>
+                  <CheckmarkCircleRegular aria-hidden />
+                  <div>
+                    <strong>{tech.name}</strong>
+                    <span>{tech.note}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal as="section" className="article-card" id="performance">
+            <p className="eyebrow">PERFORMANCE</p>
+            <h2>性能与加载</h2>
+            <p>
+              页面不是一次性全部加载。下面是从输入 URL 到可以交互的顺序，以及每一步刻意做的取舍。
+            </p>
+            <ol className="load-steps">
+              {LOAD_STEPS.map((step) => (
+                <li key={step.step}>
+                  <span className="load-steps__index">{step.step}</span>
+                  <div>
+                    <strong>{step.title}</strong>
+                    <p>{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="perf-grid">
+              <div>
+                <strong>首屏 JS</strong>
+                <span>只含 React、图标与首页；哔哩哔哩数据在路由 chunk 中。</span>
+              </div>
+              <div>
+                <strong>图片</strong>
+                <span>43 张封面共约 656KB，单张平均 15KB，进入视口才加载。</span>
+              </div>
+              <div>
+                <strong>字体</strong>
+                <span>使用系统字体，不下载 8MB 的中文字体。</span>
+              </div>
+              <div>
+                <strong>重复访问</strong>
+                <span>Service Worker 缓存静态资源，HTML 走网络优先。</span>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal as="section" className="article-card" id="structure">
+            <p className="eyebrow">STRUCTURE</p>
+            <h2>目录结构</h2>
+            <CodeBlock
+              title="src/"
+              code={`src/
+├─ components/     # 布局、通用组件、首页 / 视频 / 设置
+├─ pages/          # 4 个路由级页面（懒加载）
+├─ hooks/          # 设置、搜索、页眉自动收起、计数等
+├─ lib/            # 路由、设置、格式化、搜索、PWA
+├─ data/           # 站点内容、留言、视频数据
+├─ generated/      # 构建期生成的 site-meta.json
+└─ styles/         # tokens / base / shell / components / pages
+
+scripts/
+├─ generate-meta.mjs       # 版本 + git log → site-meta.json
+├─ build-videos-data.mjs   # B 站缓存 → videos.ts
+└─ fetch-covers.mjs        # 抓取封面与元数据（手动运行）
+
+public/
+├─ media/bilibili/  # 43 张 640×360 WebP
+├─ media/wallpapers/# 8 张 1920px WebP
+├─ icons/           # logo / favicon
+├─ manifest.webmanifest
+└─ sw.js`}
+            />
+          </Reveal>
+
+          <Reveal as="section" className="article-card" id="develop">
+            <p className="eyebrow">DEVELOP</p>
+            <h2>本地开发</h2>
+            <p>需要 Node.js 20+。首次安装后，开发和构建都会自动生成版本 / 提交元数据。</p>
+            <CodeBlock
+              title="终端"
+              code={`npm install
+npm run dev        # http://localhost:4173
+npm run build      # tsc -b && vite build
+npm run preview    # 预览 dist
+npm test           # 纯函数单元测试
+
+# 需要更新 B 站封面 / 时长时（可选）：
+npm run fetch:covers`}
+            />
+            <p className="settings-hint">
+              哔哩哔哩数据由 <code>scripts/bilibili-source.json</code>（人工整理）与
+              <code>scripts/bilibili-cache.json</code>（B 站公开接口）合并生成；修改后运行
+              <code>node scripts/build-videos-data.mjs</code>。
+            </p>
+          </Reveal>
+
+          <Reveal as="section" className="article-card" id="license">
+            <p className="eyebrow">LICENSE</p>
+            <h2>许可与致谢</h2>
+            <div className="license-grid">
+              <div>
+                <ShieldRegular aria-hidden />
+                <strong>代码：GPL-3.0</strong>
+                <p>可自由使用、修改与分发，衍生作品需以相同协议开源。</p>
+                <a href={LINKS.license} target="_blank" rel="noopener noreferrer">
+                  查看许可证 <OpenRegular aria-hidden />
+                </a>
+              </div>
+              <div>
+                <DocumentRegular aria-hidden />
+                <strong>内容：CC BY-NC-SA 4.0</strong>
+                <p>文字与影像归档保留署名、非商业与相同方式共享要求。</p>
+                <a href={SITE.contentLicenseUrl} target="_blank" rel="noopener noreferrer">
+                  查看协议 <OpenRegular aria-hidden />
+                </a>
+              </div>
+              <div>
+                <CodeRegular aria-hidden />
+                <strong>图标：Fluent UI</strong>
+                <p>图标来自 Microsoft Fluent System Icons（MIT），通过 @fluentui/react-icons 按需引入。</p>
+                <a href="https://github.com/microsoft/fluentui-system-icons" target="_blank" rel="noopener noreferrer">
+                  图标仓库 <OpenRegular aria-hidden />
+                </a>
+              </div>
+            </div>
+            <p className="settings-hint">
+              壁纸与影像封面来自作者本人的游戏截图 / B 站公开封面；Minecraft 相关内容版权归 Mojang / Microsoft 所有。
+              留言摘录保留原话，已尽力标注作者。
+            </p>
+          </Reveal>
+
+          <Reveal as="section" className="article-card" id="changelog">
+            <p className="eyebrow">CHANGELOG</p>
+            <h2>更新日志</h2>
+            <ol className="changelog">
+              {CHANGELOG.map((entry) => (
+                <li key={entry.version}>
+                  <div className="changelog__head">
+                    <strong>v{entry.version}</strong>
+                    <span>{entry.date}</span>
+                  </div>
+                  <ul>
+                    {entry.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        </div>
+
+        <div className="about-sidebar">
+          <TableOfContents items={TOC_ITEMS} active={active} />
+          <div className="about-side-card">
+            <p className="eyebrow">SHORTCUT</p>
+            <h3>个性化这台站点</h3>
+            <p>主题色、壁纸、液态玻璃、粒子和页眉行为都在设置里。</p>
+            <Button variant="primary" icon={<SettingsRegular aria-hidden />} onClick={openSettings}>
+              打开设置
+            </Button>
+          </div>
+          <div className="about-side-card">
+            <p className="eyebrow">LINKS</p>
+            <a href={LINKS.repo} target="_blank" rel="noopener noreferrer">
+              <FluentIcon name="github" size={16} aria-hidden /> 源码仓库
+            </a>
+            <a href={LINKS.repo2} target="_blank" rel="noopener noreferrer">
+              <BranchRegular aria-hidden /> 2.0-final 分支
+            </a>
+            <a href={LINKS.bilibili} target="_blank" rel="noopener noreferrer">
+              <FluentIcon name="tv" size={16} aria-hidden /> 哔哩哔哩
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+

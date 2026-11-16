@@ -1,0 +1,198 @@
+/* ============================================================
+   Responsive polish / 断点与降级
+   ============================================================ */
+
+/* 大屏：限制阅读宽度，避免超宽显示器上行太长 */
+@media (min-width: 1600px) {
+  :root {
+    --container: 1280px;
+  }
+}
+
+@media (max-width: 1200px) {
+  :root {
+    --container: 1100px;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --page-pad: clamp(16px, 3.5vw, 28px);
+    --section-y: clamp(56px, 8vw, 92px);
+  }
+
+  .hero {
+    min-height: clamp(560px, 78vh, 760px);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-pad: 18px;
+    --section-y: 64px;
+  }
+
+  .container {
+    width: calc(100% - var(--page-pad) * 2);
+  }
+
+  .display-title {
+    font-size: clamp(30px, 8vw, 44px);
+  }
+
+  .page-intro__lead {
+    font-size: 13.5px;
+  }
+
+  .section-heading__title {
+    font-size: clamp(25px, 7vw, 34px);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --page-pad: 14px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .btn--lg {
+    height: 42px;
+    padding: 0 16px;
+    font-size: 13.5px;
+  }
+
+  /* 手机上保留搜索与主题切换；设置入口仍在侧栏底部。 */
+  .header-settings {
+    display: none;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero__meta {
+    display: none;
+  }
+}
+
+/* 触屏设备：不要依赖 hover 才显示操作 */
+@media (hover: none) {
+  .comment-card__actions,
+  .video-mini__play,
+  .video-card__play {
+    opacity: 1;
+  }
+
+  .video-card:hover,
+  .video-mini:hover,
+  .spotlight-card:hover {
+    transform: none;
+  }
+
+  .sidebar-group__external {
+    opacity: 0.6;
+  }
+}
+
+/* 手机页眉：保留搜索 / 主题 / 头像，隐藏全屏与设置（设置仍在侧栏底部）。 */
+@media (max-width: 640px) {
+  .header-fullscreen {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-settings {
+    display: none;
+  }
+}
+
+/* 不支持 backdrop-filter 时退回实色表面，不影响可读性 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --surface: var(--surface-solid);
+    --header-bg: var(--surface-solid);
+    --sidebar-bg: var(--surface-solid);
+    --glass-border: var(--stroke);
+  }
+
+  .site-header,
+  .sidebar,
+  .sheet,
+  .search-panel,
+  .user-menu__popover,
+  .archive-toolbar,
+  .hero__fact,
+  .hero__kicker,
+  .back-to-top {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* Windows 高对比度 / 强制颜色模式：保证边框可见 */
+@media (forced-colors: active) {
+  .btn,
+  .icon-btn,
+  .chip,
+  .badge,
+  .video-card,
+  .article-card,
+  .spotlight-card,
+  .sidebar,
+  .site-header,
+  .modal,
+  .sheet {
+    border: 1px solid CanvasText;
+  }
+
+  .btn--primary,
+  .chip.is-active {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
+/* 打印：去掉装饰，保留正文 */
+@media print {
+  .site-header,
+  .sidebar-layer,
+  .site-footer,
+  .back-to-top,
+  .wallpaper,
+  .particle-field,
+  .hero__controls,
+  .hero__facts,
+  .hero__status,
+  .hero__scroll,
+  .marquee,
+  .settings-tabs,
+  .archive-toolbar {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .site-main {
+    padding-top: 0;
+  }
+
+  .hero {
+    min-height: auto;
+    color: #000;
+  }
+
+  .article-card,
+  .video-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}
