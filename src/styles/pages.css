@@ -76,6 +76,12 @@
   font-size: 12.5px;
 }
 
+.article-callout a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .empty-inline {
   display: flex;
   flex-direction: column;

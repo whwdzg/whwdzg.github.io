@@ -227,10 +227,10 @@ export function HeroCarousel() {
                     <SparkleRegular aria-hidden />
                     {item.kicker}
                   </p>
-                  <h1 className="hero__title">
+                  <h2 className="hero__title">
                     <span>{item.title}</span>
                     <span className="hero__title-accent">{item.accent}</span>
-                  </h1>
+                  </h2>
                   <p className="hero__lead">{item.lead}</p>
                   <div className="hero__actions">
                     {item.actions.map((action) => (

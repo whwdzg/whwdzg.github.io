@@ -5,10 +5,19 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "",
-  "commitShort": "",
-  "commitTime": "2026-11-16T16:06:17.990Z",
-  "buildTime": "2026-11-16T16:06:18.175Z",
+  "commit": "fdc3f882132ab4b4d4e3ed78e834af9f032e9ece",
+  "commitShort": "fdc3f88",
+  "commitTime": "2026-11-17T00:07:01+08:00",
+  "buildTime": "2026-11-16T16:17:29.882Z",
   "versionSource": "package.json",
-  "commits": []
+  "commits": [
+    {
+      "hash": "fdc3f882132ab4b4d4e3ed78e834af9f032e9ece",
+      "short": "fdc3f882",
+      "time": "2026-11-17T00:07:01+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: rebuild site as 3.0 with Fluent Sun Valley and liquid glass",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/fdc3f882132ab4b4d4e3ed78e834af9f032e9ece"
+    }
+  ]
 }

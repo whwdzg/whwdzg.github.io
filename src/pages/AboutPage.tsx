@@ -265,6 +265,17 @@ export default function AboutPage() {
               构建时读取 <code>git log</code> 生成快照；也可以点击刷新从 GitHub API 获取最新记录。
               每一条都包含提交时间、作者与说明。
             </p>
+            <div className="article-callout">
+              <strong>主分支从 3.0 开始</strong>
+              <p>
+                3.0 是一次从零开始的重写，<code>main</code> 的提交历史从本次重构开始；
+                2.0 的完整提交记录仍保留在{' '}
+                <a href={`${LINKS.repo}/commits/2.0-final`} target="_blank" rel="noopener noreferrer">
+                  2.0-final 分支
+                </a>
+                。随着后续开发，这里会自动积累更多提交。
+              </p>
+            </div>
             {commits.length === 0 ? (
               <div className="empty-inline">
                 <HistoryRegular aria-hidden />
