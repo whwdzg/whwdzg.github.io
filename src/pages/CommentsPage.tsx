@@ -25,6 +25,8 @@ import {
 import { PageIntro } from '../components/layout/PageIntro';
 import { TableOfContents } from '../components/common/TableOfContents';
 import { Button } from '../components/common/Button';
+import { FluentIcon } from '../components/common/FluentIcon';
+import { Link } from '../lib/router';
 import { useActiveSection } from '../hooks/useActiveSection';
 import { useToast } from '../hooks/useToast';
 import { copyText } from '../lib/clipboard';
@@ -149,6 +151,11 @@ export default function CommentsPage() {
               下一篇：海绵宝宝 add-on
               <OpenRegular aria-hidden />
             </a>
+            <Link className="btn btn--ghost btn--md" to="/comments/github/">
+              <FluentIcon name="github" size={18} aria-hidden />
+              GitHub 评论区
+              <ArrowRightRegular aria-hidden />
+            </Link>
           </>
         }
         aside={
@@ -365,6 +372,13 @@ export default function CommentsPage() {
                 <strong>GitHub 仓库</strong>
                 <OpenRegular aria-hidden />
               </a>
+              <Link className="jump-card" to="/comments/github/">
+                <span>
+                  <FluentIcon name="github" size={12} aria-hidden /> GitHub Issues
+                </span>
+                <strong>GitHub 评论区</strong>
+                <ArrowRightRegular aria-hidden />
+              </Link>
             </div>
           </section>
         </div>

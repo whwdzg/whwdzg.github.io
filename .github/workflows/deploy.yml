@@ -46,6 +46,7 @@ jobs:
           test -f dist/index.html
           test -f dist/bilibili/index.html
           test -f dist/comments/index.html
+          test -f dist/comments/github/index.html
           test -f dist/about/index.html
           test -f dist/sw.js
           test -f dist/manifest.webmanifest

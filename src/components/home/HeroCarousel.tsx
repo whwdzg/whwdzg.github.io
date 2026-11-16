@@ -43,13 +43,13 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     id: 'rebuild',
-    kicker: '3.0 · REBUILD',
+    kicker: '3.1 · FLUENT REBUILD',
     title: '重新开始，',
     accent: '以更轻盈的方式。',
     lead: 'Fluent Design Sun Valley 的秩序感，加一点液态玻璃的悬浮感。没有框架堆叠，只有更快的加载、更少的资源与更清楚的导航。',
     light: '/media/hero/light-4.webp',
     dark: '/media/hero/dark-1.webp',
-    meta: ['2026 · 3.0', 'React + Vite', 'GPL-3.0'],
+    meta: ['2026 · 3.1', 'React + Vite', 'GPL-3.0'],
     actions: [
       { label: '了解 3.0', to: '/about/', primary: true },
       { label: '查看更新轨迹', to: '/#timeline' },

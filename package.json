@@ -1,9 +1,9 @@
 {
   "name": "whwdzg-site",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.1.0",
   "type": "module",
-  "description": "滄海水魚个人网站 3.0 —— Fluent Design Sun Valley + 液态玻璃的个人主页与影像归档",
+  "description": "滄海水魚个人网站 3.1 —— Fluent Design Sun Valley + 液态玻璃的个人主页、影像归档与 GitHub Issue 评论区",
   "homepage": "https://whwdzg.github.io",
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
   },
   "dependencies": {
     "@fluentui/react-icons": "^2.0.321",
+    "dompurify": "^3.4.18",
+    "marked": "^18.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
@@ -41,3 +43,4 @@
     "node": ">=20.19.0"
   }
 }
+

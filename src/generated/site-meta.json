@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.0.0",
-  "description": "滄海水魚个人网站 3.0 —— Fluent Design Sun Valley + 液态玻璃的个人主页与影像归档",
+  "version": "3.1.0",
+  "description": "滄海水魚个人网站 3.1 —— Fluent Design Sun Valley + 液态玻璃的个人主页、影像归档与 GitHub Issue 评论区",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "fdc3f882132ab4b4d4e3ed78e834af9f032e9ece",
-  "commitShort": "fdc3f88",
-  "commitTime": "2026-11-17T00:07:01+08:00",
-  "buildTime": "2026-11-16T16:17:29.882Z",
+  "commit": "ae1b33b9abca88247785ccb2195642d26b75a09b",
+  "commitShort": "ae1b33b",
+  "commitTime": "2026-11-17T00:18:09+08:00",
+  "buildTime": "2026-11-16T16:31:25.271Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "ae1b33b9abca88247785ccb2195642d26b75a09b",
+      "short": "ae1b33b9",
+      "time": "2026-11-17T00:18:09+08:00",
+      "author": "Alex Yang",
+      "subject": "fix: single h1 on home and clarify 3.0 commit history",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ae1b33b9abca88247785ccb2195642d26b75a09b"
+    },
     {
       "hash": "fdc3f882132ab4b4d4e3ed78e834af9f032e9ece",
       "short": "fdc3f882",

@@ -23,7 +23,7 @@ import {
   type ReactNode,
 } from 'react';
 
-const KNOWN_PATHS = new Set(['/', '/bilibili/', '/comments/', '/about/']);
+const KNOWN_PATHS = new Set(['/', '/bilibili/', '/comments/', '/comments/github/', '/about/']);
 
 export function normalizePath(pathname: string): string {
   let path = pathname.replace(/\/index\.html$/i, '/');

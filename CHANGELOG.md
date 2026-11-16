@@ -1,5 +1,18 @@
 # 更新日志
 
+## 3.1.0 — 2026-11-17
+
+### 新页面：GitHub 评论区
+
+- 新增 `/comments/github/`，用公开 GitHub Issue 作评论后端；原 `/comments/` 留言板完整保留。
+- Issue 列表支持全部 / 开放 / 已关闭筛选、标题 / 作者 / 编号搜索、刷新与 5 分钟本地缓存。
+- 详情展示 issue 正文、标签、reactions、作者头像、发起时间与更新时间。
+- 评论按时间线展示头像、作者、关联身份徽章、Markdown 正文、reactions 与 permalink。
+- 支持引用回复：复制 `> @作者` 引用并打开 GitHub 评论框；所有写入操作跳转 GitHub，不在前端保存 Token。
+- Markdown 使用 marked + DOMPurify，仅在页面有内容时动态加载并统一 sanitize。
+- 速率限制、网络错误与空仓库状态都有明确提示；`?issue=123` 支持深链接。
+- 侧栏、页眉、页脚、搜索、manifest、sitemap、Service Worker 与 GitHub Actions 产物校验同步加入新页面。
+
 ## 3.0.0 — 2026-11-17
 
 从 0 重写。

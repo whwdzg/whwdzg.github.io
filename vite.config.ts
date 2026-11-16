@@ -48,7 +48,7 @@ function serviceWorkerManifest(): Plugin {
         .filter((file) => {
           if (file === 'sw.js' || file === 'sw-assets.json' || file.endsWith('.map')) return false;
           if (file === 'index.html' || file === 'manifest.webmanifest' || file === 'offline.html') return true;
-          if (/^(bilibili|comments|about)\/index\.html$/.test(file)) return true;
+          if (/^(bilibili|comments|comments\/github|about)\/index\.html$/.test(file)) return true;
           if (file.startsWith('assets/') && /\.(js|css)$/.test(file)) return true;
           if (file.startsWith('icons/')) return true;
           if (file.startsWith('media/avatars/') || file.startsWith('media/projects/')) return true;
@@ -84,6 +84,7 @@ export default defineConfig({
         main: path.resolve('index.html'),
         bilibili: path.resolve('bilibili/index.html'),
         comments: path.resolve('comments/index.html'),
+        commentsGithub: path.resolve('comments/github/index.html'),
         about: path.resolve('about/index.html'),
       },
       output: {

@@ -1,4 +1,4 @@
-# 水鱼 Blog · 3.0
+# 水鱼 Blog · 3.1
 
 滄海水魚（whwdzg）的个人网站，2026 年从零重写。
 
@@ -16,6 +16,7 @@
 - **主页**：全幅影像轮播、大字号标题、滚动揭示、数字滚动、悬停高光、时间线与 CTA。轮播只渲染当前与下一张图。
 - **哔哩哔哩页**：43 条影像归档，支持标题 / 简介 / BV 号搜索、状态与年份筛选、最新 / 最早 / 标题 / 播放量排序、网格 / 列表视图、详情弹窗、上一条 / 下一条、随机一条。
 - **留言板**：保留人工整理的留言与回复，新增本地草稿编辑器（自动保存、预览、复制、跳转 B 站私信）、留言锚点与目录。
+- **GitHub 评论区**：新增 `/comments/github/`，直接读取仓库公开 Issue：头像、正文、标签、reactions、回复与时间线；支持筛选 / 搜索 / 深链接 / 引用回复，写入操作统一跳转 GitHub。
 - **关于页**：版本号、构建时间、当前提交、最近提交时间线（构建时快照，可手动从 GitHub API 刷新）、设计 / 技术 / 性能说明、目录结构与本地开发命令。
 - **设置面板**：主题、强调色（含自定义）、液态玻璃、8 张壁纸与每日轮换、页眉进度条、粒子动画（樱花 / 梧桐 / 银杏 / 雪花）、动效偏好、页眉自动收起、性能模式、PWA 安装、缓存清理、设置导入导出、UA 与版本信息。
 - **PWA**：manifest、Service Worker（导航 network-first，静态资源 cache-first）、离线页与安装入口。
@@ -36,7 +37,7 @@ npm install
 npm run dev        # http://localhost:4173
 npm run build      # tsc -b && vite build
 npm run preview    # 预览 dist
-npm test           # 纯函数 / 数据单元测试（25 项）
+npm test           # 纯函数 / 数据单元测试（29 项）
 npm run typecheck  # 只跑 TypeScript
 ```
 
@@ -64,6 +65,7 @@ npm run fetch:covers
 ├─ index.html                  # 主页入口
 ├─ bilibili/index.html         # 影像归档入口
 ├─ comments/index.html         # 留言板入口
+├─ comments/github/index.html  # GitHub Issue 评论区入口
 ├─ about/index.html            # 关于入口
 ├─ src/
 │  ├─ components/
@@ -71,14 +73,15 @@ npm run fetch:covers
 │  │  ├─ common/               # Button、Modal、Sheet、Reveal、TOC、Switch…
 │  │  ├─ home/                 # 轮播、主页区块、跑马灯
 │  │  ├─ bilibili/             # 视频卡片、详情弹窗
+│  │  ├─ comments/             # GitHub issue 列表、回复时间线、Markdown
 │  │  ├─ settings/             # 设置面板
 │  │  └─ search/               # 命令面板搜索
-│  ├─ pages/                   # 4 个路由级页面（懒加载）
+│  ├─ pages/                   # 5 个路由级页面（懒加载）
 │  ├─ hooks/                   # 设置、搜索、页眉自动收起、计数、全屏…
-│  ├─ lib/                     # 路由、设置、壁纸、格式化、搜索、PWA
+│  ├─ lib/                     # 路由、设置、壁纸、格式化、搜索、GitHub API、PWA
 │  ├─ data/                    # 站点内容、留言、视频数据（生成）
 │  ├─ generated/               # 构建期 site-meta.json
-│  └─ styles/                  # tokens / base / shell / components / home / pages / responsive
+│  └─ styles/                  # tokens / base / shell / components / home / pages / github-comments / responsive
 ├─ scripts/
 │  ├─ generate-meta.mjs
 │  ├─ build-videos-data.mjs
@@ -113,12 +116,15 @@ npm run fetch:covers
 | 全局 CSS | ~17 KB | 变量、基础、壳层与常用组件 |
 | 首页 chunk | ~6.4 KB | 轮播与主页区块 |
 | 影像页 chunk + 数据 | ~11 KB | 43 条数据 + 卡片与详情 |
+| GitHub 评论区 chunk | ~7.7 KB | Issue 列表、回复时间线、API 封装 |
+| Markdown 渲染（按需） | ~27 KB | marked + DOMPurify，只在有 issue 内容时加载 |
 | 关于页 chunk | ~6.8 KB | 版本、提交、说明 |
 
 其余策略：
 
-- **多入口**：`/`、`/bilibili/`、`/comments/`、`/about/` 各自是真实 HTML，直链与刷新无需 404 重写。
-- **路由级懒加载**：首屏不加载影像数据、详情弹窗和关于页。
+- **多入口**：`/`、`/bilibili/`、`/comments/`、`/comments/github/`、`/about/` 各自是真实 HTML，直链与刷新无需 404 重写。
+- **路由级懒加载**：首屏不加载影像数据、GitHub Issue 数据、Markdown 渲染器、详情弹窗和关于页。
+- **GitHub API 缓存**：Issue 列表 5 分钟、评论 2 分钟本地缓存；失败时回退旧缓存，并给出速率限制提示。
 - **空闲预取**：首屏稳定后用 `requestIdleCallback` 预取其他页 chunk；导航悬停 / 聚焦也会提前加载。
 - **图片**：封面统一 640×360 WebP，43 张合计约 649 KB，单张平均约 15 KB；全部 `loading="lazy"`、固定宽高、`decoding="async"`。首屏图单独生成 1440×810 WebP。
 - **壁纸**：在 `requestIdleCallback` 中解码，图片加载完成后再淡入，不参与 LCP 竞争；`prefers-reduced-motion` / 节省流量时跳过。
@@ -143,7 +149,7 @@ npm run fetch:covers
 
 ## 版本与部署
 
-当前版本 **3.0.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
+当前版本 **3.1.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
 
 关于页展示：
 
@@ -170,6 +176,7 @@ npm run fetch:covers
 - 代码：[GNU GPL v3.0](LICENSE)。
 - 文字与影像归档：CC BY-NC-SA 4.0。
 - Fluent 图标：Microsoft Fluent System Icons，MIT，通过 `@fluentui/react-icons` 按需引入。
+- Markdown：`marked`（MIT）与 `DOMPurify`（MPL-2.0 / Apache-2.0），仅在 GitHub 评论区按需加载。
 - Minecraft 相关素材版权归 Mojang / Microsoft；B 站封面来自公开视频页，仅用于归档展示。
 
 留言摘录保留原话并标注作者；如果内容涉及你的权利，请通过 B 站私信联系。

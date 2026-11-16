@@ -15,6 +15,7 @@ const CORE = [
   '/',
   '/bilibili/',
   '/comments/',
+  '/comments/github/',
   '/about/',
   '/manifest.webmanifest',
   '/icons/logo-192.png',

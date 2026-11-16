@@ -19,22 +19,31 @@ import { COMMENTS } from '../../data/comments';
 import { LINKS, PROJECTS } from '../../data/site';
 import { FluentIcon } from '../common/FluentIcon';
 
+const ROUTE_ICONS: Record<string, string> = {
+  '/': 'home',
+  '/bilibili/': 'tv',
+  '/comments/': 'comment',
+  '/comments/github/': 'github',
+  '/about/': 'info',
+};
+
+const ROUTE_KEYWORDS: Record<string, string> = {
+  '/': 'home index 首页 主页 站点',
+  '/bilibili/': 'bilibili b站 视频 影像 归档 video archive 43',
+  '/comments/': 'guestbook comment 留言 评论 message 私信',
+  '/comments/github/': 'github issue 评论 留言 comment 头像 回复 reply 讨论 discussion',
+  '/about/': 'about version commit 版本 提交 关于 构建',
+};
+
 const STATIC_ITEMS: SearchableItem[] = [
   ...ROUTES.map((route) => ({
     id: `page:${route.path}`,
     title: route.shortTitle,
     subtitle: route.description,
-    keywords:
-      route.path === '/'
-        ? 'home index 首页 主页 站点'
-        : route.path === '/bilibili/'
-          ? 'bilibili b站 视频 影像 归档 video archive 43'
-          : route.path === '/comments/'
-            ? 'guestbook comment 留言 评论 message 私信'
-            : 'about version commit 版本 提交 关于 构建',
+    keywords: ROUTE_KEYWORDS[route.path] ?? '',
     group: '页面',
     href: route.path,
-    icon: route.path === '/' ? 'home' : route.path === '/bilibili/' ? 'tv' : route.path === '/comments/' ? 'comment' : 'info',
+    icon: ROUTE_ICONS[route.path] ?? 'info',
   })),
   { id: 'section:home-now', title: '现在 / 站点状态', subtitle: '当前在做什么、3.0 重构进度', group: '章节', href: '/#now', icon: 'sparkle' },
   { id: 'section:home-projects', title: '精选项目', subtitle: 'Modrinth 数据包与模组', group: '章节', href: '/#projects', icon: 'rocket' },
@@ -43,6 +52,7 @@ const STATIC_ITEMS: SearchableItem[] = [
   { id: 'section:bili-search', title: '影像搜索与筛选', subtitle: '按标题、年份、状态筛选 43 条归档', group: '章节', href: '/bilibili/#archive-toolbar', icon: 'filter' },
   { id: 'section:comments-write', title: '写一条留言', subtitle: '复制草稿并前往 B 站私信', group: '章节', href: '/comments/#write', icon: 'mail' },
   { id: 'section:comments-list', title: '留言摘录', subtitle: '人工整理的留言与回复', group: '章节', href: '/comments/#entries', icon: 'comment' },
+  { id: 'section:comments-github', title: 'GitHub 评论区', subtitle: '由公开 Issue 驱动的讨论与回复', group: '章节', href: '/comments/github/#gh-thread', icon: 'github' },
   { id: 'section:about-version', title: '版本与提交', subtitle: '版本号、构建时间与最近提交', group: '章节', href: '/about/#version', icon: 'commit' },
   { id: 'section:about-tech', title: '技术栈', subtitle: 'React、Vite、TypeScript、PWA', group: '章节', href: '/about/#tech', icon: 'code' },
   { id: 'section:about-performance', title: '性能策略', subtitle: '代码分割、WebP、懒加载与缓存', group: '章节', href: '/about/#performance', icon: 'rocket' },

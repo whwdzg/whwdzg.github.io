@@ -36,6 +36,13 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/CommentsPage'),
   },
   {
+    path: '/comments/github/',
+    title: 'GitHub 评论区 · 水鱼 Blog',
+    shortTitle: 'GitHub 评论',
+    description: '由 GitHub Issue 驱动的评论区：头像、正文、回复、标签与 reactions 都来自公开仓库。',
+    load: () => import('../pages/GitHubCommentsPage'),
+  },
+  {
     path: '/about/',
     title: '关于本站 · 水鱼 Blog',
     shortTitle: '关于',

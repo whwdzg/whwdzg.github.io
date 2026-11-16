@@ -48,6 +48,13 @@
       "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
+      "name": "GitHub 评论区",
+      "short_name": "GitHub",
+      "description": "由 Issue 驱动的讨论与回复",
+      "url": "/comments/github/",
+      "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
       "name": "关于",
       "short_name": "关于",
       "description": "版本、提交历史与技术说明",

@@ -287,6 +287,10 @@ export function HomeCTA() {
             <Link className="btn btn--primary btn--lg" to="/comments/">
               去留言板 <ArrowRightRegular aria-hidden />
             </Link>
+            <Link className="btn btn--ghost btn--lg" to="/comments/github/">
+              <FluentIcon name="github" size={18} aria-hidden />
+              GitHub 评论
+            </Link>
             <a className="btn btn--ghost btn--lg" href={LINKS.bilibiliMessage} target="_blank" rel="noopener noreferrer">
               B 站私信 <OpenRegular aria-hidden />
             </a>

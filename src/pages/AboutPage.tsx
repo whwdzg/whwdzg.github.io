@@ -75,8 +75,18 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.1.0',
+    date: '2026-11-17',
+    items: [
+      '新增 GitHub 评论区：用公开 Issue 展示头像、正文、标签、reactions 与回复。',
+      'Issue 筛选 / 搜索 / 刷新 / 深链接，评论支持引用回复并跳转 GitHub。',
+      'marked + DOMPurify 按需加载；Issue 列表 5 分钟、评论 2 分钟缓存。',
+      '侧栏、页眉、页脚、搜索、manifest、sitemap 与 Actions 产物校验同步更新。',
+    ],
+  },
+  {
     version: '3.0.0',
-    date: '2026-11-16',
+    date: '2026-11-17',
     items: [
       '从 0 重写为 React + Vite + TypeScript 多入口站点。',
       'Fluent Design Sun Valley + 可选液态玻璃；矩形悬浮侧栏。',
@@ -161,7 +171,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.0"
+        eyebrow="ABOUT · 3.1"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -207,7 +217,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.0 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.1 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
@@ -526,4 +536,5 @@ npm run fetch:covers`}
     </div>
   );
 }
+
 

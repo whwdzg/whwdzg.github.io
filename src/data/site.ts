@@ -223,6 +223,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { label: '主页', to: '/', icon: 'home', description: '站点概览与最新动态' },
   { label: '哔哩哔哩', to: '/bilibili/', icon: 'tv', description: '43 条影像归档' },
   { label: '留言板', to: '/comments/', icon: 'comment', description: '留言摘录与写作入口' },
+  { label: 'GitHub 评论', to: '/comments/github/', icon: 'github', description: 'Issue 驱动的评论区' },
   { label: '关于', to: '/about/', icon: 'info', description: '版本、提交历史与技术说明' },
 ];
 
