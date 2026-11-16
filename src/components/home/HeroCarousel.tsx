@@ -43,15 +43,15 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     id: 'rebuild',
-    kicker: '3.1 · FLUENT REBUILD',
+    kicker: '3.2 · FLUENT REBUILD',
     title: '重新开始，',
     accent: '以更轻盈的方式。',
     lead: 'Fluent Design Sun Valley 的秩序感，加一点液态玻璃的悬浮感。没有框架堆叠，只有更快的加载、更少的资源与更清楚的导航。',
     light: '/media/hero/light-4.webp',
     dark: '/media/hero/dark-1.webp',
-    meta: ['2026 · 3.1', 'React + Vite', 'GPL-3.0'],
+    meta: ['2026 · 3.2', 'React + Vite', 'GPL-3.0'],
     actions: [
-      { label: '了解 3.0', to: '/about/', primary: true },
+      { label: '了解 3.2', to: '/about/', primary: true },
       { label: '查看更新轨迹', to: '/#timeline' },
     ],
   },
@@ -77,7 +77,7 @@ const SLIDES: Slide[] = [
     lead: '更好的合成配方、更好附魔、更好的生物掉落，以及一个很认真的愚人节数据包。都可以在 Modrinth 与 GitHub 找到。',
     light: '/media/hero/light-5.webp',
     dark: '/media/hero/dark-1.webp',
-    meta: ['4 个 Modrinth 项目', '1.13+', '数据包 / 模组'],
+    meta: ['6 个 Modrinth 项目', '1.13+', '数据包 / 模组'],
     actions: [
       { label: '查看精选项目', to: '/#projects', primary: true },
       { label: 'Modrinth 主页', to: 'https://modrinth.com/user/whwdzg', external: true },
@@ -165,8 +165,8 @@ export function HeroCarousel() {
   const facts = useMemo(
     () => [
       { value: '43', label: '影像归档' },
-      { value: '04', label: 'Modrinth 项目' },
-      { value: '3.0.0', label: '当前版本' },
+      { value: '06', label: 'Modrinth 项目' },
+      { value: '3.2.0', label: '当前版本' },
     ],
     [],
   );

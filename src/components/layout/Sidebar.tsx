@@ -166,30 +166,28 @@ export function Sidebar() {
                       {group.id === 'projects' &&
                         PROJECTS.map((project) => (
                           <li key={project.id}>
-                            <a
-                              href={project.links[0]?.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <Link
+                              to={project.path}
                               className="sidebar-group__link"
+                              onNavigate={close}
                             >
                               <img src={project.icon} alt="" width={20} height={20} loading="lazy" />
                               <span>{project.title}</span>
-                              <OpenRegular className="sidebar-group__external" aria-hidden />
-                            </a>
+                              <FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden />
+                            </Link>
                           </li>
                         ))}
                       {group.id === 'projects' && (
                         <li>
-                          <a
-                            href={LINKS.modrinth}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <Link
+                            to="/projects/modrinth/"
                             className="sidebar-group__link sidebar-group__link--more"
+                            onNavigate={close}
                           >
-                            <FluentIcon name="globe" size={18} aria-hidden />
-                            <span>Modrinth 主页</span>
-                            <OpenRegular className="sidebar-group__external" aria-hidden />
-                          </a>
+                            <FluentIcon name="rocket" size={18} aria-hidden />
+                            <span>Modrinth 项目页</span>
+                            <FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden />
+                          </Link>
                         </li>
                       )}
 

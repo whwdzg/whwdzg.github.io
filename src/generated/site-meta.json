@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.1.0",
-  "description": "滄海水魚个人网站 3.1 —— Fluent Design Sun Valley + 液态玻璃的个人主页、影像归档与 GitHub Issue 评论区",
+  "version": "3.2.0",
+  "description": "滄海水魚个人网站 3.2 —— Fluent Design Sun Valley + 液态玻璃的个人主页、影像归档、GitHub 评论区与数据包项目页",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "ae1b33b9abca88247785ccb2195642d26b75a09b",
-  "commitShort": "ae1b33b",
-  "commitTime": "2026-11-17T00:18:09+08:00",
-  "buildTime": "2026-11-16T16:31:25.271Z",
+  "commit": "ff32d82d6fdb78403d634fd6442e6591ec124a0c",
+  "commitShort": "ff32d82",
+  "commitTime": "2026-11-17T00:32:07+08:00",
+  "buildTime": "2026-11-16T17:04:50.012Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "ff32d82d6fdb78403d634fd6442e6591ec124a0c",
+      "short": "ff32d82d",
+      "time": "2026-11-17T00:32:07+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add GitHub Issue comments page (3.1.0)",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ff32d82d6fdb78403d634fd6442e6591ec124a0c"
+    },
     {
       "hash": "ae1b33b9abca88247785ccb2195642d26b75a09b",
       "short": "ae1b33b9",

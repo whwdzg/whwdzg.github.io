@@ -97,7 +97,7 @@ function RouteEffects() {
     prefetched.current = true;
     const run = () => {
       for (const route of ROUTES) {
-        if (route.path !== path) prefetchRoute(route.path);
+        if (route.path !== path && route.prefetch !== false) prefetchRoute(route.path);
       }
     };
     let timer = 0;

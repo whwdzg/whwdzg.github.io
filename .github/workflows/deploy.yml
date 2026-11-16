@@ -47,6 +47,13 @@ jobs:
           test -f dist/bilibili/index.html
           test -f dist/comments/index.html
           test -f dist/comments/github/index.html
+          test -f dist/projects/modrinth/index.html
+          test -f dist/projects/better-crafting-recipes/index.html
+          test -f dist/projects/better-enchantments/index.html
+          test -f dist/projects/better-mob-drop/index.html
+          test -f dist/projects/magical-dye/index.html
+          test -f dist/projects/only-survival-mode/index.html
+          test -f dist/projects/glowing-players/index.html
           test -f dist/about/index.html
           test -f dist/sw.js
           test -f dist/manifest.webmanifest

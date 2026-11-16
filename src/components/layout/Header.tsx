@@ -8,7 +8,7 @@
  */
 import { useCallback, useState } from 'react';
 import { Link, useRouter } from '../../lib/router';
-import { ROUTES, prefetchRoute, routeMeta } from '../../lib/routes';
+import { prefetchRoute, routeMeta } from '../../lib/routes';
 import { useUi } from '../../hooks/useUi';
 import { useSettings } from '../../hooks/useSettings';
 import { usePageProgress } from '../../hooks/usePageProgress';
@@ -16,7 +16,7 @@ import { useHeaderAutoHide } from '../../hooks/useHeaderAutoHide';
 import { FluentIcon } from '../common/FluentIcon';
 import { IconButton } from '../common/Button';
 import { UserMenu } from './UserMenu';
-import { SITE } from '../../data/site';
+import { PRIMARY_NAV, SITE } from '../../data/site';
 
 interface HeaderProps {
   isFullscreen: boolean;
@@ -70,15 +70,15 @@ export function Header({ isFullscreen, onToggleFullscreen }: HeaderProps) {
           </div>
 
           <nav className="header-nav" aria-label="快捷导航">
-            {ROUTES.map((route) => (
+            {PRIMARY_NAV.map((item) => (
               <Link
-                key={route.path}
-                to={route.path}
-                className={`header-nav__link ${path === route.path ? 'is-active' : ''}`}
-                aria-current={path === route.path ? 'page' : undefined}
-                prefetch={() => prefetchRoute(route.path)}
+                key={item.to}
+                to={item.to}
+                className={`header-nav__link ${path === item.to ? 'is-active' : ''}`}
+                aria-current={path === item.to ? 'page' : undefined}
+                prefetch={() => prefetchRoute(item.to)}
               >
-                {route.shortTitle}
+                {item.label}
               </Link>
             ))}
           </nav>

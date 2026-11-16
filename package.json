@@ -1,9 +1,9 @@
 {
   "name": "whwdzg-site",
   "private": true,
-  "version": "3.1.0",
+  "version": "3.2.0",
   "type": "module",
-  "description": "滄海水魚个人网站 3.1 —— Fluent Design Sun Valley + 液态玻璃的个人主页、影像归档与 GitHub Issue 评论区",
+  "description": "滄海水魚个人网站 3.2 —— Fluent Design Sun Valley + 液态玻璃的个人主页、影像归档、GitHub 评论区与数据包项目页",
   "homepage": "https://whwdzg.github.io",
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "data:videos": "node scripts/build-videos-data.mjs",
+    "data:projects": "node scripts/build-project-data.mjs",
+    "data:modrinth": "node --dns-result-order=ipv4first scripts/sync-modrinth.mjs",
     "fetch:covers": "node scripts/fetch-covers.mjs"
   },
   "dependencies": {

@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "mineral_block": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "#magical_dye:mineral_block"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["mineral_block"]
+  ],
+  "parent": "magical_dye:magical_dye",
+  "rewards": {    
+      "recipes": ["magical_dye:mineral_amethyst_block","magical_dye:mineral_coal_block","magical_dye:mineral_copper_block","magical_dye:mineral_diamond_block","magical_dye:mineral_emerald_block","magical_dye:mineral_gold_block","magical_dye:mineral_iron_block","magical_dye:mineral_lapis_block","magical_dye:mineral_netherite_block","magical_dye:mineral_quartz_block","magical_dye:mineral_redstone_block"]  
+  }
+}

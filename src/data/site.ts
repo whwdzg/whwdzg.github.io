@@ -44,72 +44,198 @@ export const LINKS = {
 
 export interface Project {
   id: string;
+  path: string;
+  modrinthSlug: string;
   title: string;
   subtitle: string;
   description: string;
+  detail: string;
   icon: string;
   accent: string;
   tags: string[];
+  gameVersions: string;
+  loaders: string;
+  version: string;
+  downloads: number;
+  followers: number;
+  updated: string;
   links: SiteLink[];
+  modrinth: string;
+  github: string;
+  i18n?: string;
+  mcmod?: string;
 }
 
 export const PROJECTS: Project[] = [
   {
     id: 'better-crafting-recipes',
+    path: '/projects/better-crafting-recipes/',
+    modrinthSlug: 'better-crafting-recipes',
     title: '更好的合成配方',
     subtitle: 'Better Crafting Recipes',
-    description: '为原版补齐缺失的合成配方，在不破坏难度的前提下让流程更顺手，支持 1.13+。',
+    description: '为原版补齐缺失的合成配方，在不破坏难度的前提下让流程更顺手。',
+    detail:
+      '111 个新配方、150 个进度，覆盖工作台有序 / 无序合成、切石机与熔炉。把“本该能合成”的东西补回来，同时保留原版的获取节奏。',
     icon: '/media/projects/better-crafting-recipes.webp',
     accent: '#4f9d69',
-    tags: ['数据包', '模组', '1.13+'],
+    tags: ['数据包', '合成', '1.13 – 26.3'],
+    gameVersions: '1.13 – 26.3',
+    loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
+    version: '1.9.3.6',
+    downloads: 12125,
+    followers: 5,
+    updated: '2026-11-16',
     links: [
       { label: 'Modrinth', href: 'https://modrinth.com/datapack/better-crafting-recipes', external: true },
       { label: 'GitHub', href: 'https://github.com/whwdzg/better-crafting-recipes', external: true },
       { label: 'MCMOD', href: 'https://www.mcmod.cn/class/17614.html', external: true },
     ],
+    modrinth: 'https://modrinth.com/datapack/better-crafting-recipes',
+    github: 'https://github.com/whwdzg/better-crafting-recipes',
+    i18n: 'https://github.com/whwdzg/better-crafting-recipes-i18n',
+    mcmod: 'https://www.mcmod.cn/class/17614.html',
   },
   {
-    id: 'better-enchantment',
+    id: 'better-enchantments',
+    path: '/projects/better-enchantments/',
+    modrinthSlug: 'better-enchantment',
     title: '更好附魔',
     subtitle: 'Better Enchantments',
-    description: '让更多物品可以被附魔，扩展原版附魔的适用对象，同时保持属性平衡。',
+    description: '让马铠、狼铠与更多装备接受原版保护 / 耐久附魔，同时保持附魔台与铁砧的规则。',
+    detail:
+      '扩展 protection、fire_protection、blast_protection、projectile_protection 与 unbreaking 的适用对象，把护甲附魔真正扩展到坐骑与宠物装备上。',
     icon: '/media/projects/better-enchantment.webp',
     accent: '#8b5cf6',
-    tags: ['数据包', '附魔'],
+    tags: ['数据包', '附魔', '1.21.5 – 26.3'],
+    gameVersions: '1.21.5 – 26.3',
+    loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
+    version: '1.0.1.3',
+    downloads: 2216,
+    followers: 2,
+    updated: '2026-11-16',
     links: [
       { label: 'Modrinth', href: 'https://modrinth.com/datapack/better-enchantment', external: true },
       { label: 'GitHub', href: 'https://github.com/whwdzg/better-enchantments', external: true },
       { label: 'MCMOD', href: 'https://www.mcmod.cn/class/22543.html', external: true },
     ],
+    modrinth: 'https://modrinth.com/datapack/better-enchantment',
+    github: 'https://github.com/whwdzg/better-enchantments',
+    i18n: 'https://github.com/whwdzg/better-enchantments-i18n',
+    mcmod: 'https://www.mcmod.cn/class/22543.html',
   },
   {
     id: 'better-mob-drop',
+    path: '/projects/better-mob-drop/',
+    modrinthSlug: 'better-mob-drop',
     title: '更好的生物掉落',
     subtitle: 'Better Mob Drop',
-    description: '重新整理生物掉落，让收益更合理，减少无意义的重复刷取。',
+    description: '重新整理 18 种生物的掉落，让友好生物也有值得击杀的理由，收益更合理。',
+    detail:
+      '从悦灵的紫水晶到末影龙的鞘翅，重新编排生物战利品表，并加入抢夺加成、着火熔炼与 18 个击杀进度。',
     icon: '/media/projects/better-mob-drop.webp',
     accent: '#e0833b',
-    tags: ['数据包', '掉落'],
+    tags: ['数据包', '掉落', '1.13 – 26.3'],
+    gameVersions: '1.13 – 26.3',
+    loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
+    version: '1.2.6.4',
+    downloads: 90829,
+    followers: 31,
+    updated: '2026-11-16',
     links: [
       { label: 'Modrinth', href: 'https://modrinth.com/datapack/better-mob-drop', external: true },
       { label: 'GitHub', href: 'https://github.com/whwdzg/better-mob-drop', external: true },
       { label: 'MCMOD', href: 'https://www.mcmod.cn/class/17769.html', external: true },
     ],
+    modrinth: 'https://modrinth.com/datapack/better-mob-drop',
+    github: 'https://github.com/whwdzg/better-mob-drop',
+    i18n: 'https://github.com/whwdzg/better-mob-drop-i18n',
+    mcmod: 'https://www.mcmod.cn/class/17769.html',
   },
   {
-    id: 'magical_dye',
+    id: 'magical-dye',
+    path: '/projects/magical-dye/',
+    modrinthSlug: 'magical_dye',
     title: '魔法染料',
     subtitle: 'Magical Dye',
     description: '用染料转化矿物块与粉末的愚人节限定数据包，配方轻巧，想法很认真。',
-    icon: '/media/projects/magical_dye.webp',
+    detail:
+      '17 个无序合成配方，让任意染料与粉末 / 矿物块互相转化。一个 2025 年愚人节玩笑，也是一套完整的染色逻辑演示。',
+    icon: '/media/projects/magical-dye.webp',
     accent: '#d9467a',
-    tags: ['数据包', '愚人节'],
+    tags: ['数据包', '愚人节', '1.21.2 – 1.21.4'],
+    gameVersions: '1.21.2 – 1.21.4',
+    loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
+    version: '1.0.0',
+    downloads: 174,
+    followers: 2,
+    updated: '2025-03-02',
     links: [
       { label: 'Modrinth', href: 'https://modrinth.com/datapack/magical_dye', external: true },
       { label: 'GitHub', href: 'https://github.com/whwdzg/Magical_Dye', external: true },
     ],
+    modrinth: 'https://modrinth.com/datapack/magical_dye',
+    github: 'https://github.com/whwdzg/Magical_Dye',
+  },
+  {
+    id: 'only-survival-mode',
+    path: '/projects/only-survival-mode/',
+    modrinthSlug: 'only-survival-mode',
+    title: 'Only Survival Mode',
+    subtitle: 'Only Survival Mode',
+    description: '一个只允许生存模式的数据包。开启命令权限后，也不让任何人偷偷切创造。',
+    detail:
+      '每个 tick 对全体玩家执行 gamemode survival。适合生存服、挑战整合包，或者只是想管住自己手的单人存档。',
+    icon: '/media/projects/only-survival-mode.webp',
+    accent: '#3b82f6',
+    tags: ['数据包', '生存', '1.21 – 26.3'],
+    gameVersions: '1.21 – 26.3',
+    loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
+    version: '1.1.0',
+    downloads: 1400,
+    followers: 3,
+    updated: '2026-11-15',
+    links: [
+      { label: 'Modrinth', href: 'https://modrinth.com/datapack/only-survival-mode', external: true },
+      { label: 'GitHub', href: 'https://github.com/whwdzg/only-survival-mode', external: true },
+    ],
+    modrinth: 'https://modrinth.com/datapack/only-survival-mode',
+    github: 'https://github.com/whwdzg/only-survival-mode',
+  },
+  {
+    id: 'glowing-players',
+    path: '/projects/glowing-players/',
+    modrinthSlug: 'glowing_players',
+    title: 'Glowing Players',
+    subtitle: 'Glowing Players',
+    description: '让所有玩家持续发光。PVP、捉迷藏与服务器管理都能一眼找到人。',
+    detail:
+      '每个 tick 给全体玩家施加无限发光效果。自 1.0.1 起只支持 1.21+，并通过数据包 / 模组两种形式发布。',
+    icon: '/media/projects/glowing-players.webp',
+    accent: '#22c55e',
+    tags: ['数据包', '社交', '1.21 – 26.3'],
+    gameVersions: '1.21 – 26.3',
+    loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
+    version: '1.1.0',
+    downloads: 72059,
+    followers: 68,
+    updated: '2026-11-15',
+    links: [
+      { label: 'Modrinth', href: 'https://modrinth.com/datapack/glowing_players', external: true },
+      { label: 'GitHub', href: 'https://github.com/whwdzg/glowing-players', external: true },
+    ],
+    modrinth: 'https://modrinth.com/datapack/glowing_players',
+    github: 'https://github.com/whwdzg/glowing-players',
   },
 ];
+
+export function projectById(idOrPath: string): Project | undefined {
+  return PROJECTS.find((project) => project.id === idOrPath || project.path === idOrPath || project.modrinthSlug === idOrPath);
+}
+
+export const PROJECT_TOTALS = {
+  downloads: PROJECTS.reduce((sum, project) => sum + project.downloads, 0),
+  followers: PROJECTS.reduce((sum, project) => sum + project.followers, 0),
+} as const;
 
 export interface TimelineEntry {
   year: string;
@@ -230,7 +356,7 @@ export const PRIMARY_NAV: NavItem[] = [
 export const ARCHIVE_LINKS: SiteLink[] = [
   { label: '2.0 源码分支', href: LINKS.repo2, description: '2.0-final 完整静态站', external: true },
   { label: 'Legacy 1.0', href: LINKS.legacy, description: '最初的静态页面', external: true },
-  { label: '本站源码', href: LINKS.repo, description: '3.0 的 React + Vite 源码', external: true },
+  { label: '本站源码', href: LINKS.repo, description: '3.2 的 React + Vite 源码', external: true },
 ];
 
 export type FluentIconName = keyof typeof FLUENT_ICON_NAMES;

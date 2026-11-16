@@ -23,7 +23,20 @@ import {
   type ReactNode,
 } from 'react';
 
-const KNOWN_PATHS = new Set(['/', '/bilibili/', '/comments/', '/comments/github/', '/about/']);
+const KNOWN_PATHS = new Set([
+  '/',
+  '/bilibili/',
+  '/comments/',
+  '/comments/github/',
+  '/projects/modrinth/',
+  '/projects/better-crafting-recipes/',
+  '/projects/better-enchantments/',
+  '/projects/better-mob-drop/',
+  '/projects/magical-dye/',
+  '/projects/only-survival-mode/',
+  '/projects/glowing-players/',
+  '/about/',
+]);
 
 export function normalizePath(pathname: string): string {
   let path = pathname.replace(/\/index\.html$/i, '/');

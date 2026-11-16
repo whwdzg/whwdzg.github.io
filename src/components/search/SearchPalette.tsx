@@ -24,6 +24,13 @@ const ROUTE_ICONS: Record<string, string> = {
   '/bilibili/': 'tv',
   '/comments/': 'comment',
   '/comments/github/': 'github',
+  '/projects/modrinth/': 'rocket',
+  '/projects/better-crafting-recipes/': 'rocket',
+  '/projects/better-enchantments/': 'rocket',
+  '/projects/better-mob-drop/': 'rocket',
+  '/projects/magical-dye/': 'rocket',
+  '/projects/only-survival-mode/': 'rocket',
+  '/projects/glowing-players/': 'rocket',
   '/about/': 'info',
 };
 
@@ -32,11 +39,12 @@ const ROUTE_KEYWORDS: Record<string, string> = {
   '/bilibili/': 'bilibili b站 视频 影像 归档 video archive 43',
   '/comments/': 'guestbook comment 留言 评论 message 私信',
   '/comments/github/': 'github issue 评论 留言 comment 头像 回复 reply 讨论 discussion',
+  '/projects/modrinth/': 'projects modrinth 项目 数据包 datapack 模组 下载',
   '/about/': 'about version commit 版本 提交 关于 构建',
 };
 
 const STATIC_ITEMS: SearchableItem[] = [
-  ...ROUTES.map((route) => ({
+  ...ROUTES.filter((route) => !route.path.startsWith('/projects/') || route.path === '/projects/modrinth/').map((route) => ({
     id: `page:${route.path}`,
     title: route.shortTitle,
     subtitle: route.description,
@@ -45,7 +53,7 @@ const STATIC_ITEMS: SearchableItem[] = [
     href: route.path,
     icon: ROUTE_ICONS[route.path] ?? 'info',
   })),
-  { id: 'section:home-now', title: '现在 / 站点状态', subtitle: '当前在做什么、3.0 重构进度', group: '章节', href: '/#now', icon: 'sparkle' },
+  { id: 'section:home-now', title: '现在 / 站点状态', subtitle: '当前在做什么、3.2 重构进度', group: '章节', href: '/#now', icon: 'sparkle' },
   { id: 'section:home-projects', title: '精选项目', subtitle: 'Modrinth 数据包与模组', group: '章节', href: '/#projects', icon: 'rocket' },
   { id: 'section:home-videos', title: '最近影像', subtitle: '最新哔哩哔哩投稿', group: '章节', href: '/#latest-videos', icon: 'play' },
   { id: 'section:home-timeline', title: '更新轨迹', subtitle: '2022 → 2026 的版本时间线', group: '章节', href: '/#timeline', icon: 'history' },
@@ -62,10 +70,9 @@ const STATIC_ITEMS: SearchableItem[] = [
     subtitle: project.subtitle,
     keywords: project.description,
     group: '项目',
-    href: project.links[0]?.href ?? LINKS.modrinth,
-    external: true,
+    href: project.path,
     icon: 'rocket',
-    meta: 'Modrinth',
+    meta: '项目详情',
   })),
   ...COMMENTS.map((comment) => ({
     id: `comment:${comment.id}`,
@@ -80,7 +87,7 @@ const STATIC_ITEMS: SearchableItem[] = [
   { id: 'external:github', title: 'GitHub', subtitle: '@whwdzg 的开源仓库', group: '外链', href: LINKS.github, external: true, icon: 'github' },
   { id: 'external:modrinth', title: 'Modrinth 主页', subtitle: '数据包与模组下载', group: '外链', href: LINKS.modrinth, external: true, icon: 'globe' },
   { id: 'external:mcmod', title: 'MCMOD 主页', subtitle: '中文 Minecraft 模组资料', group: '外链', href: LINKS.mcmod, external: true, icon: 'shield' },
-  { id: 'external:repo', title: '本站源码', subtitle: 'whwdzg.github.io 的 3.0 源码', group: '外链', href: LINKS.repo, external: true, icon: 'code' },
+  { id: 'external:repo', title: '本站源码', subtitle: 'whwdzg.github.io 的 3.2 源码', group: '外链', href: LINKS.repo, external: true, icon: 'code' },
 ];
 
 const GROUP_ORDER = ['页面', '章节', '视频', '项目', '留言', '外链'];

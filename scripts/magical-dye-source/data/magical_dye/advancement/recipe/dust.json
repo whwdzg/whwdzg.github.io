@@ -1,0 +1,21 @@
+{
+  "criteria": {   
+      "dust": {    
+          "trigger": "minecraft:inventory_changed",    
+          "conditions": {
+              "items": [
+                  {
+                      "items": "#magical_dye:dust"
+                  }
+              ]
+          }
+      }
+  },
+  "requirements": [    
+      ["dust"]
+  ],
+  "parent": "magical_dye:magical_dye",
+  "rewards": {    
+      "recipes": ["magical_dye:dust_blaze_powder","magical_dye:dust_bone_meal","magical_dye:dust_glowstone_dust","magical_dye:dust_gunpowder","magical_dye:dust_redstone","magical_dye:dust_sugar"]  
+  }
+}

@@ -55,6 +55,13 @@
       "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
+      "name": "Modrinth 项目",
+      "short_name": "项目",
+      "description": "六个数据包与模组项目",
+      "url": "/projects/modrinth/",
+      "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
       "name": "关于",
       "short_name": "关于",
       "description": "版本、提交历史与技术说明",

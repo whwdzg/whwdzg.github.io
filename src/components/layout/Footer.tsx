@@ -19,8 +19,7 @@ export function Footer() {
             </div>
           </div>
           <p className="site-footer__desc">
-            一个由 Minecraft、代码与影像构成的个人角落。3.0 从零重写，使用 Fluent Design
-            Sun Valley 与可选的液态玻璃表面。
+            一个由 Minecraft、代码与影像构成的个人角落。3.2 使用 Fluent Design Sun Valley、可选的液态玻璃表面，并把六个数据包项目搬进了站内。
           </p>
           <div className="site-footer__badges">
             <span className="badge badge--muted">Fluent Design</span>
@@ -48,13 +47,11 @@ export function Footer() {
         <nav className="site-footer__column" aria-label="项目">
           <p className="site-footer__heading">项目</p>
           {PROJECTS.map((project) => (
-            <a key={project.id} href={project.links[0]?.href} target="_blank" rel="noopener noreferrer">
+            <Link key={project.id} to={project.path}>
               {project.title}
-            </a>
+            </Link>
           ))}
-          <a href={LINKS.modrinth} target="_blank" rel="noopener noreferrer">
-            Modrinth 主页
-          </a>
+          <Link to="/projects/modrinth/">Modrinth 项目</Link>
         </nav>
 
         <nav className="site-footer__column" aria-label="更多链接">

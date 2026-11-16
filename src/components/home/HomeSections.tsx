@@ -57,10 +57,10 @@ export function NowSection() {
               也花很多时间把个人网站重写一遍又一遍。
             </p>
             <p>
-              3.0 是一次从零开始的重构：不照搬旧页面，而是用新的设计语言重新实现相同的功能。
+              3.x 从 3.0 开始重写：不照搬旧页面，而是用新的设计语言重新实现相同的功能。
               目标很朴素——更好看，也要更快、更轻。
             </p>
-            <ul className="now__status" aria-label="3.0 完成状态">
+            <ul className="now__status" aria-label="3.x 完成状态">
               <li>
                 <CheckmarkCircleRegular aria-hidden /> Fluent 设计系统与液态玻璃
               </li>
@@ -82,7 +82,7 @@ export function NowSection() {
             <Stat value={43} label="影像归档" note="2021 → 2025" />
           </Reveal>
           <Reveal delay={70}>
-            <Stat value={4} label="Modrinth 项目" note="数据包 / 模组" />
+            <Stat value={6} label="Modrinth 项目" note="数据包 / 模组" />
           </Reveal>
           <Reveal delay={140}>
             <div className="stat-card">
@@ -139,11 +139,11 @@ export function ProjectGrid() {
         <SectionHeading
           eyebrow="PROJECTS"
           title="精选项目"
-          description="给 Minecraft 原版补一点顺手的东西。全部开源，可在 Modrinth 与 GitHub 获取。"
+          description="给 Minecraft 原版补一点顺手的东西。六个项目全部开源，站内可以查看完整配方、附魔与掉落表。"
           actions={
-            <a className="text-link" href={LINKS.modrinth} target="_blank" rel="noopener noreferrer">
-              Modrinth 主页 <OpenRegular aria-hidden />
-            </a>
+            <Link className="text-link" to="/projects/modrinth/">
+              全部项目 <ArrowRightRegular aria-hidden />
+            </Link>
           }
         />
         <div className="project-grid">
@@ -166,12 +166,15 @@ export function ProjectGrid() {
                   <p>{project.description}</p>
                 </div>
                 <div className="project-card__links">
-                  {project.links.map((link) => (
-                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
-                      {link.label}
-                      <OpenRegular aria-hidden />
-                    </a>
-                  ))}
+                  <Link to={project.path}>
+                    项目详情 <ArrowRightRegular aria-hidden />
+                  </Link>
+                  <a href={project.modrinth} target="_blank" rel="noopener noreferrer">
+                    Modrinth <OpenRegular aria-hidden />
+                  </a>
+                  <a href={project.github} target="_blank" rel="noopener noreferrer">
+                    GitHub <OpenRegular aria-hidden />
+                  </a>
                 </div>
               </SpotlightCard>
             </Reveal>

@@ -48,7 +48,7 @@ function serviceWorkerManifest(): Plugin {
         .filter((file) => {
           if (file === 'sw.js' || file === 'sw-assets.json' || file.endsWith('.map')) return false;
           if (file === 'index.html' || file === 'manifest.webmanifest' || file === 'offline.html') return true;
-          if (/^(bilibili|comments|comments\/github|about)\/index\.html$/.test(file)) return true;
+          if (/^(bilibili|comments|comments\/github|projects\/[^/]+|about)\/index\.html$/.test(file)) return true;
           if (file.startsWith('assets/') && /\.(js|css)$/.test(file)) return true;
           if (file.startsWith('icons/')) return true;
           if (file.startsWith('media/avatars/') || file.startsWith('media/projects/')) return true;
@@ -85,6 +85,13 @@ export default defineConfig({
         bilibili: path.resolve('bilibili/index.html'),
         comments: path.resolve('comments/index.html'),
         commentsGithub: path.resolve('comments/github/index.html'),
+        projects: path.resolve('projects/modrinth/index.html'),
+        betterCrafting: path.resolve('projects/better-crafting-recipes/index.html'),
+        betterEnchantments: path.resolve('projects/better-enchantments/index.html'),
+        betterMobDrop: path.resolve('projects/better-mob-drop/index.html'),
+        magicalDye: path.resolve('projects/magical-dye/index.html'),
+        onlySurvival: path.resolve('projects/only-survival-mode/index.html'),
+        glowingPlayers: path.resolve('projects/glowing-players/index.html'),
         about: path.resolve('about/index.html'),
       },
       output: {
