@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "ab080ca2a273006ee7be55f3ef78aca56e7271fa",
-  "commitShort": "ab080ca",
-  "commitTime": "2026-11-18T01:11:17+08:00",
-  "buildTime": "2026-11-17T17:22:01.420Z",
+  "commit": "50ff49c9894056c5a2699a58ec8ac902ac4f66b3",
+  "commitShort": "50ff49c",
+  "commitTime": "2026-11-18T01:22:55+08:00",
+  "buildTime": "2026-11-17T17:33:50.554Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "50ff49c9894056c5a2699a58ec8ac902ac4f66b3",
+      "short": "50ff49c9",
+      "time": "2026-11-18T01:22:55+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add Minecraft datapack and resource pack analyzers",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/50ff49c9894056c5a2699a58ec8ac902ac4f66b3"
+    },
     {
       "hash": "ab080ca2a273006ee7be55f3ef78aca56e7271fa",
       "short": "ab080ca2",

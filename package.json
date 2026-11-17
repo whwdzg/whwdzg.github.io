@@ -21,6 +21,8 @@
     "test:watch": "vitest",
     "data:videos": "node scripts/build-videos-data.mjs",
     "data:projects": "node scripts/build-project-data.mjs",
+    "data:sync": "node --dns-result-order=ipv4first scripts/sync-all.mjs",
+    "data:github": "node --dns-result-order=ipv4first scripts/sync-github.mjs",
     "data:modrinth": "node --dns-result-order=ipv4first scripts/sync-modrinth.mjs",
     "data:mcmod": "node --dns-result-order=ipv4first scripts/sync-mcmod.mjs",
     "data:bilibili": "node --dns-result-order=ipv4first scripts/sync-bilibili-space.mjs",

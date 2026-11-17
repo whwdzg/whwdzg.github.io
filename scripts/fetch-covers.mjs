@@ -11,7 +11,7 @@
  * 这是一个开发期脚本，不参与 CI 构建；构建只使用已经落盘的本地资源。
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -66,12 +66,16 @@ async function fetchOne(video) {
         pic: `${String(detail.pic).replace(/^http:/, 'https:')}@640w_360h.webp`,
       };
 
-      if (!KEEP_LOCAL_COVER.has(video.id)) {
+      const localFile = path.join(COVER_DIR, `v${String(video.id).padStart(2, '0')}.webp`);
+      const hasLocalCover = existsSync(localFile) && statSync(localFile).size > 0;
+      if (!KEEP_LOCAL_COVER.has(video.id) && !hasLocalCover) {
         const image = await fetch(meta.pic, { headers: HEADERS });
         if (!image.ok) throw new Error(`封面请求失败 HTTP ${image.status}`);
         const buffer = Buffer.from(await image.arrayBuffer());
-        writeFileSync(path.join(COVER_DIR, `v${String(video.id).padStart(2, '0')}.webp`), buffer);
+        writeFileSync(localFile, buffer);
         meta.local = `v${String(video.id).padStart(2, '0')}.webp`;
+      } else if (hasLocalCover) {
+        meta.local = cache[bvid]?.local ?? `v${String(video.id).padStart(2, '0')}.webp`;
       }
 
       cache[bvid] = meta;

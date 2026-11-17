@@ -7,7 +7,7 @@
  * 通过公开 view 接口读取合集与全部成员视频，把封面下载到本地并生成
  * src/data/bilibili-collections.ts。运行时读取的是同一份在线 API 快照。
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -54,6 +54,7 @@ async function fetchJson(url) {
 
 async function downloadCover(url, file) {
   if (!url) return null;
+  if (existsSync(file) && statSync(file).size > 0) return true;
   mkdirSync(path.dirname(file), { recursive: true });
   for (let attempt = 0; attempt < 4; attempt += 1) {
     try {

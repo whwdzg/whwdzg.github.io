@@ -2,6 +2,8 @@
 import { ArrowRightRegular, CodeRegular, OpenRegular, StarRegular } from '@fluentui/react-icons';
 import { Link } from '../../lib/router';
 import { LINKS, SUBSITES } from '../../data/site';
+import { GITHUB_REPOS, GITHUB_SYNCED_AT, githubRepo } from '../../data/github';
+import { formatDate } from '../../lib/format';
 import { PageIntro } from '../../components/layout/PageIntro';
 import { FluentIcon } from '../../components/common/FluentIcon';
 import { Reveal } from '../../components/common/Reveal';
@@ -29,6 +31,7 @@ export default function GitHubProjectsPage() {
           { icon: 'github', label: '2 个详细项目' },
           { icon: 'code', label: `${OTHER_REPOS.length} 个其他仓库` },
           { icon: 'globe', label: 'GitHub Pages 子站' },
+          { icon: 'refresh', label: "同步 " + formatDate(GITHUB_SYNCED_AT) },
         ]}
         actions={
           <>
@@ -73,7 +76,9 @@ export default function GitHubProjectsPage() {
             description="它们有独立的代码、构建与 GitHub Pages 部署，主站只做导览。"
           />
           <div className="github-project-grid">
-            {SUBSITES.map((site, index) => (
+            {SUBSITES.map((site, index) => {
+              const snapshot = githubRepo(site.github.split('/').pop() ?? '');
+              return (
               <Reveal as="article" className="github-project-card" key={site.id} delay={index * 60}>
                 <div className="github-project-card__head">
                   <img src={site.icon} alt={`${site.title}图标`} width={56} height={56} loading="lazy" />
@@ -84,6 +89,9 @@ export default function GitHubProjectsPage() {
                   <span className="badge">子站</span>
                 </div>
                 <p className="github-project-card__desc">{site.description}</p>
+                {snapshot && (
+                  <p className="github-project-card__snapshot">{'★ '}{snapshot.stars}{' · fork '}{snapshot.forks}{' · 更新 '}{formatDate(snapshot.updatedAt)}</p>
+                )}
                 <div className="github-project-card__links">
                   <Link to={site.path}>
                     项目详情 <ArrowRightRegular aria-hidden />
@@ -96,8 +104,12 @@ export default function GitHubProjectsPage() {
                   </a>
                 </div>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
+          <p className="project-note">
+            GitHub 数据来自公开仓库 API，最近同步 {formatDate(GITHUB_SYNCED_AT)}；共 {GITHUB_REPOS.length} 个仓库。
+          </p>
         </Reveal>
 
         <Reveal as="section" className="article-card" id="other">
@@ -110,16 +122,19 @@ export default function GitHubProjectsPage() {
           </div>
           <p className="project-section-lead">数据包项目在 Modrinth 项目页有完整介绍；这里仅保留 GitHub 源码入口。</p>
           <div className="github-repo-list">
-            {OTHER_REPOS.map((repo) => (
+            {OTHER_REPOS.map((repo) => {
+              const snapshot = githubRepo(repo.name);
+              return (
               <a key={repo.href} href={repo.href} target="_blank" rel="noopener noreferrer">
                 <FluentIcon name="github" size={16} aria-hidden />
                 <span>
                   <strong>{repo.name}</strong>
-                  <small>{repo.description}</small>
+                  <small>{repo.description}{snapshot ? [' · ★ ', snapshot.stars, ' · ', formatDate(snapshot.updatedAt)] : ''}</small>
                 </span>
                 <OpenRegular aria-hidden />
               </a>
-            ))}
+              );
+            })}
           </div>
           <p className="project-note">
             <StarRegular aria-hidden /> 仅列出精选仓库，未列出的仓库仍可在 GitHub 主页找到。

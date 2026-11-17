@@ -1,0 +1,48 @@
+name: Sync external data
+
+on:
+  schedule:
+    # 每小时第 17 分钟同步，避开整点高峰
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-external-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Sync Modrinth / MC百科 / GitHub / Bilibili
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node --dns-result-order=ipv4first scripts/sync-all.mjs
+
+      - name: Commit updated snapshots
+        run: |
+          if git diff --quiet; then
+            echo "No external data changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data scripts/bilibili-source.json scripts/bilibili-cache.json public/media/bilibili
+          if git diff --cached --quiet; then
+            echo "No staged data changes."
+            exit 0
+          fi
+          git commit -m "chore: sync external data snapshots"
+          git push

@@ -1874,3 +1874,5 @@
     grid-column: auto;
   }
 }
+
+.github-project-card__snapshot { margin-top: 7px; color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }

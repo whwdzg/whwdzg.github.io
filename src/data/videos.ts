@@ -100,7 +100,7 @@ export const videos: Video[] = [
     "label": "在哔哩哔哩观看",
     "disabled": false,
     "durationSeconds": 25,
-    "views": 4434
+    "views": 4435
   },
   {
     "id": 46,
@@ -219,7 +219,7 @@ export const videos: Video[] = [
     "label": "在哔哩哔哩观看",
     "disabled": false,
     "durationSeconds": 19,
-    "views": 2275
+    "views": 2276
   },
   {
     "id": 53,
@@ -1512,7 +1512,7 @@ export const videos: Video[] = [
     "label": "在哔哩哔哩观看",
     "disabled": false,
     "durationSeconds": 34,
-    "views": 22202
+    "views": 22205
   },
   {
     "id": 126,
@@ -2209,7 +2209,7 @@ export const videos: Video[] = [
     "label": "在哔哩哔哩观看",
     "disabled": false,
     "durationSeconds": 25,
-    "views": 9413
+    "views": 9414
   },
   {
     "id": 166,
@@ -2226,7 +2226,7 @@ export const videos: Video[] = [
     "label": "在哔哩哔哩观看",
     "disabled": false,
     "durationSeconds": 44,
-    "views": 39403
+    "views": 39405
   },
   {
     "id": 167,
@@ -2873,7 +2873,7 @@ export const videos: Video[] = [
     "label": "在哔哩哔哩观看",
     "disabled": false,
     "durationSeconds": 16,
-    "views": 80733
+    "views": 80734
   },
   {
     "id": 200,

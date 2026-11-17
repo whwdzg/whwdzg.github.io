@@ -32,6 +32,7 @@ import { copyText } from '../lib/clipboard';
 import { formatDateTime, relativeTime } from '../lib/format';
 import { siteMeta } from '../lib/meta';
 import { LINKS, SITE } from '../data/site';
+import { SYNC_STATUS, SYNC_SOURCES } from '../data/sync-status';
 
 interface CommitEntry {
   hash: string;
@@ -44,6 +45,7 @@ interface CommitEntry {
 
 const TOC_ITEMS = [
   { id: 'version', label: '版本与构建' },
+  { id: 'sync', label: '数据同步' },
   { id: 'commits', label: '最近提交' },
   { id: 'design', label: '设计理念' },
   { id: 'tech', label: '技术栈' },
@@ -60,7 +62,7 @@ const TECH_STACK = [
   { name: 'Fluent UI Icons', note: '微软 Fluent System Icons，按需 tree-shake' },
   { name: '原生 CSS', note: 'CSS 变量、color-mix、容器查询、无 UI 框架' },
   { name: 'Service Worker', note: '静态资源缓存与离线回退' },
-  { name: 'GitHub Actions', note: '构建、测试、Pages 部署' },
+  { name: 'GitHub Actions', note: '构建、测试、每小时数据同步、Pages 部署' },
   { name: 'WebP / AVIF', note: '全部本地封面与壁纸，懒加载' },
 ];
 
@@ -285,6 +287,33 @@ export default function AboutPage() {
             </p>
           </Reveal>
 
+          <Reveal as="section" className="article-card" id="sync">
+            <div className="article-card__head">
+              <div>
+                <p className="eyebrow">SYNC STATUS</p>
+                <h2>外部数据同步</h2>
+              </div>
+              <span className="badge">每小时</span>
+            </div>
+            <p>
+              GitHub Actions 每小时抓取 Modrinth、MC百科、GitHub 与哔哩哔哩，更新仓库快照后自动提交并重新部署。
+              页面显示的是最近一次成功同步的时间。
+            </p>
+            <div className="sync-status-grid">
+              {SYNC_SOURCES.map(([key, source]) => (
+                <div className="sync-source" key={key}>
+                  <span>{source.label}</span>
+                  <strong>{source.count}</strong>
+                  <small>{source.at ? `${formatDateTime(source.at)} · ${relativeTime(source.at)}` : '尚未同步'}</small>
+                </div>
+              ))}
+            </div>
+            <p className="settings-hint">
+              数据文件位于 <code>src/data/</code>，B 站封面位于 <code>public/media/bilibili/</code>；
+              最近整体同步：{SYNC_STATUS.updatedAt ? formatDateTime(SYNC_STATUS.updatedAt) : '未知'}。
+            </p>
+          </Reveal>
+
           <Reveal as="section" className="article-card" id="commits">
             <div className="article-card__head">
               <div>
@@ -435,17 +464,18 @@ export default function AboutPage() {
               title="src/"
               code={`src/
 ├─ components/     # 布局、通用组件、首页 / 视频 / 设置
-├─ pages/          # 4 个路由级页面（懒加载）
+├─ pages/          # 25 个路由级页面（懒加载）
 ├─ hooks/          # 设置、搜索、页眉自动收起、计数等
 ├─ lib/            # 路由、设置、格式化、搜索、PWA
-├─ data/           # 站点内容、留言、视频数据
+├─ data/           # 站点内容、留言、视频、GitHub / 同步状态
 ├─ generated/      # 构建期生成的 site-meta.json
 └─ styles/         # tokens / base / shell / components / pages
 
 scripts/
 ├─ generate-meta.mjs       # 版本 + git log → site-meta.json
+├─ sync-all.mjs            # 每小时外部数据同步编排
 ├─ build-videos-data.mjs   # B 站缓存 → videos.ts
-└─ fetch-covers.mjs        # 抓取封面与元数据（手动运行）
+└─ fetch-covers.mjs        # 抓取封面与元数据（Actions 每小时）
 
 public/
 ├─ media/bilibili/  # 251 张 640×360 WebP
@@ -468,11 +498,11 @@ npm run build      # tsc -b && vite build
 npm run preview    # 预览 dist
 npm test           # 纯函数单元测试
 
-# 需要更新 B 站封面 / 时长时（可选）：
-npm run fetch:covers`}
+# 手动执行完整外部数据同步（可选）：
+npm run data:sync`}
             />
             <p className="settings-hint">
-              哔哩哔哩数据由 <code>scripts/bilibili-source.json</code>（人工整理）与
+              哔哩哔哩数据由 <code>scripts/bilibili-source.json</code>（人工整理 + 自动追加）与
               <code>scripts/bilibili-cache.json</code>（B 站公开接口）合并生成；修改后运行
               <code>node scripts/build-videos-data.mjs</code>。
             </p>

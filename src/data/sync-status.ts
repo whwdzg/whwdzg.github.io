@@ -1,0 +1,44 @@
+/**
+ * 外部数据同步状态 / External sync status.
+ * 由 scripts/sync-status.mjs 与每小时 GitHub Actions 生成。
+ */
+export interface SyncSource {
+  label: string;
+  at: string;
+  count: number;
+  status: 'ok' | 'error';
+}
+
+export const SYNC_STATUS = {
+  "updatedAt": "2026-11-17T17:30:44.384Z",
+  "sources": {
+    "github": {
+      "label": "GitHub",
+      "at": "2026-11-17T17:30:24.436Z",
+      "count": 9,
+      "status": "ok"
+    },
+    "modrinth": {
+      "label": "Modrinth",
+      "at": "2026-11-17T17:30:18.332Z",
+      "count": 6,
+      "status": "ok"
+    },
+    "mcmod": {
+      "label": "MC百科",
+      "at": "2026-11-17T17:30:19.390Z",
+      "count": 3,
+      "status": "ok"
+    },
+    "bilibili": {
+      "label": "哔哩哔哩",
+      "at": "2026-11-17T17:30:44.384Z",
+      "count": 251,
+      "status": "ok"
+    }
+  }
+} as const;
+
+export const SYNC_SOURCES = Object.entries(SYNC_STATUS.sources) as Array<
+  [keyof typeof SYNC_STATUS.sources, SyncSource]
+>;

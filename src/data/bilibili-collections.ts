@@ -45,7 +45,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
     "cover": "/media/bilibili/v01.webp",
     "coverAlt": "Minecraft 官方短视频",
     "count": 161,
-    "fetchedAt": "2026-11-17T15:49:41.003Z",
+    "fetchedAt": "2026-11-17T17:30:44.204Z",
     "sections": [
       {
         "title": "村民新闻联动",
@@ -958,7 +958,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】猪灵的一天！",
             "date": "2025-03-01",
             "durationSeconds": 34,
-            "views": 22204,
+            "views": 22205,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1TpXSYdEzn/"
           },
@@ -1844,7 +1844,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
     "cover": "/media/bilibili/v05.webp",
     "coverAlt": "Hypixel 官方短视频",
     "count": 46,
-    "fetchedAt": "2026-11-17T15:49:45.099Z",
+    "fetchedAt": "2026-11-17T17:30:44.286Z",
     "sections": [
       {
         "title": "正片",
