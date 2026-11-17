@@ -24,6 +24,7 @@ import { PageIntro } from '../components/layout/PageIntro';
 import { FluentIcon } from '../components/common/FluentIcon';
 import { VideoCard } from '../components/bilibili/VideoCard';
 import { VideoDetail } from '../components/bilibili/VideoDetail';
+import { CollectionDetail } from '../components/bilibili/CollectionDetail';
 import { Button, IconButton } from '../components/common/Button';
 import { useRouter } from '../lib/router';
 import { readStorage, writeStorage } from '../lib/storage';
@@ -60,6 +61,7 @@ export default function BilibiliPage() {
   const [sort, setSort] = useState<SortMode>('newest');
   const [view, setView] = useState<ViewMode>(() => (readStorage(VIEW_KEY) === 'list' ? 'list' : 'grid'));
   const [limit, setLimit] = useState(PAGE_SIZE);
+  const [collectionVideo, setCollectionVideo] = useState<Video | null>(null);
   const [detailId, setDetailId] = useState<number | null>(() => {
     const value = Number(new URLSearchParams(search).get('video'));
     return Number.isFinite(value) && videosById.has(value) ? value : null;
@@ -127,12 +129,20 @@ export default function BilibiliPage() {
   const hasFilters = Boolean(query) || status !== 'all' || year !== 'all' || sort !== 'newest';
 
   const openDetail = (video: Video) => {
+    if (video.status === 'collection') {
+      setDetailId(null);
+      setCollectionVideo(video);
+      navigate('/bilibili/', { replace: true, scroll: false });
+      return;
+    }
+    setCollectionVideo(null);
     setDetailId(video.id);
     navigate(`/bilibili/?video=${video.id}`, { replace: true, scroll: false });
   };
 
   const closeDetail = () => {
     setDetailId(null);
+    setCollectionVideo(null);
     navigate('/bilibili/', { replace: true, scroll: false });
   };
 
@@ -160,7 +170,7 @@ export default function BilibiliPage() {
       <PageIntro
         eyebrow="ARCHIVE · BILIBILI"
         title="影像存档"
-        lead="沧海水鱼在哔哩哔哩发布的作品归档。早期部分视频已失效或私密，仅保留记录；仍在线的封面与时长来自 B 站公开接口。"
+        lead="沧海水鱼在哔哩哔哩发布的作品归档。早期部分视频已失效或私密，仅保留记录；合集可在站内展开查看 B 站全部成员视频的封面、标题与时间。"
         meta={[
           { icon: 'tv', label: '沧海水鱼' },
           { icon: 'calendar', label: '起始 2021-06-29' },
@@ -349,9 +359,11 @@ export default function BilibiliPage() {
         onClose={closeDetail}
         onPrev={prev ? () => openDetail(prev) : undefined}
         onNext={next ? () => openDetail(next) : undefined}
+        onOpenCollection={detail?.status === 'collection' ? () => { setDetailId(null); setCollectionVideo(detail); } : undefined}
         hasPrev={Boolean(prev)}
         hasNext={Boolean(next)}
       />
+      <CollectionDetail video={collectionVideo} onClose={() => setCollectionVideo(null)} />
     </div>
   );
 }

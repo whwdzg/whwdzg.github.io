@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "22d3d62f91555ea9bf7dee0b28ba3669c065e0da",
-  "commitShort": "22d3d62",
-  "commitTime": "2026-11-17T23:38:29+08:00",
-  "buildTime": "2026-11-17T15:45:03.001Z",
+  "commit": "195d864dbc8815ba33a67871b98035abf2545cd7",
+  "commitShort": "195d864",
+  "commitTime": "2026-11-17T23:46:11+08:00",
+  "buildTime": "2026-11-17T15:52:58.819Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "195d864dbc8815ba33a67871b98035abf2545cd7",
+      "short": "195d864d",
+      "time": "2026-11-17T23:46:11+08:00",
+      "author": "Alex Yang",
+      "subject": "fix: remove header theme toggle",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/195d864dbc8815ba33a67871b98035abf2545cd7"
+    },
     {
       "hash": "22d3d62f91555ea9bf7dee0b28ba3669c065e0da",
       "short": "22d3d62f",

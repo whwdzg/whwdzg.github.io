@@ -80,7 +80,7 @@ const CHANGELOG = [
     items: [
       '新增 Asteria Player / 来福 Simulation Wiki 子站与 GitHub 项目页。',
       '重做 Base64 / BaseX / 进制 / Unicode / 计算器 / MC 投影 6 个工具。',
-      'B 站归档同步到 249 条；侧栏、主页与页脚更新。',
+      'B 站归档同步到 249 条；合集可展开全部成员视频；侧栏、主页与页脚更新。',
       '数据包物品/进度贴图、标签展开、MCMOD 与版本矩阵；物品可跳转中文 Wiki。',
       '季节粒子、正文大图、页眉补位、轮播倒计时与 PWA 名称调整。',
     ],

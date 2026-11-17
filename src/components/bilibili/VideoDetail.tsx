@@ -22,11 +22,12 @@ interface VideoDetailProps {
   onClose: () => void;
   onPrev?: () => void;
   onNext?: () => void;
+  onOpenCollection?: () => void;
   hasPrev?: boolean;
   hasNext?: boolean;
 }
 
-export function VideoDetail({ video, onClose, onPrev, onNext, hasPrev, hasNext }: VideoDetailProps) {
+export function VideoDetail({ video, onClose, onPrev, onNext, onOpenCollection, hasPrev, hasNext }: VideoDetailProps) {
   const { toast } = useToast();
   const duration = formatDuration(video?.durationSeconds);
 
@@ -117,6 +118,15 @@ export function VideoDetail({ video, onClose, onPrev, onNext, hasPrev, hasNext }
               >
                 复制标题
               </Button>
+              {video.status === 'collection' && onOpenCollection && (
+                <Button
+                  variant="secondary"
+                  icon={<OpenRegular aria-hidden />}
+                  onClick={onOpenCollection}
+                >
+                  查看合集全部 {video.count ?? ''} 条
+                </Button>
+              )}
               {video.bvid && (
                 <Button
                   variant="ghost"

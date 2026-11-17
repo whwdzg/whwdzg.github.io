@@ -26,7 +26,7 @@ export function VideoCard({ video, view, onOpen }: VideoCardProps) {
         type="button"
         className="video-card__cover"
         onClick={() => onOpen(video)}
-        aria-label={`查看详情：${video.title}`}
+        aria-label={video.status === 'collection' ? `查看合集：${video.title}` : `查看详情：${video.title}`}
       >
         <img
           src={video.cover}
@@ -68,7 +68,7 @@ export function VideoCard({ video, view, onOpen }: VideoCardProps) {
         {video.description && <p className="video-card__desc">{video.description}</p>}
         <div className="video-card__actions">
           <button type="button" className="video-card__detail" onClick={() => onOpen(video)}>
-            查看详情
+            {video.status === 'collection' ? `查看合集 ${video.count ?? ''} 条` : '查看详情'}
           </button>
           {video.url ? (
             <a
