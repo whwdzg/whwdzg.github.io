@@ -141,7 +141,7 @@ export default function CraftingProjectPage() {
             <span>01</span>
             <div>
               <strong>选择对应版本</strong>
-              <p>1.13–1.20.4 使用 x.x.x.0，1.21.2–1.21.4 使用 x.x.x.1，1.21.5+ 与 26.x 使用 x.x.x.2。</p>
+              <p>按下方兼容表选择对应分支：26.3 → x.x.x.6，26.1–26.2 → x.x.x.5，1.21.9–1.21.11 → x.x.x.4，1.21.5–1.21.8 → x.x.x.3，1.21.2–1.21.4 → x.x.x.2，1.21–1.21.1 → x.x.x.1，1.13–1.20.4 → x.x.x.0。</p>
             </div>
           </div>
           <div>
@@ -181,26 +181,18 @@ export default function CraftingProjectPage() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1.13 – 1.20.4</td>
-                <td>x.x.x.0</td>
-                <td>根进度图标替换为箱子，部分新配方不可用。</td>
-              </tr>
-              <tr>
-                <td>1.21.2 – 1.21.4</td>
-                <td>x.x.x.1</td>
-                <td>使用 1.21 配方格式与物品组件。</td>
-              </tr>
-              <tr>
-                <td>1.21.5 – 26.3</td>
-                <td>x.x.x.2</td>
-                <td>当前主分支，包含全部配方与最新进度。</td>
-              </tr>
+              <tr><td>26.3</td><td>x.x.x.6</td><td>当前主分支，26.3 配方格式与全部进度。</td></tr>
+              <tr><td>26.1 – 26.2</td><td>x.x.x.5</td><td>26.x 早期格式，包含对应版本配方。</td></tr>
+              <tr><td>1.21.9 – 1.21.11</td><td>x.x.x.4</td><td>1.21.9+ 配方格式。</td></tr>
+              <tr><td>1.21.5 – 1.21.8</td><td>x.x.x.3</td><td>1.21.5–1.21.8 配方格式。</td></tr>
+              <tr><td>1.21.2 – 1.21.4</td><td>x.x.x.2</td><td>使用 1.21 配方格式与物品组件。</td></tr>
+              <tr><td>1.21 – 1.21.1</td><td>x.x.x.1</td><td>1.21 初期配方格式。</td></tr>
+              <tr><td>1.13 – 1.20.4</td><td>x.x.x.0</td><td>根进度图标替换为箱子，部分新配方不可用。</td></tr>
             </tbody>
           </table>
         </div>
         <p className="project-note">
-          当前仓库 <code>pack.mcmeta</code> 的目标格式为 26.3。旧版本请从 Modrinth 的版本列表选择对应文件。
+          当前仓库 <code>pack.mcmeta</code> 的目标格式为 26.3。版本号前三位是内容版本，最后一位是 Minecraft 分支；旧版本请从 Modrinth 选择对应 x.x.x.N 文件。
         </p>
       </Reveal>
 

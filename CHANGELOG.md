@@ -10,7 +10,9 @@
 - 新增 2.0 工具重做：Base64、BaseX、进制转换、Unicode、科学计算器、MC 投影查看器。
 - 计算器采用 ClassWiz 风格操作逻辑，支持函数图像、LaTeX 导入导出、历史与记忆。
 - MC 投影查看器读取 litematic / schematic / schem，支持不完整方块模型、朝向、桌面 / 触摸控制；Minecraft 26.3 资源已复制到站点。
-- B 站归档同步至 249 条，补齐新视频封面、时长与播放量。
+- B 站归档同步至 251 条，补齐新视频封面、时长与播放量，并纳入 3 条直播回放。
+- 更新 Better Enchantments / Better Mob Drop / Better Crafting Recipes 的 MC 版本分支表。
+- 来福 Wiki 页面更新为 451 个页面、195 个媒体文件；首页同步最新全站内容。
 - 合集支持通过 B 站公开接口同步全部成员视频，在站内查看封面、标题、发布时间与时长；每周自动同步一次。
 - 数据包物品背景改用物品栏贴图，进度节点按 task / goal / challenge 使用对应进度框；标签材料与进度树默认全部展开，物品图标点击跳转中文 Minecraft Wiki。
 - Modrinth 版本按“前三位内容版本 + 末位 MC 变体”分组；支持全部版本时显示完整范围；MCMOD 数据与入口加入项目页。

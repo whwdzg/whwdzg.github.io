@@ -244,8 +244,8 @@ export default function EnchantmentsProjectPage() {
           <div>
             <span>01</span>
             <div>
-              <strong>选择 1.21.5+ / 26.x</strong>
-              <p>当前版本使用新的附魔数据格式；旧版本请查看 Modrinth 的历史文件。</p>
+              <strong>选择对应版本分支</strong>
+              <p>26.3 → .3，1.21.11–26.2 → .2，1.21.9–1.21.10 → .1，1.21.5–1.21.8 → .0；旧版本请查看 Modrinth 的历史文件。</p>
             </div>
           </div>
           <div>
@@ -273,21 +273,15 @@ export default function EnchantmentsProjectPage() {
             <thead>
               <tr>
                 <th>Minecraft</th>
-                <th>状态</th>
+                <th>版本号分支</th>
                 <th>说明</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1.21.5 – 26.3</td>
-                <td><span className="status-dot" /> 支持</td>
-                <td>当前主分支，包含马铠 / 狼铠标签与 26.3 格式。</td>
-              </tr>
-              <tr>
-                <td>1.21.2 – 1.21.4</td>
-                <td>旧版本</td>
-                <td>附魔数据格式不同，请使用 Modrinth 对应版本。</td>
-              </tr>
+              <tr><td>26.3</td><td>x.x.x.3</td><td>当前主分支，包含马铠 / 狼铠标签与 26.3 格式。</td></tr>
+              <tr><td>1.21.11 – 26.2</td><td>x.x.x.2</td><td>26.x 早期与 1.21.11 分支。</td></tr>
+              <tr><td>1.21.9 – 1.21.10</td><td>x.x.x.1</td><td>1.21.9 / 1.21.10 附魔格式。</td></tr>
+              <tr><td>1.21.5 – 1.21.8</td><td>x.x.x.0</td><td>1.21.5–1.21.8 附魔格式。</td></tr>
             </tbody>
           </table>
         </div>

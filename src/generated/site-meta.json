@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "f86c1b93bce72d76efd4b700f2cfb576c2dd5399",
-  "commitShort": "f86c1b9",
-  "commitTime": "2026-11-18T00:55:24+08:00",
-  "buildTime": "2026-11-17T17:02:06.779Z",
+  "commit": "94f1ae328fb7eeabf3f3cc05066a1b3ad400afb5",
+  "commitShort": "94f1ae3",
+  "commitTime": "2026-11-18T01:03:52+08:00",
+  "buildTime": "2026-11-17T17:07:33.023Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "94f1ae328fb7eeabf3f3cc05066a1b3ad400afb5",
+      "short": "94f1ae32",
+      "time": "2026-11-18T01:03:52+08:00",
+      "author": "Alex Yang",
+      "subject": "content: refresh Wiki mirror info and homepage",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/94f1ae328fb7eeabf3f3cc05066a1b3ad400afb5"
+    },
     {
       "hash": "f86c1b93bce72d76efd4b700f2cfb576c2dd5399",
       "short": "f86c1b93",

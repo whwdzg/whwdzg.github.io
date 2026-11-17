@@ -199,8 +199,8 @@ export default function MobDropProjectPage() {
           <div>
             <span>01</span>
             <div>
-              <strong>选择数据包或模组版</strong>
-              <p>数据包适合原版 / 服务器；Fabric、Forge、NeoForge、Quilt 版本可直接放进 mods。</p>
+              <strong>选择版本分支</strong>
+              <p>26.3 → .4，26.2 → .3，1.21.5–26.1.2 → .2，1.21.2–1.21.4 → .1，1.13–1.20.4 → .0；数据包与模组版都可按此选择。</p>
             </div>
           </div>
           <div>
@@ -234,21 +234,16 @@ export default function MobDropProjectPage() {
             <thead>
               <tr>
                 <th>Minecraft</th>
-                <th>状态</th>
+                <th>版本号分支</th>
                 <th>说明</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1.21 – 26.3</td>
-                <td><span className="status-dot" /> 支持</td>
-                <td>当前主分支使用 26.3 战利品表格式。</td>
-              </tr>
-              <tr>
-                <td>1.13 – 1.20.4</td>
-                <td>旧版本</td>
-                <td>战利品表谓词格式不同，请使用 Modrinth 历史文件。</td>
-              </tr>
+              <tr><td>26.3</td><td>x.x.x.4</td><td>当前主分支，26.3 战利品表格式。</td></tr>
+              <tr><td>26.2</td><td>x.x.x.3</td><td>26.2 战利品表格式。</td></tr>
+              <tr><td>1.21.5 – 26.1.2</td><td>x.x.x.2</td><td>26.1 与 1.21.5–1.21.11 分支。</td></tr>
+              <tr><td>1.21.2 – 1.21.4</td><td>x.x.x.1</td><td>1.21.2–1.21.4 战利品表格式。</td></tr>
+              <tr><td>1.13 – 1.20.4</td><td>x.x.x.0</td><td>旧版战利品表谓词格式。</td></tr>
             </tbody>
           </table>
         </div>
