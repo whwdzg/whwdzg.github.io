@@ -5,12 +5,28 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "195d864dbc8815ba33a67871b98035abf2545cd7",
-  "commitShort": "195d864",
-  "commitTime": "2026-11-17T23:46:11+08:00",
-  "buildTime": "2026-11-17T15:52:58.819Z",
+  "commit": "bc887f40e58fe679cd823416c32a04e960bdeded",
+  "commitShort": "bc887f4",
+  "commitTime": "2026-11-17T23:57:52+08:00",
+  "buildTime": "2026-11-17T16:00:43.007Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "bc887f40e58fe679cd823416c32a04e960bdeded",
+      "short": "bc887f40",
+      "time": "2026-11-17T23:57:52+08:00",
+      "author": "Alex Yang",
+      "subject": "chore: auto-sync Bilibili collections weekly",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/bc887f40e58fe679cd823416c32a04e960bdeded"
+    },
+    {
+      "hash": "c100e1b33bfc222b243123d76f81074e641ba4c3",
+      "short": "c100e1b3",
+      "time": "2026-11-17T23:53:59+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add Bilibili collection episode browser",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/c100e1b33bfc222b243123d76f81074e641ba4c3"
+    },
     {
       "hash": "195d864dbc8815ba33a67871b98035abf2545cd7",
       "short": "195d864d",

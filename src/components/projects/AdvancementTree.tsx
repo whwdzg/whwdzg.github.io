@@ -13,7 +13,7 @@ const FRAME_LABEL = {
 
 function AdvancementBranch({ node, depth }: { node: AdvancementNode; depth: number }) {
   return (
-    <details className={cn('adv-node', `adv-node--${node.frame}`)} open={depth === 0}>
+    <details className={cn('adv-node', `adv-node--${node.frame}`)} open>
       <summary className="adv-node__summary">
         <span className="adv-node__icon">
           {node.icon ? <ItemIcon id={node.icon} size={32} /> : <SparkleRegular aria-hidden />}
