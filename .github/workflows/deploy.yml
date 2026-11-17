@@ -65,6 +65,8 @@ jobs:
           test -f dist/tools/unicode/index.html
           test -f dist/tools/calculator/index.html
           test -f dist/tools/mc-projection/index.html
+          test -f dist/tools/mc-datapack/index.html
+          test -f dist/tools/mc-resourcepack/index.html
           test -f dist/about/index.html
           test -f dist/sw.js
           test -f dist/manifest.webmanifest

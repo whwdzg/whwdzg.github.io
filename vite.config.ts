@@ -103,6 +103,8 @@ export default defineConfig({
         unicode: path.resolve('tools/unicode/index.html'),
         calculator: path.resolve('tools/calculator/index.html'),
         mcProjection: path.resolve('tools/mc-projection/index.html'),
+        mcDatapack: path.resolve('tools/mc-datapack/index.html'),
+        mcResourcepack: path.resolve('tools/mc-resourcepack/index.html'),
         about: path.resolve('about/index.html'),
       },
       output: {

@@ -30,6 +30,7 @@
   "dependencies": {
     "@fluentui/react-icons": "^2.0.321",
     "dompurify": "^3.4.18",
+    "jszip": "^3.10.2",
     "marked": "^18.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

@@ -359,7 +359,7 @@ export const HIGHLIGHTS: Highlight[] = [
   {
     icon: 'rocket',
     title: '多入口与 251 条归档',
-    text: '23 个真实 HTML 页面、路由级代码分割、B 站合集 / 直播回放、PWA 缓存与空闲预取。',
+    text: '25 个真实 HTML 页面、路由级代码分割、B 站合集 / 直播回放、PWA 缓存与空闲预取。',
   },
 ];
 

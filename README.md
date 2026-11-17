@@ -43,7 +43,7 @@ npm install
 npm run dev        # http://localhost:4173
 npm run build      # tsc -b && vite build
 npm run preview    # 预览 dist
-npm test           # 纯函数 / 数据单元测试（44 项）
+npm test           # 纯函数 / 数据单元测试（47 项）
 npm run typecheck  # 只跑 TypeScript
 ```
 
@@ -115,7 +115,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 │  │  ├─ tools/                # 工具页外壳
 │  │  ├─ settings/             # 设置面板
 │  │  └─ search/               # 命令面板搜索
-│  ├─ pages/                   # 23 个路由级页面（懒加载），含 projects/ 与 tools/
+│  ├─ pages/                   # 25 个路由级页面（懒加载），含 projects/ 与 tools/
 │  ├─ hooks/                   # 设置、搜索、页眉自动收起、计数、全屏…
 │  ├─ lib/                     # 路由、设置、壁纸、搜索、GitHub API、tools/、mc/、PWA
 │  ├─ data/                    # 站点内容、留言、视频数据、projects/（生成）

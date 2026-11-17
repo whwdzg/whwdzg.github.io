@@ -100,6 +100,22 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/projects/SimplePackPage'),
   },
   {
+    path: '/tools/mc-datapack/',
+    title: 'MC 数据包解析 · 水鱼 Blog',
+    shortTitle: '数据包解析',
+    description: '解析 Minecraft 数据包 pack.mcmeta，查看支持版本与进度、配方、战利品表等内容。',
+    prefetch: false,
+    load: () => import('../pages/tools/DataPackPage'),
+  },
+  {
+    path: '/tools/mc-resourcepack/',
+    title: 'MC 资源包解析 · 水鱼 Blog',
+    shortTitle: '资源包解析',
+    description: '解析 Minecraft 资源包，查看支持版本、图标、命名空间与纹理、模型、语言等内容。',
+    prefetch: false,
+    load: () => import('../pages/tools/ResourcePackPage'),
+  },
+  {
     path: '/projects/asteria-player/',
     title: 'Asteria Player · 水鱼 Blog',
     shortTitle: 'Asteria Player',

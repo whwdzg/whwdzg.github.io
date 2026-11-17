@@ -34,6 +34,8 @@ const CORE = [
   '/tools/unicode/',
   '/tools/calculator/',
   '/tools/mc-projection/',
+  '/tools/mc-datapack/',
+  '/tools/mc-resourcepack/',
   '/about/',
   '/manifest.webmanifest',
   '/icons/logo-192.png',

@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "2a4c40519d136173654b5e0b2a943c87d29cdce5",
-  "commitShort": "2a4c405",
-  "commitTime": "2026-11-18T01:09:13+08:00",
-  "buildTime": "2026-11-17T17:09:58.274Z",
+  "commit": "ab080ca2a273006ee7be55f3ef78aca56e7271fa",
+  "commitShort": "ab080ca",
+  "commitTime": "2026-11-18T01:11:17+08:00",
+  "buildTime": "2026-11-17T17:22:01.420Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "ab080ca2a273006ee7be55f3ef78aca56e7271fa",
+      "short": "ab080ca2",
+      "time": "2026-11-18T01:11:17+08:00",
+      "author": "Alex Yang",
+      "subject": "fix: repair changelog entry syntax",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ab080ca2a273006ee7be55f3ef78aca56e7271fa"
+    },
     {
       "hash": "2a4c40519d136173654b5e0b2a943c87d29cdce5",
       "short": "2a4c4051",

@@ -193,7 +193,7 @@ export function SubsitesAndTools() {
         <SectionHeading
           eyebrow="SUB-SITES · TOOLS"
           title="子站与站内工具"
-          description="播放器、451 页 Wiki 镜像、掩星实验与 6 个站内工具都做成了独立页面；主站只负责导览。"
+          description="播放器、451 页 Wiki 镜像、掩星实验与 8 个站内工具都做成了独立页面；主站只负责导览。"
           actions={
             <Link className="text-link" to="/projects/github/">
               GitHub 项目页 <ArrowRightRegular aria-hidden />
@@ -225,7 +225,7 @@ export function SubsitesAndTools() {
               </Link>
             </Reveal>
           ))}
-          {[...TOOLS.slice(4), ...TOOLS.slice(0, 2)].map((tool, index) => (
+          {[...TOOLS.slice(4, 8)].map((tool, index) => (
             <Reveal key={tool.id} delay={(index + 2) * 60}>
               <Link className="home-extra-card" to={tool.path} style={{ '--extra-accent': tool.accent } as React.CSSProperties}>
                 <span className="home-extra-card__icon">

@@ -91,7 +91,7 @@ const SLIDES: Slide[] = [
     lead: 'Asteria Player 负责本地音视频播放；来福 Simulation Wiki 已扩展到 451 个页面、195 个媒体文件。编码、计算器、投影工具与掩星实验也都在这里。',
     light: '/media/hero/light-3.webp',
     dark: '/media/hero/dark-2.webp',
-    meta: ['2 个子站', '6 个工具', '451 页 Wiki'],
+    meta: ['2 个子站', '8 个工具', '451 页 Wiki'],
     actions: [
       { label: '浏览子站', to: '/projects/asteria-player/', primary: true },
       { label: '打开工具', to: '/tools/' },

@@ -46,6 +46,8 @@ const KNOWN_PATHS = new Set([
   '/tools/unicode/',
   '/tools/calculator/',
   '/tools/mc-projection/',
+  '/tools/mc-datapack/',
+  '/tools/mc-resourcepack/',
   '/about/',
 ]);
 
