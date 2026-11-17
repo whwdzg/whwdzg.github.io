@@ -6,7 +6,7 @@
  * - 支持全屏闲置自动收起（可在设置中关闭或扩展为滚动收起）；
  * - 底部细线显示阅读进度，可在设置中关闭。
  */
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useRouter } from '../../lib/router';
 import { routeMeta } from '../../lib/routes';
 import { useUi } from '../../hooks/useUi';
@@ -26,7 +26,7 @@ interface HeaderProps {
 export function Header({ isFullscreen, onToggleFullscreen }: HeaderProps) {
   const { path } = useRouter();
   const { sidebarOpen, settingsOpen, searchOpen, toggleSidebar, openSettings, openSearch } = useUi();
-  const { settings, resolvedTheme, update } = useSettings();
+  const { settings } = useSettings();
   const progress = usePageProgress(settings.pageProgress);
   const meta = routeMeta(path);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -44,10 +44,6 @@ export function Header({ isFullscreen, onToggleFullscreen }: HeaderProps) {
       document.documentElement.dataset.headerHidden = 'false';
     };
   }, [hidden]);
-
-  const toggleTheme = useCallback(() => {
-    update({ theme: resolvedTheme === 'dark' ? 'light' : 'dark' });
-  }, [resolvedTheme, update]);
 
   return (
     <>
@@ -88,14 +84,6 @@ export function Header({ isFullscreen, onToggleFullscreen }: HeaderProps) {
               <span className="header-search__placeholder">搜索</span>
               <kbd className="header-search__kbd">Ctrl K</kbd>
             </button>
-
-            <IconButton
-              label={resolvedTheme === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
-              onClick={toggleTheme}
-              className="header-theme-toggle"
-            >
-              <FluentIcon name={resolvedTheme === 'dark' ? 'sun' : 'moon'} size={20} aria-hidden />
-            </IconButton>
 
             <IconButton
               label={isFullscreen ? '退出全屏' : '进入全屏（页眉会自动收起）'}

@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "cfb8d90e1827ad78a09d60e7b3665bac591b66a4",
-  "commitShort": "cfb8d90",
-  "commitTime": "2026-11-17T23:33:41+08:00",
-  "buildTime": "2026-11-17T15:37:52.060Z",
+  "commit": "22d3d62f91555ea9bf7dee0b28ba3669c065e0da",
+  "commitShort": "22d3d62",
+  "commitTime": "2026-11-17T23:38:29+08:00",
+  "buildTime": "2026-11-17T15:45:03.001Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "22d3d62f91555ea9bf7dee0b28ba3669c065e0da",
+      "short": "22d3d62f",
+      "time": "2026-11-17T23:38:29+08:00",
+      "author": "Alex Yang",
+      "subject": "copy: update author intro",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/22d3d62f91555ea9bf7dee0b28ba3669c065e0da"
+    },
     {
       "hash": "cfb8d90e1827ad78a09d60e7b3665bac591b66a4",
       "short": "cfb8d90e",
