@@ -6,6 +6,7 @@ import { formatDate, formatDuration, formatViews } from '../../lib/format';
 export const STATUS_LABELS: Record<Video['status'], string> = {
   public: '视频',
   collection: '合集',
+  live: '直播回放',
   private: '已私密',
   offline: '已失效',
 };

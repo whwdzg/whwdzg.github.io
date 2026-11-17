@@ -58,12 +58,12 @@ const SLIDES: Slide[] = [
   {
     id: 'archive',
     kicker: 'ARCHIVE · BILIBILI',
-    title: '249 段影像，',
+    title: '251 段影像，',
     accent: '一次完整归档。',
     lead: '从 2021 年的第一条 Minecraft 视频，到官方短视频搬运与数据包演示。封面全部本地 WebP 化，支持搜索、年份筛选与网格 / 列表视图。',
     light: '/media/hero/light-1.webp',
     dark: '/media/hero/dark-2.webp',
-    meta: ['249 条记录', '2021 → 2026', '本地 WebP'],
+    meta: ['251 条记录', '2021 → 2026', '本地 WebP'],
     actions: [
       { label: '浏览影像归档', to: '/bilibili/', primary: true },
       { label: '前往 B 站', to: 'https://space.bilibili.com/588003657', external: true },
@@ -190,7 +190,7 @@ export function HeroCarousel() {
 
   const facts = useMemo(
     () => [
-      { value: '249', label: '影像归档' },
+      { value: '251', label: '影像归档' },
       { value: '06', label: 'Modrinth 项目' },
       { value: '3.3.0', label: '当前版本' },
     ],

@@ -1,13 +1,13 @@
 /**
  * 哔哩哔哩影像归档 / Bilibili archive.
  *
- * 数据来自 src/data/videos.ts（构建期生成，包含 249 条记录与本地 WebP 封面）。
+ * 数据来自 src/data/videos.ts（构建期生成，包含 251 条记录与本地 WebP 封面）。
  * 页面提供：
  * - 标题 / 简介 / BV 号搜索（useDeferredValue 防抖）
  * - 状态筛选、年份筛选、排序
  * - 网格 / 列表视图（记忆到 localStorage）
  * - 详情弹窗、上一条 / 下一条、随机一条
- * - 分批渲染（首屏 12 条），避免一次插入 249 张卡片
+ * - 分批渲染（首屏 12 条），避免一次插入 251 张卡片
  */
 import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import {
@@ -31,7 +31,7 @@ import { readStorage, writeStorage } from '../lib/storage';
 import { videos, videosById, videoStats, type Video } from '../data/videos';
 import { LINKS } from '../data/site';
 
-type StatusFilter = 'all' | 'playable' | 'collection' | 'private' | 'offline';
+type StatusFilter = 'all' | 'playable' | 'collection' | 'live' | 'private' | 'offline';
 type SortMode = 'newest' | 'oldest' | 'title' | 'views';
 type ViewMode = 'grid' | 'list';
 
@@ -42,6 +42,7 @@ const STATUS_OPTIONS: Array<{ value: StatusFilter; label: string; count: number 
   { value: 'all', label: '全部', count: videoStats.total },
   { value: 'playable', label: '可观看', count: videoStats.playable },
   { value: 'collection', label: '合集', count: videoStats.collection },
+  { value: 'live', label: '直播回放', count: videoStats.live },
   { value: 'private', label: '已私密', count: videoStats.private },
   { value: 'offline', label: '已失效', count: videoStats.offline },
 ];
@@ -170,7 +171,7 @@ export default function BilibiliPage() {
       <PageIntro
         eyebrow="ARCHIVE · BILIBILI"
         title="影像存档"
-        lead="沧海水鱼在哔哩哔哩发布的作品归档。早期部分视频已失效或私密，仅保留记录；合集可在站内展开查看 B 站全部成员视频的封面、标题与时间。"
+        lead="沧海水鱼在哔哩哔哩发布的作品归档。早期部分视频已失效或私密，仅保留记录；合集可在站内展开查看 B 站全部成员视频的封面、标题与时间；直播回放已单独标记并可按状态筛选。"
         meta={[
           { icon: 'tv', label: '沧海水鱼' },
           { icon: 'calendar', label: '起始 2021-06-29' },
@@ -211,6 +212,10 @@ export default function BilibiliPage() {
               <div>
                 <strong>{videoStats.collection}</strong>
                 <span>合集</span>
+              </div>
+              <div>
+                <strong>{videoStats.live}</strong>
+                <span>直播回放</span>
               </div>
               <div>
                 <strong>{videoStats.offline}</strong>

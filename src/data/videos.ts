@@ -7,7 +7,7 @@
  *
  * 重新生成：node scripts/build-videos-data.mjs
  */
-export type VideoStatus = 'public' | 'collection' | 'private' | 'offline';
+export type VideoStatus = 'public' | 'collection' | 'live' | 'private' | 'offline';
 
 export interface Video {
   /** 旧站中的稳定编号，同时决定封面文件名 */
@@ -35,6 +35,40 @@ export interface Video {
 
 export const videos: Video[] = [
   {
+    "id": 251,
+    "title": "【直播回放】来福日常~~玩bingo 2026年11月14日19点场",
+    "description": "",
+    "cover": "/media/bilibili/v251.webp",
+    "coverAlt": "【直播回放】来福日常~~玩bingo 2026年11月14日19点场",
+    "date": "2026-11-15",
+    "endDate": null,
+    "count": null,
+    "status": "live",
+    "bvid": "BV1VhsL6eEBW",
+    "url": "https://www.bilibili.com/video/BV1VhsL6eEBW",
+    "label": "在哔哩哔哩观看",
+    "disabled": false,
+    "durationSeconds": 20398,
+    "views": 26
+  },
+  {
+    "id": 250,
+    "title": "【直播回放】一起来玩bingo！ 2026年11月07日19点场",
+    "description": "",
+    "cover": "/media/bilibili/v250.webp",
+    "coverAlt": "【直播回放】一起来玩bingo！ 2026年11月07日19点场",
+    "date": "2026-11-08",
+    "endDate": null,
+    "count": null,
+    "status": "live",
+    "bvid": "BV1mG4p62E17",
+    "url": "https://www.bilibili.com/video/BV1mG4p62E17",
+    "label": "在哔哩哔哩观看",
+    "disabled": false,
+    "durationSeconds": 17007,
+    "views": 42
+  },
+  {
     "id": 44,
     "title": "【1v6猎人游戏全程（追杀视角）】水鱼拉完了！（？！区区？！）",
     "description": "采用flashback录制，故无GUI界面交互，且切换维度时为了保持视角跟随，有一定切割（谁教下我怎么弄）\n这期感觉我的视角也没啥好剪辑的直接全片发了\n这波拉完了，前面资源准备好了但是最后没赶上克造打龙你敢信，总结一句话拉完了拉完了\n感觉这波作用可能没有中途跑路的厘米提大（\n\n本次参加：\n逃亡者：@克造dKyzYos  \n观察者：@六七三_iii  \n追杀者：@轴承LaTeX 、@LimitedShadow 、@AnIII_TND  、@西米绪  、@梦里云渊  、@沧海水鱼  \n\n673（观察者视角）：",
@@ -43,7 +77,7 @@ export const videos: Video[] = [
     "date": "2026-10-29",
     "endDate": null,
     "count": null,
-    "status": "public",
+    "status": "live",
     "bvid": "BV1gYsR6iEGe",
     "url": "https://www.bilibili.com/video/BV1gYsR6iEGe",
     "label": "在哔哩哔哩观看",
@@ -4273,12 +4307,13 @@ export const videos: Video[] = [
 ];
 
 export const videoStats = {
-  "total": 249,
+  "total": 251,
   "collection": 2,
+  "live": 3,
   "private": 11,
   "offline": 20,
-  "public": 216,
-  "playable": 229,
+  "public": 215,
+  "playable": 231,
   "years": [
     "2026",
     "2025",

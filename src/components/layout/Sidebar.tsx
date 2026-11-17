@@ -136,7 +136,7 @@ export function Sidebar() {
                     >
                       <FluentIcon name={item.icon} size={19} aria-hidden />
                       <span className="sidebar-nav__label">{item.label}</span>
-                      {item.to === '/bilibili/' && <span className="sidebar-nav__badge">249</span>}
+                      {item.to === '/bilibili/' && <span className="sidebar-nav__badge">251</span>}
                     </Link>
                   </li>
                 );

@@ -807,6 +807,10 @@
   background: color-mix(in srgb, var(--accent) 78%, #000);
 }
 
+.video-badge--live {
+  background: #6d4bb8;
+}
+
 .video-badge--private {
   background: #8a5b0e;
 }

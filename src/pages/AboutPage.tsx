@@ -82,7 +82,7 @@ const CHANGELOG = [
       '带 .html 的旧链接自动重定向到无扩展名路径。',
       '重做 Base64 / BaseX / 进制 / Unicode / 计算器 / MC 投影 6 个工具。',
       '计算器按 fx-991CN CW II 重做按键与 10 种模式。',
-      'B 站归档同步到 249 条；合集可展开全部成员视频；侧栏、主页与页脚更新。',
+      'B 站归档同步到 251 条；合集可展开全部成员视频；侧栏、主页与页脚更新。',
       '数据包物品/进度贴图、标签展开、MCMOD 与版本矩阵；物品可跳转中文 Wiki。',
       '季节粒子、正文大图、页眉补位、轮播倒计时与 PWA 名称调整。',
     ],
@@ -413,7 +413,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <strong>图片</strong>
-                <span>249 张封面共约 3.0MB，单张平均 12KB，进入视口才加载。</span>
+                <span>251 张封面共约 3.0MB，单张平均 12KB，进入视口才加载。</span>
               </div>
               <div>
                 <strong>字体</strong>
@@ -446,7 +446,7 @@ scripts/
 └─ fetch-covers.mjs        # 抓取封面与元数据（手动运行）
 
 public/
-├─ media/bilibili/  # 249 张 640×360 WebP
+├─ media/bilibili/  # 251 张 640×360 WebP
 ├─ media/wallpapers/# 8 张 1920px WebP
 ├─ icons/           # logo / favicon
 ├─ manifest.webmanifest

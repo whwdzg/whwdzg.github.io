@@ -69,7 +69,7 @@ export function NowSection() {
                 <CheckmarkCircleRegular aria-hidden /> 矩形悬浮侧栏与全屏自动收起页眉
               </li>
               <li>
-                <CheckmarkCircleRegular aria-hidden /> 249 条影像归档与本地 WebP 封面
+                <CheckmarkCircleRegular aria-hidden /> 251 条影像归档与本地 WebP 封面
               </li>
               <li>
                 <CheckmarkCircleRegular aria-hidden /> 版本 / 提交历史页与 GitHub Pages 部署
@@ -80,7 +80,7 @@ export function NowSection() {
 
         <div className="now__stats">
           <Reveal delay={0}>
-            <Stat value={249} label="影像归档" note="2021 → 2026" />
+            <Stat value={251} label="影像归档" note="2021 → 2026" />
           </Reveal>
           <Reveal delay={70}>
             <Stat value={6} label="Modrinth 项目" note="数据包 / 模组" />
@@ -245,7 +245,7 @@ export function LatestVideos() {
           description="从哔哩哔哩归档里挑出的 6 条。点击卡片可以直接打开归档详情。"
           actions={
             <Link className="text-link" to="/bilibili/">
-              全部 249 条 <ArrowRightRegular aria-hidden />
+              全部 251 条 <ArrowRightRegular aria-hidden />
             </Link>
           }
         />

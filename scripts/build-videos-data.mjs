@@ -45,7 +45,9 @@ const videos = source.map((video) => {
   const status =
     video.badge === 'collection'
       ? 'collection'
-      : video.badge === 'private'
+      : video.badge === 'live'
+        ? 'live'
+        : video.badge === 'private'
         ? 'private'
         : video.badge === 'offline'
           ? 'offline'
@@ -110,6 +112,7 @@ const years = [...new Set(videos.map((video) => video.date?.slice(0, 4)).filter(
 const stats = {
   total: videos.length,
   collection: videos.filter((video) => video.status === 'collection').length,
+  live: videos.filter((video) => video.status === 'live').length,
   private: videos.filter((video) => video.status === 'private').length,
   offline: videos.filter((video) => video.status === 'offline').length,
   public: videos.filter((video) => video.status === 'public').length,
@@ -126,7 +129,7 @@ const header = `/**
  *
  * 重新生成：node scripts/build-videos-data.mjs
  */
-export type VideoStatus = 'public' | 'collection' | 'private' | 'offline';
+export type VideoStatus = 'public' | 'collection' | 'live' | 'private' | 'offline';
 
 export interface Video {
   /** 旧站中的稳定编号，同时决定封面文件名 */

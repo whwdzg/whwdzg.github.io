@@ -14,7 +14,7 @@
 - **页眉**：固定顶部、玻璃 / 实色可切换；默认展开，全屏闲置时自动收起，鼠标移向顶部立即恢复。设置里可关闭，或扩展为“全屏与滚动”都收起。
 - **侧边栏**：直角矩形，不是圆角卡片；收起时彻底移出视口，不保留窄条；展开时以浮层覆盖内容，点击遮罩或 `Esc` 收起。桌面默认收起，避免遮挡首屏。
 - **主页**：全幅影像轮播、大字号标题、滚动揭示、数字滚动、悬停高光、时间线与 CTA。轮播只渲染当前与下一张图。
-- **哔哩哔哩页**：249 条影像归档，支持标题 / 简介 / BV 号搜索、状态与年份筛选、最新 / 最早 / 标题 / 播放量排序、网格 / 列表视图、详情弹窗、上一条 / 下一条、随机一条。
+- **哔哩哔哩页**：251 条影像归档，支持标题 / 简介 / BV 号搜索、状态与年份筛选、最新 / 最早 / 标题 / 播放量排序、网格 / 列表视图、详情弹窗、上一条 / 下一条、随机一条。
 - **留言板**：保留人工整理的留言与回复，新增本地草稿编辑器（自动保存、预览、复制、跳转 B 站私信）、留言锚点与目录。
 - **GitHub 评论区**：新增 `/comments/github/`，直接读取仓库公开 Issue：头像、正文、标签、reactions、回复与时间线；支持筛选 / 搜索 / 深链接 / 引用回复，写入操作统一跳转 GitHub。
 - **项目页**：6 个数据包详情页、`/projects/modrinth/` 索引与「掩星」实验页；合成、附魔、掉落、染料配方与进度树全部可视化。
@@ -135,7 +135,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 │  ├─ bilibili-source.json
 │  └─ bilibili-cache.json
 ├─ public/
-│  ├─ media/bilibili/          # 249 张 640×360 WebP 封面
+│  ├─ media/bilibili/          # 251 张 640×360 WebP 封面
 │  ├─ media/hero/              # 1440×810 WebP 首屏图
 │  ├─ media/wallpapers/        # 1920px WebP 壁纸
 │  ├─ media/avatars/           # 头像 WebP
@@ -164,7 +164,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 | Fluent 图标 chunk | ~10.5 KB | 只打包实际使用的图标 |
 | 全局 CSS | ~17.1 KB | 变量、基础、壳层与常用组件 |
 | 首页 chunk | ~7.1 KB | 轮播与主页区块 |
-| 影像页 chunk + 数据 | ~21 KB | 249 条数据 + 卡片与详情 |
+| 影像页 chunk + 数据 | ~21 KB | 251 条数据 + 卡片与详情 |
 | GitHub 评论区 chunk | ~7.7 KB | Issue 列表、回复时间线、API 封装 |
 | Markdown 渲染（按需） | ~27 KB | marked + DOMPurify，只在有 issue 内容时加载 |
 | 数据包详情页 | ~4.8–8.4 KB | 配方 / 附魔 / 掉落 / 简单规则页 |
@@ -180,7 +180,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 - **GitHub API 缓存**：Issue 列表 5 分钟、评论 2 分钟本地缓存；失败时回退旧缓存，并给出速率限制提示。
 - **项目数据**：Modrinth 数字为构建前快照，页面不依赖运行时 API；配方 / 掉落表在构建时生成，运行时只加载当前项目的数据 chunk。
 - **空闲预取**：首屏稳定后用 `requestIdleCallback` 预取其他页 chunk；导航悬停 / 聚焦也会提前加载。
-- **图片**：封面统一 640×360 WebP，249 张合计约 3.0 MB；项目图标为 256×256 WebP；Minecraft 物品图标保留 16×16 PNG（像素画，PNG 比 WebP 更小，329 张合计约 65 KB），全部 `image-rendering: pixelated`、`loading="lazy"`、固定宽高。正文图片只在标记 `data-lightbox` 时进入大图查看器。
+- **图片**：封面统一 640×360 WebP，251 张合计约 3.0 MB；项目图标为 256×256 WebP；Minecraft 物品图标保留 16×16 PNG（像素画，PNG 比 WebP 更小，329 张合计约 65 KB），全部 `image-rendering: pixelated`、`loading="lazy"`、固定宽高。正文图片只在标记 `data-lightbox` 时进入大图查看器。
 - **壁纸**：在 `requestIdleCallback` 中解码，图片加载完成后再淡入，不参与 LCP 竞争；`prefers-reduced-motion` / 节省流量时跳过。
 - **字体**：只使用系统字体（Segoe UI Variable / Microsoft YaHei UI 等），不下载几 MB 的中文字体。
 - **玻璃**：只在页眉、侧栏、弹窗、搜索等关键表面使用 `backdrop-filter`；关闭后回到实色表面。不支持 `backdrop-filter` 的浏览器自动降级。

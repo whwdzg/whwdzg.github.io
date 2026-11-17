@@ -3,9 +3,9 @@ import { videos, videoStats, videosById } from './videos';
 
 describe('bilibili dataset', () => {
   it('syncs the current Bilibili archive', () => {
-    expect(videos).toHaveLength(249);
-    expect(videoStats.total).toBe(249);
-    expect(videosById.size).toBe(249);
+    expect(videos).toHaveLength(251);
+    expect(videoStats.total).toBe(251);
+    expect(videosById.size).toBe(251);
   });
 
   it('uses local webp covers for every record', () => {
