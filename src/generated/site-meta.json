@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "2b74b0b65f3902011faa3161d003c24798554f07",
-  "commitShort": "2b74b0b",
-  "commitTime": "2026-11-18T00:23:04+08:00",
-  "buildTime": "2026-11-17T16:36:51.978Z",
+  "commit": "ad1863e44e6494ebcd0104253d396c1f5d3ff3a3",
+  "commitShort": "ad1863e",
+  "commitTime": "2026-11-18T00:37:23+08:00",
+  "buildTime": "2026-11-17T16:40:11.836Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "ad1863e44e6494ebcd0104253d396c1f5d3ff3a3",
+      "short": "ad1863e4",
+      "time": "2026-11-18T00:37:23+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: rebuild calculator after fx-991CN CW II",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ad1863e44e6494ebcd0104253d396c1f5d3ff3a3"
+    },
     {
       "hash": "2b74b0b65f3902011faa3161d003c24798554f07",
       "short": "2b74b0b6",
