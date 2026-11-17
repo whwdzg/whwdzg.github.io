@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "5f946c635993361956573d678fafb97bba375a55",
-  "commitShort": "5f946c6",
-  "commitTime": "2026-11-17T01:05:14+08:00",
-  "buildTime": "2026-11-17T15:25:45.454Z",
+  "commit": "8d4f398b9985bbef139c7574c248022c1f9c132b",
+  "commitShort": "8d4f398",
+  "commitTime": "2026-11-17T23:27:57+08:00",
+  "buildTime": "2026-11-17T15:29:16.948Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "8d4f398b9985bbef139c7574c248022c1f9c132b",
+      "short": "8d4f398b",
+      "time": "2026-11-17T23:27:57+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: 3.3 sub-sites, tools and data upgrades",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/8d4f398b9985bbef139c7574c248022c1f9c132b"
+    },
     {
       "hash": "5f946c635993361956573d678fafb97bba375a55",
       "short": "5f946c63",
