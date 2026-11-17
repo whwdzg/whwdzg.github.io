@@ -1,4 +1,4 @@
-/** 科学计算器 / CASIO ClassWiz-style calculator with graph and LaTeX. */
+/** 科学计算器 / CASIO fx-991CN CW II-style calculator. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDownloadRegular,
@@ -9,6 +9,7 @@ import {
   MathFormulaRegular,
 } from '@fluentui/react-icons';
 import { ToolShell } from '../../components/tools/ToolShell';
+import { ModeMenu, ModeWorkspace, modeById, type CalculatorMode } from '../../components/tools/calculator/CalculatorModes';
 import { useToast } from '../../hooks/useToast';
 import {
   evaluateExpression,
@@ -26,7 +27,7 @@ const TOC = [
   { id: 'keys', label: '按键说明' },
 ];
 
-function GraphCanvas({ expression }: { expression: string }) {
+function GraphCanvas({ expression, angleMode }: { expression: string; angleMode: AngleMode }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -84,7 +85,7 @@ function GraphCanvas({ expression }: { expression: string }) {
       const x = xMin + (pixel / width) * (xMax - xMin);
       let y: number;
       try {
-        y = evaluateExpression(expression || 'sin(x)', { variables: { x }, angleMode: 'rad' });
+        y = evaluateExpression(expression || 'sin(x)', { variables: { x }, angleMode });
       } catch {
         started = false;
         continue;
@@ -107,67 +108,90 @@ function GraphCanvas({ expression }: { expression: string }) {
     ctx.font = '11px ui-monospace, monospace';
     ctx.fillText('x', width - 16, toY(0) - 8);
     ctx.fillText('y', toX(0) + 8, 14);
-  }, [expression]);
+  }, [expression, angleMode]);
 
   return <canvas ref={canvasRef} className="calc-graph" aria-label={`函数图像：${expression}`} />;
 }
 
-const KEYS: Array<Array<{ label: string; value: string; kind?: 'op' | 'fn' | 'action' | 'equals' | 'number'; shift?: string }>> = [
+type KeyKind = 'number' | 'op' | 'fn' | 'action' | 'equals';
+
+interface KeyDef {
+  label: string;
+  value: string;
+  kind: KeyKind;
+  shift?: string;
+  shiftLabel?: string;
+}
+
+const FUNCTION_ROWS: KeyDef[][] = [
   [
-    { label: 'SHIFT', value: 'shift', kind: 'action' },
-    { label: 'ALPHA', value: 'alpha', kind: 'action' },
-    { label: 'DEG/RAD', value: 'angle', kind: 'action' },
-    { label: 'AC', value: 'clear', kind: 'action' },
-    { label: 'DEL', value: 'del', kind: 'action' },
+    { label: 'x', value: 'x', kind: 'fn' },
+    { label: 'a/b', value: '/', kind: 'fn', shift: '!', shiftLabel: '!' },
+    { label: '√', value: 'sqrt(', kind: 'fn', shift: 'cbrt(', shiftLabel: '∛' },
+    { label: 'x²', value: '^2', kind: 'fn', shift: '^3', shiftLabel: 'x³' },
+    { label: 'x⁻¹', value: '^-1', kind: 'fn', shift: 'abs(', shiftLabel: '|x|' },
+    { label: 'log', value: 'log(', kind: 'fn', shift: '10^(', shiftLabel: '10ˣ' },
+    { label: 'ln', value: 'ln(', kind: 'fn', shift: 'e^(', shiftLabel: 'eˣ' },
   ],
   [
-    { label: 'sin', value: 'sin(', kind: 'fn', shift: 'asin(' },
-    { label: 'cos', value: 'cos(', kind: 'fn', shift: 'acos(' },
-    { label: 'tan', value: 'tan(', kind: 'fn', shift: 'atan(' },
-    { label: '(', value: '(', kind: 'op' },
+    { label: '(-)', value: 'neg', kind: 'fn' },
+    { label: 'sin', value: 'sin(', kind: 'fn', shift: 'asin(', shiftLabel: 'sin⁻¹' },
+    { label: 'cos', value: 'cos(', kind: 'fn', shift: 'acos(', shiftLabel: 'cos⁻¹' },
+    { label: 'tan', value: 'tan(', kind: 'fn', shift: 'atan(', shiftLabel: 'tan⁻¹' },
+    { label: '(', value: '(', kind: 'op', shift: '%', shiftLabel: '%' },
     { label: ')', value: ')', kind: 'op' },
-    { label: '÷', value: '/', kind: 'op' },
   ],
+];
+
+const NUMBER_ROWS: KeyDef[][] = [
   [
-    { label: 'x²', value: '^2', kind: 'fn' },
-    { label: 'xʸ', value: '^', kind: 'op' },
-    { label: '√', value: 'sqrt(', kind: 'fn' },
     { label: '7', value: '7', kind: 'number' },
     { label: '8', value: '8', kind: 'number' },
     { label: '9', value: '9', kind: 'number' },
-    { label: '×', value: '*', kind: 'op' },
+    { label: 'DEL', value: 'del', kind: 'action' },
+    { label: 'AC', value: 'clear', kind: 'action' },
   ],
   [
-    { label: 'log', value: 'log(', kind: 'fn' },
-    { label: 'ln', value: 'ln(', kind: 'fn' },
-    { label: 'π', value: 'pi', kind: 'fn' },
     { label: '4', value: '4', kind: 'number' },
     { label: '5', value: '5', kind: 'number' },
     { label: '6', value: '6', kind: 'number' },
-    { label: '−', value: '-', kind: 'op' },
+    { label: '×', value: '*', kind: 'op' },
+    { label: '÷', value: '/', kind: 'op' },
   ],
   [
-    { label: 'Ans', value: 'ans', kind: 'fn' },
-    { label: '%', value: '%', kind: 'fn' },
-    { label: '!', value: '!', kind: 'fn' },
     { label: '1', value: '1', kind: 'number' },
     { label: '2', value: '2', kind: 'number' },
     { label: '3', value: '3', kind: 'number' },
     { label: '+', value: '+', kind: 'op' },
+    { label: '−', value: '-', kind: 'op' },
   ],
   [
-    { label: 'M+', value: 'mplus', kind: 'action' },
-    { label: 'M−', value: 'mminus', kind: 'action' },
-    { label: 'MR', value: 'mr', kind: 'action' },
     { label: '0', value: '0', kind: 'number' },
     { label: '.', value: '.', kind: 'number' },
-    { label: '=', value: 'equals', kind: 'equals' },
+    { label: '×10ˣ', value: '*10^(', kind: 'fn', shift: 'pi', shiftLabel: 'π' },
+    { label: '转换', value: 'toggle', kind: 'fn' },
+    { label: 'EXE', value: 'equals', kind: 'equals', shift: 'ans', shiftLabel: 'Ans' },
   ],
 ];
 
+const CATALOG = [
+  { group: '三角 / 反三角', items: [['sin(', 'sin'], ['cos(', 'cos'], ['tan(', 'tan'], ['asin(', 'sin⁻¹'], ['acos(', 'cos⁻¹'], ['atan(', 'tan⁻¹']] },
+  { group: '对数 / 指数', items: [['log(', 'log'], ['ln(', 'ln'], ['10^(', '10ˣ'], ['e^(', 'eˣ'], ['sqrt(', '√'], ['cbrt(', '∛']] },
+  { group: '数值', items: [['abs(', 'Abs'], ['floor(', 'Intg'], ['ceil(', 'Ceil'], ['round(', 'Rnd'], ['gcd(', 'GCD'], ['lcm(', 'LCM'], ['sign(', 'Sign']] },
+  { group: '概率 / 常量', items: [['nPr(', 'nPr'], ['nCr(', 'nCr'], ['rand()', 'Ran#'], ['ranint(', 'RanInt'], ['pi', 'π'], ['e', 'e']] },
+];
+
+const VARIABLES = ['A', 'B', 'C', 'D', 'E', 'F', 'x', 'y', 'z', 'Ans', 'M'];
+
+function modeStatus(mode: CalculatorMode): string {
+  return modeById(mode).name;
+}
+
 export default function CalculatorPage() {
   const [expression, setExpression] = useState('');
+  const [cursor, setCursor] = useState(0);
   const [result, setResult] = useState('0');
+  const [rawResult, setRawResult] = useState('0');
   const [error, setError] = useState('');
   const [angleMode, setAngleMode] = useState<AngleMode>('deg');
   const [ans, setAns] = useState(0);
@@ -177,16 +201,29 @@ export default function CalculatorPage() {
   const [graphExpression, setGraphExpression] = useState('sin(x)');
   const [latexOpen, setLatexOpen] = useState(false);
   const [latexText, setLatexText] = useState('');
+  const [mode, setMode] = useState<CalculatorMode>('calculate');
+  const [modeOpen, setModeOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [catalogOpen, setCatalogOpen] = useState(false);
+  const [variablesOpen, setVariablesOpen] = useState(false);
   const { toast } = useToast();
   const toc = useMemo(() => TOC, []);
   const expressionRef = useRef(expression);
   expressionRef.current = expression;
 
-  const run = useCallback((source = expression, mode = angleMode) => {
+  const insert = useCallback((token: string) => {
+    setExpression((current) => `${current.slice(0, cursor)}${token}${current.slice(cursor)}`);
+    setCursor((current) => current + token.length);
+    setShift(false);
+  }, [cursor]);
+
+  const run = useCallback((source = expression) => {
     try {
-      const value = evaluateExpression(source, { angleMode: mode, ans, variables: { m: memory } });
+      const variables: Record<string, number> = { m: memory };
+      const value = evaluateExpression(source, { angleMode, ans, variables });
       const text = Number.isInteger(value) ? String(value) : String(Number(value.toPrecision(12)));
       setResult(text);
+      setRawResult(text);
       setAns(value);
       setError('');
       setHistory((items) => [{ expression: source, result: text }, ...items].slice(0, 12));
@@ -194,20 +231,24 @@ export default function CalculatorPage() {
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : '计算失败');
       setResult('');
+      setRawResult('');
       return null;
     }
-  }, [ans, memory, angleMode]);
+  }, [ans, memory, angleMode, expression]);
 
   const press = useCallback((value: string) => {
-    if (value === 'clear') {
+    if (value === 'clear' || value === 'on') {
       setExpression('');
+      setCursor(0);
       setResult('0');
+      setRawResult('0');
       setError('');
       setShift(false);
       return;
     }
     if (value === 'del') {
-      setExpression((current) => current.slice(0, -1));
+      setExpression((current) => current.slice(0, Math.max(0, cursor - 1)) + current.slice(cursor));
+      setCursor((current) => Math.max(0, current - 1));
       return;
     }
     if (value === 'equals') {
@@ -215,36 +256,69 @@ export default function CalculatorPage() {
       setShift(false);
       return;
     }
-    if (value === 'angle') {
-      setAngleMode((mode) => (mode === 'deg' ? 'rad' : 'deg'));
-      return;
-    }
     if (value === 'shift') {
       setShift((current) => !current);
       return;
     }
-    if (value === 'alpha') return;
-    if (value === 'mplus') {
-      const parsed = Number(result);
-      if (Number.isFinite(parsed)) setMemory((current) => current + parsed);
+    if (value === 'home') {
+      setModeOpen(true);
       return;
     }
-    if (value === 'mminus') {
-      const parsed = Number(result);
-      if (Number.isFinite(parsed)) setMemory((current) => current - parsed);
+    if (value === 'settings' || value === 'tools') {
+      setSettingsOpen(true);
       return;
     }
-    if (value === 'mr') {
-      setExpression((current) => `${current}${memory}`);
+    if (value === 'catalog') {
+      setCatalogOpen(true);
       return;
     }
-    let token = value;
-    if (shift && ['sin(', 'cos(', 'tan('].includes(value)) {
-      token = value === 'sin(' ? 'asin(' : value === 'cos(' ? 'acos(' : 'atan(';
+    if (value === 'variable') {
+      setVariablesOpen(true);
+      return;
     }
-    setExpression((current) => `${current}${token}`);
-    setShift(false);
-  }, [run, result, memory, shift]);
+    if (value === 'left') {
+      setCursor((current) => Math.max(0, current - 1));
+      return;
+    }
+    if (value === 'right') {
+      setCursor((current) => Math.min(expression.length, current + 1));
+      return;
+    }
+    if (value === 'undo') {
+      const last = history[0];
+      if (last) {
+        setExpression(last.expression);
+        setCursor(last.expression.length);
+      }
+      return;
+    }
+    if (value === 'up' || value === 'down') {
+      const target = history[value === 'up' ? 0 : Math.min(1, history.length - 1)];
+      if (target) {
+        setExpression(target.expression);
+        setCursor(target.expression.length);
+      }
+      return;
+    }
+    if (value === 'mplus' || value === 'mminus' || value === 'mr') {
+      const parsed = Number(rawResult);
+      if (value === 'mplus' && Number.isFinite(parsed)) setMemory((current) => current + parsed);
+      if (value === 'mminus' && Number.isFinite(parsed)) setMemory((current) => current - parsed);
+      if (value === 'mr') insert(String(memory));
+      return;
+    }
+    if (value === 'toggle') {
+      if (!rawResult) return;
+      const parsed = Number(rawResult);
+      setResult((current) => (current.includes('e') ? rawResult : Number.isFinite(parsed) ? parsed.toExponential(6) : current));
+      return;
+    }
+    if (value === 'neg') {
+      insert('-');
+      return;
+    }
+    insert(value);
+  }, [cursor, expression.length, history, insert, memory, rawResult, run]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -261,6 +335,10 @@ export default function CalculatorPage() {
       } else if (event.key === 'Backspace') {
         event.preventDefault();
         press('del');
+      } else if (event.key === 'ArrowLeft') {
+        press('left');
+      } else if (event.key === 'ArrowRight') {
+        press('right');
       } else if (event.key === 'Escape') {
         press('clear');
       }
@@ -281,7 +359,9 @@ export default function CalculatorPage() {
 
   const importLatex = () => {
     try {
-      setExpression(latexToExpression(latexText));
+      const converted = latexToExpression(latexText);
+      setExpression(converted);
+      setCursor(converted.length);
       setLatexOpen(false);
       setError('');
     } catch (reason) {
@@ -289,12 +369,26 @@ export default function CalculatorPage() {
     }
   };
 
+  const selectMode = (next: CalculatorMode) => {
+    setMode(next);
+    setModeOpen(false);
+    setExpression('');
+    setCursor(0);
+    setResult('0');
+    setError('');
+    if (next === 'calculate') setShift(false);
+  };
+
+  const topButton = (label: string, value: string, className = '') => (
+    <button type="button" className={`calc-topkey ${className}`} onClick={() => press(value)}>{label}</button>
+  );
+
   return (
     <ToolShell
       title="科学计算器"
-      lead="参考 CASIO CN CW991 II 的操作逻辑：输入表达式、显示结果、记录历史，并支持函数图像与 LaTeX 公式导入 / 导出。"
+      lead="fx-991CN CW II 风格：按 HOME 切换计算、统计、函数表格、方程、不等式、复数、进制、矩阵、向量与比例模式；保留函数图像和 LaTeX 导入导出。"
       meta={[
-        { icon: 'sparkle', label: 'ClassWiz 风格' },
+        { icon: 'sparkle', label: '10 个模式' },
         { icon: 'image', label: '函数图像' },
         { icon: 'document', label: 'LaTeX' },
       ]}
@@ -305,50 +399,100 @@ export default function CalculatorPage() {
           <div className="calc-chrome">
             <div className="calc-brand">
               <span>CASIO</span>
-              <strong>CLASSWIZ</strong>
-              <em>CN CW991 II</em>
+              <strong>fx-991CN CW II</strong>
+              <em>中文版 · CLASSWIZ</em>
             </div>
-            <div className="calc-solar" aria-hidden />
+            <span className="calc-chrome__screen-label">NATURAL TEXTBOOK</span>
           </div>
-          <div className="calc-screen">
+
+          <div className="calc-top">
+            {topButton('ON', 'on', 'is-on')}
+            {topButton('⌂ HOME', 'home', 'is-home')}
+            <span className="calc-top__spacer" />
+            {topButton('▲', 'up')}
+            {topButton('▼', 'down')}
+          </div>
+          <div className="calc-toprow">
+            {topButton('⚙', 'settings', 'is-icon')}
+            {topButton('↶', 'undo', 'is-icon')}
+            {topButton('‹', 'left', 'is-icon')}
+            {topButton('OK', 'equals', 'is-ok')}
+            {topButton('›', 'right', 'is-icon')}
+            {topButton('▤ 目录', 'catalog', 'is-wide')}
+            {topButton('⋯ 工具', 'tools', 'is-wide')}
+          </div>
+          <div className="calc-toprow calc-toprow--labels">
+            {topButton('SHIFT', 'shift', `is-shift ${shift ? 'is-active' : ''}`)}
+            {topButton('变量', 'variable')}
+            {topButton('函数', 'catalog')}
+            {topButton('V', 'variable')}
+          </div>
+
+          <div className="calc-screen" data-mode={mode}>
             <div className="calc-screen__status">
-              <span className={angleMode === 'deg' ? 'is-on' : ''}>DEG</span>
-              <span className={angleMode === 'rad' ? 'is-on' : ''}>RAD</span>
+              <span className={angleMode === 'deg' ? 'is-on' : ''}>D</span>
+              <span className={angleMode === 'rad' ? 'is-on' : ''}>R</span>
+              <span className={angleMode === 'grad' ? 'is-on' : ''}>G</span>
               <span className={shift ? 'is-on' : ''}>SHIFT</span>
+              <span>{modeStatus(mode)}</span>
               <span>M {memory}</span>
             </div>
-            <div className="calc-screen__expression">{expression || '0'}</div>
-            <div className="calc-screen__result">{result || '—'}</div>
+            <div className="calc-screen__mode">{modeById(mode).en.toUpperCase()} · {modeById(mode).description}</div>
+            {mode === 'calculate' ? (
+              <>
+                <div className="calc-screen__expression">
+                  {expression ? expression.slice(0, cursor) : ''}
+                  <span className="calc-caret" aria-hidden />
+                  {expression.slice(cursor)}
+                </div>
+                <div className="calc-screen__result">{result || '—'}</div>
+              </>
+            ) : (
+              <div className="calc-screen__mode-message">在下方输入数据，结果会实时计算。</div>
+            )}
             {error ? <div className="calc-screen__error">{error}</div> : null}
           </div>
-          <div className="calc-keys">
-            {KEYS.map((row, rowIndex) => (
-              <div className="calc-key-row" key={rowIndex}>
-                {row.map((key) => (
-                  <button
-                    key={key.label}
-                    type="button"
-                    className={`calc-key calc-key--${key.kind ?? 'number'} ${shift && key.shift ? 'is-shift' : ''}`}
-                    onClick={() => press(shift && key.shift ? key.shift : key.value)}
-                  >
-                    {shift && key.shift ? key.shift.replace('(', '') : key.label}
-                  </button>
-                ))}
-              </div>
-            ))}
-          </div>
+
+          {mode === 'calculate' ? (
+            <div className="calc-keys">
+              {[...FUNCTION_ROWS, ...NUMBER_ROWS].map((row, rowIndex) => (
+                <div className={`calc-key-row ${rowIndex >= FUNCTION_ROWS.length ? 'calc-key-row--number' : ''}`} key={rowIndex}>
+                  {row.map((key) => {
+                    const shifted = shift && key.shift;
+                    return (
+                      <button
+                        key={key.label}
+                        type="button"
+                        className={`calc-key calc-key--${key.kind} ${shifted ? 'is-shift' : ''} ${key.value === 'equals' ? 'calc-key--exe' : ''}`}
+                        onClick={() => press(shifted ? key.shift! : key.value)}
+                        title={shifted ? key.shiftLabel : key.label}
+                      >
+                        {shifted ? key.shiftLabel : key.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ModeWorkspace mode={mode} angleMode={angleMode} />
+          )}
+
           <div className="calc-tools">
-            <button type="button" className="btn btn--ghost btn--sm" onClick={() => run(expression)}>
-              <CalculatorRegular aria-hidden /> 计算
-            </button>
+            {mode === 'calculate' ? (
+              <>
+                <button type="button" className="btn btn--ghost btn--sm" onClick={() => run(expression)}>
+                  <CalculatorRegular aria-hidden /> 计算
+                </button>
+                <button type="button" className="btn btn--ghost btn--sm" onClick={() => press('mplus')}>M+</button>
+                <button type="button" className="btn btn--ghost btn--sm" onClick={() => press('mminus')}>M−</button>
+                <button type="button" className="btn btn--ghost btn--sm" onClick={() => press('mr')}>MR</button>
+              </>
+            ) : (
+              <span className="calc-mode-tools-note">模式内结果实时更新</span>
+            )}
             <button type="button" className="btn btn--ghost btn--sm" onClick={exportLatex}>
-              <MathFormulaRegular aria-hidden /> 导出 LaTeX
-            </button>
-            <button type="button" className="btn btn--ghost btn--sm" onClick={() => {
-              setLatexText('');
-              setLatexOpen(true);
-            }}>
-              <ArrowUploadRegular aria-hidden /> 导入 LaTeX
+              <MathFormulaRegular aria-hidden /> LaTeX
             </button>
           </div>
         </div>
@@ -357,12 +501,12 @@ export default function CalculatorPage() {
       <section className="article-card" id="graph">
         <p className="eyebrow">GRAPH</p>
         <h2>函数图像</h2>
-        <p className="project-section-lead">输入 f(x)，使用弧度计算；默认显示 x ∈ [-10, 10]、y ∈ [-6, 6]。</p>
+        <p className="project-section-lead">输入 f(x)，使用当前角度单位计算；默认显示 x ∈ [-10, 10]、y ∈ [-6, 6]。</p>
         <label className="tool-select tool-select--wide">
           <span>f(x) =</span>
           <input value={graphExpression} onChange={(event) => setGraphExpression(event.target.value)} />
         </label>
-        <GraphCanvas expression={graphExpression} />
+        <GraphCanvas expression={graphExpression} angleMode={angleMode} />
       </section>
 
       <section className="article-card" id="latex">
@@ -396,7 +540,7 @@ export default function CalculatorPage() {
           <ul className="calc-history">
             {history.map((item, index) => (
               <li key={`${item.expression}-${index}`}>
-                <button type="button" onClick={() => setExpression(item.expression)}>
+                <button type="button" onClick={() => { setExpression(item.expression); setCursor(item.expression.length); }}>
                   <span>{item.expression}</span>
                   <strong>= {item.result}</strong>
                 </button>
@@ -410,13 +554,85 @@ export default function CalculatorPage() {
         <p className="eyebrow">KEYS</p>
         <h2>按键说明</h2>
         <ul className="project-list">
-          <li><strong>SHIFT</strong>：临时切换反三角函数（sin⁻¹ / cos⁻¹ / tan⁻¹）。</li>
-          <li><strong>DEG/RAD</strong>：切换角度制与弧度制；屏幕顶部显示当前模式。</li>
-          <li><strong>M+ / M− / MR</strong>：读取当前结果到记忆，或把记忆插入表达式。</li>
-          <li><strong>Ans</strong>：上一次计算结果；<strong>%</strong> 表示除以 100，<strong>!</strong> 表示阶乘。</li>
-          <li>键盘支持数字、运算符、括号、Enter 计算、Backspace 删除、Esc 清空。</li>
+          <li><strong>HOME / 菜单</strong>：打开 fx-991CN CW II 模式菜单，切换计算、统计、表格、方程、不等式、复数、进制、矩阵、向量与比例。</li>
+          <li><strong>SHIFT</strong>：切换第二功能，例如 sin⁻¹、∛、x³、10ˣ、eˣ、π、Ans。</li>
+          <li><strong>变量 / 函数 / 目录</strong>：打开变量列表、函数目录；<strong>V</strong> 同样打开变量列表。</li>
+          <li><strong>方向键 / OK</strong>：移动输入光标；OK 与 EXE 执行计算，左右键编辑表达式。</li>
+          <li><strong>AC / DEL / 转换</strong>：清空、删除光标前字符、在小数与科学记数法之间切换。</li>
+          <li><strong>M+ / M− / MR</strong>：记忆当前结果或把记忆插入表达式。</li>
+          <li>键盘支持数字、运算符、括号、Enter 计算、Backspace 删除、← → 移动光标、Esc 清空。</li>
         </ul>
+        <p className="project-note">
+          按键与模式参考 <a href="https://support.casio.com/global/cn/calc/manual/fx-991CNCWII_999CNCWII_cn/index.html" target="_blank" rel="noopener noreferrer">CASIO fx-991CN CW II 官方操作指南</a>
+          与 <a href="https://www.casio.com.cn/scientific-calculators/product.FX-991CN-CW-PLUS-GN/" target="_blank" rel="noopener noreferrer">产品页</a>。
+        </p>
       </section>
+
+      <ModeMenu open={modeOpen} current={mode} onSelect={selectMode} onClose={() => setModeOpen(false)} />
+
+      {settingsOpen && (
+        <div className="calc-modal" role="dialog" aria-modal="true" aria-label="计算设置">
+          <div className="calc-modal__panel">
+            <div className="calc-modal__head">
+              <strong>计算设置</strong>
+              <button type="button" className="icon-btn icon-btn--sm" aria-label="关闭" onClick={() => setSettingsOpen(false)}>
+                <DismissRegular aria-hidden />
+              </button>
+            </div>
+            <div className="calc-setting-row">
+              <span>角度单位</span>
+              <div className="calc-setting-options">
+                {([['deg', '度 D'], ['rad', '弧度 R'], ['grad', '百分度 G']] as Array<[AngleMode, string]>).map(([value, label]) => (
+                  <button key={value} type="button" className={angleMode === value ? 'is-active' : ''} onClick={() => setAngleMode(value)}>{label}</button>
+                ))}
+              </div>
+            </div>
+            <p className="calc-setting-note">fx-991CN CW II 还支持输入/输出、显示格式、分数结果、复数结果等设置；这里保留与本站计算最相关的角度单位。</p>
+          </div>
+        </div>
+      )}
+
+      {catalogOpen && (
+        <div className="calc-modal" role="dialog" aria-modal="true" aria-label="函数目录">
+          <div className="calc-modal__panel calc-catalog">
+            <div className="calc-modal__head">
+              <strong>函数目录</strong>
+              <button type="button" className="icon-btn icon-btn--sm" aria-label="关闭" onClick={() => setCatalogOpen(false)}>
+                <DismissRegular aria-hidden />
+              </button>
+            </div>
+            {CATALOG.map((group) => (
+              <section key={group.group}>
+                <p className="calc-catalog__group">{group.group}</p>
+                <div className="calc-catalog__grid">
+                  {group.items.map(([value, label]) => (
+                    <button key={label} type="button" onClick={() => { insert(value); setCatalogOpen(false); }}>{label}</button>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {variablesOpen && (
+        <div className="calc-modal" role="dialog" aria-modal="true" aria-label="变量">
+          <div className="calc-modal__panel">
+            <div className="calc-modal__head">
+              <strong>变量</strong>
+              <button type="button" className="icon-btn icon-btn--sm" aria-label="关闭" onClick={() => setVariablesOpen(false)}>
+                <DismissRegular aria-hidden />
+              </button>
+            </div>
+            <div className="calc-variable-grid">
+              {VARIABLES.map((variable) => (
+                <button key={variable} type="button" onClick={() => { insert(variable === 'M' ? String(memory) : variable === 'Ans' ? 'ans' : variable.toLowerCase()); setVariablesOpen(false); }}>{variable}</button>
+              ))}
+            </div>
+            <p className="calc-setting-note">变量 A–F、x、y、z 与 Ans、M 可用于表达式；当前版本不保存变量赋值。</p>
+          </div>
+        </div>
+      )}
 
       {latexOpen && (
         <div className="calc-modal" role="dialog" aria-modal="true" aria-label="LaTeX 公式">

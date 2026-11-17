@@ -1,6 +1,6 @@
 /** 科学计算器表达式解析 / Tiny expression parser with LaTeX output. */
 
-export type AngleMode = 'deg' | 'rad';
+export type AngleMode = 'deg' | 'rad' | 'grad';
 
 type Node =
   | { type: 'number'; value: number }
@@ -18,7 +18,8 @@ interface Token {
 const FUNCTIONS = new Set([
   'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'sinh', 'cosh', 'tanh',
   'log', 'ln', 'sqrt', 'cbrt', 'abs', 'exp', 'floor', 'ceil', 'round',
-  'min', 'max', 'pow',
+  'min', 'max', 'pow', 'npr', 'ncr', 'gcd', 'lcm', 'int', 'intg', 'rnd',
+  'rand', 'ranint', 'pol', 'rec', 'sign',
 ]);
 
 function normalize(input: string): string {
@@ -158,10 +159,11 @@ class Parser {
       return { type: 'number', value };
     }
     if (token.type === 'name') {
-      if (token.value === 'pi' || token.value === 'e' || token.value === 'ans') {
-        return { type: 'variable', name: token.value };
+      const lower = token.value.toLowerCase();
+      if (lower === 'pi' || lower === 'e' || lower === 'ans' || 'abcdefxyz'.includes(lower)) {
+        return { type: 'variable', name: lower };
       }
-      if (!FUNCTIONS.has(token.value)) throw new Error(`未知函数或变量：${token.value}`);
+      if (!FUNCTIONS.has(lower)) throw new Error(`未知函数或变量：${token.value}`);
       if (this.peek()?.type !== '(') throw new Error(`函数 ${token.value} 需要括号`);
       this.take();
       const args: Node[] = [];
@@ -173,7 +175,7 @@ class Parser {
         }
       }
       if (this.take()?.type !== ')') throw new Error('缺少右括号');
-      return { type: 'call', name: token.value, args };
+      return { type: 'call', name: lower, args };
     }
     if (token.type === '(') {
       const node = this.expression();
@@ -189,6 +191,13 @@ export function parseExpression(input: string): Node {
   return new Parser(tokenize(input)).parse();
 }
 
+function gcd(a: number, b: number): number {
+  let x = Math.abs(Math.round(a));
+  let y = Math.abs(Math.round(b));
+  while (y) [x, y] = [y, x % y];
+  return x;
+}
+
 function factorial(value: number): number {
   if (!Number.isInteger(value) || value < 0 || value > 170) throw new Error('阶乘只支持 0–170 的整数');
   let result = 1;
@@ -197,12 +206,15 @@ function factorial(value: number): number {
 }
 
 function trig(value: number, mode: AngleMode): number {
-  return mode === 'deg' ? (value * Math.PI) / 180 : value;
+  if (mode === 'deg') return (value * Math.PI) / 180;
+  if (mode === 'grad') return (value * Math.PI) / 200;
+  return value;
 }
 
 function inverseTrig(value: number, mode: AngleMode): number {
-  const result = mode === 'deg' ? (value * 180) / Math.PI : value;
-  return result;
+  if (mode === 'deg') return (value * 180) / Math.PI;
+  if (mode === 'grad') return (value * 200) / Math.PI;
+  return value;
 }
 
 export interface EvalOptions {
@@ -222,6 +234,7 @@ export function evaluateNode(node: Node, options: EvalOptions = {}): number {
       if (node.name === 'e') return Math.E;
       if (node.name === 'ans') return ans;
       if (node.name in variables) return variables[node.name];
+      if (node.name.toUpperCase() in variables) return variables[node.name.toUpperCase()];
       throw new Error(`未知变量：${node.name}`);
     case 'unary':
       return node.op === '-' ? -evaluate(node.value) : evaluate(node.value);
@@ -265,6 +278,18 @@ export function evaluateNode(node: Node, options: EvalOptions = {}): number {
         case 'min': return Math.min(...args);
         case 'max': return Math.max(...args);
         case 'pow': return args[0] ** args[1];
+        case 'sign': return Math.sign(args[0]);
+        case 'int': return Math.trunc(args[0]);
+        case 'intg': return Math.floor(args[0]);
+        case 'rnd': return Number(args[0].toFixed(args[1] ?? 0));
+        case 'gcd': return gcd(args[0], args[1]);
+        case 'lcm': return Math.abs(args[0] * args[1]) / gcd(args[0], args[1]);
+        case 'npr': return factorial(args[0]) / factorial(args[0] - args[1]);
+        case 'ncr': return factorial(args[0]) / (factorial(args[1]) * factorial(args[0] - args[1]));
+        case 'rand': return Math.random();
+        case 'ranint': return Math.floor(Math.random() * (args[1] - args[0] + 1)) + args[0];
+        case 'pol': return Math.hypot(args[0], args[1]);
+        case 'rec': return args[0] * Math.cos(trig(args[1], angleMode));
         default: throw new Error(`不支持函数：${node.name}`);
       }
     }

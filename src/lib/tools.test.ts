@@ -50,6 +50,14 @@ describe('calculator expression engine', () => {
     expect(evaluateExpression('5!')).toBe(120);
   });
 
+  it('supports CW functions and gradians', () => {
+    expect(evaluateExpression('nPr(5,2)')).toBe(20);
+    expect(evaluateExpression('nCr(5,2)')).toBe(10);
+    expect(evaluateExpression('gcd(12,18)')).toBe(6);
+    expect(evaluateExpression('sin(100)', { angleMode: 'grad' })).toBeCloseTo(1, 8);
+    expect(evaluateExpression('abs(-4) + int(2.9)')).toBe(6);
+  });
+
   it('converts simple expressions to LaTeX and back', () => {
     const latex = expressionToLatex('1/2 + sqrt(9)');
     expect(latex).toContain('\\frac{1}{2}');

@@ -43,7 +43,7 @@ npm install
 npm run dev        # http://localhost:4173
 npm run build      # tsc -b && vite build
 npm run preview    # 预览 dist
-npm test           # 纯函数 / 数据单元测试（43 项）
+npm test           # 纯函数 / 数据单元测试（44 项）
 npm run typecheck  # 只跑 TypeScript
 ```
 
