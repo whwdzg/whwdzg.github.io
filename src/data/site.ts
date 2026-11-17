@@ -17,9 +17,9 @@ export const SITE = {
   name: '沧海水鱼',
   handle: 'whwdzg',
   latin: 'Canghai Waterfish',
-  tagline: 'Minecraft 数据包 · 影像归档 · 前端工具',
+  tagline: 'Minecraft 数据包作者 / 哔哩哔哩 视频创作/搬运者 / 爱好热爱者',
   description:
-    '沧海水鱼的内容站点：Minecraft 数据包、哔哩哔哩影像归档、留言板、独立子站与前端工具。',
+    '沧海水鱼：Minecraft 数据包作者 / 哔哩哔哩 视频创作/搬运者 / 爱好热爱者。站点收录数据包、影像归档、留言板、独立子站与前端工具。',
   avatar: '/media/avatars/shuiyu.webp',
   avatarAlt: '沧海水鱼的头像',
   startYear: 2022,
