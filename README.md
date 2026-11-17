@@ -20,7 +20,7 @@
 - **项目页**：6 个数据包详情页与 `/projects/modrinth/` 索引；合成、附魔、掉落、染料配方与进度树全部可视化。
 - **子站**：Asteria Player 与来福 Simulation Wiki 的独立项目页；GitHub 项目页只详细展开这两个子站。
 - **工具**：Base64、BaseX、进制转换、Unicode、ClassWiz 风格计算器（函数图像 + LaTeX）与 Minecraft 投影查看器。
-- **B 站合集**：通过公开 view 接口同步合集全部成员视频，站内可查看封面、标题、发布日期与时长。
+- **B 站合集**：通过公开 view 接口同步合集全部成员视频，站内可查看封面、标题、发布日期与时长；GitHub Actions 每周一自动刷新，也可手动触发。
 - **体验**：正文图片大图、季节粒子（春夏秋冬）、页眉收起补位、轮播倒计时、中文 Minecraft Wiki 物品链接。
 - **关于页**：版本号、构建时间、当前提交、最近提交时间线（构建时快照，可手动从 GitHub API 刷新）、设计 / 技术 / 性能说明、目录结构与本地开发命令。
 - **设置面板**：主题、强调色（含自定义）、液态玻璃、8 张壁纸与每日轮换、页眉进度条、粒子动画（樱花 / 梧桐 / 银杏 / 雪花）、动效偏好、页眉自动收起、性能模式、PWA 安装、缓存清理、设置导入导出、UA 与版本信息。
@@ -42,7 +42,7 @@ npm install
 npm run dev        # http://localhost:4173
 npm run build      # tsc -b && vite build
 npm run preview    # 预览 dist
-npm test           # 纯函数 / 数据单元测试（38 项）
+npm test           # 纯函数 / 数据单元测试（41 项）
 npm run typecheck  # 只跑 TypeScript
 ```
 

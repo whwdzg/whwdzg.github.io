@@ -7,7 +7,7 @@
  * 通过公开 view 接口读取合集与全部成员视频，把封面下载到本地并生成
  * src/data/bilibili-collections.ts。运行时读取的是同一份在线 API 快照。
  */
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -132,6 +132,26 @@ async function main() {
       sections,
     });
     console.log(`✓ ${season.title} (${season.id}) · ${total} 条 · ${sections.length} 个分区`);
+  }
+
+  // 内容未变化时保留旧的 fetchedAt，避免定时任务每周产生无意义提交。
+  if (existsSync(OUTPUT)) {
+    try {
+      const old = readFileSync(OUTPUT, 'utf8');
+      const oldJson = old.match(/BILIBILI_COLLECTIONS: BilibiliCollection\[\] = (\[[\s\S]*?\]);/)?.[1];
+      if (oldJson) {
+        const oldCollections = JSON.parse(oldJson);
+        const fingerprint = (items) => JSON.stringify(items.map(({ fetchedAt, ...rest }) => rest));
+        if (fingerprint(oldCollections) === fingerprint(collections)) {
+          for (const collection of collections) {
+            const previous = oldCollections.find((item) => item.id === collection.id);
+            if (previous?.fetchedAt) collection.fetchedAt = previous.fetchedAt;
+          }
+        }
+      }
+    } catch {
+      // 旧文件不可解析时直接写入新快照。
+    }
   }
 
   const output = `/**

@@ -1,0 +1,41 @@
+name: Sync Bilibili collections
+
+on:
+  schedule:
+    # 每周一 03:17 UTC（北京时间 11:17）同步合集新增内容
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-bilibili-collections
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Sync UGC season episodes
+        run: node --dns-result-order=ipv4first scripts/sync-bilibili-seasons.mjs
+
+      - name: Commit changed snapshot
+        run: |
+          if git diff --quiet -- src/data/bilibili-collections.ts public/media/bilibili/collections; then
+            echo "No collection changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/bilibili-collections.ts public/media/bilibili/collections
+          git commit -m "chore: sync Bilibili collections"
+          git push
