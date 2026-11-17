@@ -86,40 +86,6 @@
   font-weight: 600;
 }
 
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  margin-inline: auto;
-  padding: 3px;
-  border: 1px solid var(--stroke);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
-}
-
-.header-nav__link {
-  position: relative;
-  padding: 6px 15px;
-  border-radius: var(--r-pill);
-  color: var(--text-2);
-  font-size: 13px;
-  font-weight: 550;
-  transition:
-    color var(--dur-fast) var(--ease),
-    background var(--dur-fast) var(--ease);
-}
-
-.header-nav__link:hover {
-  color: var(--text);
-  background: var(--surface-2);
-}
-
-.header-nav__link.is-active {
-  color: var(--accent);
-  background: var(--accent-soft);
-  font-weight: 650;
-}
-
 .site-header__actions {
   display: flex;
   align-items: center;
@@ -939,10 +905,6 @@
 
 /* ---------------- 断点：页眉 / 侧栏 / 页脚 ---------------- */
 @media (max-width: 1180px) {
-  .header-nav {
-    display: none;
-  }
-
   .site-header__left {
     flex: 1;
   }

@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "8d4f398b9985bbef139c7574c248022c1f9c132b",
-  "commitShort": "8d4f398",
-  "commitTime": "2026-11-17T23:27:57+08:00",
-  "buildTime": "2026-11-17T15:29:16.948Z",
+  "commit": "cf0ba46fed1a2e389d502181ae673b725a6bf3d4",
+  "commitShort": "cf0ba46",
+  "commitTime": "2026-11-17T23:29:53+08:00",
+  "buildTime": "2026-11-17T15:32:47.443Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "cf0ba46fed1a2e389d502181ae673b725a6bf3d4",
+      "short": "cf0ba46f",
+      "time": "2026-11-17T23:29:53+08:00",
+      "author": "Alex Yang",
+      "subject": "fix: keep sub-sites visible in sidebar",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/cf0ba46fed1a2e389d502181ae673b725a6bf3d4"
+    },
     {
       "hash": "8d4f398b9985bbef139c7574c248022c1f9c132b",
       "short": "8d4f398b",

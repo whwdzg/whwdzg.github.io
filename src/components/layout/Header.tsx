@@ -2,13 +2,13 @@
  * 页眉 / Header.
  *
  * - 固定顶部，Mica / Acrylic 半透明表面；
- * - 桌面端提供主页面快捷导航，窄屏交给侧栏；
+ * - 桌面端与窄屏都通过侧栏导航，页眉只保留品牌与工具；
  * - 支持全屏闲置自动收起（可在设置中关闭或扩展为滚动收起）；
  * - 底部细线显示阅读进度，可在设置中关闭。
  */
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useRouter } from '../../lib/router';
-import { prefetchRoute, routeMeta } from '../../lib/routes';
+import { routeMeta } from '../../lib/routes';
 import { useUi } from '../../hooks/useUi';
 import { useSettings } from '../../hooks/useSettings';
 import { usePageProgress } from '../../hooks/usePageProgress';
@@ -16,7 +16,7 @@ import { useHeaderAutoHide } from '../../hooks/useHeaderAutoHide';
 import { FluentIcon } from '../common/FluentIcon';
 import { IconButton } from '../common/Button';
 import { UserMenu } from './UserMenu';
-import { PRIMARY_NAV, SITE } from '../../data/site';
+import { SITE } from '../../data/site';
 
 interface HeaderProps {
   isFullscreen: boolean;
@@ -75,20 +75,6 @@ export function Header({ isFullscreen, onToggleFullscreen }: HeaderProps) {
               </span>
             </Link>
           </div>
-
-          <nav className="header-nav" aria-label="快捷导航">
-            {PRIMARY_NAV.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`header-nav__link ${path === item.to ? 'is-active' : ''}`}
-                aria-current={path === item.to ? 'page' : undefined}
-                prefetch={() => prefetchRoute(item.to)}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
 
           <div className="site-header__actions">
             <button
