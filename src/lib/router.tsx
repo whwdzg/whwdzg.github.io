@@ -38,6 +38,7 @@ const KNOWN_PATHS = new Set([
   '/projects/asteria-player/',
   '/projects/life-simulation-wiki/',
   '/projects/github/',
+  '/projects/occultation/',
   '/tools/',
   '/tools/base64/',
   '/tools/basex/',

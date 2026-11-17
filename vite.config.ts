@@ -95,6 +95,7 @@ export default defineConfig({
         asteriaPlayer: path.resolve('projects/asteria-player/index.html'),
         lifeWiki: path.resolve('projects/life-simulation-wiki/index.html'),
         githubProjects: path.resolve('projects/github/index.html'),
+        occultation: path.resolve('projects/occultation/index.html'),
         tools: path.resolve('tools/index.html'),
         base64: path.resolve('tools/base64/index.html'),
         basex: path.resolve('tools/basex/index.html'),

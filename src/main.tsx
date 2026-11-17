@@ -10,6 +10,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { ROUTE_MAP } from './lib/routes';
 import { normalizePath } from './lib/router';
+import { cleanHtmlLocation } from './lib/url';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/shell.css';
@@ -18,6 +19,12 @@ import './styles/home.css';
 import './styles/pages.css';
 import './styles/responsive.css';
 import { registerServiceWorker } from './lib/pwa';
+
+// 旧链接 / 直链可能带 .html；在挂载 React 前改写成站内干净路径。
+const cleanedLocation = cleanHtmlLocation(window.location);
+if (cleanedLocation) {
+  window.history.replaceState(window.history.state, '', cleanedLocation);
+}
 
 if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.documentElement.classList.add('motion-ready');

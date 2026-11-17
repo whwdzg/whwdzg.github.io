@@ -182,6 +182,15 @@ export function Sidebar() {
                         ))}
                       {group.id === 'projects' && (
                         <li>
+                          <Link to="/projects/occultation/" className="sidebar-group__link" onNavigate={close}>
+                            <FluentIcon name="sparkle" size={18} aria-hidden />
+                            <span>掩星</span>
+                            <FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden />
+                          </Link>
+                        </li>
+                      )}
+                      {group.id === 'projects' && (
+                        <li>
                           <Link
                             to="/projects/modrinth/"
                             className="sidebar-group__link sidebar-group__link--more"
@@ -204,7 +213,7 @@ export function Sidebar() {
                             </Link>
                           </li>
                         ))}
-                      {group.id === 'subsites' && (
+                      {group.id === 'projects' && (
                         <li>
                           <Link to="/projects/github/" className="sidebar-group__link sidebar-group__link--more" onNavigate={close}>
                             <FluentIcon name="github" size={18} aria-hidden />

@@ -17,10 +17,11 @@
 - **哔哩哔哩页**：249 条影像归档，支持标题 / 简介 / BV 号搜索、状态与年份筛选、最新 / 最早 / 标题 / 播放量排序、网格 / 列表视图、详情弹窗、上一条 / 下一条、随机一条。
 - **留言板**：保留人工整理的留言与回复，新增本地草稿编辑器（自动保存、预览、复制、跳转 B 站私信）、留言锚点与目录。
 - **GitHub 评论区**：新增 `/comments/github/`，直接读取仓库公开 Issue：头像、正文、标签、reactions、回复与时间线；支持筛选 / 搜索 / 深链接 / 引用回复，写入操作统一跳转 GitHub。
-- **项目页**：6 个数据包详情页与 `/projects/modrinth/` 索引；合成、附魔、掉落、染料配方与进度树全部可视化。
+- **项目页**：6 个数据包详情页、`/projects/modrinth/` 索引与「掩星」实验页；合成、附魔、掉落、染料配方与进度树全部可视化。
 - **子站**：Asteria Player 与来福 Simulation Wiki 的独立项目页；GitHub 项目页只详细展开这两个子站。
 - **工具**：Base64、BaseX、进制转换、Unicode、ClassWiz 风格计算器（函数图像 + LaTeX）与 Minecraft 投影查看器。
 - **B 站合集**：通过公开 view 接口同步合集全部成员视频，站内可查看封面、标题、发布日期与时长；GitHub Actions 每周一自动刷新，也可手动触发。
+- **链接**：访问带 `.html` 的地址会自动改写成无扩展名的站内路径。
 - **体验**：正文图片大图、季节粒子（春夏秋冬）、页眉收起补位、轮播倒计时、中文 Minecraft Wiki 物品链接。
 - **关于页**：版本号、构建时间、当前提交、最近提交时间线（构建时快照，可手动从 GitHub API 刷新）、设计 / 技术 / 性能说明、目录结构与本地开发命令。
 - **设置面板**：主题、强调色（含自定义）、液态玻璃、8 张壁纸与每日轮换、页眉进度条、粒子动画（樱花 / 梧桐 / 银杏 / 雪花）、动效偏好、页眉自动收起、性能模式、PWA 安装、缓存清理、设置导入导出、UA 与版本信息。
@@ -42,7 +43,7 @@ npm install
 npm run dev        # http://localhost:4173
 npm run build      # tsc -b && vite build
 npm run preview    # 预览 dist
-npm test           # 纯函数 / 数据单元测试（41 项）
+npm test           # 纯函数 / 数据单元测试（43 项）
 npm run typecheck  # 只跑 TypeScript
 ```
 
@@ -114,7 +115,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 │  │  ├─ tools/                # 工具页外壳
 │  │  ├─ settings/             # 设置面板
 │  │  └─ search/               # 命令面板搜索
-│  ├─ pages/                   # 22 个路由级页面（懒加载），含 projects/ 与 tools/
+│  ├─ pages/                   # 23 个路由级页面（懒加载），含 projects/ 与 tools/
 │  ├─ hooks/                   # 设置、搜索、页眉自动收起、计数、全屏…
 │  ├─ lib/                     # 路由、设置、壁纸、搜索、GitHub API、tools/、mc/、PWA
 │  ├─ data/                    # 站点内容、留言、视频数据、projects/（生成）
@@ -174,7 +175,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 其余策略：
 
-- **多入口**：`/`、`/bilibili/`、`/comments/`、`/comments/github/`、`/projects/modrinth/`、6 个 `/projects/<slug>/`、3 个子站 / GitHub 项目页、7 个 `/tools/` 页面与 `/about/` 各自是真实 HTML，直链与刷新无需 404 重写。
+- **多入口**：`/`、`/bilibili/`、`/comments/`、`/comments/github/`、`/projects/modrinth/`、6 个 `/projects/<slug>/`、3 个子站 / GitHub 项目页、掩星实验页、7 个 `/tools/` 页面与 `/about/` 各自是真实 HTML，直链与刷新无需 404 重写。
 - **路由级懒加载**：首屏不加载影像数据、GitHub Issue 数据、Markdown 渲染器、数据包配方与关于页；项目详情页不参与空闲预取，避免一次下载全部数据。
 - **GitHub API 缓存**：Issue 列表 5 分钟、评论 2 分钟本地缓存；失败时回退旧缓存，并给出速率限制提示。
 - **项目数据**：Modrinth 数字为构建前快照，页面不依赖运行时 API；配方 / 掉落表在构建时生成，运行时只加载当前项目的数据 chunk。

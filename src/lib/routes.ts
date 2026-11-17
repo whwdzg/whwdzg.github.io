@@ -180,6 +180,14 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/tools/ProjectionPage'),
   },
   {
+    path: '/projects/occultation/',
+    title: '掩星 · 水鱼 Blog',
+    shortTitle: '掩星',
+    description: '掩星：尘埃尚未落定，时间仍在谱写。一颗星升起的动画与动态乱码实验。',
+    prefetch: false,
+    load: () => import('../pages/projects/OccultationPage'),
+  },
+  {
     path: '/about/',
     title: '关于本站 · 水鱼 Blog',
     shortTitle: '关于',
