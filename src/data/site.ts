@@ -256,7 +256,7 @@ export const SUBSITES: Subsite[] = [
     id: 'life-simulation-wiki',
     title: '来福 Simulation Wiki',
     subtitle: 'Life Simulation Wiki 镜像',
-    description: '来福 Simulation 的静态 Wiki 镜像：68 篇条目、离线浏览、全文搜索与 PWA。',
+    description: '来福 Simulation 的全量静态 Wiki 镜像：451 个页面、195 个媒体文件、离线浏览与全文搜索。',
     icon: '/media/projects/life-simulation-wiki.svg',
     path: '/projects/life-simulation-wiki/',
     url: 'https://whwdzg.github.io/Life-Simulation-Wiki/',
@@ -319,7 +319,7 @@ export const TIMELINE: TimelineEntry[] = [
     year: '2026.11',
     label: '现在',
     title: '3.3 子站与工具',
-    text: 'Asteria Player、Wiki 镜像、GitHub 项目页与 2.0 工具全部重做，加入季节粒子与正文大图。',
+    text: 'Asteria Player、Wiki 全量镜像、GitHub 项目页与掩星实验页；6 个工具重做，B 站归档含直播回放。',
     tone: 'a',
   },
 ];
@@ -334,7 +334,7 @@ export const HIGHLIGHTS: Highlight[] = [
   {
     icon: 'sparkle',
     title: 'Fluent Sun Valley',
-    text: 'Mica / Acrylic 表面、8px 圆角、Segoe UI Variable 字体与 Fluent 图标体系。',
+    text: 'Mica / Acrylic 表面、圆角系统、Segoe UI Variable 字体与 Fluent 图标体系。',
   },
   {
     icon: 'glass',
@@ -344,12 +344,12 @@ export const HIGHLIGHTS: Highlight[] = [
   {
     icon: 'panel',
     title: '悬浮矩形侧栏',
-    text: '彻底收起，不留窄条；展开时以浮层覆盖内容，方角、轻阴影、点击外部即收起。',
+    text: '彻底收起，不留窄条；展开时以圆角浮层覆盖内容，轻阴影、点击外部即收起。',
   },
   {
     icon: 'fullscreen',
     title: '全屏自动收起页眉',
-    text: '默认展开；全屏或滚动时按设置自动隐藏，鼠标移向顶部立刻恢复。',
+    text: '默认展开；全屏或滚动时按设置自动隐藏，收起后内容立即补位，鼠标移向顶部恢复。',
   },
   {
     icon: 'image',
@@ -358,8 +358,8 @@ export const HIGHLIGHTS: Highlight[] = [
   },
   {
     icon: 'rocket',
-    title: '快，但留有余地',
-    text: '多入口、路由级代码分割、系统字体、Service Worker 缓存与空闲预取。',
+    title: '多入口与 251 条归档',
+    text: '23 个真实 HTML 页面、路由级代码分割、B 站合集 / 直播回放、PWA 缓存与空闲预取。',
   },
 ];
 

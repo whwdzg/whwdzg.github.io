@@ -60,10 +60,10 @@ const SLIDES: Slide[] = [
     kicker: 'ARCHIVE · BILIBILI',
     title: '251 段影像，',
     accent: '一次完整归档。',
-    lead: '从 2021 年的第一条 Minecraft 视频，到官方短视频搬运与数据包演示。封面全部本地 WebP 化，支持搜索、年份筛选与网格 / 列表视图。',
+    lead: '从 2021 年的第一条 Minecraft 视频，到官方短视频、合集与直播回放。封面全部本地 WebP 化，支持搜索、年份筛选与网格 / 列表视图。',
     light: '/media/hero/light-1.webp',
     dark: '/media/hero/dark-2.webp',
-    meta: ['251 条记录', '2021 → 2026', '本地 WebP'],
+    meta: ['251 条记录', '3 条直播回放', '本地 WebP'],
     actions: [
       { label: '浏览影像归档', to: '/bilibili/', primary: true },
       { label: '前往 B 站', to: 'https://space.bilibili.com/588003657', external: true },
@@ -88,10 +88,10 @@ const SLIDES: Slide[] = [
     kicker: 'SUB-SITES · TOOLS',
     title: '播放器与 Wiki，',
     accent: '也放进站点。',
-    lead: 'Asteria Player 负责本地音视频播放，来福 Simulation Wiki 提供离线镜像；2.0 的编码、计算器与投影工具也全部重做。',
+    lead: 'Asteria Player 负责本地音视频播放；来福 Simulation Wiki 已扩展到 451 个页面、195 个媒体文件。编码、计算器、投影工具与掩星实验也都在这里。',
     light: '/media/hero/light-3.webp',
     dark: '/media/hero/dark-2.webp',
-    meta: ['2 个子站', '6 个工具', '独立部署'],
+    meta: ['2 个子站', '6 个工具', '451 页 Wiki'],
     actions: [
       { label: '浏览子站', to: '/projects/asteria-player/', primary: true },
       { label: '打开工具', to: '/tools/' },
@@ -192,6 +192,7 @@ export function HeroCarousel() {
     () => [
       { value: '251', label: '影像归档' },
       { value: '06', label: 'Modrinth 项目' },
+      { value: '03', label: '直播回放' },
       { value: '3.3.0', label: '当前版本' },
     ],
     [],

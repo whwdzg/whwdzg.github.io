@@ -24,16 +24,16 @@ export default function LifeSimulationWikiPage() {
     <SubsiteShell
       title={project.title}
       subtitle={project.subtitle}
-      description="来福 Simulation Wiki 的静态镜像：通过 MediaWiki API 定时同步主命名空间条目与媒体，生成可离线浏览、可搜索的 VitePress 站点。"
+      description="来福 Simulation Wiki 的全量静态镜像：通过 MediaWiki API 每小时同步页面、模板与媒体，生成可离线浏览、可搜索的静态站点。"
       icon={project.icon}
       url={project.url}
       github={project.github}
       accent={project.accent}
       meta={[
-        { icon: 'document', label: '68 篇条目' },
-        { icon: 'history', label: '2,213 次编辑' },
+        { icon: 'document', label: '451 个页面' },
+        { icon: 'image', label: '195 个媒体文件' },
         { icon: 'refresh', label: '每小时同步' },
-        { icon: 'install', label: 'PWA 离线' },
+        { icon: 'install', label: '可离线浏览' },
       ]}
       toc={toc}
     >
@@ -41,21 +41,21 @@ export default function LifeSimulationWikiPage() {
         <p className="eyebrow">OVERVIEW</p>
         <h2>把一个 Wiki，镜像成可离线浏览的静态站</h2>
         <p>
-          这个子站不是简单的网页抓取：脚本通过 MediaWiki API 同步条目、图片、音频与视频，重写站内链接，再用 VitePress 生成静态页面。
-          运行时使用哈希路由加载 JSON 数据，Service Worker 提供离线缓存。
+          现在覆盖 9 个命名空间：条目、用户、项目、文件、模板、分类、博客、模块与地图。MediaWiki 在构建时展开模板与解析器函数，图片、音频和视频全部落到本地，页面不依赖 Fandom 外链。
+          镜像还保留 MediaWiki / Fandom 组件样式与深色主题；运行时使用静态搜索索引和 PWA 离线缓存。
         </p>
         <div className="project-stat-grid">
           <div>
+            <strong>451</strong>
+            <span>页面</span>
+          </div>
+          <div>
+            <strong>195</strong>
+            <span>媒体文件</span>
+          </div>
+          <div>
             <strong>68</strong>
-            <span>迁移条目</span>
-          </div>
-          <div>
-            <strong>2,213</strong>
-            <span>次编辑记录</span>
-          </div>
-          <div>
-            <strong>3</strong>
-            <span>贡献者</span>
+            <span>条目</span>
           </div>
           <div>
             <strong>1h</strong>
@@ -65,8 +65,8 @@ export default function LifeSimulationWikiPage() {
         <div className="project-feature-grid">
           <div>
             <CheckmarkCircleRegular aria-hidden />
-            <strong>完整镜像</strong>
-            <p>主命名空间条目、媒体文件、站内链接重写与本地资源路径。</p>
+            <strong>全量命名空间</strong>
+            <p>条目、用户、项目、文件、模板、分类、博客、模块与地图共 451 个页面。</p>
           </div>
           <div>
             <CheckmarkCircleRegular aria-hidden />
@@ -87,33 +87,33 @@ export default function LifeSimulationWikiPage() {
         <div className="project-feature-grid">
           <div>
             <DocumentRegular aria-hidden />
-            <strong>条目数据</strong>
-            <p>生成 <code>index.json</code> 与逐页 JSON，包含标题、正文、目录与元数据。</p>
+            <strong>模板预展开</strong>
+            <p>MediaWiki 在构建时解析模板、信息框、导航框与标签页，静态 HTML 无需 JavaScript。</p>
           </div>
           <div>
             <DocumentRegular aria-hidden />
             <strong>媒体本地化</strong>
-            <p>图片、音频、视频落到 <code>wiki-assets</code>，避免依赖源站跨域与外链。</p>
+            <p>195 个原文件、缩略图、音频与视频保存到 <code>dist/media/</code>，不依赖 Fandom CDN。</p>
           </div>
           <div>
             <DocumentRegular aria-hidden />
-            <strong>直链兜底</strong>
-            <p>每个条目生成独立 Markdown 入口，刷新与分享不会 404。</p>
+            <strong>静态搜索</strong>
+            <p>生成 <code>data/search.json</code>，在本地搜索标题、摘要与正文。</p>
           </div>
           <div>
             <DocumentRegular aria-hidden />
-            <strong>站内搜索</strong>
-            <p>基于同步后的 JSON 索引，不依赖外部搜索服务。</p>
+            <strong>增量媒体缓存</strong>
+            <p>用媒体清单签名作为 GitHub Actions 缓存键，无变更时跳过重复下载。</p>
           </div>
           <div>
             <DocumentRegular aria-hidden />
             <strong>主题与移动端</strong>
-            <p>保留 Wiki 的绿色视觉，同时适配窄屏与触摸导航。</p>
+            <p>保留 MediaWiki / Fandom 组件样式，支持深色主题、窄屏与触摸导航。</p>
           </div>
           <div>
             <DocumentRegular aria-hidden />
-            <strong>CC BY-SA</strong>
-            <p>迁移页面保留原 Wiki 的署名链接；发布前确认媒体再发布权利。</p>
+            <strong>失败回退</strong>
+            <p>单页或媒体失败不会中断整次构建；页面保留提示，下一小时重试。</p>
           </div>
         </div>
       </Reveal>
@@ -140,10 +140,11 @@ export default function LifeSimulationWikiPage() {
         <div className="project-table-wrap">
           <table className="project-table">
             <tbody>
-              <tr><td>生成器</td><td>VitePress 1.6 + 自定义主题</td></tr>
-              <tr><td>数据源</td><td>MediaWiki API（每小时同步）</td></tr>
-              <tr><td>数据</td><td><code>index.json</code> + <code>pages/*.json</code> + 本地媒体</td></tr>
-              <tr><td>运行</td><td>哈希路由 <code>#/wiki/</code>、站内搜索、PWA / Service Worker</td></tr>
+              <tr><td>生成器</td><td>Node.js 20 + 自定义静态站点生成器</td></tr>
+              <tr><td>数据源</td><td>MediaWiki API（action=parse，每小时同步）</td></tr>
+              <tr><td>范围</td><td>9 个命名空间 · 451 个页面 · 195 个媒体文件</td></tr>
+              <tr><td>数据</td><td><code>data/search.json</code> + 页面 HTML + <code>dist/media/</code></td></tr>
+              <tr><td>运行</td><td>静态 HTML、本地搜索、PWA / Service Worker</td></tr>
               <tr><td>部署</td><td>GitHub Actions → GitHub Pages 子路径 <code>/Life-Simulation-Wiki/</code></td></tr>
             </tbody>
           </table>
@@ -156,7 +157,7 @@ export default function LifeSimulationWikiPage() {
         <div className="project-link-grid">
           <a href={project.url} target="_blank" rel="noopener noreferrer">
             <strong>打开 Wiki 镜像</strong>
-            <span>68 篇条目 · 可离线浏览</span>
+            <span>451 个页面 · 195 个媒体文件 · 可离线浏览</span>
             <OpenRegular aria-hidden />
           </a>
           <a href={project.github} target="_blank" rel="noopener noreferrer">
@@ -168,7 +169,7 @@ export default function LifeSimulationWikiPage() {
         <Link className="text-link" to="/projects/github/">
           查看 GitHub 项目页 <ArrowRightRegular aria-hidden />
         </Link>
-        <p className="project-note">迁移内容来自来福 Simulation Wiki，遵循原站 CC BY-SA 署名要求。</p>
+        <p className="project-note">迁移内容来自来福 Simulation Wiki，遵循原站 CC BY-SA 3.0 署名要求。</p>
       </Reveal>
     </SubsiteShell>
   );

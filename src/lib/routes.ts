@@ -111,7 +111,7 @@ export const ROUTES: RouteMeta[] = [
     path: '/projects/life-simulation-wiki/',
     title: '来福 Simulation Wiki · 水鱼 Blog',
     shortTitle: 'Simulation Wiki',
-    description: '来福 Simulation Wiki 静态镜像：68 篇条目、离线浏览、站内搜索与 PWA。',
+    description: '来福 Simulation Wiki 全量静态镜像：451 个页面、195 个媒体文件、离线浏览与全文搜索。',
     prefetch: false,
     load: () => import('../pages/projects/LifeSimulationWikiPage'),
   },
