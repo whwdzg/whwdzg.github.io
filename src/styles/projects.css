@@ -21,7 +21,7 @@
 
 .project-side {
   position: sticky;
-  top: calc(var(--header-h) + 24px);
+  top: calc(var(--header-offset) + 24px);
   display: grid;
   gap: 12px;
 }
@@ -527,6 +527,19 @@
 }
 
 /* ---------------- Minecraft item sprites ---------------- */
+.mc-item-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 3px;
+}
+
+.mc-item-link:hover {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+}
+
 .mc-item-icon {
   display: block;
   image-rendering: pixelated;
@@ -540,22 +553,20 @@
   flex: 0 0 auto;
   width: 40px;
   height: 40px;
-  border: 1px solid #090a0c;
-  border-radius: 3px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 45%),
-    linear-gradient(180deg, #2a2d31, #191b1e);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.55),
-    0 1px 2px rgba(0, 0, 0, 0.3);
+  border: 0;
+  border-radius: 4px;
+  background: #191b1e url('/media/minecraft/ui/slot.png') center / 100% 100% no-repeat;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.32);
+}
+
+.mc-slot .mc-item-icon {
+  width: 62% !important;
+  height: 62% !important;
 }
 
 .mc-slot--empty {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.025), transparent 45%),
-    #121417;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.55);
+  opacity: 0.55;
+  box-shadow: none;
 }
 
 .mc-slot--filled:hover {
@@ -859,6 +870,48 @@
   border-top: 1px solid var(--stroke);
 }
 
+.recipe-tag-expansion {
+  margin-top: 8px;
+  padding: 7px 8px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+}
+
+.recipe-tag-expansion summary {
+  color: var(--text-2);
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.recipe-tag-expansion ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.recipe-tag-expansion li {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 5px 2px 2px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--text-3);
+  font-size: 8px;
+}
+
+.recipe-tag-expansion li .mc-slot {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.recipe-tag-expansion li .mc-item-icon {
+  width: 13px !important;
+  height: 13px !important;
+}
+
 .recipe-card__tag,
 .recipe-card__note {
   padding: 1px 5px;
@@ -953,9 +1006,22 @@
   place-items: center;
   width: 34px;
   height: 34px;
-  border: 1px solid #090a0c;
-  border-radius: 4px;
-  background: #191b1e;
+  border: 0;
+  border-radius: 5px;
+  background: #191b1e url('/media/minecraft/ui/advancement-task.png') center / 100% 100% no-repeat;
+}
+
+.adv-node--goal .adv-node__icon {
+  background-image: url('/media/minecraft/ui/advancement-goal.png');
+}
+
+.adv-node--challenge .adv-node__icon {
+  background-image: url('/media/minecraft/ui/advancement-challenge.png');
+}
+
+.adv-node__icon .mc-item-icon {
+  width: 22px !important;
+  height: 22px !important;
 }
 
 .adv-node__icon > svg {
@@ -1632,5 +1698,179 @@
   .mc-slot--result {
     width: 42px;
     height: 42px;
+  }
+}
+
+
+/* ---------------- Sub-site / GitHub project pages ---------------- */
+.subsite-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.subsite-gallery figure {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+}
+
+.subsite-gallery figure:first-child {
+  grid-column: 1 / -1;
+}
+
+.subsite-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;
+}
+
+.subsite-gallery figcaption {
+  padding: 8px 11px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+}
+
+.github-project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.github-project-card {
+  padding: 15px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+}
+
+.github-project-card__head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.github-project-card__head > img {
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  object-fit: contain;
+}
+
+.github-project-card__head > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.github-project-card__head p {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.github-project-card__head h3 {
+  font-size: 17px;
+}
+
+.github-project-card__desc {
+  margin-top: 9px;
+  color: var(--text-2);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.github-project-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.github-project-card__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--accent);
+  font-size: 9.5px;
+}
+
+.github-project-card__links svg {
+  width: 10px;
+  height: 10px;
+}
+
+.github-repo-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.github-repo-list a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--text-2);
+}
+
+.github-repo-list a:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.github-repo-list a > svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.github-repo-list a > span {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  gap: 1px;
+}
+
+.github-repo-list strong {
+  overflow: hidden;
+  font-size: 10.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.github-repo-list small {
+  color: var(--text-3);
+  font-size: 8.5px;
+}
+
+.github-repo-list a > svg:last-child {
+  width: 10px;
+  height: 10px;
+  color: var(--text-3);
+}
+
+@media (max-width: 760px) {
+  .subsite-gallery,
+  .github-project-grid,
+  .github-repo-list {
+    grid-template-columns: 1fr;
+  }
+
+  .subsite-gallery figure:first-child {
+    grid-column: auto;
   }
 }

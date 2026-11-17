@@ -11,7 +11,7 @@ import { readJson, readStorage, removeStorage, writeJson } from './storage';
 import { isWallpaperId, WALLPAPERS, type WallpaperId } from './wallpaper';
 
 export type ThemeMode = 'system' | 'light' | 'dark';
-export type ParticleKind = 'off' | 'sakura' | 'wutong' | 'ginkgo' | 'snow';
+export type ParticleKind = 'off' | 'season' | 'sakura' | 'summer' | 'wutong' | 'ginkgo' | 'snow';
 export type HeaderAutoHide = 'off' | 'fullscreen' | 'scroll';
 export type MotionMode = 'system' | 'reduced' | 'full';
 
@@ -41,7 +41,7 @@ export const DEFAULT_SETTINGS: Settings = {
   wallpaperRotation: true,
   wallpaperLockedIndex: null,
   wallpaperOffset: 0,
-  particles: 'off',
+  particles: 'season',
   pageProgress: true,
   headerAutoHide: 'fullscreen',
   motion: 'system',
@@ -58,7 +58,7 @@ export const ACCENT_PRESETS = [
 ] as const;
 
 const THEMES = new Set<ThemeMode>(['system', 'light', 'dark']);
-const PARTICLES = new Set<ParticleKind>(['off', 'sakura', 'wutong', 'ginkgo', 'snow']);
+const PARTICLES = new Set<ParticleKind>(['off', 'season', 'sakura', 'summer', 'wutong', 'ginkgo', 'snow']);
 const HEADER_MODES = new Set<HeaderAutoHide>(['off', 'fullscreen', 'scroll']);
 const MOTIONS = new Set<MotionMode>(['system', 'reduced', 'full']);
 

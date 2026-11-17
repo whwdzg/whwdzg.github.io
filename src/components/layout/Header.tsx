@@ -6,7 +6,7 @@
  * - 支持全屏闲置自动收起（可在设置中关闭或扩展为滚动收起）；
  * - 底部细线显示阅读进度，可在设置中关闭。
  */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useRouter } from '../../lib/router';
 import { prefetchRoute, routeMeta } from '../../lib/routes';
 import { useUi } from '../../hooks/useUi';
@@ -37,6 +37,13 @@ export function Header({ isFullscreen, onToggleFullscreen }: HeaderProps) {
     isFullscreen,
     blocked,
   });
+
+  useEffect(() => {
+    document.documentElement.dataset.headerHidden = hidden ? 'true' : 'false';
+    return () => {
+      document.documentElement.dataset.headerHidden = 'false';
+    };
+  }, [hidden]);
 
   const toggleTheme = useCallback(() => {
     update({ theme: resolvedTheme === 'dark' ? 'light' : 'dark' });

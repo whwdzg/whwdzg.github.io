@@ -52,7 +52,7 @@ export function VideoDetail({ video, onClose, onPrev, onNext, hasPrev, hasNext }
       {video && (
         <div className="video-detail">
           <div className="video-detail__cover">
-            <img src={video.cover} alt={video.coverAlt} width={1280} height={720} />
+            <img src={video.cover} alt={video.coverAlt} width={1280} height={720} data-lightbox="on" />
             <span className={`video-badge video-badge--${video.status}`}>{STATUS_LABELS[video.status]}</span>
             {duration && <span className="video-detail__duration">{duration}</span>}
           </div>

@@ -10,7 +10,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 24px);
+  scroll-padding-top: calc(var(--header-offset) + 24px);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -137,7 +137,8 @@ kbd {
   position: relative;
   z-index: 2;
   min-height: 62vh;
-  padding-top: var(--header-h);
+  padding-top: var(--header-offset);
+  transition: padding-top var(--dur) var(--ease);
 }
 
 .container {
@@ -471,7 +472,7 @@ kbd {
   gap: 20px;
   width: min(var(--container), calc(100% - var(--page-pad) * 2));
   /* 占满首屏，避免加载完成后页脚从视口内被推到下方造成 CLS。 */
-  min-height: calc(100vh - var(--header-h));
+  min-height: calc(100vh - var(--header-offset));
   margin: 0 auto;
   padding-block: 48px;
 }

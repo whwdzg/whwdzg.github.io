@@ -1003,7 +1003,7 @@
 /* ---------------- Table of contents ---------------- */
 .toc {
   position: sticky;
-  top: calc(var(--header-h) + 26px);
+  top: calc(var(--header-offset) + 26px);
   align-self: start;
   padding: 14px 12px;
   border: 1px solid var(--stroke);

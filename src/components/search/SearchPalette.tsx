@@ -16,7 +16,8 @@ import { useRouter } from '../../lib/router';
 import { ROUTES } from '../../lib/routes';
 import { searchItems, type SearchableItem } from '../../lib/search';
 import { COMMENTS } from '../../data/comments';
-import { LINKS, PROJECTS } from '../../data/site';
+import { LINKS, PROJECTS, SUBSITES } from '../../data/site';
+import { TOOLS } from '../../data/tools';
 import { FluentIcon } from '../common/FluentIcon';
 
 const ROUTE_ICONS: Record<string, string> = {
@@ -31,6 +32,16 @@ const ROUTE_ICONS: Record<string, string> = {
   '/projects/magical-dye/': 'rocket',
   '/projects/only-survival-mode/': 'rocket',
   '/projects/glowing-players/': 'rocket',
+  '/projects/asteria-player/': 'play',
+  '/projects/life-simulation-wiki/': 'document',
+  '/projects/github/': 'github',
+  '/tools/': 'code',
+  '/tools/base64/': 'code',
+  '/tools/basex/': 'code',
+  '/tools/base-convert/': 'code',
+  '/tools/unicode/': 'document',
+  '/tools/calculator/': 'sparkle',
+  '/tools/mc-projection/': 'cube',
   '/about/': 'info',
 };
 
@@ -44,7 +55,7 @@ const ROUTE_KEYWORDS: Record<string, string> = {
 };
 
 const STATIC_ITEMS: SearchableItem[] = [
-  ...ROUTES.filter((route) => !route.path.startsWith('/projects/') || route.path === '/projects/modrinth/').map((route) => ({
+  ...ROUTES.filter((route) => (!route.path.startsWith('/projects/') && !route.path.startsWith('/tools/')) || route.path === '/projects/modrinth/' || route.path === '/tools/').map((route) => ({
     id: `page:${route.path}`,
     title: route.shortTitle,
     subtitle: route.description,
@@ -55,6 +66,7 @@ const STATIC_ITEMS: SearchableItem[] = [
   })),
   { id: 'section:home-now', title: '现在 / 站点状态', subtitle: '当前在做什么、3.2 重构进度', group: '章节', href: '/#now', icon: 'sparkle' },
   { id: 'section:home-projects', title: '精选项目', subtitle: 'Modrinth 数据包与模组', group: '章节', href: '/#projects', icon: 'rocket' },
+  { id: 'section:home-extras', title: '子站与工具', subtitle: 'Asteria Player、Wiki 镜像与站内工具', group: '章节', href: '/#extras', icon: 'rocket' },
   { id: 'section:home-videos', title: '最近影像', subtitle: '最新哔哩哔哩投稿', group: '章节', href: '/#latest-videos', icon: 'play' },
   { id: 'section:home-timeline', title: '更新轨迹', subtitle: '2022 → 2026 的版本时间线', group: '章节', href: '/#timeline', icon: 'history' },
   { id: 'section:bili-search', title: '影像搜索与筛选', subtitle: '按标题、年份、状态筛选 43 条归档', group: '章节', href: '/bilibili/#archive-toolbar', icon: 'filter' },
@@ -64,6 +76,26 @@ const STATIC_ITEMS: SearchableItem[] = [
   { id: 'section:about-version', title: '版本与提交', subtitle: '版本号、构建时间与最近提交', group: '章节', href: '/about/#version', icon: 'commit' },
   { id: 'section:about-tech', title: '技术栈', subtitle: 'React、Vite、TypeScript、PWA', group: '章节', href: '/about/#tech', icon: 'code' },
   { id: 'section:about-performance', title: '性能策略', subtitle: '代码分割、WebP、懒加载与缓存', group: '章节', href: '/about/#performance', icon: 'rocket' },
+  ...SUBSITES.map((site) => ({
+    id: `subsite:${site.id}`,
+    title: site.title,
+    subtitle: site.subtitle,
+    keywords: site.description,
+    group: '子站',
+    href: site.path,
+    icon: 'globe',
+    meta: '子站',
+  })),
+  ...TOOLS.map((tool) => ({
+    id: `tool:${tool.id}`,
+    title: tool.title,
+    subtitle: tool.description,
+    keywords: `${tool.tag} ${tool.subtitle}`,
+    group: '工具',
+    href: tool.path,
+    icon: tool.icon,
+    meta: tool.tag,
+  })),
   ...PROJECTS.map((project) => ({
     id: `project:${project.id}`,
     title: project.title,
@@ -83,11 +115,11 @@ const STATIC_ITEMS: SearchableItem[] = [
     icon: 'comment',
     meta: comment.date,
   })),
-  { id: 'external:bilibili', title: '哔哩哔哩空间', subtitle: '@滄海水魚 的 B 站主页', group: '外链', href: LINKS.bilibili, external: true, icon: 'tv' },
+  { id: 'external:bilibili', title: '哔哩哔哩空间', subtitle: '@沧海水鱼 的 B 站主页', group: '外链', href: LINKS.bilibili, external: true, icon: 'tv' },
   { id: 'external:github', title: 'GitHub', subtitle: '@whwdzg 的开源仓库', group: '外链', href: LINKS.github, external: true, icon: 'github' },
   { id: 'external:modrinth', title: 'Modrinth 主页', subtitle: '数据包与模组下载', group: '外链', href: LINKS.modrinth, external: true, icon: 'globe' },
   { id: 'external:mcmod', title: 'MCMOD 主页', subtitle: '中文 Minecraft 模组资料', group: '外链', href: LINKS.mcmod, external: true, icon: 'shield' },
-  { id: 'external:repo', title: '本站源码', subtitle: 'whwdzg.github.io 的 3.2 源码', group: '外链', href: LINKS.repo, external: true, icon: 'code' },
+  { id: 'external:repo', title: '本站源码', subtitle: 'whwdzg.github.io 的 3.3 源码', group: '外链', href: LINKS.repo, external: true, icon: 'code' },
 ];
 
 const GROUP_ORDER = ['页面', '章节', '视频', '项目', '留言', '外链'];

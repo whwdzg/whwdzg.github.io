@@ -57,7 +57,9 @@ const THEME_OPTIONS: Array<{ value: ThemeMode; label: string; icon: React.ReactN
 
 const PARTICLES: Array<{ value: ParticleKind; label: string }> = [
   { value: 'off', label: '关闭' },
+  { value: 'season', label: '跟随季节' },
   { value: 'sakura', label: '樱花' },
+  { value: 'summer', label: '夏日' },
   { value: 'wutong', label: '梧桐' },
   { value: 'ginkgo', label: '银杏' },
   { value: 'snow', label: '雪花' },
@@ -341,7 +343,7 @@ export function SettingsPanel() {
               label="粒子动画"
             />
             <p className="settings-hint">
-              <SparkleRegular aria-hidden /> Canvas 实现，最多 28 个粒子；页面隐藏或减少动画时自动停止。
+              <SparkleRegular aria-hidden /> 默认跟随春夏秋冬切换：春樱花、夏萤火、秋银杏、冬雪花；最多 28 个粒子，页面隐藏或减少动画时自动停止。
             </p>
           </section>
 

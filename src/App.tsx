@@ -14,6 +14,7 @@ import { Footer } from './components/layout/Footer';
 import { BackToTop } from './components/layout/BackToTop';
 import { SettingsPanel } from './components/settings/SettingsPanel';
 import { SearchPalette } from './components/search/SearchPalette';
+import { ImageLightbox } from './components/common/ImageLightbox';
 import { PageSkeleton } from './components/common/PageSkeleton';
 import { FluentIcon } from './components/common/FluentIcon';
 
@@ -168,6 +169,7 @@ function Shell() {
       <BackToTop />
       <SettingsPanel />
       <SearchPalette />
+      <ImageLightbox />
     </div>
   );
 }

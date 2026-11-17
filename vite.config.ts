@@ -48,7 +48,7 @@ function serviceWorkerManifest(): Plugin {
         .filter((file) => {
           if (file === 'sw.js' || file === 'sw-assets.json' || file.endsWith('.map')) return false;
           if (file === 'index.html' || file === 'manifest.webmanifest' || file === 'offline.html') return true;
-          if (/^(bilibili|comments|comments\/github|projects\/[^/]+|about)\/index\.html$/.test(file)) return true;
+          if (/^(bilibili|comments|comments\/github|projects\/[^/]+|tools|tools\/[^/]+|about)\/index\.html$/.test(file)) return true;
           if (file.startsWith('assets/') && /\.(js|css)$/.test(file)) return true;
           if (file.startsWith('icons/')) return true;
           if (file.startsWith('media/avatars/') || file.startsWith('media/projects/')) return true;
@@ -92,6 +92,16 @@ export default defineConfig({
         magicalDye: path.resolve('projects/magical-dye/index.html'),
         onlySurvival: path.resolve('projects/only-survival-mode/index.html'),
         glowingPlayers: path.resolve('projects/glowing-players/index.html'),
+        asteriaPlayer: path.resolve('projects/asteria-player/index.html'),
+        lifeWiki: path.resolve('projects/life-simulation-wiki/index.html'),
+        githubProjects: path.resolve('projects/github/index.html'),
+        tools: path.resolve('tools/index.html'),
+        base64: path.resolve('tools/base64/index.html'),
+        basex: path.resolve('tools/basex/index.html'),
+        baseConvert: path.resolve('tools/base-convert/index.html'),
+        unicode: path.resolve('tools/unicode/index.html'),
+        calculator: path.resolve('tools/calculator/index.html'),
+        mcProjection: path.resolve('tools/mc-projection/index.html'),
         about: path.resolve('about/index.html'),
       },
       output: {

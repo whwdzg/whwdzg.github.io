@@ -11,6 +11,11 @@ export interface ModrinthProjectSnapshot {
   latestVersion: string;
   latestVersionName: string;
   latestVersionDate: string;
+  contentVersion: string;
+  variant: string;
+  supportedGameVersions: string[];
+  supportsAll: boolean;
+  variants: Array<{ version: string; variant: string; gameVersions: string[]; date: string }>;
   gameVersions: string[];
   loaders: string[];
   categories: string[];
@@ -22,10 +27,10 @@ export interface ModrinthProjectSnapshot {
   modrinthUrl: string;
 }
 
-export const MODRINTH_SYNCED_AT = "2026-11-16T16:44:20.258Z";
+export const MODRINTH_SYNCED_AT = "2026-11-17T14:39:14.706Z";
 
 export const MODRINTH_TOTALS = {
-  "downloads": 178804,
+  "downloads": 179510,
   "followers": 111
 } as const;
 
@@ -37,11 +42,165 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-crafting-recipes.webp",
     "title": "Better Crafting Recipes ( whwdzg's Recipe)",
     "description": "Formerly named whwdzg's Recipe\nAdd some recipes to Minecraft",
-    "downloads": 12125,
+    "downloads": 12392,
     "followers": 5,
     "latestVersion": "1.9.3.6",
     "latestVersionName": "1.9.3.6",
     "latestVersionDate": "2026-11-16T14:22:28.979033Z",
+    "contentVersion": "1.9.3",
+    "variant": "6",
+    "supportedGameVersions": [
+      "26.3",
+      "26.2",
+      "26.1.2",
+      "26.1.1",
+      "26.1",
+      "1.21.11",
+      "1.21.10",
+      "1.21.9",
+      "1.21.5",
+      "1.21.6",
+      "1.21.7",
+      "1.21.8",
+      "1.21.4",
+      "1.21.3",
+      "1.21.2",
+      "1.21.1",
+      "1.21",
+      "1.14.4",
+      "1.14",
+      "1.14.1",
+      "1.14.2",
+      "1.14.3",
+      "1.15",
+      "1.20.4",
+      "1.20.3",
+      "1.20.2",
+      "1.20.1",
+      "1.20",
+      "1.19.4",
+      "1.19.3",
+      "1.19.2",
+      "1.19.1",
+      "1.19",
+      "1.18.2",
+      "1.18.1",
+      "1.18",
+      "1.17.1",
+      "1.17",
+      "1.16.5",
+      "1.16.4",
+      "1.16.3",
+      "1.16.2",
+      "1.16.1",
+      "1.16",
+      "1.15.2",
+      "1.15.1",
+      "1.13.2",
+      "1.13.1",
+      "1.13"
+    ],
+    "supportsAll": true,
+    "variants": [
+      {
+        "version": "1.9.3.6",
+        "variant": "6",
+        "gameVersions": [
+          "26.3"
+        ],
+        "date": "2026-11-16T14:22:11.751984Z"
+      },
+      {
+        "version": "1.9.3.5",
+        "variant": "5",
+        "gameVersions": [
+          "26.2",
+          "26.1.2",
+          "26.1.1",
+          "26.1"
+        ],
+        "date": "2026-11-16T14:21:23.516786Z"
+      },
+      {
+        "version": "1.9.3.4",
+        "variant": "4",
+        "gameVersions": [
+          "1.21.11",
+          "1.21.10",
+          "1.21.9"
+        ],
+        "date": "2026-11-16T14:20:30.688991Z"
+      },
+      {
+        "version": "1.9.3.3",
+        "variant": "3",
+        "gameVersions": [
+          "1.21.5",
+          "1.21.6",
+          "1.21.7",
+          "1.21.8"
+        ],
+        "date": "2026-11-16T14:19:35.645930Z"
+      },
+      {
+        "version": "1.9.3.2",
+        "variant": "2",
+        "gameVersions": [
+          "1.21.4",
+          "1.21.3",
+          "1.21.2"
+        ],
+        "date": "2026-11-16T14:18:38.327974Z"
+      },
+      {
+        "version": "1.9.3.1",
+        "variant": "1",
+        "gameVersions": [
+          "1.21.1",
+          "1.21"
+        ],
+        "date": "2026-11-16T14:16:58.598986Z"
+      },
+      {
+        "version": "1.9.3.0",
+        "variant": "0",
+        "gameVersions": [
+          "1.14.4",
+          "1.14",
+          "1.14.1",
+          "1.14.2",
+          "1.14.3",
+          "1.15",
+          "1.20.4",
+          "1.20.3",
+          "1.20.2",
+          "1.20.1",
+          "1.20",
+          "1.19.4",
+          "1.19.3",
+          "1.19.2",
+          "1.19.1",
+          "1.19",
+          "1.18.2",
+          "1.18.1",
+          "1.18",
+          "1.17.1",
+          "1.17",
+          "1.16.5",
+          "1.16.4",
+          "1.16.3",
+          "1.16.2",
+          "1.16.1",
+          "1.16",
+          "1.15.2",
+          "1.15.1",
+          "1.13.2",
+          "1.13.1",
+          "1.13"
+        ],
+        "date": "2026-11-16T14:14:05.080643Z"
+      }
+    ],
     "gameVersions": [
       "1.13",
       "1.13.1",
@@ -117,11 +276,70 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-enchantments.webp",
     "title": "Better Enchantments",
     "description": "pack provide better vanilla enchantment effects to minecraft",
-    "downloads": 2216,
+    "downloads": 2287,
     "followers": 2,
     "latestVersion": "1.0.1.3",
     "latestVersionName": "1.0.1.3",
     "latestVersionDate": "2026-11-16T14:29:51.891420Z",
+    "contentVersion": "1.0.1",
+    "variant": "3",
+    "supportedGameVersions": [
+      "26.3",
+      "1.21.11",
+      "26.1",
+      "26.1.1",
+      "26.1.2",
+      "26.2",
+      "1.21.9",
+      "1.21.10",
+      "1.21.5",
+      "1.21.6",
+      "1.21.7",
+      "1.21.8"
+    ],
+    "supportsAll": true,
+    "variants": [
+      {
+        "version": "1.0.1.3",
+        "variant": "3",
+        "gameVersions": [
+          "26.3"
+        ],
+        "date": "2026-11-16T13:57:04.612991Z"
+      },
+      {
+        "version": "1.0.1.2",
+        "variant": "2",
+        "gameVersions": [
+          "1.21.11",
+          "26.1",
+          "26.1.1",
+          "26.1.2",
+          "26.2"
+        ],
+        "date": "2026-11-16T13:56:04.979377Z"
+      },
+      {
+        "version": "1.0.1.1",
+        "variant": "1",
+        "gameVersions": [
+          "1.21.9",
+          "1.21.10"
+        ],
+        "date": "2026-11-16T13:55:04.530330Z"
+      },
+      {
+        "version": "1.0.1.0",
+        "variant": "0",
+        "gameVersions": [
+          "1.21.5",
+          "1.21.6",
+          "1.21.7",
+          "1.21.8"
+        ],
+        "date": "2026-11-16T13:53:23.384656Z"
+      }
+    ],
     "gameVersions": [
       "1.21.10",
       "1.21.11",
@@ -160,11 +378,151 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-mob-drop.webp",
     "title": "Better Mob Drop",
     "description": "A Minecraft mod/data pack which provide more reasonable mob drop",
-    "downloads": 90830,
+    "downloads": 91118,
     "followers": 31,
     "latestVersion": "1.2.6.4",
     "latestVersionName": "1.2.6.4",
     "latestVersionDate": "2026-11-16T14:42:17.999872Z",
+    "contentVersion": "1.2.6",
+    "variant": "4",
+    "supportedGameVersions": [
+      "26.3",
+      "26.2",
+      "26.1",
+      "1.21.11",
+      "1.21.10",
+      "1.21.9",
+      "1.21.8",
+      "1.21.7",
+      "1.21.6",
+      "1.21.5",
+      "26.1.1",
+      "26.1.2",
+      "1.21",
+      "1.21.1",
+      "1.21.2",
+      "1.21.3",
+      "1.21.4",
+      "1.14",
+      "1.20.4",
+      "1.20.3",
+      "1.20.2",
+      "1.20.1",
+      "1.20",
+      "1.19.4",
+      "1.19.3",
+      "1.19.2",
+      "1.19.1",
+      "1.19",
+      "1.18.2",
+      "1.18.1",
+      "1.18",
+      "1.17.1",
+      "1.17",
+      "1.16.5",
+      "1.16.4",
+      "1.16.3",
+      "1.16.2",
+      "1.16.1",
+      "1.16",
+      "1.15.2",
+      "1.15.1",
+      "1.15",
+      "1.14.4",
+      "1.14.3",
+      "1.14.2",
+      "1.14.1",
+      "1.13.2",
+      "1.13.1",
+      "1.13"
+    ],
+    "supportsAll": true,
+    "variants": [
+      {
+        "version": "1.2.6.4",
+        "variant": "4",
+        "gameVersions": [
+          "26.3"
+        ],
+        "date": "2026-11-16T14:42:02.459251Z"
+      },
+      {
+        "version": "1.2.6.3",
+        "variant": "3",
+        "gameVersions": [
+          "26.2"
+        ],
+        "date": "2026-11-16T14:41:13.579081Z"
+      },
+      {
+        "version": "1.2.6.2",
+        "variant": "2",
+        "gameVersions": [
+          "26.1",
+          "1.21.11",
+          "1.21.10",
+          "1.21.9",
+          "1.21.8",
+          "1.21.7",
+          "1.21.6",
+          "1.21.5",
+          "26.1.1",
+          "26.1.2"
+        ],
+        "date": "2026-11-16T14:40:34.288660Z"
+      },
+      {
+        "version": "1.2.6.1",
+        "variant": "1",
+        "gameVersions": [
+          "1.21",
+          "1.21.1",
+          "1.21.2",
+          "1.21.3",
+          "1.21.4"
+        ],
+        "date": "2026-11-16T14:39:32.583923Z"
+      },
+      {
+        "version": "1.2.6.0",
+        "variant": "0",
+        "gameVersions": [
+          "1.14",
+          "1.20.4",
+          "1.20.3",
+          "1.20.2",
+          "1.20.1",
+          "1.20",
+          "1.19.4",
+          "1.19.3",
+          "1.19.2",
+          "1.19.1",
+          "1.19",
+          "1.18.2",
+          "1.18.1",
+          "1.18",
+          "1.17.1",
+          "1.17",
+          "1.16.5",
+          "1.16.4",
+          "1.16.3",
+          "1.16.2",
+          "1.16.1",
+          "1.16",
+          "1.15.2",
+          "1.15.1",
+          "1.15",
+          "1.14.4",
+          "1.14.3",
+          "1.14.2",
+          "1.14.1",
+          "1.13.2",
+          "1.13.1",
+          "1.13"
+        ],
+        "date": "2026-11-16T14:38:33.272089Z"
+      }
+    ],
     "gameVersions": [
       "1.13",
       "1.13.1",
@@ -240,11 +598,59 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/only-survival-mode.webp",
     "title": "Only Survival Mode",
     "description": "A very simple data pack that only allow survival mode",
-    "downloads": 1400,
+    "downloads": 1407,
     "followers": 3,
     "latestVersion": "1.1.0",
     "latestVersionName": "Only Survival Mode 1.1.0",
     "latestVersionDate": "2026-11-15T14:27:19.798096Z",
+    "contentVersion": "1.1.0",
+    "variant": "",
+    "supportedGameVersions": [
+      "1.21",
+      "1.21.1",
+      "1.21.2",
+      "1.21.4",
+      "1.21.5",
+      "1.21.11",
+      "1.21.10",
+      "1.21.3",
+      "1.21.9",
+      "1.21.8",
+      "1.21.7",
+      "1.21.6",
+      "26.1",
+      "26.1.1",
+      "26.1.2",
+      "26.2",
+      "26.3"
+    ],
+    "supportsAll": false,
+    "variants": [
+      {
+        "version": "1.1.0",
+        "variant": "",
+        "gameVersions": [
+          "1.21",
+          "1.21.1",
+          "1.21.2",
+          "1.21.4",
+          "1.21.5",
+          "1.21.11",
+          "1.21.10",
+          "1.21.3",
+          "1.21.9",
+          "1.21.8",
+          "1.21.7",
+          "1.21.6",
+          "26.1",
+          "26.1.1",
+          "26.1.2",
+          "26.2",
+          "26.3"
+        ],
+        "date": "2026-11-15T14:25:49.629587Z"
+      }
+    ],
     "gameVersions": [
       "1.13",
       "1.13.1",
@@ -322,11 +728,59 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/glowing-players.webp",
     "title": "Glowing Players",
     "description": "A mod/data pack which will provide glowing effect to players.",
-    "downloads": 72059,
+    "downloads": 72132,
     "followers": 68,
     "latestVersion": "1.1.0",
     "latestVersionName": "Glowing Players 1.1.0",
     "latestVersionDate": "2026-11-15T14:22:52.845874Z",
+    "contentVersion": "1.1.0",
+    "variant": "",
+    "supportedGameVersions": [
+      "1.21",
+      "1.21.1",
+      "1.21.5",
+      "1.21.3",
+      "1.21.4",
+      "1.21.10",
+      "26.1.2",
+      "26.1",
+      "26.1.1",
+      "1.21.11",
+      "1.21.9",
+      "1.21.8",
+      "1.21.2",
+      "1.21.7",
+      "1.21.6",
+      "26.2",
+      "26.3"
+    ],
+    "supportsAll": false,
+    "variants": [
+      {
+        "version": "1.1.0",
+        "variant": "",
+        "gameVersions": [
+          "1.21",
+          "1.21.1",
+          "1.21.5",
+          "1.21.3",
+          "1.21.4",
+          "1.21.10",
+          "26.1.2",
+          "26.1",
+          "26.1.1",
+          "1.21.11",
+          "1.21.9",
+          "1.21.8",
+          "1.21.2",
+          "1.21.7",
+          "1.21.6",
+          "26.2",
+          "26.3"
+        ],
+        "date": "2026-11-15T14:22:43.768295Z"
+      }
+    ],
     "gameVersions": [
       "1.13",
       "1.13.1",
@@ -409,6 +863,26 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "latestVersion": "1.0.0",
     "latestVersionName": "1.0.0",
     "latestVersionDate": "2025-03-02T09:00:39.416762Z",
+    "contentVersion": "1.0.0",
+    "variant": "",
+    "supportedGameVersions": [
+      "1.21.2",
+      "1.21.3",
+      "1.21.4"
+    ],
+    "supportsAll": true,
+    "variants": [
+      {
+        "version": "1.0.0",
+        "variant": "",
+        "gameVersions": [
+          "1.21.2",
+          "1.21.3",
+          "1.21.4"
+        ],
+        "date": "2025-03-02T09:00:13.124782Z"
+      }
+    ],
     "gameVersions": [
       "1.21.2",
       "1.21.3",

@@ -118,16 +118,34 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
         </div>
       </div>
 
-      {(tags.size > 0 || recipe.kind === 'smelting') && (
+      {tags.size > 0 && (
+        <div className="recipe-tags">
+          {[...tags].map((tag) => {
+            const info = minecraftTag(tag);
+            return (
+              <details className="recipe-tag-expansion" key={tag} open>
+                <summary>
+                  标签材料 · {info?.label ?? tag}（{info?.items.length ?? 0} 种，全部展开）
+                </summary>
+                <ul>
+                  {(info?.items ?? []).map((item) => (
+                    <li key={item}>
+                      <span className="mc-slot">
+                        <ItemIcon id={item} size={20} />
+                      </span>
+                      {minecraftItem(item).nameZh}
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            );
+          })}
+        </div>
+      )}
+
+      {recipe.kind === 'smelting' && recipe.cookingTime != null && (
         <footer className="recipe-card__foot">
-          {[...tags].map((tag) => (
-            <span className="recipe-card__tag" key={tag}>
-              {minecraftTag(tag)?.label ?? `#${tag.split(':')[1]}`}
-            </span>
-          ))}
-          {recipe.kind === 'smelting' && recipe.cookingTime != null && (
-            <span className="recipe-card__note">熔炼 {recipe.cookingTime} tick</span>
-          )}
+          <span className="recipe-card__note">熔炼 {recipe.cookingTime} tick</span>
         </footer>
       )}
     </article>

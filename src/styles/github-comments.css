@@ -110,11 +110,11 @@
 /* ---------------- Sidebar / list ---------------- */
 .gh-sidebar {
   position: sticky;
-  top: calc(var(--header-h) + 24px);
+  top: calc(var(--header-offset) + 24px);
   display: flex;
   flex-direction: column;
   gap: 9px;
-  max-height: calc(100vh - var(--header-h) - 48px);
+  max-height: calc(100vh - var(--header-offset) - 48px);
   min-height: 0;
 }
 
@@ -837,7 +837,7 @@
   border: 1px solid var(--stroke);
   border-radius: var(--r-md);
   background: var(--surface);
-  scroll-margin-top: calc(var(--header-h) + 20px);
+  scroll-margin-top: calc(var(--header-offset) + 20px);
 }
 
 .gh-comment--skeleton {

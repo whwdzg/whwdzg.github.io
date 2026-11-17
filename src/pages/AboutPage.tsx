@@ -75,6 +75,17 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.3.0',
+    date: '2026-11-17',
+    items: [
+      '新增 Asteria Player / 来福 Simulation Wiki 子站与 GitHub 项目页。',
+      '重做 Base64 / BaseX / 进制 / Unicode / 计算器 / MC 投影 6 个工具。',
+      'B 站归档同步到 249 条；侧栏、主页与页脚更新。',
+      '数据包物品/进度贴图、标签展开、MCMOD 与版本矩阵；物品可跳转中文 Wiki。',
+      '季节粒子、正文大图、页眉补位、轮播倒计时与 PWA 名称调整。',
+    ],
+  },
+  {
     version: '3.2.0',
     date: '2026-11-17',
     items: [
@@ -181,7 +192,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.2"
+        eyebrow="ABOUT · 3.3"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -227,7 +238,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.2 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.3 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
@@ -400,7 +411,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <strong>图片</strong>
-                <span>43 张封面共约 656KB，单张平均 15KB，进入视口才加载。</span>
+                <span>249 张封面共约 3.0MB，单张平均 12KB，进入视口才加载。</span>
               </div>
               <div>
                 <strong>字体</strong>
@@ -433,7 +444,7 @@ scripts/
 └─ fetch-covers.mjs        # 抓取封面与元数据（手动运行）
 
 public/
-├─ media/bilibili/  # 43 张 640×360 WebP
+├─ media/bilibili/  # 249 张 640×360 WebP
 ├─ media/wallpapers/# 8 张 1920px WebP
 ├─ icons/           # logo / favicon
 ├─ manifest.webmanifest

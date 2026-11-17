@@ -14,14 +14,14 @@ export interface SiteLink {
 }
 
 export const SITE = {
-  name: '滄海水魚',
+  name: '沧海水鱼',
   handle: 'whwdzg',
   latin: 'Canghai Waterfish',
-  tagline: 'Minecraft 数据包作者 / 影像搬运 / 前端折腾',
+  tagline: 'Minecraft 数据包 · 影像归档 · 前端工具',
   description:
-    '滄海水魚的个人角落：Minecraft 数据包、哔哩哔哩影像归档、留言板，以及一个持续重构中的前端实验场。',
+    '沧海水鱼的内容站点：Minecraft 数据包、哔哩哔哩影像归档、留言板、独立子站与前端工具。',
   avatar: '/media/avatars/shuiyu.webp',
-  avatarAlt: '滄海水魚的头像',
+  avatarAlt: '沧海水鱼的头像',
   startYear: 2022,
   license: 'GPL-3.0-or-later',
   licenseUrl: 'https://www.gnu.org/licenses/gpl-3.0.html',
@@ -82,7 +82,7 @@ export const PROJECTS: Project[] = [
     gameVersions: '1.13 – 26.3',
     loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
     version: '1.9.3.6',
-    downloads: 12125,
+    downloads: 12392,
     followers: 5,
     updated: '2026-11-16',
     links: [
@@ -110,7 +110,7 @@ export const PROJECTS: Project[] = [
     gameVersions: '1.21.5 – 26.3',
     loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
     version: '1.0.1.3',
-    downloads: 2216,
+    downloads: 2287,
     followers: 2,
     updated: '2026-11-16',
     links: [
@@ -138,7 +138,7 @@ export const PROJECTS: Project[] = [
     gameVersions: '1.13 – 26.3',
     loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
     version: '1.2.6.4',
-    downloads: 90829,
+    downloads: 91118,
     followers: 31,
     updated: '2026-11-16',
     links: [
@@ -191,7 +191,7 @@ export const PROJECTS: Project[] = [
     gameVersions: '1.21 – 26.3',
     loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
     version: '1.1.0',
-    downloads: 1400,
+    downloads: 1407,
     followers: 3,
     updated: '2026-11-15',
     links: [
@@ -216,7 +216,7 @@ export const PROJECTS: Project[] = [
     gameVersions: '1.21 – 26.3',
     loaders: '数据包 / Fabric / Forge / NeoForge / Quilt',
     version: '1.1.0',
-    downloads: 72059,
+    downloads: 72132,
     followers: 68,
     updated: '2026-11-15',
     links: [
@@ -227,6 +227,47 @@ export const PROJECTS: Project[] = [
     github: 'https://github.com/whwdzg/glowing-players',
   },
 ];
+
+export interface Subsite {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: string;
+  path: string;
+  url: string;
+  github: string;
+  accent: string;
+}
+
+export const SUBSITES: Subsite[] = [
+  {
+    id: 'asteria-player',
+    title: 'Asteria Player',
+    subtitle: 'Fluent 音乐 / 视频播放器',
+    description: '本地音乐与视频播放器：逐字歌词、字幕、弹幕、移动端手势、PWA 离线库。',
+    icon: '/media/projects/asteria-player.webp',
+    path: '/projects/asteria-player/',
+    url: 'https://whwdzg.github.io/Asteria-Player/',
+    github: 'https://github.com/whwdzg/Asteria-Player',
+    accent: '#5b8cff',
+  },
+  {
+    id: 'life-simulation-wiki',
+    title: '来福 Simulation Wiki',
+    subtitle: 'Life Simulation Wiki 镜像',
+    description: '来福 Simulation 的静态 Wiki 镜像：68 篇条目、离线浏览、全文搜索与 PWA。',
+    icon: '/media/projects/life-simulation-wiki.svg',
+    path: '/projects/life-simulation-wiki/',
+    url: 'https://whwdzg.github.io/Life-Simulation-Wiki/',
+    github: 'https://github.com/whwdzg/Life-Simulation-Wiki',
+    accent: '#1f8a70',
+  },
+];
+
+export function subsiteById(idOrPath: string): Subsite | undefined {
+  return SUBSITES.find((site) => site.id === idOrPath || site.path === idOrPath);
+}
 
 export function projectById(idOrPath: string): Project | undefined {
   return PROJECTS.find((project) => project.id === idOrPath || project.path === idOrPath || project.modrinthSlug === idOrPath);
@@ -269,10 +310,17 @@ export const TIMELINE: TimelineEntry[] = [
   },
   {
     year: '2026.11',
-    label: '现在',
+    label: '重构',
     title: '3.0 重构',
     text: '从 0 重写：Fluent Sun Valley 与液态玻璃、矩形悬浮侧栏、全屏自动收起页眉，性能优先。',
     tone: 'd',
+  },
+  {
+    year: '2026.11',
+    label: '现在',
+    title: '3.3 子站与工具',
+    text: 'Asteria Player、Wiki 镜像、GitHub 项目页与 2.0 工具全部重做，加入季节粒子与正文大图。',
+    tone: 'a',
   },
 ];
 
@@ -325,16 +373,16 @@ export const QUICK_LINKS: SiteLink[] = [
 /**
  * 首页“最近影像”的轻量切片。
  *
- * 首页不 import 完整的 43 条 videos.ts，否则 25KB 数据会进入首屏 chunk；
+ * 首页不 import 完整的 249 条 videos.ts，否则数据会进入首屏 chunk；
  * 这里只保留 6 条精选，完整数据在哔哩哔哩页按需加载。
  */
 export const FEATURED_VIDEOS = [
-  { id: 2, title: '当你在BW遇见了浑元Rysn', date: '2025-07-13', duration: '0:13', cover: '/media/bilibili/v02.webp' },
-  { id: 4, title: '【愚人节限定数据包】当MC的染料可以转化矿物块和粉末？！', date: '2025-03-30', duration: '38:12', cover: '/media/bilibili/v04.webp' },
-  { id: 12, title: '【cc字幕】微软把Windows11娘化了', date: '2024-10-20', duration: '0:20', cover: '/media/bilibili/v12.webp' },
-  { id: 10, title: "【数据包/模组】是时候试试 whwdzg's Recipe 了", date: '2024-11-09', duration: '0:29', cover: '/media/bilibili/v10.webp' },
-  { id: 13, title: '【Minecraft Live 2024】村民新闻：林中之怪', date: '2024-10-02', duration: '4:26', cover: '/media/bilibili/v13.webp' },
-  { id: 15, title: '[cc字幕] Hypixel 服务器宣传片（2024）', date: '2024-09-15', duration: '2:28', cover: '/media/bilibili/v15.webp' },
+  { id: 44, title: '【1v6猎人游戏全程（追杀视角）】水鱼拉完了！', date: '2026-10-29', duration: '4:52:46', cover: '/media/bilibili/v44.webp' },
+  { id: 45, title: '【Minecraft官方短视频】你能找出10个错误吗？', date: '2026-09-26', duration: '0:25', cover: '/media/bilibili/v45.webp' },
+  { id: 46, title: '【Minecraft官方短视频】你会加入他们吗?', date: '2026-09-26', duration: '0:37', cover: '/media/bilibili/v46.webp' },
+  { id: 47, title: '【Minecraft官方短视频】曾经有过一只鸡……', date: '2026-09-26', duration: '0:29', cover: '/media/bilibili/v47.webp' },
+  { id: 48, title: '【Minecraft官方短视频】来雪球大战？', date: '2026-09-26', duration: '0:18', cover: '/media/bilibili/v48.webp' },
+  { id: 49, title: '【Minecraft官方短视频】悬浮树的视角', date: '2026-09-19', duration: '0:19', cover: '/media/bilibili/v49.webp' },
 ] as const;
 
 
@@ -347,7 +395,7 @@ export interface NavItem {
 
 export const PRIMARY_NAV: NavItem[] = [
   { label: '主页', to: '/', icon: 'home', description: '站点概览与最新动态' },
-  { label: '哔哩哔哩', to: '/bilibili/', icon: 'tv', description: '43 条影像归档' },
+  { label: '哔哩哔哩', to: '/bilibili/', icon: 'tv', description: '249 条影像归档' },
   { label: '留言板', to: '/comments/', icon: 'comment', description: '留言摘录与写作入口' },
   { label: 'GitHub 评论', to: '/comments/github/', icon: 'github', description: 'Issue 驱动的评论区' },
   { label: '关于', to: '/about/', icon: 'info', description: '版本、提交历史与技术说明' },
@@ -356,7 +404,7 @@ export const PRIMARY_NAV: NavItem[] = [
 export const ARCHIVE_LINKS: SiteLink[] = [
   { label: '2.0 源码分支', href: LINKS.repo2, description: '2.0-final 完整静态站', external: true },
   { label: 'Legacy 1.0', href: LINKS.legacy, description: '最初的静态页面', external: true },
-  { label: '本站源码', href: LINKS.repo, description: '3.2 的 React + Vite 源码', external: true },
+  { label: '本站源码', href: LINKS.repo, description: '3.3 的 React + Vite 源码', external: true },
 ];
 
 export type FluentIconName = keyof typeof FLUENT_ICON_NAMES;

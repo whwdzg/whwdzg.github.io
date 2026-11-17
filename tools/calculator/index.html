@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-glass="on" data-motion="system">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0b0d12" id="theme-color-meta" />
+    <title>科学计算器 · 水鱼 Blog</title>
+    <meta name="description" content="ClassWiz 风格科学计算器，支持函数图像与 LaTeX 公式导入导出。" />
+    <meta name="author" content="沧海水鱼" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="科学计算器 · 水鱼 Blog" />
+    <meta property="og:description" content="ClassWiz 风格科学计算器，支持函数图像与 LaTeX 公式导入导出。" />
+    <meta property="og:url" content="https://whwdzg.github.io/tools/calculator/" />
+    <link rel="canonical" href="https://whwdzg.github.io/tools/calculator/" />
+    <link rel="icon" href="/icons/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/logo-192.png" />
+    <link rel="apple-touch-icon" href="/icons/logo-192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preload" href="/icons/logo-192.png" as="image" type="image/png" />
+    <script>
+      (function () {
+        try {
+          var doc = document.documentElement;
+          var s = {};
+          try { s = JSON.parse(localStorage.getItem('whwdzg-site-settings-v3') || '{}') || {}; } catch (e) {}
+          var theme = s.theme;
+          if (!theme) {
+            var legacy = localStorage.getItem('setting-lightdarktoggle');
+            theme = legacy === '1' ? 'light' : legacy === '2' ? 'dark' : 'system';
+          }
+          var dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var accent = s.accent || localStorage.getItem('theme-color') || '#0078D4';
+          var hex = accent.replace('#', '');
+          if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+          var r = parseInt(hex.slice(0, 2), 16) / 255;
+          var g = parseInt(hex.slice(2, 4), 16) / 255;
+          var b = parseInt(hex.slice(4, 6), 16) / 255;
+          var lin = function (c) { return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+          var lum = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+          doc.dataset.theme = dark ? 'dark' : 'light';
+          doc.dataset.glass = s.glass === false ? 'off' : 'on';
+          doc.dataset.motion = s.motion || 'system';
+          doc.style.colorScheme = dark ? 'dark' : 'light';
+          doc.style.setProperty('--accent', accent);
+          doc.style.setProperty('--accent-ink', lum > 0.45 ? '#101014' : '#FFFFFF');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <div style="max-width:640px;margin:80px auto;padding:24px;font-family:system-ui,sans-serif;line-height:1.8">
+        <h1>科学计算器</h1>
+        <p>科学计算器需要 JavaScript。 <a href="https://whwdzg.github.io/">返回主页</a>。</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

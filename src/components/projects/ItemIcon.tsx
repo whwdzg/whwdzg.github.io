@@ -8,11 +8,18 @@ interface ItemIconProps {
   className?: string;
   alt?: string;
   eager?: boolean;
+  /** 是否链接到中文 Minecraft Wiki；图标本身默认是链接。 */
+  link?: boolean;
 }
 
-export function ItemIcon({ id, size = 32, className, alt, eager = false }: ItemIconProps) {
+/** 中文 Minecraft Wiki 使用中文条目名，直接按物品名编码即可。 */
+export function minecraftWikiUrl(name: string): string {
+  return `https://zh.minecraft.wiki/w/${encodeURIComponent(name)}`;
+}
+
+export function ItemIcon({ id, size = 32, className, alt, eager = false, link = true }: ItemIconProps) {
   const item = minecraftItem(id);
-  return (
+  const image = (
     <img
       className={cn('mc-item-icon', className)}
       src={item.texture}
@@ -24,5 +31,20 @@ export function ItemIcon({ id, size = 32, className, alt, eager = false }: ItemI
       draggable={false}
       style={{ width: size, height: size }}
     />
+  );
+  if (!link) return image;
+  return (
+    <a
+      className="mc-item-link"
+      href={minecraftWikiUrl(item.nameZh)}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={`在中文 Minecraft Wiki 查看「${item.nameZh}」`}
+      aria-label={`在中文 Minecraft Wiki 查看 ${item.nameZh}`}
+      onClick={(event) => event.stopPropagation()}
+      style={{ width: size, height: size }}
+    >
+      {image}
+    </a>
   );
 }

@@ -19,7 +19,8 @@ import { useCountUp } from '../../hooks/useCountUp';
 import { Reveal } from '../common/Reveal';
 import { SectionHeading } from '../common/SectionHeading';
 import { SpotlightCard } from '../common/SpotlightCard';
-import { FEATURED_VIDEOS, HIGHLIGHTS, PROJECTS, QUICK_LINKS, TIMELINE, LINKS, SITE } from '../../data/site';
+import { FEATURED_VIDEOS, HIGHLIGHTS, PROJECTS, QUICK_LINKS, SUBSITES, TIMELINE, LINKS, SITE } from '../../data/site';
+import { TOOLS } from '../../data/tools';
 import { siteMeta } from '../../lib/meta';
 
 /** 数字统计卡 */
@@ -48,17 +49,17 @@ export function NowSection() {
             </p>
             <h2 id="now-title" className="display-title">
               一个由 <em>Minecraft</em>、代码与影像构成的
-              <span className="display-title__accent">个人角落。</span>
+              <span className="display-title__accent">内容站点。</span>
             </h2>
           </div>
           <div className="now__copy">
             <p>
-              我是滄海水魚，网上通常叫 whwdzg。做 Minecraft 数据包，搬运并翻译喜欢的影像，
-              也花很多时间把个人网站重写一遍又一遍。
+              这个站点整理 Minecraft 数据包、哔哩哔哩影像归档、独立子站与前端工具。
+              内容以项目页、归档和可离线使用的工具为主，目标是清晰、快速、可长期维护。
             </p>
             <p>
               3.x 从 3.0 开始重写：不照搬旧页面，而是用新的设计语言重新实现相同的功能。
-              目标很朴素——更好看，也要更快、更轻。
+              所有页面、资源与交互都围绕加载速度、可访问性与可维护性重新组织。
             </p>
             <ul className="now__status" aria-label="3.x 完成状态">
               <li>
@@ -68,7 +69,7 @@ export function NowSection() {
                 <CheckmarkCircleRegular aria-hidden /> 矩形悬浮侧栏与全屏自动收起页眉
               </li>
               <li>
-                <CheckmarkCircleRegular aria-hidden /> 43 条影像归档与本地 WebP 封面
+                <CheckmarkCircleRegular aria-hidden /> 249 条影像归档与本地 WebP 封面
               </li>
               <li>
                 <CheckmarkCircleRegular aria-hidden /> 版本 / 提交历史页与 GitHub Pages 部署
@@ -79,7 +80,7 @@ export function NowSection() {
 
         <div className="now__stats">
           <Reveal delay={0}>
-            <Stat value={43} label="影像归档" note="2021 → 2025" />
+            <Stat value={249} label="影像归档" note="2021 → 2026" />
           </Reveal>
           <Reveal delay={70}>
             <Stat value={6} label="Modrinth 项目" note="数据包 / 模组" />
@@ -185,6 +186,55 @@ export function ProjectGrid() {
   );
 }
 
+export function SubsitesAndTools() {
+  return (
+    <section id="extras" className="section extras" aria-labelledby="extras-title">
+      <div className="container">
+        <SectionHeading
+          eyebrow="SUB-SITES · TOOLS"
+          title="子站与站内工具"
+          description="播放器、Wiki 镜像与 2.0 工具条目都做成了独立页面；主站只负责导览。"
+          actions={
+            <Link className="text-link" to="/projects/github/">
+              GitHub 项目页 <ArrowRightRegular aria-hidden />
+            </Link>
+          }
+        />
+        <div className="home-extras-grid">
+          {SUBSITES.map((site, index) => (
+            <Reveal key={site.id} delay={index * 60}>
+              <Link className="home-extra-card home-extra-card--site" to={site.path} style={{ '--extra-accent': site.accent } as React.CSSProperties}>
+                <img src={site.icon} alt="" width={52} height={52} loading="lazy" />
+                <div>
+                  <p>{site.subtitle}</p>
+                  <h3>{site.title}</h3>
+                  <span>{site.description}</span>
+                </div>
+                <ArrowRightRegular aria-hidden />
+              </Link>
+            </Reveal>
+          ))}
+          {[...TOOLS.slice(4), ...TOOLS.slice(0, 2)].map((tool, index) => (
+            <Reveal key={tool.id} delay={(index + 2) * 60}>
+              <Link className="home-extra-card" to={tool.path} style={{ '--extra-accent': tool.accent } as React.CSSProperties}>
+                <span className="home-extra-card__icon">
+                  <FluentIcon name={tool.icon} size={20} aria-hidden />
+                </span>
+                <div>
+                  <p>{tool.tag}</p>
+                  <h3>{tool.title}</h3>
+                  <span>{tool.description}</span>
+                </div>
+                <ArrowRightRegular aria-hidden />
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function LatestVideos() {
   return (
     <section id="latest-videos" className="section latest" aria-labelledby="latest-title">
@@ -195,7 +245,7 @@ export function LatestVideos() {
           description="从哔哩哔哩归档里挑出的 6 条。点击卡片可以直接打开归档详情。"
           actions={
             <Link className="text-link" to="/bilibili/">
-              全部 43 条 <ArrowRightRegular aria-hidden />
+              全部 249 条 <ArrowRightRegular aria-hidden />
             </Link>
           }
         />
@@ -244,7 +294,7 @@ export function TimelineSection() {
         <SectionHeading
           eyebrow="CHANGELOG"
           title="更新轨迹"
-          description="从传统静态页面到 3.0 重构。完整版本号与提交时间在关于页。"
+          description="从传统静态页面到 3.3 子站与工具。完整版本号与提交时间在关于页。"
         />
         <ol className="timeline__list">
           {TIMELINE.map((entry, index) => (
@@ -284,7 +334,7 @@ export function HomeCTA() {
             <span className="display-title__accent">留言、私信，或者只是逛逛。</span>
           </h2>
           <p className="home-cta__lead">
-            静态站不直接写评论，但留言板保留了完整的入口。也可以从下面这些地方找到我。
+            静态站不直接写评论，但留言板保留了完整入口。也可以从下面的子站、工具与外部链接继续浏览。
           </p>
           <div className="home-cta__actions">
             <Link className="btn btn--primary btn--lg" to="/comments/">

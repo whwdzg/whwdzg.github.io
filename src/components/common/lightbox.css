@@ -1,0 +1,129 @@
+/* Fullscreen content image viewer / 正文图片查看器 */
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: rgba(4, 6, 10, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: lightbox-in 180ms var(--ease-out);
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.image-lightbox__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  color: rgba(255, 255, 255, 0.76);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.image-lightbox__hint {
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 9px;
+}
+
+.image-lightbox__btn,
+.image-lightbox__nav {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.image-lightbox__btn:hover,
+.image-lightbox__nav:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.image-lightbox__btn svg,
+.image-lightbox__nav svg {
+  width: 18px;
+  height: 18px;
+}
+
+.image-lightbox__stage {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+}
+
+.image-lightbox__stage:active {
+  cursor: grabbing;
+}
+
+.image-lightbox__image {
+  max-width: min(94vw, 1600px);
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  user-select: none;
+  will-change: transform;
+}
+
+.image-lightbox__nav {
+  position: fixed;
+  top: 50%;
+  z-index: 1;
+  transform: translateY(-50%);
+}
+
+.image-lightbox__nav--prev {
+  left: 18px;
+}
+
+.image-lightbox__nav--next {
+  right: 18px;
+}
+
+.image-lightbox__caption {
+  max-width: 76ch;
+  margin: 0 auto;
+  padding: 12px 18px 18px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+[data-lightbox] {
+  cursor: zoom-in;
+}
+
+@media (max-width: 720px) {
+  .image-lightbox__hint {
+    display: none;
+  }
+
+  .image-lightbox__image {
+    max-width: 100vw;
+    max-height: 72vh;
+    border-radius: 0;
+  }
+
+  .image-lightbox__nav--prev {
+    left: 8px;
+  }
+
+  .image-lightbox__nav--next {
+    right: 8px;
+  }
+}

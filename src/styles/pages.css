@@ -308,7 +308,7 @@
   border: 1px solid var(--stroke);
   border-radius: var(--r-md);
   background: var(--surface-2);
-  scroll-margin-top: calc(var(--header-h) + 24px);
+  scroll-margin-top: calc(var(--header-offset) + 24px);
   transition: border-color var(--dur) var(--ease);
 }
 
@@ -558,7 +558,7 @@
 
 .archive-toolbar {
   position: sticky;
-  top: calc(var(--header-h) + 10px);
+  top: calc(var(--header-offset) + 10px);
   z-index: 20;
   display: grid;
   grid-template-columns: minmax(220px, 1fr) auto;
@@ -1192,7 +1192,7 @@
   display: grid;
   gap: 12px;
   position: sticky;
-  top: calc(var(--header-h) + 26px);
+  top: calc(var(--header-offset) + 26px);
 }
 
 .about-sidebar .toc {
@@ -1679,7 +1679,7 @@
       'search'
       'status'
       'controls';
-    top: calc(var(--header-h) + 6px);
+    top: calc(var(--header-offset) + 6px);
   }
 
   .archive-controls {

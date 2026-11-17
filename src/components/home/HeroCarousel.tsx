@@ -43,27 +43,27 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     id: 'rebuild',
-    kicker: '3.2 · FLUENT REBUILD',
+    kicker: '3.3 · FLUENT REBUILD',
     title: '重新开始，',
     accent: '以更轻盈的方式。',
     lead: 'Fluent Design Sun Valley 的秩序感，加一点液态玻璃的悬浮感。没有框架堆叠，只有更快的加载、更少的资源与更清楚的导航。',
     light: '/media/hero/light-4.webp',
     dark: '/media/hero/dark-1.webp',
-    meta: ['2026 · 3.2', 'React + Vite', 'GPL-3.0'],
+    meta: ['2026 · 3.3', 'React + Vite', 'GPL-3.0'],
     actions: [
-      { label: '了解 3.2', to: '/about/', primary: true },
+      { label: '了解 3.3', to: '/about/', primary: true },
       { label: '查看更新轨迹', to: '/#timeline' },
     ],
   },
   {
     id: 'archive',
     kicker: 'ARCHIVE · BILIBILI',
-    title: '43 段影像，',
+    title: '249 段影像，',
     accent: '一次完整归档。',
     lead: '从 2021 年的第一条 Minecraft 视频，到官方短视频搬运与数据包演示。封面全部本地 WebP 化，支持搜索、年份筛选与网格 / 列表视图。',
     light: '/media/hero/light-1.webp',
     dark: '/media/hero/dark-2.webp',
-    meta: ['43 条记录', '2021 → 2025', '本地 WebP'],
+    meta: ['249 条记录', '2021 → 2026', '本地 WebP'],
     actions: [
       { label: '浏览影像归档', to: '/bilibili/', primary: true },
       { label: '前往 B 站', to: 'https://space.bilibili.com/588003657', external: true },
@@ -81,6 +81,20 @@ const SLIDES: Slide[] = [
     actions: [
       { label: '查看精选项目', to: '/#projects', primary: true },
       { label: 'Modrinth 主页', to: 'https://modrinth.com/user/whwdzg', external: true },
+    ],
+  },
+  {
+    id: 'subsites',
+    kicker: 'SUB-SITES · TOOLS',
+    title: '播放器与 Wiki，',
+    accent: '也放进站点。',
+    lead: 'Asteria Player 负责本地音视频播放，来福 Simulation Wiki 提供离线镜像；2.0 的编码、计算器与投影工具也全部重做。',
+    light: '/media/hero/light-3.webp',
+    dark: '/media/hero/dark-2.webp',
+    meta: ['2 个子站', '6 个工具', '独立部署'],
+    actions: [
+      { label: '浏览子站', to: '/projects/asteria-player/', primary: true },
+      { label: '打开工具', to: '/tools/' },
     ],
   },
   {
@@ -105,16 +119,28 @@ export function HeroCarousel() {
   const [paused, setPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [pageHidden, setPageHidden] = useState(() => document.hidden);
+  const [remaining, setRemaining] = useState(7);
   const sectionRef = useRef<HTMLElement>(null);
   const reduced =
     settings.motion === 'reduced' ||
     (settings.motion === 'system' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   const next = (active + 1) % SLIDES.length;
+  const autoPlaying = !paused && !hovered && !reduced && !pageHidden;
 
   const go = useCallback((index: number) => {
     setActive(((index % SLIDES.length) + SLIDES.length) % SLIDES.length);
   }, []);
+
+  // 自动播放倒计时提示
+  useEffect(() => {
+    setRemaining(7);
+    if (!autoPlaying) return;
+    const timer = window.setInterval(() => {
+      setRemaining((value) => (value <= 1 ? 7 : value - 1));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [active, autoPlaying]);
 
   // 自动播放
   useEffect(() => {
@@ -164,9 +190,9 @@ export function HeroCarousel() {
 
   const facts = useMemo(
     () => [
-      { value: '43', label: '影像归档' },
+      { value: '249', label: '影像归档' },
       { value: '06', label: 'Modrinth 项目' },
-      { value: '3.2.0', label: '当前版本' },
+      { value: '3.3.0', label: '当前版本' },
     ],
     [],
   );
@@ -283,6 +309,9 @@ export function HeroCarousel() {
           ))}
         </div>
         <div className="hero__nav">
+          <span className="hero__timer" aria-live="off">
+            {autoPlaying ? `${remaining}s 后切换` : '已暂停'}
+          </span>
           <span className="hero__counter">
             <strong>{String(active + 1).padStart(2, '0')}</strong>
             <span aria-hidden>/</span>

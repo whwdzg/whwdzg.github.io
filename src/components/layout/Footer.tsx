@@ -1,7 +1,7 @@
 /** 页脚 / Footer with sitemap, license and build metadata. */
 import { Link } from '../../lib/router';
 import { useUi } from '../../hooks/useUi';
-import { ARCHIVE_LINKS, LINKS, PRIMARY_NAV, PROJECTS, SITE } from '../../data/site';
+import { ARCHIVE_LINKS, LINKS, PRIMARY_NAV, PROJECTS, SITE, SUBSITES } from '../../data/site';
 import { siteMeta } from '../../lib/meta';
 import { FluentIcon } from '../common/FluentIcon';
 
@@ -19,7 +19,7 @@ export function Footer() {
             </div>
           </div>
           <p className="site-footer__desc">
-            一个由 Minecraft、代码与影像构成的个人角落。3.2 使用 Fluent Design Sun Valley、可选的液态玻璃表面，并把六个数据包项目搬进了站内。
+            一个由 Minecraft、代码与影像构成的内容站点。3.3 使用 Fluent Design Sun Valley、可选的液态玻璃表面，集中展示数据包、影像归档、独立子站与前端工具。
           </p>
           <div className="site-footer__badges">
             <span className="badge badge--muted">Fluent Design</span>
@@ -56,6 +56,11 @@ export function Footer() {
 
         <nav className="site-footer__column" aria-label="更多链接">
           <p className="site-footer__heading">更多</p>
+          <Link to="/tools/">站内工具</Link>
+          {SUBSITES.map((site) => (
+            <Link key={site.id} to={site.path}>{site.title}</Link>
+          ))}
+          <Link to="/projects/github/">GitHub 项目</Link>
           <a href={LINKS.bilibili} target="_blank" rel="noopener noreferrer">
             哔哩哔哩
           </a>

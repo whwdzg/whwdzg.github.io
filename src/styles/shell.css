@@ -376,7 +376,7 @@
 /* 直角矩形，收起时完全移出视口，展开时悬浮在内容之上 */
 .sidebar {
   position: absolute;
-  top: calc(var(--header-h) + 8px);
+  top: calc(var(--header-offset) + 8px);
   bottom: 8px;
   left: 8px;
   z-index: 1;
@@ -384,7 +384,7 @@
   flex-direction: column;
   width: var(--sidebar-w);
   border: 1px solid var(--glass-border);
-  border-radius: 0;
+  border-radius: var(--r-2xl);
   background: var(--sidebar-bg);
   box-shadow: var(--shadow-2), var(--shadow-inset);
   backdrop-filter: blur(28px) saturate(165%);
@@ -466,7 +466,7 @@
   gap: 10px;
   padding: 12px;
   border: 1px solid var(--stroke);
-  border-radius: 0;
+  border-radius: var(--r-lg);
   background: color-mix(in srgb, var(--surface-2) 74%, transparent);
 }
 
@@ -506,7 +506,7 @@
   width: 27px;
   height: 27px;
   border: 1px solid var(--stroke);
-  border-radius: 0;
+  border-radius: var(--r-lg);
   color: var(--text-3);
   transition:
     color var(--dur-fast) var(--ease),
@@ -550,7 +550,7 @@
   height: 42px;
   padding: 0 10px;
   border-left: 3px solid transparent;
-  border-radius: 0;
+  border-radius: var(--r-lg);
   color: var(--text-2);
   font-size: 13.5px;
   font-weight: 550;
@@ -614,7 +614,7 @@
   width: 100%;
   height: 36px;
   padding: 0 10px;
-  border-radius: 0;
+  border-radius: var(--r-lg);
   text-align: left;
   transition: background var(--dur-fast) var(--ease);
 }
@@ -731,7 +731,7 @@
   gap: 5px;
   height: 32px;
   border: 1px solid var(--stroke);
-  border-radius: 0;
+  border-radius: var(--r-lg);
   color: var(--text-2);
   font-size: 11.5px;
   transition:
@@ -1024,6 +1024,7 @@
     top: 0;
     bottom: 0;
     left: 0;
+    border-radius: 0 var(--r-2xl) var(--r-2xl) 0;
     width: min(86vw, 320px);
     border-left: 0;
     border-top: 0;

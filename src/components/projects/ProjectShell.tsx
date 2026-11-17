@@ -5,11 +5,17 @@ import { Link } from '../../lib/router';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import { formatDate, formatViews } from '../../lib/format';
 import { PROJECTS, type Project } from '../../data/site';
+import { modrinthProject } from '../../data/projects/modrinth';
+import { mcmodProject } from '../../data/projects/mcmod';
 import { PageIntro } from '../layout/PageIntro';
 import { TableOfContents, type TocItem } from '../common/TableOfContents';
 import { FluentIcon } from '../common/FluentIcon';
 
 export function ProjectSummary({ project }: { project: Project }) {
+  const snapshot = modrinthProject(project.modrinthSlug);
+  const mcmod = mcmodProject(project.id);
+  const version = snapshot?.latestVersion ?? project.version;
+  const support = project.gameVersions;
   return (
     <div className="project-summary">
       <div className="project-summary__head">
@@ -17,7 +23,7 @@ export function ProjectSummary({ project }: { project: Project }) {
         <div>
           <p>{project.subtitle}</p>
           <strong>{project.title}</strong>
-          <span>v{project.version}</span>
+          <span>v{version}</span>
         </div>
       </div>
       <div className="project-summary__stats">
@@ -30,7 +36,7 @@ export function ProjectSummary({ project }: { project: Project }) {
           <span>关注</span>
         </div>
         <div>
-          <strong>{project.gameVersions}</strong>
+          <strong>{support}</strong>
           <span>支持版本</span>
         </div>
       </div>
@@ -45,6 +51,11 @@ export function ProjectSummary({ project }: { project: Project }) {
         <a className="btn btn--primary btn--sm" href={project.modrinth} target="_blank" rel="noopener noreferrer">
           <ArrowDownloadRegular aria-hidden /> Modrinth
         </a>
+        {project.mcmod && (
+          <a className="btn btn--ghost btn--sm" href={project.mcmod} target="_blank" rel="noopener noreferrer">
+            <DocumentRegular aria-hidden /> MC百科
+          </a>
+        )}
         <a className="btn btn--ghost btn--sm" href={project.github} target="_blank" rel="noopener noreferrer">
           <CodeRegular aria-hidden /> GitHub
         </a>
@@ -54,7 +65,11 @@ export function ProjectSummary({ project }: { project: Project }) {
           </a>
         )}
       </div>
-      <p className="project-summary__date">最近更新 {formatDate(project.updated)}</p>
+      <p className="project-summary__date">
+        最近更新 {formatDate(project.updated)}
+        {snapshot && <> · 内容版本 {snapshot.contentVersion} · {snapshot.variants.length} 个 MC 变体</>}
+        {mcmod && <> · MC百科 {mcmod.viewsLabel} 浏览</>}
+      </p>
     </div>
   );
 }
@@ -94,6 +109,7 @@ interface ProjectShellProps {
 }
 
 export function ProjectShell({ project, toc, children }: ProjectShellProps) {
+  const snapshot = modrinthProject(project.modrinthSlug);
   const ids = useMemo(() => toc.map((item) => item.id), [toc]);
   const active = useActiveSection(ids);
 
@@ -104,9 +120,9 @@ export function ProjectShell({ project, toc, children }: ProjectShellProps) {
         title={project.title}
         lead={project.detail}
         meta={[
-          { icon: 'commit', label: `v${project.version}` },
+          { icon: 'commit', label: `v${snapshot?.latestVersion ?? project.version}` },
           { icon: 'storage', label: project.gameVersions },
-          { icon: 'download', label: `${formatViews(project.downloads)} 下载` },
+          { icon: 'download', label: `${formatViews(snapshot?.downloads ?? project.downloads)} 下载` },
           { icon: 'calendar', label: `更新 ${formatDate(project.updated)}` },
         ]}
         actions={
@@ -114,6 +130,11 @@ export function ProjectShell({ project, toc, children }: ProjectShellProps) {
             <a className="btn btn--primary btn--md" href={project.modrinth} target="_blank" rel="noopener noreferrer">
               <ArrowDownloadRegular aria-hidden /> 在 Modrinth 下载
             </a>
+            {project.mcmod && (
+              <a className="btn btn--ghost btn--md" href={project.mcmod} target="_blank" rel="noopener noreferrer">
+                <DocumentRegular aria-hidden /> MC百科
+              </a>
+            )}
             <a className="btn btn--ghost btn--md" href={project.github} target="_blank" rel="noopener noreferrer">
               <CodeRegular aria-hidden /> 查看源码
             </a>

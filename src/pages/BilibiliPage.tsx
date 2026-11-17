@@ -1,13 +1,13 @@
 /**
  * 哔哩哔哩影像归档 / Bilibili archive.
  *
- * 数据来自 src/data/videos.ts（构建期生成，包含 43 条记录与本地 WebP 封面）。
+ * 数据来自 src/data/videos.ts（构建期生成，包含 249 条记录与本地 WebP 封面）。
  * 页面提供：
  * - 标题 / 简介 / BV 号搜索（useDeferredValue 防抖）
  * - 状态筛选、年份筛选、排序
  * - 网格 / 列表视图（记忆到 localStorage）
  * - 详情弹窗、上一条 / 下一条、随机一条
- * - 分批渲染（首屏 12 条），避免一次插入 43 张卡片
+ * - 分批渲染（首屏 12 条），避免一次插入 249 张卡片
  */
 import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import {
@@ -160,11 +160,11 @@ export default function BilibiliPage() {
       <PageIntro
         eyebrow="ARCHIVE · BILIBILI"
         title="影像存档"
-        lead="滄海水魚在哔哩哔哩发布的作品归档。早期部分视频已失效或私密，仅保留记录；仍在线的封面与时长来自 B 站公开接口。"
+        lead="沧海水鱼在哔哩哔哩发布的作品归档。早期部分视频已失效或私密，仅保留记录；仍在线的封面与时长来自 B 站公开接口。"
         meta={[
-          { icon: 'tv', label: '滄海水魚' },
+          { icon: 'tv', label: '沧海水鱼' },
           { icon: 'calendar', label: '起始 2021-06-29' },
-          { icon: 'refresh', label: '整理 2026-01-05' },
+          { icon: 'refresh', label: '同步 2026-11-17' },
           { icon: 'image', label: '本地 WebP 封面' },
         ]}
         actions={

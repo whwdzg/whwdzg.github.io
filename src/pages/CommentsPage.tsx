@@ -135,7 +135,7 @@ export default function CommentsPage() {
         title="留言板"
         lead="静态站的“留言板”：想说的、想吐槽的，都可以在这里留下。这里保存人工整理的摘录，也提供一个更顺手的写作入口。"
         meta={[
-          { icon: 'person', label: '滄海水魚' },
+          { icon: 'person', label: '沧海水鱼' },
           { icon: 'calendar', label: `始于 ${formatDate(GUESTBOOK_META.startedAt)}` },
           { icon: 'clock', label: `更新 ${formatDate(GUESTBOOK_META.updatedAt)}` },
           { icon: 'comment', label: `${COMMENTS.length} 条摘录` },
@@ -161,7 +161,7 @@ export default function CommentsPage() {
         aside={
           <div className="guestbook-aside">
             <div className="guestbook-aside__card">
-              <img src="/media/avatars/shuiyu.webp" alt="滄海水魚" width={56} height={56} />
+              <img src="/media/avatars/shuiyu.webp" alt="沧海水鱼" width={56} height={56} />
               <div>
                 <p>留言会人工整理</p>
                 <span>通过 B 站私信发送，作者择期更新到本站。</span>

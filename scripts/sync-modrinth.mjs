@@ -29,6 +29,25 @@ for (const [slug, local] of Object.entries(LOCAL)) {
   const project = await projectResponse.json();
   const versions = await versionsResponse.json();
   const latest = versions[0] ?? {};
+  const versionParts = String(latest.version_number ?? '').replace(/^v/, '').replace(/\+mod$/, '').split('.');
+  const contentVersion = versionParts.slice(0, 3).join('.');
+  const variant = versionParts.slice(3).join('.');
+  const family = versions.filter((entry) => {
+    const parts = String(entry.version_number ?? '').replace(/^v/, '').replace(/\+mod$/, '').split('.');
+    return parts.slice(0, 3).join('.') === contentVersion;
+  });
+  const supportedGameVersions = [...new Set(family.flatMap((entry) => entry.game_versions ?? []))];
+  const allProjectVersions = project.game_versions ?? [];
+  const supportsAll = allProjectVersions.length > 0 && allProjectVersions.every((version) => supportedGameVersions.includes(version));
+  const variants = [...new Map(family.map((entry) => {
+    const parts = String(entry.version_number ?? '').replace(/^v/, '').replace(/\+mod$/, '').split('.');
+    return [parts.slice(3).join('.'), {
+      version: String(entry.version_number ?? '').replace(/\+mod$/, ''),
+      variant: parts.slice(3).join('.'),
+      gameVersions: entry.game_versions ?? [],
+      date: entry.date_published ?? '',
+    }];
+  })).values()].sort((a, b) => Number(b.variant || 0) - Number(a.variant || 0));
   projects.push({
     slug,
     localSlug: local.localSlug,
@@ -41,6 +60,11 @@ for (const [slug, local] of Object.entries(LOCAL)) {
     latestVersion: String(latest.version_number ?? '').replace(/\+mod$/, ''),
     latestVersionName: String(latest.name ?? ''),
     latestVersionDate: latest.date_published ?? '',
+    contentVersion,
+    variant,
+    supportedGameVersions,
+    supportsAll,
+    variants,
     gameVersions: project.game_versions ?? [],
     loaders: project.loaders ?? [],
     categories: project.categories ?? [],
@@ -74,6 +98,11 @@ export interface ModrinthProjectSnapshot {
   latestVersion: string;
   latestVersionName: string;
   latestVersionDate: string;
+  contentVersion: string;
+  variant: string;
+  supportedGameVersions: string[];
+  supportsAll: boolean;
+  variants: Array<{ version: string; variant: string; gameVersions: string[]; date: string }>;
   gameVersions: string[];
   loaders: string[];
   categories: string[];

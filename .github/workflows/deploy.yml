@@ -54,6 +54,16 @@ jobs:
           test -f dist/projects/magical-dye/index.html
           test -f dist/projects/only-survival-mode/index.html
           test -f dist/projects/glowing-players/index.html
+          test -f dist/projects/asteria-player/index.html
+          test -f dist/projects/life-simulation-wiki/index.html
+          test -f dist/projects/github/index.html
+          test -f dist/tools/index.html
+          test -f dist/tools/base64/index.html
+          test -f dist/tools/basex/index.html
+          test -f dist/tools/base-convert/index.html
+          test -f dist/tools/unicode/index.html
+          test -f dist/tools/calculator/index.html
+          test -f dist/tools/mc-projection/index.html
           test -f dist/about/index.html
           test -f dist/sw.js
           test -f dist/manifest.webmanifest

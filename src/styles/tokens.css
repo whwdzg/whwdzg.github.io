@@ -18,17 +18,18 @@
   --accent-glow: color-mix(in srgb, var(--accent) 34%, transparent);
 
   --header-h: 60px;
+  --header-offset: 60px;
   --sidebar-w: 288px;
   --container: 1200px;
   --page-pad: clamp(16px, 4vw, 40px);
   --section-y: clamp(64px, 9vw, 120px);
 
-  --r-xs: 4px;
-  --r-sm: 6px;
-  --r-md: 8px;
-  --r-lg: 12px;
-  --r-xl: 16px;
-  --r-2xl: 22px;
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-2xl: 30px;
   --r-pill: 999px;
 
   --dur-fast: 140ms;
@@ -70,8 +71,8 @@
   --code-bar: #161d28;
   --code-text: #dce8f7;
   --code-muted: #8ca0b8;
-  --wallpaper-overlay: linear-gradient(180deg, rgba(243, 245, 249, 0.52) 0%, rgba(243, 245, 249, 0.78) 48%, #f1f3f7 100%);
-  --wallpaper-opacity: 0.62;
+  --wallpaper-overlay: linear-gradient(180deg, rgba(243, 245, 249, 0.08) 0%, rgba(243, 245, 249, 0.34) 46%, rgba(241, 243, 247, 0.9) 100%);
+  --wallpaper-opacity: 0.94;
   --grid-line: rgba(15, 23, 36, 0.05);
 }
 
@@ -102,12 +103,16 @@
   --code-bar: #11161f;
   --code-text: #dce8f7;
   --code-muted: #8296ad;
-  --wallpaper-overlay: linear-gradient(180deg, rgba(7, 9, 13, 0.32) 0%, rgba(7, 9, 13, 0.7) 46%, #0b0d12 100%);
-  --wallpaper-opacity: 0.5;
+  --wallpaper-overlay: linear-gradient(180deg, rgba(7, 9, 13, 0.05) 0%, rgba(7, 9, 13, 0.3) 46%, rgba(11, 13, 18, 0.92) 100%);
+  --wallpaper-opacity: 0.9;
   --grid-line: rgba(255, 255, 255, 0.05);
 }
 
 /* ---------- 液态玻璃开关 ---------- */
+:root[data-header-hidden='true'] {
+  --header-offset: 0px;
+}
+
 :root[data-glass='off'] {
   --surface: var(--surface-solid);
   --surface-2: var(--surface-solid);

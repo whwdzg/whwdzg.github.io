@@ -35,6 +35,16 @@ const KNOWN_PATHS = new Set([
   '/projects/magical-dye/',
   '/projects/only-survival-mode/',
   '/projects/glowing-players/',
+  '/projects/asteria-player/',
+  '/projects/life-simulation-wiki/',
+  '/projects/github/',
+  '/tools/',
+  '/tools/base64/',
+  '/tools/basex/',
+  '/tools/base-convert/',
+  '/tools/unicode/',
+  '/tools/calculator/',
+  '/tools/mc-projection/',
   '/about/',
 ]);
 

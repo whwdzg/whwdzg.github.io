@@ -24,7 +24,7 @@ export interface CommentEntry {
 export const COMMENTS: CommentEntry[] = [
   {
     id: 1,
-    author: '滄海水魚',
+    author: '沧海水鱼',
     avatar: '/media/avatars/shuiyu.webp',
     date: '2024-03-07',
     text: '遣返提示！下面不只是人类！可能出现不明生物！',
@@ -44,7 +44,7 @@ export const COMMENTS: CommentEntry[] = [
     date: '2024-03-07',
     text: '傻逼冈易。',
     reply: {
-      author: '滄海水魚',
+      author: '沧海水鱼',
       avatar: '/media/avatars/shuiyu.webp',
       date: '2026-01-06',
       text: '按你要求修正你的留言了',

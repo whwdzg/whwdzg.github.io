@@ -26,12 +26,15 @@ import { useFocusTrap } from '../../hooks/useFocusTrap';
 import { useLockBodyScroll } from '../../hooks/useLockBodyScroll';
 import { useInstallPrompt } from '../../hooks/useInstallPrompt';
 import { useToast } from '../../hooks/useToast';
-import { ARCHIVE_LINKS, LINKS, PRIMARY_NAV, PROJECTS, SITE } from '../../data/site';
+import { ARCHIVE_LINKS, LINKS, PRIMARY_NAV, PROJECTS, SITE, SUBSITES } from '../../data/site';
+import { TOOLS } from '../../data/tools';
 import { siteMeta } from '../../lib/meta';
 import { FluentIcon } from '../common/FluentIcon';
 
 const GROUPS = [
   { id: 'projects', label: '项目', icon: 'rocket' },
+  { id: 'subsites', label: '子站', icon: 'globe' },
+  { id: 'tools', label: '工具', icon: 'code' },
   { id: 'archive', label: '归档', icon: 'history' },
   { id: 'external', label: '外部链接', icon: 'globe' },
 ] as const;
@@ -43,7 +46,7 @@ export function Sidebar() {
   const { toast } = useToast();
   const { canInstall, installed, promptInstall } = useInstallPrompt();
   const ref = useRef<HTMLElement>(null);
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['projects']));
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['projects', 'subsites', 'tools']));
 
   const close = () => setSidebarOpen(false);
   useFocusTrap(ref, sidebarOpen, close);
@@ -133,7 +136,7 @@ export function Sidebar() {
                     >
                       <FluentIcon name={item.icon} size={19} aria-hidden />
                       <span className="sidebar-nav__label">{item.label}</span>
-                      {item.to === '/bilibili/' && <span className="sidebar-nav__badge">43</span>}
+                      {item.to === '/bilibili/' && <span className="sidebar-nav__badge">249</span>}
                     </Link>
                   </li>
                 );
@@ -190,6 +193,37 @@ export function Sidebar() {
                           </Link>
                         </li>
                       )}
+
+                      {group.id === 'subsites' &&
+                        SUBSITES.map((site) => (
+                          <li key={site.id}>
+                            <Link to={site.path} className="sidebar-group__link" onNavigate={close}>
+                              <img src={site.icon} alt="" width={20} height={20} loading="lazy" />
+                              <span>{site.title}</span>
+                              <FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden />
+                            </Link>
+                          </li>
+                        ))}
+                      {group.id === 'subsites' && (
+                        <li>
+                          <Link to="/projects/github/" className="sidebar-group__link sidebar-group__link--more" onNavigate={close}>
+                            <FluentIcon name="github" size={18} aria-hidden />
+                            <span>GitHub 项目页</span>
+                            <FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden />
+                          </Link>
+                        </li>
+                      )}
+
+                      {group.id === 'tools' &&
+                        TOOLS.map((tool) => (
+                          <li key={tool.id}>
+                            <Link to={tool.path} className="sidebar-group__link" onNavigate={close}>
+                              <FluentIcon name={tool.icon} size={18} aria-hidden />
+                              <span>{tool.title}</span>
+                              <FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden />
+                            </Link>
+                          </li>
+                        ))}
 
                       {group.id === 'archive' &&
                         ARCHIVE_LINKS.map((link) => (

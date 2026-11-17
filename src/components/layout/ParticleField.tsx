@@ -25,18 +25,28 @@ interface Particle {
 
 interface Palette {
   colors: string[];
-  shape: 'petal' | 'leaf' | 'ginkgo' | 'snow';
+  shape: 'petal' | 'leaf' | 'ginkgo' | 'snow' | 'firefly';
 }
 
-const PALETTES: Record<Exclude<ParticleKind, 'off'>, Palette> = {
+const PALETTES: Record<Exclude<ParticleKind, 'off' | 'season'>, Palette> = {
   sakura: { colors: ['#ffb7c9', '#ff9fb8', '#ffd6e2', '#f78fb0'], shape: 'petal' },
+  summer: { colors: ['#d9ff9b', '#b7f26a', '#fff1a8', '#9fe85b'], shape: 'firefly' },
   wutong: { colors: ['#c98b4b', '#b9743a', '#e0a35e', '#9c5c32'], shape: 'leaf' },
   ginkgo: { colors: ['#f2c14e', '#e8b23a', '#f7d46b', '#d99b27'], shape: 'ginkgo' },
   snow: { colors: ['#ffffff', '#e8f2ff', '#d8e8ff'], shape: 'snow' },
 };
 
-function createParticle(width: number, height: number, kind: Exclude<ParticleKind, 'off'>): Particle {
-  const size = kind === 'snow' ? 1.2 + Math.random() * 2.4 : 5 + Math.random() * 8;
+/** 按当前月份选择季节粒子（北半球）。 */
+function seasonKind(): Exclude<ParticleKind, 'off' | 'season'> {
+  const month = new Date().getMonth() + 1;
+  if (month >= 3 && month <= 5) return 'sakura';
+  if (month >= 6 && month <= 8) return 'summer';
+  if (month >= 9 && month <= 11) return 'ginkgo';
+  return 'snow';
+}
+
+function createParticle(width: number, height: number, kind: Exclude<ParticleKind, 'off' | 'season'>): Particle {
+  const size = kind === 'snow' ? 1.2 + Math.random() * 2.4 : kind === 'summer' ? 1.6 + Math.random() * 2.8 : 5 + Math.random() * 8;
   return {
     x: Math.random() * width,
     y: Math.random() * height - height,
@@ -51,7 +61,7 @@ function createParticle(width: number, height: number, kind: Exclude<ParticleKin
   };
 }
 
-function drawParticle(ctx: CanvasRenderingContext2D, particle: Particle, kind: Exclude<ParticleKind, 'off'>) {
+function drawParticle(ctx: CanvasRenderingContext2D, particle: Particle, kind: Exclude<ParticleKind, 'off' | 'season'>) {
   const palette = PALETTES[kind];
   ctx.save();
   ctx.translate(particle.x, particle.y);
@@ -63,6 +73,13 @@ function drawParticle(ctx: CanvasRenderingContext2D, particle: Particle, kind: E
     ctx.beginPath();
     ctx.arc(0, 0, particle.size, 0, Math.PI * 2);
     ctx.fill();
+  } else if (kind === 'summer') {
+    ctx.shadowColor = ctx.fillStyle;
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(0, 0, particle.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
   } else if (kind === 'sakura') {
     ctx.beginPath();
     ctx.ellipse(0, 0, particle.size * 0.9, particle.size * 0.45, 0, 0, Math.PI * 2);
@@ -99,7 +116,7 @@ function drawParticle(ctx: CanvasRenderingContext2D, particle: Particle, kind: E
 export function ParticleField() {
   const { settings } = useSettings();
   const ref = useRef<HTMLCanvasElement>(null);
-  const kind = settings.particles;
+  const kind = settings.particles === 'season' ? seasonKind() : settings.particles;
 
   useEffect(() => {
     if (kind === 'off') return;
@@ -181,6 +198,6 @@ export function ParticleField() {
   }, [kind, settings.motion]);
 
   if (kind === 'off') return null;
-  return <canvas ref={ref} className="particle-field" aria-hidden />;
+  return <canvas ref={ref} className="particle-field" data-season={settings.particles === 'season' ? seasonKind() : undefined} aria-hidden />;
 }
 
