@@ -436,12 +436,10 @@ export default function ProjectionPage() {
               }}
             />
             <div className="proj-pad" aria-label="移动视角">
-              <button type="button" aria-label="向前" onClick={() => move('up')}><ArrowUpRegular aria-hidden /></button>
-              <div>
-                <button type="button" aria-label="向左" onClick={() => move('left')}><ArrowLeftRegular aria-hidden /></button>
-                <button type="button" aria-label="向后" onClick={() => move('down')}><ArrowDownRegular aria-hidden /></button>
-                <button type="button" aria-label="向右" onClick={() => move('right')}><ArrowRightRegular aria-hidden /></button>
-              </div>
+              <button type="button" className="proj-pad__up" aria-label="向前" onClick={() => move('up')}><ArrowUpRegular aria-hidden /></button>
+              <button type="button" className="proj-pad__left" aria-label="向左" onClick={() => move('left')}><ArrowLeftRegular aria-hidden /></button>
+              <button type="button" className="proj-pad__down" aria-label="向后" onClick={() => move('down')}><ArrowDownRegular aria-hidden /></button>
+              <button type="button" className="proj-pad__right" aria-label="向右" onClick={() => move('right')}><ArrowRightRegular aria-hidden /></button>
             </div>
           </div>
         </div>

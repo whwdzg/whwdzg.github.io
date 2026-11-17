@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "4e9ad7519acf8e8f38c38decc62c699152c6ea49",
-  "commitShort": "4e9ad75",
-  "commitTime": "2026-11-18T00:01:41+08:00",
-  "buildTime": "2026-11-17T16:17:39.729Z",
+  "commit": "fd2599ebf4028a381c9192a2fc69af924ef0fa7d",
+  "commitShort": "fd2599e",
+  "commitTime": "2026-11-18T00:18:29+08:00",
+  "buildTime": "2026-11-17T16:21:58.599Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "fd2599ebf4028a381c9192a2fc69af924ef0fa7d",
+      "short": "fd2599eb",
+      "time": "2026-11-18T00:18:29+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add Occultation page and clean HTML redirects",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/fd2599ebf4028a381c9192a2fc69af924ef0fa7d"
+    },
     {
       "hash": "4e9ad7519acf8e8f38c38decc62c699152c6ea49",
       "short": "4e9ad751",
