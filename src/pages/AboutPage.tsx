@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.4.1',
+    date: '2026-11-18',
+    items: [
+      '正文图片查看器新增定位原文、下载当前图片、桌面缩放按钮与百分比输入、移动端双指缩放。',
+      '图片查看器底部新增可收起的胶片条，展示当前页面全部图片并高亮当前项。',
+    ],
+  },
+  {
     version: '3.4.0',
     date: '2026-11-18',
     items: [
@@ -210,7 +218,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.4"
+        eyebrow="ABOUT · 3.4.1"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -256,7 +264,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.4 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.4.1 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

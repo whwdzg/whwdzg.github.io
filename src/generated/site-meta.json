@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.4.0",
-  "description": "沧海水鱼内容站点 3.4 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.4.1",
+  "description": "沧海水鱼内容站点 3.4.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "417399fd4b7d5c461dabd2bb3ffeedcb76bbf9d8",
-  "commitShort": "417399f",
-  "commitTime": "2026-11-18T23:05:32+08:00",
-  "buildTime": "2026-11-18T15:20:21.148Z",
+  "commit": "b6210c74a6935eb844881abcf24097714ecb53f1",
+  "commitShort": "b6210c7",
+  "commitTime": "2026-11-18T23:21:50+08:00",
+  "buildTime": "2026-11-18T15:32:56.962Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "b6210c74a6935eb844881abcf24097714ecb53f1",
+      "short": "b6210c74",
+      "time": "2026-11-18T23:21:50+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: projection faces, NBT, names and 3.4.0",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/b6210c74a6935eb844881abcf24097714ecb53f1"
+    },
     {
       "hash": "417399fd4b7d5c461dabd2bb3ffeedcb76bbf9d8",
       "short": "417399fd",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "fix: single h1 on home and clarify 3.0 commit history",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ae1b33b9abca88247785ccb2195642d26b75a09b"
-    },
-    {
-      "hash": "fdc3f882132ab4b4d4e3ed78e834af9f032e9ece",
-      "short": "fdc3f882",
-      "time": "2026-11-17T00:07:01+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: rebuild site as 3.0 with Fluent Sun Valley and liquid glass",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/fdc3f882132ab4b4d4e3ed78e834af9f032e9ece"
     }
   ]
 }
