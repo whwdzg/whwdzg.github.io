@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "f971a6a8cd7325abb79b70a7781d7da2d2a01766",
-  "commitShort": "f971a6a",
-  "commitTime": "2026-11-18T23:36:04+08:00",
-  "buildTime": "2026-11-18T15:50:40.427Z",
+  "commit": "403c73d9bfa672a1e57ab72f922f0b4dbbaf14c6",
+  "commitShort": "403c73d",
+  "commitTime": "2026-11-18T23:53:25+08:00",
+  "buildTime": "2026-11-18T16:04:13.830Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "403c73d9bfa672a1e57ab72f922f0b4dbbaf14c6",
+      "short": "403c73d9",
+      "time": "2026-11-18T23:53:25+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: inline article media players",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/403c73d9bfa672a1e57ab72f922f0b4dbbaf14c6"
+    },
     {
       "hash": "f971a6a8cd7325abb79b70a7781d7da2d2a01766",
       "short": "f971a6a8",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "feat: add data pack project pages and Modrinth index (3.2.0)",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/5f946c635993361956573d678fafb97bba375a55"
-    },
-    {
-      "hash": "ff32d82d6fdb78403d634fd6442e6591ec124a0c",
-      "short": "ff32d82d",
-      "time": "2026-11-17T00:32:07+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: add GitHub Issue comments page (3.1.0)",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ff32d82d6fdb78403d634fd6442e6591ec124a0c"
     }
   ]
 }

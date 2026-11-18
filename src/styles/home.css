@@ -1308,7 +1308,7 @@
   flex: 0 0 auto;
   border: 1px solid var(--stroke);
   border-radius: var(--r-md);
-  background: var(--surface-2);
+  background: transparent;
   object-fit: contain;
 }
 
