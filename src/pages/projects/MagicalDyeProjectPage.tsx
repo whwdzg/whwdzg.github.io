@@ -8,10 +8,12 @@ import { ProjectShell } from '../../components/projects/ProjectShell';
 import { RecipeBrowser } from '../../components/projects/RecipeBrowser';
 import { AdvancementTree } from '../../components/projects/AdvancementTree';
 import { Reveal } from '../../components/common/Reveal';
+import { BilibiliEmbed } from '../../components/common/BilibiliEmbed';
 import '../../styles/projects.css';
 
 const TOC = [
   { id: 'overview', label: '总览' },
+  { id: 'video', label: '视频' },
   { id: 'recipes', label: '转换配方' },
   { id: 'advancements', label: '进度' },
   { id: 'install', label: '安装' },
@@ -69,6 +71,19 @@ export default function MagicalDyeProjectPage() {
             <p>不需要摆形状，把染料和材料放进工作台即可；配方书同样可以解锁。</p>
           </div>
         </div>
+      </Reveal>
+
+      <Reveal as="section" className="article-card" id="video">
+        <p className="eyebrow">VIDEO</p>
+        <h2>视频演示</h2>
+        <p className="project-section-lead">愚人节数据包的完整演示，点击封面即可在正文内播放。</p>
+        <BilibiliEmbed
+          bvid="BV1euZqYyETM"
+          title="【愚人节限定数据包】当MC的染料可以转化矿物块和粉末？！"
+          cover="/media/bilibili/v04.webp"
+          duration="38:12"
+          url="https://www.bilibili.com/video/BV1euZqYyETM/"
+        />
       </Reveal>
 
       <Reveal as="section" className="article-card" id="recipes">

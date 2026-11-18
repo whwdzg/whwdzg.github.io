@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.5.1',
+    date: '2026-11-18',
+    items: [
+      '更好的合成配方 / 魔法染料项目页新增 B 站视频，正文内即可播放。',
+      '新增 BilibiliEmbed：封面播放、B 站原生进度 / 全屏 / 音量、亮度调节与 Asteria Player 入口。',
+    ],
+  },
+  {
     version: '3.5.0',
     date: '2026-11-18',
     items: [
@@ -228,7 +236,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.5"
+        eyebrow="ABOUT · 3.5.1"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -274,7 +282,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.5 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.5.1 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

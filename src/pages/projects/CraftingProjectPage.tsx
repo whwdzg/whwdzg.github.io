@@ -16,10 +16,12 @@ import { ProjectShell } from '../../components/projects/ProjectShell';
 import { RecipeBrowser } from '../../components/projects/RecipeBrowser';
 import { AdvancementTree } from '../../components/projects/AdvancementTree';
 import { Reveal } from '../../components/common/Reveal';
+import { BilibiliEmbed } from '../../components/common/BilibiliEmbed';
 import '../../styles/projects.css';
 
 const TOC = [
   { id: 'overview', label: '总览' },
+  { id: 'video', label: '视频' },
   { id: 'recipes', label: '配方清单' },
   { id: 'advancements', label: '进度树' },
   { id: 'install', label: '安装' },
@@ -103,6 +105,19 @@ export default function CraftingProjectPage() {
             </span>
           </div>
         </div>
+      </Reveal>
+
+      <Reveal as="section" className="article-card" id="video">
+        <p className="eyebrow">VIDEO</p>
+        <h2>视频演示</h2>
+        <p className="project-section-lead">来自哔哩哔哩的配方介绍视频，点击封面即可在正文内播放。</p>
+        <BilibiliEmbed
+          bvid="BV1gJDqYpEHS"
+          title="【数据包/模组】缺少合适的配方对相应物品进行合成？是时候试试whwdzg's Recipe了"
+          cover="/media/bilibili/v10.webp"
+          duration="0:29"
+          url="https://www.bilibili.com/video/BV1gJDqYpEHS/"
+        />
       </Reveal>
 
       <Reveal as="section" className="article-card" id="recipes">
