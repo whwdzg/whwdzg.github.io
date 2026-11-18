@@ -19,7 +19,7 @@ export interface GithubRepoSnapshot {
   archived: boolean;
 }
 
-export const GITHUB_SYNCED_AT = "2026-11-18T14:36:05.922Z";
+export const GITHUB_SYNCED_AT = "2026-11-18T18:07:08.095Z";
 
 export const GITHUB_REPOS: GithubRepoSnapshot[] = [
   {
@@ -30,10 +30,10 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "description": "whwdzg's personal website ",
     "stars": 2,
     "forks": 0,
-    "openIssues": 0,
+    "openIssues": 1,
     "language": "TypeScript",
     "updatedAt": "2026-11-16T17:14:31Z",
-    "pushedAt": "2026-11-18T14:32:21Z",
+    "pushedAt": "2026-11-18T17:52:54Z",
     "archived": false
   },
   {
@@ -131,7 +131,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "TypeScript",
     "updatedAt": "2026-11-12T17:07:41Z",
-    "pushedAt": "2026-11-15T14:04:40Z",
+    "pushedAt": "2026-11-18T16:16:53Z",
     "archived": false
   },
   {
@@ -145,7 +145,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "JavaScript",
     "updatedAt": "2026-08-15T16:11:57Z",
-    "pushedAt": "2026-11-18T14:27:32Z",
+    "pushedAt": "2026-11-18T16:31:37Z",
     "archived": false
   }
 ];

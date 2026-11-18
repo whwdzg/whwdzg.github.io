@@ -27,10 +27,10 @@ export interface ModrinthProjectSnapshot {
   modrinthUrl: string;
 }
 
-export const MODRINTH_SYNCED_AT = "2026-11-18T14:35:59.171Z";
+export const MODRINTH_SYNCED_AT = "2026-11-18T18:06:58.773Z";
 
 export const MODRINTH_TOTALS = {
-  "downloads": 179875,
+  "downloads": 179901,
   "followers": 111
 } as const;
 
@@ -42,7 +42,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-crafting-recipes.webp",
     "title": "Better Crafting Recipes ( whwdzg's Recipe)",
     "description": "Formerly named whwdzg's Recipe\nAdd some recipes to Minecraft",
-    "downloads": 12482,
+    "downloads": 12484,
     "followers": 5,
     "latestVersion": "1.9.3.6",
     "latestVersionName": "1.9.3.6",
@@ -378,7 +378,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-mob-drop.webp",
     "title": "Better Mob Drop",
     "description": "A Minecraft mod/data pack which provide more reasonable mob drop",
-    "downloads": 91289,
+    "downloads": 91303,
     "followers": 31,
     "latestVersion": "1.2.6.4",
     "latestVersionName": "1.2.6.4",
@@ -598,7 +598,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/only-survival-mode.webp",
     "title": "Only Survival Mode",
     "description": "A very simple data pack that only allow survival mode",
-    "downloads": 1409,
+    "downloads": 1410,
     "followers": 3,
     "latestVersion": "1.1.0",
     "latestVersionName": "Only Survival Mode 1.1.0",
@@ -728,7 +728,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/glowing-players.webp",
     "title": "Glowing Players",
     "description": "A mod/data pack which will provide glowing effect to players.",
-    "downloads": 72208,
+    "downloads": 72217,
     "followers": 68,
     "latestVersion": "1.1.0",
     "latestVersionName": "Glowing Players 1.1.0",
