@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.4.1",
-  "description": "沧海水鱼内容站点 3.4.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.5.0",
+  "description": "沧海水鱼内容站点 3.5 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "b6210c74a6935eb844881abcf24097714ecb53f1",
-  "commitShort": "b6210c7",
-  "commitTime": "2026-11-18T23:21:50+08:00",
-  "buildTime": "2026-11-18T15:32:56.962Z",
+  "commit": "f971a6a8cd7325abb79b70a7781d7da2d2a01766",
+  "commitShort": "f971a6a",
+  "commitTime": "2026-11-18T23:36:04+08:00",
+  "buildTime": "2026-11-18T15:50:40.427Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "f971a6a8cd7325abb79b70a7781d7da2d2a01766",
+      "short": "f971a6a8",
+      "time": "2026-11-18T23:36:04+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: image lightbox tools, zoom and filmstrip",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/f971a6a8cd7325abb79b70a7781d7da2d2a01766"
+    },
     {
       "hash": "b6210c74a6935eb844881abcf24097714ecb53f1",
       "short": "b6210c74",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "feat: add GitHub Issue comments page (3.1.0)",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ff32d82d6fdb78403d634fd6442e6591ec124a0c"
-    },
-    {
-      "hash": "ae1b33b9abca88247785ccb2195642d26b75a09b",
-      "short": "ae1b33b9",
-      "time": "2026-11-17T00:18:09+08:00",
-      "author": "Alex Yang",
-      "subject": "fix: single h1 on home and clarify 3.0 commit history",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ae1b33b9abca88247785ccb2195642d26b75a09b"
     }
   ]
 }

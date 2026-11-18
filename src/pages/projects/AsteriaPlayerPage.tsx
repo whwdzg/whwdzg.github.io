@@ -5,11 +5,13 @@ import { Link } from '../../lib/router';
 import { subsiteById } from '../../data/site';
 import { SubsiteShell } from '../../components/projects/SubsiteShell';
 import { Reveal } from '../../components/common/Reveal';
+import { InlineMusicPlayer, InlineVideoPlayer } from '../../components/common/InlineMedia';
 import '../../styles/projects.css';
 
 const TOC = [
   { id: 'overview', label: '总览' },
   { id: 'features', label: '能力' },
+  { id: 'media', label: '正文媒体' },
   { id: 'screens', label: '界面' },
   { id: 'tech', label: '技术' },
   { id: 'links', label: '链接' },
@@ -97,9 +99,41 @@ export default function AsteriaPlayerPage() {
         <div className="project-callout">
           <PlayRegular aria-hidden />
           <p>
-            本站目前没有内嵌的视频 / 音乐播放需求；如果后续需要，统一跳转到 Asteria Player，而不是在主站里再实现一套播放器。
+            正文需要嵌入音乐或视频时，使用下方的轻量播放器；完整媒体库、队列与歌词编辑仍然在 Asteria Player 中完成。
           </p>
         </div>
+      </Reveal>
+
+      <Reveal as="section" className="article-card" id="media">
+        <p className="eyebrow">INLINE MEDIA</p>
+        <h2>正文里的轻量播放器</h2>
+        <p className="project-section-lead">
+          固定在正文内，不跳出当前页面。音乐保留封面、单行歌词、进度与音量；视频支持全屏、字幕、音量与亮度。
+          需要完整播放器时，点右侧入口到 Asteria Player。
+        </p>
+        <div className="inline-media-demo">
+          <InlineMusicPlayer
+            src="/media/samples/asteria-session.mp3"
+            title="Asteria Session"
+            artist="沧海水鱼 · demo"
+            cover="/media/samples/asteria-session.webp"
+            lyrics={[
+              { time: 0, text: '在星尘落下的地方' },
+              { time: 8, text: '我们仍抬头仰望' },
+              { time: 16, text: '让光和风穿过指缝' },
+              { time: 24, text: '把这一刻留在声场' },
+              { time: 32, text: '尘埃尚未落定' },
+              { time: 40, text: '时间仍在谱写' },
+            ]}
+          />
+          <InlineVideoPlayer
+            src="/media/samples/asteria-flower.mp4"
+            poster="/media/samples/asteria-flower-poster.webp"
+            title="花与风 · inline video"
+            subtitles={[{ src: '/media/samples/asteria-flower.vtt', label: '中文', lang: 'zh-CN', default: true }]}
+          />
+        </div>
+        <p className="project-note">示例媒体为正文播放器演示，不进入 Asteria Player 的媒体库。</p>
       </Reveal>
 
       <Reveal as="section" className="article-card" id="screens">

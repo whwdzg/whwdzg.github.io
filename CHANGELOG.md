@@ -1,5 +1,15 @@
 # 更新日志
 
+## 3.5.0 — 2026-11-18
+
+### 正文内嵌媒体
+
+- 新增 InlineMusicPlayer：封面、单行滚动歌词、播放 / 暂停、进度与当前 / 全部时间、音量、Asteria Player 入口。
+- 新增 InlineVideoPlayer：全屏、播放 / 暂停、进度与时间、字幕开关、音量、亮度与 Asteria Player 入口。
+- 播放器采用 Asteria 风格的深色玻璃、圆角和紧凑控制条。
+- Asteria Player 支持 `?url=<媒体地址>&kind=audio|video` 深链，可直接打开正文中的媒体。
+- Asteria 项目页新增正文媒体示例。
+
 ## 3.4.1 — 2026-11-18
 
 ### 图片查看器

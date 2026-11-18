@@ -77,6 +77,16 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.5.0',
+    date: '2026-11-18',
+    items: [
+      '新增正文内嵌音乐 / 视频播放器：音乐支持封面、单行滚动歌词、进度、音量；视频支持全屏、字幕、音量、亮度。',
+      '播放器沿用 Asteria 视觉语言，并提供「在 Asteria Player 打开」深链。',
+      'Asteria Player 新增 ?url= 与 ?kind= 查询参数，可直接从正文打开对应媒体。',
+      'Asteria 项目页新增正文媒体演示区。',
+    ],
+  },
+  {
     version: '3.4.1',
     date: '2026-11-18',
     items: [
@@ -218,7 +228,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.4.1"
+        eyebrow="ABOUT · 3.5"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -264,7 +274,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.4.1 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.5 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
