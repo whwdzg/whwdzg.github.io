@@ -40,6 +40,7 @@ function countVideos() {
 
 if (run('Modrinth', 'scripts/sync-modrinth.mjs')) mark('modrinth', 6);
 if (run('MC百科', 'scripts/sync-mcmod.mjs')) mark('mcmod', 3);
+run('MC百科评论', 'scripts/sync-mcmod-comments.mjs');
 if (run('GitHub', 'scripts/sync-github.mjs')) mark('github', 9);
 
 // B 站接口偶发风控；失败时保留已有归档，不阻塞其他来源。
