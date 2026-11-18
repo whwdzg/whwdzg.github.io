@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.9.5',
+    date: '2026-11-19',
+    items: [
+      '科学计算器移除所有 CASIO 品牌、型号与系列名称，改为本站自己的科学计算器界面。',
+      '键盘统一为五列：代数、对数/括号、三角/常量分组，数字与操作键保持同一列宽。',
+      '顶部工具栏精简为模式、变量、目录、工具、撤销与 SHIFT，光标键与 AC/DEL 单独一行。',
+    ],
+  },
+  {
     version: '3.9.4',
     date: '2026-11-19',
     items: [
@@ -188,7 +197,7 @@ const CHANGELOG = [
       '带 .html 的旧链接自动重定向到无扩展名路径。',
       '重做 Base64 / BaseX / 进制 / Unicode / 计算器 / MC 投影 6 个工具。',
       '新增 MC 数据包 / 资源包解析器。',
-      '计算器按 fx-991CN CW II 重做按键与 10 种模式。',
+      '计算器重做按键与 10 种模式。',
       'B 站归档同步到 251 条，含 3 条直播回放；合集可展开全部成员视频；侧栏、主页与页脚更新。',
       '数据包版本分支表、来福 Wiki 451 页镜像信息与首页内容同步更新。',
       '数据包物品/进度贴图、标签展开、MCMOD 与版本矩阵；物品可跳转中文 Wiki。',
@@ -278,7 +287,7 @@ export default function AboutPage() {
           short: item.sha.slice(0, 7),
           time: item.commit.author.date,
           author: item.commit.author.name,
-          subject: item.commit.message.split('\n')[0],
+          subject: item.commit.message.split('\n')[0].replace(/CASIO/gi, '').replace(/fx-991CN(?:\s+CW\s+II)?/gi, '科学计算器').replace(/ClassWiz/gi, '').trim(),
           url: item.html_url,
         })),
       );
@@ -302,7 +311,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.9.4"
+        eyebrow="ABOUT · 3.9.5"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -348,7 +357,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.9.4 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.9.5 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

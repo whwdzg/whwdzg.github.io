@@ -1642,3 +1642,37 @@
 .calc-modal textarea { border: 1px solid var(--stroke); background: var(--surface); color: var(--text); }
 .calc-history button { border: 1px solid var(--stroke); background: var(--surface-2); color: var(--text-2); }
 .calc-history strong { color: var(--text); }
+
+
+/* 科学计算器 · 站点品牌与统一五列键盘 */
+.calc-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.calc-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--stroke));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 18px !important;
+  line-height: 1;
+}
+
+.calc-brand > div { display: grid; gap: 1px; }
+.calc-brand strong { color: var(--text) !important; font-family: var(--font-display); font-size: 14px !important; letter-spacing: 0.01em !important; }
+.calc-brand em { color: var(--text-3) !important; font-size: 7px !important; }
+.calc-chrome__screen-label { color: var(--text-3) !important; font-size: 7px !important; }
+
+.calc-key-row,
+.calc-key-row--number {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding-inline: 0;
+}

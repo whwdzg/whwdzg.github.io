@@ -1,4 +1,4 @@
-/** 计算器模式 / CASIO-style app modes for the calculator. */
+/** 计算器模式 / Scientific calculator app modes. */
 import { useMemo, useState } from 'react';
 import { FluentIcon } from '../../common/FluentIcon';
 import type { AngleMode } from '../../../lib/tools/expression';

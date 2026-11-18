@@ -183,7 +183,7 @@ export const ROUTES: RouteMeta[] = [
     path: '/tools/calculator/',
     title: '科学计算器 · 水鱼 Blog',
     shortTitle: '计算器',
-    description: 'ClassWiz 风格科学计算器，支持函数图像与 LaTeX 公式导入导出。',
+    description: '10 种模式的科学计算器，支持函数图像与 LaTeX 公式导入导出。',
     prefetch: false,
     load: () => import('../pages/tools/CalculatorPage'),
   },
