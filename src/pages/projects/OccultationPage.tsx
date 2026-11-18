@@ -108,6 +108,7 @@ type TerminalLine = { type: 'input' | 'output' | 'system'; text: string };
 
 const ZHOU_YI = '周熠。文明官方档案称“周熠体”，民间叫“第七日月亮”“小月亮”“闪星”“睁眼星”。\n\n- **外观**：约 **2 km 直径**圆形人造星体，外壳覆盖类月壤材料，远看像一颗灰色小月亮。表面有微弱反光，近看能看到极细的接缝纹路，但远距离观测与自然天体无异。';
 const HIDDEN_HINT = '这个7天循环下的世界，也许你还不知道其背后的故事，去找线索吧，或等待世界揭晓答案。';
+const CMD_PROMPT = 'C:\\OCCULTATION>';
 
 const KEY_RESPONSES: Record<string, string> = {
   '沧海水鱼': 'O1',
@@ -122,7 +123,8 @@ function OccultationTerminal() {
   const [wrongCount, setWrongCount] = useState(0);
   const [hintShown, setHintShown] = useState(false);
   const [lines, setLines] = useState<TerminalLine[]>([
-    { type: 'system', text: 'OCCULTATION ARCHIVE TERMINAL · v0.1' },
+    { type: 'system', text: 'OCCULTATION ARCHIVE TERMINAL [版本 0.1]' },
+    { type: 'system', text: '(c) OCCULTATION ARCHIVE. All rights reserved.' },
     { type: 'system', text: '输入密钥以查询掩星档案。' },
   ]);
   const logRef = useRef<HTMLDivElement>(null);
@@ -164,32 +166,37 @@ function OccultationTerminal() {
 
   return (
     <section className="occultation-terminal" aria-labelledby="occultation-terminal-title">
-      <div className="occultation-terminal__head">
-        <div>
-          <p className="eyebrow">ARCHIVE TERMINAL</p>
-          <h2 id="occultation-terminal-title">掩星档案终端</h2>
-        </div>
-        <span className="occultation-terminal__status"><span className="status-dot" aria-hidden /> LINKED</span>
+      <div className="occultation-terminal__titlebar" aria-hidden>
+        <span className="occultation-terminal__cmdicon">▣</span>
+        <span className="occultation-terminal__title">C:\WINDOWS\system32\cmd.exe</span>
+        <span className="occultation-terminal__controls">
+          <span>—</span><span>□</span><span>×</span>
+        </span>
+      </div>
+      <h2 id="occultation-terminal-title" className="sr-only">掩星档案终端</h2>
+      <div className="occultation-terminal__statusline">
+        <span>ARCHIVE TERMINAL</span>
+        <span><span className="status-dot" aria-hidden /> LINKED</span>
       </div>
       <div className="occultation-terminal__log" ref={logRef} aria-live="polite">
         {lines.map((line, index) => (
           <p key={`${line.type}-${index}`} className={`occultation-terminal__line is-${line.type}`}>
-            {line.type === 'input' ? <span className="occultation-terminal__prompt">&gt;</span> : null}
+            {line.type === 'input' ? <span className="occultation-terminal__prompt">{CMD_PROMPT}</span> : null}
             <span>{line.text.split(/(\*\*[^*]+\*\*)/g).map((part, partIndex) => part.startsWith('**') && part.endsWith('**') ? <strong key={partIndex}>{part.slice(2, -2)}</strong> : <span key={partIndex}>{part}</span>)}</span>
           </p>
         ))}
       </div>
       <form className="occultation-terminal__form" onSubmit={submit}>
-        <span className="occultation-terminal__prompt" aria-hidden>&gt;</span>
+        <span className="occultation-terminal__prompt" aria-hidden>{CMD_PROMPT}</span>
         <input
           value={value}
           onChange={(event) => setValue(event.target.value)}
-          placeholder="输入密钥 / KEY"
+          placeholder="输入密钥"
           aria-label="输入掩星档案密钥"
           autoComplete="off"
           spellCheck={false}
         />
-        <button type="submit">执行</button>
+        <button type="submit" aria-label="执行命令">↵</button>
       </form>
       <p className="occultation-terminal__hint">本地终端 · 输入内容不会离开当前页面</p>
     </section>
