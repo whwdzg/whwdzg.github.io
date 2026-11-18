@@ -1,4 +1,4 @@
-# 水鱼 Blog · 3.9.2
+# 水鱼 Blog · 3.9.3
 
 沧海水鱼（whwdzg）的个人网站，2026 年从零重写。
 
@@ -211,7 +211,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 ## 版本与部署
 
-当前版本 **3.9.2**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
+当前版本 **3.9.3**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
 
 关于页展示：
 

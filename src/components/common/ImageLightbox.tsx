@@ -150,73 +150,72 @@ export function ImageLightbox() {
   };
 
   return (
-    <div className="image-lightbox" role="dialog" aria-modal="true" aria-label="图片查看器" onClick={close}>
-      <div className="image-lightbox__bar" onClick={(event) => event.stopPropagation()}>
+    <div
+      className="image-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="图片查看器"
+      onClick={close}
+      onDragStartCapture={(event) => event.preventDefault()}
+    >
+      <div className="image-lightbox__top" onClick={(event) => event.stopPropagation()}>
         <span className="image-lightbox__count">{index + 1} / {items.length}</span>
-        <span className="image-lightbox__hint">滚轮 / 双指缩放 · 拖动查看 · Esc 关闭</span>
-        <div className="image-lightbox__tools">
-          <button type="button" className="image-lightbox__action" onClick={locateSource} title="关闭查看器并定位到原文位置">
-            <LocationRegular aria-hidden />
-            <span className="image-lightbox__action-label">定位原文</span>
-          </button>
-          <a
-            className="image-lightbox__action"
-            href={current.src}
-            download={downloadName(current, index)}
-            title="下载当前图片"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <ArrowDownloadRegular aria-hidden />
-            <span className="image-lightbox__action-label">下载</span>
-          </a>
-          <div className="image-lightbox__zoom" aria-label="缩放">
-            <button
-              type="button"
-              aria-label="缩小"
-              onClick={() => setScale((value) => clampScale(value - 0.1))}
-            >
-              −
-            </button>
-            <input
-              type="number"
-              min={Math.round(MIN_SCALE * 100)}
-              max={Math.round(MAX_SCALE * 100)}
-              step="10"
-              value={zoomPercent}
-              aria-label="缩放百分比"
-              onClick={(event) => event.stopPropagation()}
-              onChange={(event) => {
-                const next = Number(event.target.value);
-                if (Number.isFinite(next)) setScale(clampScale(next / 100));
-              }}
-            />
-            <span>%</span>
-            <button
-              type="button"
-              aria-label="放大"
-              onClick={() => setScale((value) => clampScale(value + 0.1))}
-            >
-              +
-            </button>
-          </div>
-          <button
-            type="button"
-            className={cn('image-lightbox__action', filmstripOpen && 'is-on')}
-            aria-expanded={filmstripOpen}
-            onClick={() => setFilmstripOpen((value) => !value)}
-          >
-            <span className="image-lightbox__filmstrip-icon" aria-hidden>▦</span>
-            <span className="image-lightbox__action-label">胶片条</span>
-          </button>
-          <button ref={closeButton} type="button" className="image-lightbox__btn" aria-label="关闭" onClick={close}>
-            <DismissRegular aria-hidden />
-          </button>
-        </div>
+        <p className="image-lightbox__title" title={current.caption || current.alt}>{current.caption || current.alt}</p>
+        <span className="image-lightbox__hint">滚轮 / 双指缩放 · 拖动查看</span>
       </div>
 
+      <button ref={closeButton} type="button" className="image-lightbox__close" aria-label="关闭" onClick={close}>
+        <DismissRegular aria-hidden />
+      </button>
+
+      <div className="image-lightbox__rail" onClick={(event) => event.stopPropagation()}>
+        <button type="button" className="image-lightbox__rail-btn" onClick={locateSource} title="关闭查看器并定位到原文位置">
+          <LocationRegular aria-hidden />
+          <span>定位原文</span>
+        </button>
+        <a
+          className="image-lightbox__rail-btn"
+          href={current.src}
+          download={downloadName(current, index)}
+          title="下载当前图片"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <ArrowDownloadRegular aria-hidden />
+          <span>下载</span>
+        </a>
+        <div className="image-lightbox__zoom" aria-label="缩放">
+          <button type="button" aria-label="缩小" onClick={() => setScale((value) => clampScale(value - 0.1))}>−</button>
+          <input
+            type="number"
+            min={Math.round(MIN_SCALE * 100)}
+            max={Math.round(MAX_SCALE * 100)}
+            step="10"
+            value={zoomPercent}
+            aria-label="缩放百分比"
+            onClick={(event) => event.stopPropagation()}
+            onChange={(event) => {
+              const next = Number(event.target.value);
+              if (Number.isFinite(next)) setScale(clampScale(next / 100));
+            }}
+          />
+          <span>%</span>
+          <button type="button" aria-label="放大" onClick={() => setScale((value) => clampScale(value + 0.1))}>+</button>
+        </div>
+        <button
+          type="button"
+          className={cn("image-lightbox__rail-btn", filmstripOpen && "is-on")}
+          aria-expanded={filmstripOpen}
+          onClick={() => setFilmstripOpen((value) => !value)}
+        >
+          <span className="image-lightbox__filmstrip-icon" aria-hidden>▦</span>
+          <span>胶片条</span>
+        </button>
+      </div>
       <div
         className="image-lightbox__stage"
         onClick={(event) => event.stopPropagation()}
+        onMouseDown={(event) => event.preventDefault()}
+        onDragStart={(event) => event.preventDefault()}
         onDoubleClick={() => {
           setScale(1);
           setPosition({ x: 0, y: 0 });
@@ -273,11 +272,13 @@ export function ImageLightbox() {
         }}
       >
         <img
+          key={current.src}
           className={cn('image-lightbox__image', scale > 1 && 'is-zoomed')}
           src={current.src}
           alt={current.alt}
           style={{ transform: `translate(${position.x}px, ${position.y}px) scale(${scale})` }}
           draggable={false}
+          onDragStart={(event) => event.preventDefault()}
         />
       </div>
 
@@ -336,9 +337,6 @@ export function ImageLightbox() {
         )}
       </div>
 
-      <p className="image-lightbox__caption" onClick={(event) => event.stopPropagation()}>
-        {current.caption}
-      </p>
     </div>
   );
 }
