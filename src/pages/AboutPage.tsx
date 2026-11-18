@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.9.1',
+    date: '2026-11-19',
+    items: [
+      '哔哩哔哩影像页支持滚动自动加载：加载更多按钮出现后继续下滑，自动载入下一批 12 条。',
+      '保留手动「加载更多」按钮；筛选、排序、搜索变化时回到首批。',
+    ],
+  },
+  {
     version: '3.9.0',
     date: '2026-11-19',
     items: [
@@ -271,7 +279,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.9"
+        eyebrow="ABOUT · 3.9.1"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -317,7 +325,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.9 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.9.1 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

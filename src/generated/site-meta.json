@@ -1,16 +1,32 @@
 {
   "name": "whwdzg-site",
-  "version": "3.9.0",
-  "description": "沧海水鱼内容站点 3.9 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.9.1",
+  "description": "沧海水鱼内容站点 3.9.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "2abbfc67b76f04892b35864d3ed049c70c46fa3b",
-  "commitShort": "2abbfc6",
-  "commitTime": "2026-11-19T01:01:24+08:00",
-  "buildTime": "2026-11-18T17:07:03.695Z",
+  "commit": "87a83e5e424e57857680a606080757d797eb457d",
+  "commitShort": "87a83e5",
+  "commitTime": "2026-11-19T01:08:39+08:00",
+  "buildTime": "2026-11-18T17:13:39.981Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "87a83e5e424e57857680a606080757d797eb457d",
+      "short": "87a83e5e",
+      "time": "2026-11-19T01:08:39+08:00",
+      "author": "Alex Yang",
+      "subject": "chore: sync MCMOD comments hourly",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/87a83e5e424e57857680a606080757d797eb457d"
+    },
+    {
+      "hash": "4b3ed26e6b7060c9d0a15dd2d390fadb935f21e9",
+      "short": "4b3ed26e",
+      "time": "2026-11-19T01:08:06+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: show MCMOD comments on project pages",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/4b3ed26e6b7060c9d0a15dd2d390fadb935f21e9"
+    },
     {
       "hash": "2abbfc67b76f04892b35864d3ed049c70c46fa3b",
       "short": "2abbfc67",
@@ -234,22 +250,6 @@
       "author": "Alex Yang",
       "subject": "chore: auto-sync Bilibili collections weekly",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/bc887f40e58fe679cd823416c32a04e960bdeded"
-    },
-    {
-      "hash": "c100e1b33bfc222b243123d76f81074e641ba4c3",
-      "short": "c100e1b3",
-      "time": "2026-11-17T23:53:59+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: add Bilibili collection episode browser",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/c100e1b33bfc222b243123d76f81074e641ba4c3"
-    },
-    {
-      "hash": "195d864dbc8815ba33a67871b98035abf2545cd7",
-      "short": "195d864d",
-      "time": "2026-11-17T23:46:11+08:00",
-      "author": "Alex Yang",
-      "subject": "fix: remove header theme toggle",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/195d864dbc8815ba33a67871b98035abf2545cd7"
     }
   ]
 }
