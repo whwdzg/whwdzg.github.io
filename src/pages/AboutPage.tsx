@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.9.4',
+    date: '2026-11-19',
+    items: [
+      '掩星档案终端去掉 Windows 标题栏、路径与窗口按钮，改成站内设计的圆角终端面板。',
+      '保留传统终端的黑色屏幕、等宽字体与命令行提示符，提示符改为 observer@occultation:~$。',
+    ],
+  },
+  {
     version: '3.9.3',
     date: '2026-11-19',
     items: [
@@ -294,7 +302,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.9.3"
+        eyebrow="ABOUT · 3.9.4"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -340,7 +348,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.9.3 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.9.4 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

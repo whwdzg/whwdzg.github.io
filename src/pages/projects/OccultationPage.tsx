@@ -108,7 +108,7 @@ type TerminalLine = { type: 'input' | 'output' | 'system'; text: string };
 
 const ZHOU_YI = '周熠。文明官方档案称“周熠体”，民间叫“第七日月亮”“小月亮”“闪星”“睁眼星”。\n\n- **外观**：约 **2 km 直径**圆形人造星体，外壳覆盖类月壤材料，远看像一颗灰色小月亮。表面有微弱反光，近看能看到极细的接缝纹路，但远距离观测与自然天体无异。';
 const HIDDEN_HINT = '这个7天循环下的世界，也许你还不知道其背后的故事，去找线索吧，或等待世界揭晓答案。';
-const CMD_PROMPT = 'C:\\OCCULTATION>';
+const CMD_PROMPT = 'observer@occultation:~$';
 
 const KEY_RESPONSES: Record<string, string> = {
   '沧海水鱼': 'O1',
@@ -123,8 +123,8 @@ function OccultationTerminal() {
   const [wrongCount, setWrongCount] = useState(0);
   const [hintShown, setHintShown] = useState(false);
   const [lines, setLines] = useState<TerminalLine[]>([
-    { type: 'system', text: 'OCCULTATION ARCHIVE TERMINAL [版本 0.1]' },
-    { type: 'system', text: '(c) OCCULTATION ARCHIVE. All rights reserved.' },
+    { type: 'system', text: 'OCCULTATION ARCHIVE TERMINAL · 0.1' },
+    { type: 'system', text: 'SIGNAL LOCKED / ARCHIVE INDEX READY' },
     { type: 'system', text: '输入密钥以查询掩星档案。' },
   ]);
   const logRef = useRef<HTMLDivElement>(null);
@@ -166,17 +166,17 @@ function OccultationTerminal() {
 
   return (
     <section className="occultation-terminal" aria-labelledby="occultation-terminal-title">
-      <div className="occultation-terminal__titlebar" aria-hidden>
-        <span className="occultation-terminal__cmdicon">▣</span>
-        <span className="occultation-terminal__title">C:\WINDOWS\system32\cmd.exe</span>
-        <span className="occultation-terminal__controls">
-          <span>—</span><span>□</span><span>×</span>
+      <div className="occultation-terminal__header">
+        <div className="occultation-terminal__brand">
+          <span className="occultation-terminal__glyph" aria-hidden>◈</span>
+          <span>
+            <strong id="occultation-terminal-title">掩星档案终端</strong>
+            <small>OCCULTATION ARCHIVE</small>
+          </span>
+        </div>
+        <span className="occultation-terminal__session">
+          <span className="status-dot" aria-hidden /> SESSION 001 · LINKED
         </span>
-      </div>
-      <h2 id="occultation-terminal-title" className="sr-only">掩星档案终端</h2>
-      <div className="occultation-terminal__statusline">
-        <span>ARCHIVE TERMINAL</span>
-        <span><span className="status-dot" aria-hidden /> LINKED</span>
       </div>
       <div className="occultation-terminal__log" ref={logRef} aria-live="polite">
         {lines.map((line, index) => (
