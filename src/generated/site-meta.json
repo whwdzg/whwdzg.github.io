@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.9.3",
-  "description": "沧海水鱼内容站点 3.9.3 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.9.4",
+  "description": "沧海水鱼内容站点 3.9.4 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "b5f624be68b6776439a94afa388beaaead3bb4bd",
-  "commitShort": "b5f624b",
-  "commitTime": "2026-11-19T01:22:42+08:00",
-  "buildTime": "2026-11-18T17:30:53.637Z",
+  "commit": "c9c363fb46b3e9f88ad3ef0bd08863f852f84deb",
+  "commitShort": "c9c363f",
+  "commitTime": "2026-11-19T01:31:48+08:00",
+  "buildTime": "2026-11-18T17:37:27.088Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "c9c363fb46b3e9f88ad3ef0bd08863f852f84deb",
+      "short": "c9c363fb",
+      "time": "2026-11-19T01:31:48+08:00",
+      "author": "Alex Yang",
+      "subject": "style: refine lightbox layout and drag behavior",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/c9c363fb46b3e9f88ad3ef0bd08863f852f84deb"
+    },
     {
       "hash": "b5f624be68b6776439a94afa388beaaead3bb4bd",
       "short": "b5f624be",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "fix: align projection mobile direction pad",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/2b74b0b65f3902011faa3161d003c24798554f07"
-    },
-    {
-      "hash": "fd2599ebf4028a381c9192a2fc69af924ef0fa7d",
-      "short": "fd2599eb",
-      "time": "2026-11-18T00:18:29+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: add Occultation page and clean HTML redirects",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/fd2599ebf4028a381c9192a2fc69af924ef0fa7d"
     }
   ]
 }

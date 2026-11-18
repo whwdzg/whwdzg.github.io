@@ -581,3 +581,203 @@
   .occultation-terminal__prompt { margin-right: 3px; font-size: 9px; }
   .occultation-terminal__statusline { font-size: 7px; }
 }
+
+
+/* ---------------- 掩星终端 · 本站样式 ---------------- */
+.occultation-terminal {
+  position: relative;
+  width: min(1040px, calc(100% - 32px));
+  margin: 16px auto 28px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, #223346);
+  border-radius: var(--r-xl);
+  background:
+    linear-gradient(180deg, #0a111a 0%, #060a10 100%);
+  box-shadow:
+    0 28px 64px rgba(3, 10, 18, 0.34),
+    0 0 0 1px rgba(120, 190, 255, 0.04),
+    inset 0 1px 0 rgba(170, 220, 255, 0.09);
+  color: #e8f3ff;
+  font-family: "Cascadia Mono", "Consolas", "SFMono-Regular", monospace;
+}
+
+.occultation-terminal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 70%, transparent), transparent);
+}
+
+.occultation-terminal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(120, 180, 235, 0.13);
+  background:
+    linear-gradient(180deg, rgba(28, 44, 62, 0.5), rgba(10, 17, 26, 0.18));
+}
+
+.occultation-terminal__brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.occultation-terminal__glyph {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--accent) 36%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 11%, transparent);
+  color: var(--accent);
+  font-size: 14px;
+}
+
+.occultation-terminal__brand > span:last-child {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.occultation-terminal__brand strong {
+  color: #f2f9ff;
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.occultation-terminal__brand small {
+  color: rgba(143, 183, 219, 0.58);
+  font-size: 7px;
+  letter-spacing: 0.14em;
+}
+
+.occultation-terminal__session {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #85c5a4;
+  font-size: 7.5px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.occultation-terminal__log {
+  display: grid;
+  align-content: start;
+  grid-auto-rows: min-content;
+  gap: 2px;
+  min-height: 176px;
+  max-height: 330px;
+  margin: 0;
+  padding: 14px 16px;
+  overflow-y: auto;
+  background:
+    linear-gradient(180deg, rgba(5, 10, 16, 0.92), rgba(3, 7, 12, 0.98)),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(120, 190, 255, 0.018) 3px 4px);
+  scrollbar-color: rgba(120, 170, 210, 0.34) transparent;
+  scrollbar-width: thin;
+}
+
+.occultation-terminal__line {
+  display: block;
+  margin: 0;
+  color: #dcecf9;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.occultation-terminal__line.is-system { color: #708ba4; }
+.occultation-terminal__line.is-input { color: #f3f9ff; }
+.occultation-terminal__line.is-output { color: #b9e6cf; }
+.occultation-terminal__line strong { color: #fff; font-weight: 700; }
+
+.occultation-terminal__prompt {
+  margin-right: 7px;
+  color: var(--accent);
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.occultation-terminal__form {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 13px 12px;
+  padding: 6px 7px 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, #1b2a3a);
+  border-radius: 8px;
+  background: #05090f;
+  box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.38);
+}
+
+.occultation-terminal__form .occultation-terminal__prompt {
+  color: color-mix(in srgb, var(--accent) 78%, #a7d4ff);
+  font-size: 9px;
+}
+
+.occultation-terminal__form input {
+  min-width: 0;
+  flex: 1;
+  padding: 4px 2px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #f2f9ff;
+  font-family: inherit;
+  font-size: 11px;
+  caret-color: var(--accent);
+}
+
+.occultation-terminal__form input::placeholder { color: #4e667c; }
+
+.occultation-terminal__form button {
+  width: 29px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, #2b3d51);
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--accent) 11%, transparent);
+  color: #cfe9ff;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.occultation-terminal__form button:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.occultation-terminal__hint {
+  margin: 0;
+  padding: 0 16px 10px;
+  color: #50687d;
+  font-family: inherit;
+  font-size: 7.5px;
+}
+
+@media (max-width: 760px) {
+  .occultation-terminal { width: calc(100% - 16px); margin-top: 10px; border-radius: var(--r-lg); }
+  .occultation-terminal__header { padding: 10px 12px; }
+  .occultation-terminal__brand strong { font-size: 13px; }
+  .occultation-terminal__brand small { font-size: 6px; }
+  .occultation-terminal__session { font-size: 6.5px; }
+  .occultation-terminal__log { min-height: 210px; max-height: 300px; padding: 12px; }
+  .occultation-terminal__line { font-size: 10px; }
+  .occultation-terminal__form { margin: 0 9px 9px; padding-left: 8px; }
+  .occultation-terminal__form .occultation-terminal__prompt { font-size: 7.5px; }
+  .occultation-terminal__hint { padding-inline: 12px; }
+}
