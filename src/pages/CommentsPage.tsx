@@ -8,7 +8,7 @@
  *
  * 留言摘录仍然是人工整理，保留原话与回复关系。
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   CopyRegular,
   OpenRegular,
@@ -19,6 +19,8 @@ import {
   SendRegular,
   MailRegular,
   ArrowRightRegular,
+  ArrowClockwiseRegular,
+  WarningRegular,
   CalendarLtrRegular,
   ClockRegular,
 } from '@fluentui/react-icons';
@@ -31,8 +33,18 @@ import { useActiveSection } from '../hooks/useActiveSection';
 import { useToast } from '../hooks/useToast';
 import { copyText } from '../lib/clipboard';
 import { readJson, writeJson } from '../lib/storage';
-import { formatDate, formatDateTime } from '../lib/format';
+import { formatDate, formatDateTime, relativeTime } from '../lib/format';
 import { COMMENTS, GUESTBOOK_META } from '../data/comments';
+import '../styles/github-comments.css';
+import { GitHubAvatar } from '../components/comments/GitHubAvatar';
+import { GitHubMarkdown } from '../components/comments/GitHubMarkdown';
+import {
+  fetchGitHubComments,
+  fetchGuestbookIssue,
+  formatGitHubError,
+  type GitHubComment,
+  type GitHubIssue,
+} from '../lib/github';
 import { LINKS } from '../data/site';
 
 const DRAFT_KEY = 'whwdzg-guestbook-draft-v1';
@@ -49,7 +61,8 @@ const EMPTY_DRAFT: Draft = { name: '', message: '', updatedAt: '' };
 const TOC_ITEMS = [
   { id: 'guide', label: '留言方式' },
   { id: 'write', label: '写一条留言' },
-  { id: 'entries', label: '留言摘录' },
+  { id: 'entries', label: '站内摘录' },
+  { id: 'github', label: 'GitHub 留言' },
   { id: 'jump', label: '目录与跳转' },
 ];
 
@@ -62,6 +75,42 @@ export default function CommentsPage() {
   const hydrated = useRef(false);
   const skipAutosave = useRef(false);
   const active = useActiveSection(useMemo(() => TOC_ITEMS.map((item) => item.id), []));
+
+  const [githubIssue, setGithubIssue] = useState<GitHubIssue | null>(null);
+  const [githubComments, setGithubComments] = useState<GitHubComment[]>([]);
+  const [githubLoading, setGithubLoading] = useState(true);
+  const [githubError, setGithubError] = useState('');
+  const [githubAt, setGithubAt] = useState<number | null>(null);
+
+  const loadGithub = useCallback(async (force = false) => {
+    setGithubLoading(true);
+    setGithubError('');
+    try {
+      const issueResult = await fetchGuestbookIssue(force);
+      const issue = issueResult.data;
+      setGithubIssue(issue);
+      setGithubAt(issueResult.at);
+      if (issueResult.error) setGithubError(formatGitHubError(issueResult.error));
+      if (!issue) {
+        setGithubComments([]);
+        return;
+      }
+      const commentResult = await fetchGitHubComments(issue.number, force);
+      setGithubComments(commentResult.data);
+      setGithubAt(Math.max(issueResult.at, commentResult.at));
+      if (commentResult.error) setGithubError(formatGitHubError(commentResult.error));
+    } catch (error) {
+      setGithubError(formatGitHubError(error));
+    } finally {
+      setGithubLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadGithub(false);
+  }, [loadGithub]);
+
+  const totalEntries = COMMENTS.length + githubComments.length;
 
   useEffect(() => {
     if (!hydrated.current) {
@@ -133,12 +182,12 @@ export default function CommentsPage() {
       <PageIntro
         eyebrow="GUESTBOOK · COMMENTS"
         title="留言板"
-        lead="静态站的“留言板”：想说的、想吐槽的，都可以在这里留下。这里保存人工整理的摘录，也提供一个更顺手的写作入口。"
+        lead="静态站的“留言板”：想说的、想吐槽的，都可以在这里留下。这里保存人工整理的摘录，也同步 GitHub「留言板」Issue 的公开评论。"
         meta={[
           { icon: 'person', label: '沧海水鱼' },
           { icon: 'calendar', label: `始于 ${formatDate(GUESTBOOK_META.startedAt)}` },
           { icon: 'clock', label: `更新 ${formatDate(GUESTBOOK_META.updatedAt)}` },
-          { icon: 'comment', label: `${COMMENTS.length} 条摘录` },
+          { icon: 'comment', label: `${totalEntries} 条留言` },
         ]}
         actions={
           <>
@@ -189,7 +238,7 @@ export default function CommentsPage() {
             <h2 id="guide-title">留言方式</h2>
             <p>
               静态网站无法直接写入评论，所以这里不假装有一个数据库。你可以先在本页写好草稿，
-              复制后通过 bilibili 私信发给我；我会择期把留言整理到下面的摘录里。
+              复制后通过 bilibili 私信发给我；也可以直接到 GitHub 的「留言板」Issue 下评论，评论会显示在下方。
             </p>
             <div className="steps-grid">
               <div className="step-card">
@@ -296,12 +345,12 @@ export default function CommentsPage() {
           <section className="article-card" id="entries" aria-labelledby="entries-title">
             <div className="article-card__head">
               <div>
-                <p className="eyebrow">EXCERPTS</p>
-                <h2 id="entries-title">留言摘录</h2>
+                <p className="eyebrow">STATIC EXCERPTS</p>
+                <h2 id="entries-title">站内摘录</h2>
               </div>
               <span className="badge badge--muted">{COMMENTS.length} 条 · 人工整理</span>
             </div>
-            <p>以下为人工汇总的片段，原话保留。头像与昵称对应 B 站 / 站点身份。</p>
+            <p>以下为人工汇总的片段，原话保留。头像与昵称对应 B 站 / 站点身份；GitHub 的实时留言见下一节。</p>
 
             <div className="comment-list">
               {COMMENTS.map((comment) => (
@@ -356,6 +405,104 @@ export default function CommentsPage() {
                 </article>
               ))}
             </div>
+          </section>
+
+          <section className="article-card guestbook-github" id="github" aria-labelledby="github-title">
+            <div className="article-card__head">
+              <div>
+                <p className="eyebrow">GITHUB GUESTBOOK</p>
+                <h2 id="github-title">GitHub 留言</h2>
+              </div>
+              <div className="guestbook-github__head-actions">
+                {githubIssue && <span className="badge">#{"#" + githubIssue.number}</span>}
+                <button
+                  type="button"
+                  className="icon-btn icon-btn--sm"
+                  aria-label="刷新 GitHub 留言"
+                  title="刷新 GitHub 留言"
+                  disabled={githubLoading}
+                  onClick={() => void loadGithub(true)}
+                >
+                  <ArrowClockwiseRegular aria-hidden />
+                </button>
+              </div>
+            </div>
+            <p>
+              留言板现在由两部分驱动：上方是人工整理的站内摘录，这里直接读取 GitHub 上的
+              「留言板」Issue 与评论。登录 GitHub 后即可新增留言，头像与时间由 GitHub 提供。
+            </p>
+
+            {githubLoading && !githubIssue && (
+              <div className="guestbook-github__loading" aria-busy="true">
+                <span className="skeleton" /> <span className="skeleton" />
+              </div>
+            )}
+
+            {githubError && (
+              <p className="guestbook-github__warning" role="status">
+                <WarningRegular aria-hidden /> {githubError}
+              </p>
+            )}
+
+            {githubIssue ? (
+              <>
+                <div className="guestbook-github__issue">
+                  <div>
+                    <strong>{githubIssue.title}</strong>
+                    <span>
+                      {"#" + githubIssue.number} · {githubComments.length} 条评论
+                      {githubAt ? " · 同步于 " + relativeTime(githubAt) : ""}
+                    </span>
+                  </div>
+                  <a className="btn btn--ghost btn--sm" href={githubIssue.html_url} target="_blank" rel="noopener noreferrer">
+                    在 GitHub 打开 <OpenRegular aria-hidden />
+                  </a>
+                </div>
+
+                {githubIssue.body?.trim() && (
+                  <GitHubMarkdown className="guestbook-github__body" text={githubIssue.body} emptyText="" />
+                )}
+
+                <div className="guestbook-github__list">
+                  {githubComments.length ? githubComments.map((comment) => (
+                    <article className="guestbook-github__comment" key={comment.id}>
+                      <a
+                        className="guestbook-github__avatar"
+                        href={comment.user?.html_url ?? githubIssue.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={"在 GitHub 查看 " + (comment.user?.login ?? "访客")}
+                      >
+                        <GitHubAvatar user={comment.user} size={36} />
+                      </a>
+                      <div>
+                        <div className="guestbook-github__meta">
+                          <a href={comment.user?.html_url ?? githubIssue.html_url} target="_blank" rel="noopener noreferrer">
+                            {comment.user?.login ?? "ghost"}
+                          </a>
+                          <span>{formatDate(comment.created_at)}</span>
+                          <a className="guestbook-github__permalink" href={comment.html_url} target="_blank" rel="noopener noreferrer">
+                            链接 <OpenRegular aria-hidden />
+                          </a>
+                        </div>
+                        <GitHubMarkdown className="guestbook-github__body" text={comment.body} emptyText="（空留言）" />
+                      </div>
+                    </article>
+                  )) : (
+                    <p className="guestbook-github__empty">还没有 GitHub 留言，来写下第一条吧。</p>
+                  )}
+                </div>
+
+                <a className="btn btn--primary btn--md" href={githubIssue.html_url + "#new_comment_field"} target="_blank" rel="noopener noreferrer">
+                  <FluentIcon name="github" size={17} aria-hidden /> 在 GitHub 留言
+                </a>
+              </>
+            ) : !githubLoading ? (
+              <p className="guestbook-github__empty">
+                暂时没有找到标题为「留言板」的 Issue。
+                <a href={LINKS.github} target="_blank" rel="noopener noreferrer">前往 GitHub 查看</a>
+              </p>
+            ) : null}
           </section>
 
           <section className="article-card" id="jump" aria-labelledby="jump-title">

@@ -2102,3 +2102,36 @@
 @media (max-width: 760px) {
   .sync-status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+
+/* ---------------- Guestbook · GitHub issue ---------------- */
+.guestbook-github__head-actions { display: flex; align-items: center; gap: 6px; }
+.guestbook-github__loading { display: flex; gap: 6px; padding: 14px 0; }
+.guestbook-github__loading .skeleton { width: 120px; height: 28px; border-radius: 5px; }
+.guestbook-github__warning { display: flex; align-items: center; gap: 5px; margin: 10px 0; padding: 7px 9px; border: 1px solid color-mix(in srgb, #d69b2d 35%, var(--stroke)); border-radius: var(--r-sm); background: color-mix(in srgb, #d69b2d 8%, var(--surface-2)); color: var(--text-2); font-size: 9px; }
+.guestbook-github__warning svg { width: 14px; height: 14px; flex: 0 0 auto; color: #c18a23; }
+.guestbook-github__issue { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 12px 0 9px; padding: 9px 10px; border: 1px solid var(--stroke); border-radius: var(--r-sm); background: var(--surface-2); }
+.guestbook-github__issue > div { display: grid; gap: 3px; min-width: 0; }
+.guestbook-github__issue strong { color: var(--text); font-size: 12px; }
+.guestbook-github__issue span { color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
+.guestbook-github__list { display: grid; gap: 7px; margin: 10px 0 12px; }
+.guestbook-github__comment { display: flex; align-items: flex-start; gap: 9px; padding: 9px 10px; border: 1px solid var(--stroke); border-radius: var(--r-sm); background: var(--surface-2); }
+.guestbook-github__avatar { display: block; flex: 0 0 auto; border-radius: 50%; }
+.guestbook-github__avatar .gh-avatar { display: block; border-radius: 50%; }
+.guestbook-github__comment > div { min-width: 0; flex: 1; }
+.guestbook-github__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 4px; }
+.guestbook-github__meta a { color: var(--accent); font-size: 10px; font-weight: 650; }
+.guestbook-github__meta span { color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
+.guestbook-github__permalink { display: inline-flex; align-items: center; gap: 2px; color: var(--text-3) !important; font-size: 8px !important; font-weight: 400 !important; }
+.guestbook-github__permalink svg { width: 10px; height: 10px; }
+.guestbook-github__body { color: var(--text-2); font-size: 11px; line-height: 1.75; }
+.guestbook-github__body.markdown-body { margin: 0; }
+.guestbook-github__body.markdown-body p { margin: 0 0 5px; }
+.guestbook-github__body.markdown-body p:last-child { margin-bottom: 0; }
+.guestbook-github__empty { padding: 10px 0; color: var(--text-3); font-size: 10px; }
+.guestbook-github__empty a { margin-left: 4px; color: var(--accent); }
+
+@media (max-width: 600px) {
+  .guestbook-github__issue { align-items: flex-start; flex-direction: column; }
+  .guestbook-github__issue .btn { align-self: flex-start; }
+}
