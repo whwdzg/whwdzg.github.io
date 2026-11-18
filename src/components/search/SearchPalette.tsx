@@ -77,6 +77,8 @@ const STATIC_ITEMS: SearchableItem[] = [
   { id: 'section:about-version', title: '版本与提交', subtitle: '版本号、构建时间与最近提交', group: '章节', href: '/about/#version', icon: 'commit' },
   { id: 'section:about-tech', title: '技术栈', subtitle: 'React、Vite、TypeScript、PWA', group: '章节', href: '/about/#tech', icon: 'code' },
   { id: 'section:about-performance', title: '性能策略', subtitle: '代码分割、WebP、懒加载与缓存', group: '章节', href: '/about/#performance', icon: 'rocket' },
+  { id: 'column:index', title: '专栏', subtitle: '长文与记录', keywords: '专栏 columns 文章 长文', group: '专栏', href: '/columns/', icon: 'document', meta: '专栏' },
+  { id: 'column:three-years', title: '给自己三年时间', subtitle: 'B 站置顶动态 · 2025-07-31', keywords: '三年 项目 置顶动态 沧海水鱼', group: '专栏', href: '/columns/three-years/', icon: 'document', meta: '001' },
   { id: 'user:hxhej', title: 'hxhej', subtitle: '用户页 · 留言板参与者', keywords: 'hxhej 用户 留言板', group: '用户', href: '/user/hxhej/', icon: 'person', meta: 'UID 2' },
   { id: 'user:canghaishuiyu', title: '沧海水鱼', subtitle: '用户页 · 站点作者', keywords: '沧海水鱼 用户 作者 数据包', group: '用户', href: '/user/canghaishuiyu/', icon: 'person', meta: 'UID 1' },
   {

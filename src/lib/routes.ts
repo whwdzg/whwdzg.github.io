@@ -225,6 +225,21 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/UserPage'),
   },
   {
+    path: '/columns/',
+    title: '专栏 · 水鱼 Blog',
+    shortTitle: '专栏',
+    description: '沧海水鱼的长文与记录：B 站置顶动态、项目说明与还没有写完的想法。',
+    load: () => import('../pages/ColumnsPage'),
+  },
+  {
+    path: '/columns/three-years/',
+    title: '给自己三年时间 · 专栏 · 水鱼 Blog',
+    shortTitle: '给自己三年时间',
+    description: '把 B 站置顶动态“打算给自己三年时间搞一个项目，随时告吹的那种（”搬成一篇文章。',
+    prefetch: false,
+    load: () => import('../pages/ColumnDetailPage'),
+  },
+  {
     path: '/about/',
     title: '关于本站 · 水鱼 Blog',
     shortTitle: '关于',

@@ -1011,3 +1011,6 @@
     padding-top: calc(13px + env(safe-area-inset-top, 0));
   }
 }
+
+.sidebar-group__number { display: inline-grid; place-items: center; width: 20px; height: 20px; flex: 0 0 auto; border: 1px solid var(--stroke); border-radius: 5px; color: var(--text-3); font-family: var(--font-mono); font-size: 7px; }
+.sidebar-group__link .sidebar-group__number { flex: 0 0 auto; }
