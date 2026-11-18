@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "9c1d1e17c169eda7a1ffff79743fa003ae9f283f",
-  "commitShort": "9c1d1e1",
-  "commitTime": "2026-11-18T22:37:10+08:00",
-  "buildTime": "2026-11-18T14:46:37.816Z",
+  "commit": "1d19cc636a3ed833067b442e4b3472bb127073f1",
+  "commitShort": "1d19cc6",
+  "commitTime": "2026-11-18T22:47:38+08:00",
+  "buildTime": "2026-11-18T14:52:05.485Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "1d19cc636a3ed833067b442e4b3472bb127073f1",
+      "short": "1d19cc63",
+      "time": "2026-11-18T22:47:38+08:00",
+      "author": "Alex Yang",
+      "subject": "style: restyle occultation terminal as CMD window",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/1d19cc636a3ed833067b442e4b3472bb127073f1"
+    },
     {
       "hash": "9c1d1e17c169eda7a1ffff79743fa003ae9f283f",
       "short": "9c1d1e17",

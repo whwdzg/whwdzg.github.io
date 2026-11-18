@@ -654,8 +654,10 @@
 .sidebar-group__link img {
   width: 20px;
   height: 20px;
+  padding: 2px;
   border-radius: var(--r-xs);
-  object-fit: cover;
+  background: #fff;
+  object-fit: contain;
 }
 
 .sidebar-group__link svg {

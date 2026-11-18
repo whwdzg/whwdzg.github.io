@@ -75,8 +75,11 @@
 .project-related img {
   width: 30px;
   height: 30px;
+  padding: 2px;
   border-radius: 7px;
   border: 1px solid var(--stroke);
+  background: #fff;
+  object-fit: contain;
 }
 
 .project-related li span {
@@ -129,10 +132,12 @@
 .project-summary__head > img {
   width: 72px;
   height: 72px;
+  padding: 6px;
   flex: 0 0 auto;
   border: 1px solid var(--stroke);
   border-radius: 14px;
-  background: var(--surface-2);
+  background: #fff;
+  object-fit: contain;
 }
 
 .project-summary__head > div {
@@ -1761,9 +1766,10 @@
 .github-project-card__head > img {
   width: 56px;
   height: 56px;
+  padding: 4px;
   border: 1px solid var(--stroke);
   border-radius: var(--r-md);
-  background: var(--surface);
+  background: #fff;
   object-fit: contain;
 }
 

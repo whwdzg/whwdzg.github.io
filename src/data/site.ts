@@ -257,7 +257,7 @@ export const SUBSITES: Subsite[] = [
     title: '来福 Simulation Wiki',
     subtitle: 'Life Simulation Wiki 镜像',
     description: '来福 Simulation 的全量静态 Wiki 镜像：451 个页面、195 个媒体文件、离线浏览与全文搜索。',
-    icon: '/media/projects/life-simulation-wiki.svg',
+    icon: '/media/projects/life-simulation-wiki.webp',
     path: '/projects/life-simulation-wiki/',
     url: 'https://whwdzg.github.io/Life-Simulation-Wiki/',
     github: 'https://github.com/whwdzg/Life-Simulation-Wiki',
