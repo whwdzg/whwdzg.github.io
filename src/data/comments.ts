@@ -5,6 +5,7 @@
  * 保留原话与回复关系；新增留言时在数组末尾追加即可。
  */
 export interface CommentReply {
+  userSlug?: string;
   author: string;
   avatar: string;
   date: string;
@@ -13,6 +14,7 @@ export interface CommentReply {
 
 export interface CommentEntry {
   id: number;
+  userSlug?: string;
   author: string;
   avatar: string;
   date: string;
@@ -24,6 +26,7 @@ export interface CommentEntry {
 export const COMMENTS: CommentEntry[] = [
   {
     id: 1,
+    userSlug: 'canghaishuiyu',
     author: '沧海水鱼',
     avatar: '/media/avatars/shuiyu.webp',
     date: '2024-03-07',
@@ -32,6 +35,7 @@ export const COMMENTS: CommentEntry[] = [
   },
   {
     id: 2,
+    userSlug: 'hxhej',
     author: 'hx_hej',
     avatar: '/media/avatars/hxhej.webp',
     date: '2024-03-07',
@@ -39,11 +43,13 @@ export const COMMENTS: CommentEntry[] = [
   },
   {
     id: 3,
+    userSlug: 'hxhej',
     author: 'hx_hej',
     avatar: '/media/avatars/hxhej.webp',
     date: '2024-03-07',
     text: '傻逼冈易。',
     reply: {
+      userSlug: 'canghaishuiyu',
       author: '沧海水鱼',
       avatar: '/media/avatars/shuiyu.webp',
       date: '2026-01-06',

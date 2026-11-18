@@ -58,6 +58,9 @@ jobs:
           test -f dist/projects/life-simulation-wiki/index.html
           test -f dist/projects/github/index.html
           test -f dist/projects/occultation/index.html
+          test -f dist/user/hxhej/index.html
+          test -f dist/user/canghaishuiyu/index.html
+          test -f dist/user/滄海水魚/index.html
           test -f dist/tools/index.html
           test -f dist/tools/base64/index.html
           test -f dist/tools/basex/index.html

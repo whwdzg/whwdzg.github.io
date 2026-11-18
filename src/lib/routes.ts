@@ -204,6 +204,27 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/projects/OccultationPage'),
   },
   {
+    path: '/user/hxhej/',
+    title: 'hxhej · 用户 · 水鱼 Blog',
+    shortTitle: 'hxhej',
+    description: 'hxhej 的站内用户页：留言板参与者、站外链接与公开资料简述。',
+    load: () => import('../pages/UserPage'),
+  },
+  {
+    path: '/user/canghaishuiyu/',
+    title: '沧海水鱼 · 用户 · 水鱼 Blog',
+    shortTitle: '沧海水鱼',
+    description: '沧海水鱼的站内用户页：Minecraft 数据包作者、B 站创作者与公开资料简述。',
+    load: () => import('../pages/UserPage'),
+  },
+  {
+    path: '/user/滄海水魚/',
+    title: '沧海水鱼 · 用户 · 水鱼 Blog',
+    shortTitle: '沧海水鱼',
+    description: '沧海水鱼的站内用户页（2.0 旧地址兼容）。',
+    load: () => import('../pages/UserPage'),
+  },
+  {
     path: '/about/',
     title: '关于本站 · 水鱼 Blog',
     shortTitle: '关于',

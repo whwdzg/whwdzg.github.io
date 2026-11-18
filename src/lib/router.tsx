@@ -39,6 +39,9 @@ const KNOWN_PATHS = new Set([
   '/projects/life-simulation-wiki/',
   '/projects/github/',
   '/projects/occultation/',
+  '/user/hxhej/',
+  '/user/canghaishuiyu/',
+  '/user/滄海水魚/',
   '/tools/',
   '/tools/base64/',
   '/tools/basex/',
@@ -52,7 +55,13 @@ const KNOWN_PATHS = new Set([
 ]);
 
 export function normalizePath(pathname: string): string {
-  let path = pathname.replace(/\/index\.html$/i, '/');
+  let path = pathname;
+  try {
+    path = decodeURIComponent(path);
+  } catch {
+    // 非法百分号编码保持原样，避免路由直接崩溃。
+  }
+  path = path.replace(/\/index\.html$/i, '/');
   if (!path.startsWith('/')) path = `/${path}`;
   if (path !== '/' && !path.endsWith('/') && !/\.[a-z0-9]+$/i.test(path)) path = `${path}/`;
   return path;
