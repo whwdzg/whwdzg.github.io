@@ -1168,6 +1168,8 @@
   margin-top: 24px;
 }
 
+.archive-more__sentinel { width: 100%; height: 140px; pointer-events: none; }
+
 .archive-more p,
 .archive-end {
   color: var(--text-3);

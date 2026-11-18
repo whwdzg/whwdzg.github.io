@@ -9,7 +9,7 @@
  * - 详情弹窗、上一条 / 下一条、随机一条
  * - 分批渲染（首屏 12 条），避免一次插入 251 张卡片
  */
-import { useDeferredValue, useEffect, useMemo, useState } from 'react';
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import {
   SearchRegular,
   DismissRegular,
@@ -62,6 +62,7 @@ export default function BilibiliPage() {
   const [sort, setSort] = useState<SortMode>('newest');
   const [view, setView] = useState<ViewMode>(() => (readStorage(VIEW_KEY) === 'list' ? 'list' : 'grid'));
   const [limit, setLimit] = useState(PAGE_SIZE);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
   const [collectionVideo, setCollectionVideo] = useState<Video | null>(null);
   const [detailId, setDetailId] = useState<number | null>(() => {
     const value = Number(new URLSearchParams(search).get('video'));
@@ -126,6 +127,22 @@ export default function BilibiliPage() {
   }, [deferredQuery, status, year, sort]);
 
   const visible = filtered.slice(0, limit);
+  const canLoadMore = limit < filtered.length && detailId == null && collectionVideo == null;
+
+  // 滚动到“加载更多”按钮下方一段距离后自动加载下一批。
+  useEffect(() => {
+    const node = loadMoreRef.current;
+    if (!canLoadMore || !node) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        setLimit((current) => Math.min(filtered.length, current + PAGE_SIZE));
+      },
+      { rootMargin: '0px 0px 80px 0px', threshold: 0.01 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [canLoadMore, filtered.length, limit]);
   const maxYear = Math.max(1, ...yearCounts.values());
   const hasFilters = Boolean(query) || status !== 'all' || year !== 'all' || sort !== 'newest';
 
@@ -349,7 +366,8 @@ export default function BilibiliPage() {
               <Button variant="secondary" size="lg" onClick={() => setLimit((value) => value + PAGE_SIZE)}>
                 加载更多（剩余 {filtered.length - limit} 条）
               </Button>
-              <p>首屏只渲染 12 条，减少 DOM 与图片解码压力。</p>
+              <p>继续下滑会自动加载下一批 · 首屏只渲染 12 条。</p>
+              <div className="archive-more__sentinel" ref={loadMoreRef} aria-hidden />
             </div>
           )}
 
