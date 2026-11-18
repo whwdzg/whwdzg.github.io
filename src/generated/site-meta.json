@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.5.1",
-  "description": "沧海水鱼内容站点 3.5.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.6.0",
+  "description": "沧海水鱼内容站点 3.6 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "2ec1b14328cc70221bbc3002f82253d9c1e2cd47",
-  "commitShort": "2ec1b14",
-  "commitTime": "2026-11-19T00:08:06+08:00",
-  "buildTime": "2026-11-18T16:16:47.466Z",
+  "commit": "212a8c301326e436aabe28c09a685db07e4d219d",
+  "commitShort": "212a8c3",
+  "commitTime": "2026-11-19T00:17:41+08:00",
+  "buildTime": "2026-11-18T16:29:17.872Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "212a8c301326e436aabe28c09a685db07e4d219d",
+      "short": "212a8c30",
+      "time": "2026-11-19T00:17:41+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: embed project demo videos",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/212a8c301326e436aabe28c09a685db07e4d219d"
+    },
     {
       "hash": "2ec1b14328cc70221bbc3002f82253d9c1e2cd47",
       "short": "2ec1b143",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "fix: keep sub-sites visible in sidebar",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/cf0ba46fed1a2e389d502181ae673b725a6bf3d4"
-    },
-    {
-      "hash": "8d4f398b9985bbef139c7574c248022c1f9c132b",
-      "short": "8d4f398b",
-      "time": "2026-11-17T23:27:57+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: 3.3 sub-sites, tools and data upgrades",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/8d4f398b9985bbef139c7574c248022c1f9c132b"
     }
   ]
 }

@@ -306,7 +306,13 @@ export default function CommentsPage() {
             <div className="comment-list">
               {COMMENTS.map((comment) => (
                 <article className="comment-card" id={`comment-${comment.id}`} key={comment.id}>
-                  <img className="comment-card__avatar" src={comment.avatar} alt={`${comment.author} 的头像`} width={40} height={40} loading="lazy" />
+                  {comment.userSlug ? (
+                    <Link className="comment-card__avatar-link" to={`/user/${comment.userSlug}/`} aria-label={`查看 ${comment.author} 的用户页`} title={`查看 ${comment.author} 的用户页`}>
+                      <img className="comment-card__avatar" src={comment.avatar} alt={`${comment.author} 的头像`} width={40} height={40} loading="lazy" />
+                    </Link>
+                  ) : (
+                    <img className="comment-card__avatar" src={comment.avatar} alt={`${comment.author} 的头像`} width={40} height={40} loading="lazy" />
+                  )}
                   <div className="comment-card__body">
                     <div className="comment-card__meta">
                       <strong>{comment.author}</strong>
@@ -329,7 +335,13 @@ export default function CommentsPage() {
 
                     {comment.reply && (
                       <div className="comment-reply">
-                        <img src={comment.reply.avatar} alt="" width={32} height={32} loading="lazy" />
+                        {comment.reply.userSlug ? (
+                          <Link className="comment-card__avatar-link" to={`/user/${comment.reply.userSlug}/`} aria-label={`查看 ${comment.reply.author} 的用户页`} title={`查看 ${comment.reply.author} 的用户页`}>
+                            <img className="comment-card__avatar" src={comment.reply.avatar} alt="" width={32} height={32} loading="lazy" />
+                          </Link>
+                        ) : (
+                          <img className="comment-card__avatar" src={comment.reply.avatar} alt="" width={32} height={32} loading="lazy" />
+                        )}
                         <div>
                           <div className="comment-card__meta">
                             <strong>{comment.reply.author}</strong>

@@ -48,7 +48,7 @@ function serviceWorkerManifest(): Plugin {
         .filter((file) => {
           if (file === 'sw.js' || file === 'sw-assets.json' || file.endsWith('.map')) return false;
           if (file === 'index.html' || file === 'manifest.webmanifest' || file === 'offline.html') return true;
-          if (/^(bilibili|comments|comments\/github|projects\/[^/]+|tools|tools\/[^/]+|about)\/index\.html$/.test(file)) return true;
+          if (/^(bilibili|comments|comments\/github|projects\/[^/]+|user\/[^/]+|tools|tools\/[^/]+|about)\/index\.html$/.test(file)) return true;
           if (file.startsWith('assets/') && /\.(js|css)$/.test(file)) return true;
           if (file.startsWith('icons/')) return true;
           if (file.startsWith('media/avatars/') || file.startsWith('media/projects/')) return true;
@@ -96,6 +96,9 @@ export default defineConfig({
         lifeWiki: path.resolve('projects/life-simulation-wiki/index.html'),
         githubProjects: path.resolve('projects/github/index.html'),
         occultation: path.resolve('projects/occultation/index.html'),
+        userHxhej: path.resolve('user/hxhej/index.html'),
+        userCang: path.resolve('user/canghaishuiyu/index.html'),
+        userCangLegacy: path.resolve('user/滄海水魚/index.html'),
         tools: path.resolve('tools/index.html'),
         base64: path.resolve('tools/base64/index.html'),
         basex: path.resolve('tools/basex/index.html'),
