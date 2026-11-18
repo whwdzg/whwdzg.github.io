@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.9.0',
+    date: '2026-11-19',
+    items: [
+      '更好的合成配方、更好附魔、更好的生物掉落页面底部展示 MC百科条目短评。',
+      '新增 MC百科短评快照与同步脚本，保留作者、头像、楼层、日期、频道与回复数。',
+      '每小时外部数据同步现在同时更新 MC百科短评。',
+    ],
+  },
+  {
     version: '3.8.0',
     date: '2026-11-19',
     items: [
@@ -262,7 +271,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.8"
+        eyebrow="ABOUT · 3.9"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -308,7 +317,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.8 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.9 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

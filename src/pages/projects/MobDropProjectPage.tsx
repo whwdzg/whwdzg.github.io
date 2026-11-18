@@ -18,6 +18,7 @@ import { ProjectShell } from '../../components/projects/ProjectShell';
 import { AdvancementTree } from '../../components/projects/AdvancementTree';
 import { ItemIcon } from '../../components/projects/ItemIcon';
 import { Reveal } from '../../components/common/Reveal';
+import { McmodComments } from '../../components/projects/McmodComments';
 import '../../styles/projects.css';
 
 const TOC = [
@@ -28,6 +29,7 @@ const TOC = [
   { id: 'compatibility', label: '兼容性' },
   { id: 'faq', label: '常见问题' },
   { id: 'links', label: '下载与链接' },
+  { id: 'mcmod-comments', label: 'MC百科评论' },
 ];
 
 const CATEGORIES: (MobCategory | 'all')[] = ['all', 'friendly', 'neutral', 'hostile'];
@@ -298,6 +300,7 @@ export default function MobDropProjectPage() {
           查看全部 {PROJECTS.length} 个项目 <ArrowRightRegular aria-hidden />
         </Link>
       </Reveal>
+      <McmodComments slug="better-mob-drop" />
     </ProjectShell>
   );
 }

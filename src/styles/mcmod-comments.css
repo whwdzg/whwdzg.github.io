@@ -1,0 +1,17 @@
+/* MC百科短评 / MCMOD comments */
+.mcmod-comment-list { display: grid; gap: 7px; margin-top: 12px; }
+.mcmod-comment { display: flex; align-items: flex-start; gap: 9px; padding: 10px 11px; border: 1px solid var(--stroke); border-radius: var(--r-sm); background: var(--surface-2); }
+.mcmod-comment__avatar { width: 34px; height: 34px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; background: var(--surface); }
+.mcmod-comment__body { min-width: 0; flex: 1; }
+.mcmod-comment__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mcmod-comment__meta strong { color: var(--text); font-size: 10.5px; }
+.mcmod-comment__meta span { color: var(--text-3); font-family: var(--font-mono); font-size: 7.5px; }
+.mcmod-comment__floor { padding: 1px 4px; border: 1px solid var(--stroke); border-radius: 3px; }
+.mcmod-comment__channel { color: var(--accent); }
+.mcmod-comment__body p { margin-top: 4px; color: var(--text-2); font-size: 12px; line-height: 1.75; white-space: pre-wrap; }
+.mcmod-comment__body small { display: block; margin-top: 3px; color: var(--text-3); font-size: 8px; }
+.mcmod-comments-empty { display: flex; align-items: center; gap: 5px; color: var(--text-3); font-size: 10px; }
+.mcmod-comments-empty svg { width: 14px; height: 14px; }
+.mcmod-comments-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--stroke); color: var(--text-3); font-family: var(--font-mono); font-size: 7.5px; }
+.mcmod-comments-foot a { display: inline-flex; align-items: center; gap: 3px; color: var(--accent); }
+.mcmod-comments-foot svg { width: 11px; height: 11px; }

@@ -1,4 +1,4 @@
-# 水鱼 Blog · 3.8
+# 水鱼 Blog · 3.9
 
 沧海水鱼（whwdzg）的个人网站，2026 年从零重写。
 
@@ -74,6 +74,7 @@ npm run data:projects   # 读取数据包仓库 + D:\Documents\assets，生成 s
 npm run data:sync       # 按顺序同步 Modrinth / MC百科 / GitHub / B站并写状态
 npm run data:modrinth   # 同步 Modrinth 项目数字与最新版本快照
 npm run data:mcmod      # 抓取 MC百科项目浏览 / 编辑 / 标签数据
+npm run data:mcmod-comments # 抓取 MC百科条目短评快照
 npm run data:bilibili   # 同步 B 站空间当前公开视频（仅追加新 BV）
 npm run data:collections # 同步 B 站合集全部成员视频、封面与时间
 ```
@@ -210,7 +211,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 ## 版本与部署
 
-当前版本 **3.8.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
+当前版本 **3.9.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
 
 关于页展示：
 

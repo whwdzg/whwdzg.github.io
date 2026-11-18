@@ -16,6 +16,7 @@ import { ProjectShell } from '../../components/projects/ProjectShell';
 import { RecipeBrowser } from '../../components/projects/RecipeBrowser';
 import { AdvancementTree } from '../../components/projects/AdvancementTree';
 import { Reveal } from '../../components/common/Reveal';
+import { McmodComments } from '../../components/projects/McmodComments';
 import { BilibiliEmbed } from '../../components/common/BilibiliEmbed';
 import '../../styles/projects.css';
 
@@ -28,6 +29,7 @@ const TOC = [
   { id: 'compatibility', label: '兼容性' },
   { id: 'faq', label: '常见问题' },
   { id: 'links', label: '下载与链接' },
+  { id: 'mcmod-comments', label: 'MC百科评论' },
 ];
 
 export default function CraftingProjectPage() {
@@ -266,6 +268,7 @@ export default function CraftingProjectPage() {
           查看全部 {PROJECTS.length} 个项目 <ArrowRightRegular aria-hidden />
         </Link>
       </Reveal>
+      <McmodComments slug="better-crafting-recipes" />
     </ProjectShell>
   );
 }
