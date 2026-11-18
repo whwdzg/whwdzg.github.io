@@ -18,7 +18,6 @@ import {
   OpenRegular,
   ArrowShuffleRegular,
   ArrowClockwiseRegular,
-  ChevronDownRegular,
 } from '@fluentui/react-icons';
 import { PageIntro } from '../components/layout/PageIntro';
 import { FluentIcon } from '../components/common/FluentIcon';
@@ -26,6 +25,7 @@ import { VideoCard } from '../components/bilibili/VideoCard';
 import { VideoDetail } from '../components/bilibili/VideoDetail';
 import { CollectionDetail } from '../components/bilibili/CollectionDetail';
 import { Button, IconButton } from '../components/common/Button';
+import { Select } from '../components/common/Select';
 import { useRouter } from '../lib/router';
 import { readStorage, writeStorage } from '../lib/storage';
 import { videos, videosById, videoStats, type Video } from '../data/videos';
@@ -143,6 +143,11 @@ export default function BilibiliPage() {
     observer.observe(node);
     return () => observer.disconnect();
   }, [canLoadMore, filtered.length, limit]);
+  const yearOptions = useMemo(() => [
+    { value: 'all', label: '全部年份' },
+    ...videoStats.years.map((item) => ({ value: item, label: item, count: yearCounts.get(item) })),
+    ...(yearCounts.has('unknown') ? [{ value: 'unknown', label: '日期未记录', count: yearCounts.get('unknown') }] : []),
+  ], [yearCounts]);
   const maxYear = Math.max(1, ...yearCounts.values());
   const hasFilters = Boolean(query) || status !== 'all' || year !== 'all' || sort !== 'newest';
 
@@ -295,30 +300,25 @@ export default function BilibiliPage() {
             </div>
 
             <div className="archive-controls">
-              <label className="select-field">
+              <div className="select-field">
                 <span>年份</span>
-                <select value={year} onChange={(event) => setYear(event.target.value)} aria-label="按年份筛选">
-                  <option value="all">全部年份</option>
-                  {videoStats.years.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                  {yearCounts.has('unknown') && <option value="unknown">日期未记录</option>}
-                </select>
-                <ChevronDownRegular aria-hidden />
-              </label>
+                <Select value={year} options={yearOptions} onChange={setYear} ariaLabel="按年份筛选" />
+              </div>
 
-              <label className="select-field">
+              <div className="select-field">
                 <span>排序</span>
-                <select value={sort} onChange={(event) => setSort(event.target.value as SortMode)} aria-label="排序方式">
-                  <option value="newest">最新优先</option>
-                  <option value="oldest">最早优先</option>
-                  <option value="title">按标题</option>
-                  <option value="views">按播放量</option>
-                </select>
-                <ChevronDownRegular aria-hidden />
-              </label>
+                <Select
+                  value={sort}
+                  options={[
+                    { value: 'newest', label: '最新优先' },
+                    { value: 'oldest', label: '最早优先' },
+                    { value: 'title', label: '按标题' },
+                    { value: 'views', label: '按播放量' },
+                  ]}
+                  onChange={(value) => setSort(value as SortMode)}
+                  ariaLabel="排序方式"
+                />
+              </div>
 
               <div className="view-toggle" role="group" aria-label="视图切换">
                 <IconButton label="网格视图" size="sm" active={view === 'grid'} onClick={() => setView('grid')}>
