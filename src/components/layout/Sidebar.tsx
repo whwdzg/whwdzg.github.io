@@ -105,10 +105,7 @@ export function Sidebar() {
             <img src={SITE.avatar} alt={SITE.avatarAlt} width={48} height={48} />
             <div className="sidebar-user__text">
               <p className="sidebar-user__name">{SITE.name}</p>
-              <p className="sidebar-user__handle">
-                <span className="status-dot" aria-hidden />
-                @{SITE.handle}
-              </p>
+              <p className="sidebar-user__handle">@{SITE.handle}</p>
             </div>
             <div className="sidebar-user__links">
               <a href={LINKS.bilibili} target="_blank" rel="noopener noreferrer" aria-label="哔哩哔哩空间" title="哔哩哔哩空间">

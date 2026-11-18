@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.9.6',
+    date: '2026-11-19',
+    items: [
+      '移除关于页、首页和侧栏中没有数据依据的“在线”状态与绿色在线点。',
+      '保留影像归档、在线 API 快照、在线链接导入等有实际含义的技术表述。',
+    ],
+  },
+  {
     version: '3.9.5',
     date: '2026-11-19',
     items: [
@@ -311,7 +319,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.9.5"
+        eyebrow="ABOUT · 3.9.6"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -342,9 +350,6 @@ export default function AboutPage() {
               <p className="about-identity__handle">@{SITE.handle}</p>
               <p className="about-identity__tagline">{SITE.tagline}</p>
             </div>
-            <span className="badge badge--accent">
-              <span className="status-dot" aria-hidden /> 在线
-            </span>
           </div>
         }
       />
@@ -357,7 +362,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.9.5 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.9.6 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
