@@ -194,6 +194,15 @@ export async function fetchGitHubIssues(
 }
 
 /** 读取某条 issue 的全部评论（自动翻页，最多 1000 条）。 */
+/** 读取留言板 issue（标题为“留言板”），用于和站内静态摘录合并。 */
+export async function fetchGuestbookIssue(force = false): Promise<GitHubResult<GitHubIssue | null>> {
+  const result = await fetchGitHubIssues('all', force);
+  return {
+    ...result,
+    data: result.data.find((issue) => issue.title.trim() === '留言板') ?? null,
+  };
+}
+
 export async function fetchGitHubComments(
   issueNumber: number,
   force = false,
