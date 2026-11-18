@@ -43,15 +43,15 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     id: 'rebuild',
-    kicker: '3.9.2 · FLUENT REBUILD',
+    kicker: '3.9.3 · FLUENT REBUILD',
     title: '重新开始，',
     accent: '以更轻盈的方式。',
     lead: 'Fluent Design Sun Valley 的秩序感，加一点液态玻璃的悬浮感。没有框架堆叠，只有更快的加载、更少的资源与更清楚的导航。',
     light: '/media/hero/light-4.webp',
     dark: '/media/hero/dark-1.webp',
-    meta: ['2026 · 3.9.2', 'React + Vite', 'GPL-3.0'],
+    meta: ['2026 · 3.9.3', 'React + Vite', 'GPL-3.0'],
     actions: [
-      { label: '了解 3.9.2', to: '/about/', primary: true },
+      { label: '了解 3.9.3', to: '/about/', primary: true },
       { label: '查看更新轨迹', to: '/#timeline' },
     ],
   },
@@ -193,7 +193,7 @@ export function HeroCarousel() {
       { value: '251', label: '影像归档' },
       { value: '06', label: 'Modrinth 项目' },
       { value: '03', label: '直播回放' },
-      { value: '3.9.2', label: '当前版本' },
+      { value: '3.9.3', label: '当前版本' },
     ],
     [],
   );
