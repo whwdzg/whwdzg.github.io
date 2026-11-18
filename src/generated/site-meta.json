@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.6.0",
-  "description": "沧海水鱼内容站点 3.6 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.7.0",
+  "description": "沧海水鱼内容站点 3.7 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "212a8c301326e436aabe28c09a685db07e4d219d",
-  "commitShort": "212a8c3",
-  "commitTime": "2026-11-19T00:17:41+08:00",
-  "buildTime": "2026-11-18T16:29:17.872Z",
+  "commit": "a1bd65f7f67c05d3d08d78da219394a73331ef94",
+  "commitShort": "a1bd65f",
+  "commitTime": "2026-11-19T00:30:15+08:00",
+  "buildTime": "2026-11-18T16:47:52.718Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "a1bd65f7f67c05d3d08d78da219394a73331ef94",
+      "short": "a1bd65f7",
+      "time": "2026-11-19T00:30:15+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add 2.0 user pages and guestbook avatar links",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/a1bd65f7f67c05d3d08d78da219394a73331ef94"
+    },
     {
       "hash": "212a8c301326e436aabe28c09a685db07e4d219d",
       "short": "212a8c30",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "fix: remove header navigation tabs",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/cfb8d90e1827ad78a09d60e7b3665bac591b66a4"
-    },
-    {
-      "hash": "cf0ba46fed1a2e389d502181ae673b725a6bf3d4",
-      "short": "cf0ba46f",
-      "time": "2026-11-17T23:29:53+08:00",
-      "author": "Alex Yang",
-      "subject": "fix: keep sub-sites visible in sidebar",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/cf0ba46fed1a2e389d502181ae673b725a6bf3d4"
     }
   ]
 }

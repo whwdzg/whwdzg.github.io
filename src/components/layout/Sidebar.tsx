@@ -28,11 +28,13 @@ import { useInstallPrompt } from '../../hooks/useInstallPrompt';
 import { useToast } from '../../hooks/useToast';
 import { ARCHIVE_LINKS, LINKS, PRIMARY_NAV, PROJECTS, SITE, SUBSITES } from '../../data/site';
 import { TOOLS } from '../../data/tools';
+import { COLUMNS } from '../../data/columns';
 import { siteMeta } from '../../lib/meta';
 import { FluentIcon } from '../common/FluentIcon';
 
 const GROUPS = [
   { id: 'projects', label: '项目', icon: 'rocket' },
+  { id: 'columns', label: '专栏', icon: 'document' },
   { id: 'subsites', label: '子站', icon: 'globe' },
   { id: 'tools', label: '工具', icon: 'code' },
   { id: 'archive', label: '归档', icon: 'history' },
@@ -46,7 +48,7 @@ export function Sidebar() {
   const { toast } = useToast();
   const { canInstall, installed, promptInstall } = useInstallPrompt();
   const ref = useRef<HTMLElement>(null);
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['projects', 'subsites', 'tools']));
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['projects', 'columns', 'subsites', 'tools']));
 
   const close = () => setSidebarOpen(false);
   useFocusTrap(ref, sidebarOpen, close);
@@ -166,6 +168,27 @@ export function Sidebar() {
                     data-open={open || undefined}
                   >
                     <ul>
+                      {group.id === 'columns' && (
+                        <>
+                          <li>
+                            <Link to="/columns/" className="sidebar-group__link" onNavigate={close}>
+                              <FluentIcon name="document" size={18} aria-hidden />
+                              <span>全部专栏</span>
+                              <FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden />
+                            </Link>
+                          </li>
+                          {COLUMNS.map((column) => (
+                            <li key={column.slug}>
+                              <Link to={`/columns/${column.slug}/`} className="sidebar-group__link" onNavigate={close}>
+                                <span className="sidebar-group__number">{column.number}</span>
+                                <span>{column.title}</span>
+                                <FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden />
+                              </Link>
+                            </li>
+                          ))}
+                        </>
+                      )}
+
                       {group.id === 'projects' &&
                         PROJECTS.map((project) => (
                           <li key={project.id}>

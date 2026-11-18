@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.7.0',
+    date: '2026-11-19',
+    items: [
+      '新增侧边栏「专栏」板块、专栏索引与文章详情页。',
+      '把沧海水鱼 B 站置顶动态「打算给自己三年时间搞一个项目，随时告吹的那种（」整理为第一篇专栏。',
+      '专栏支持搜索、侧栏直达、Service Worker 缓存与独立 HTML 入口。',
+    ],
+  },
+  {
     version: '3.6.0',
     date: '2026-11-19',
     items: [
@@ -245,7 +254,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.6"
+        eyebrow="ABOUT · 3.7"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -291,7 +300,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.6 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.7 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
@@ -511,7 +520,7 @@ export default function AboutPage() {
               title="src/"
               code={`src/
 ├─ components/     # 布局、通用组件、首页 / 视频 / 设置
-├─ pages/          # 28 个路由级页面（懒加载）
+├─ pages/          # 30 个路由级页面（懒加载）
 ├─ hooks/          # 设置、搜索、页眉自动收起、计数等
 ├─ lib/            # 路由、设置、格式化、搜索、PWA
 ├─ data/           # 站点内容、留言、视频、GitHub / 同步状态
