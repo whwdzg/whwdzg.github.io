@@ -1,4 +1,4 @@
-/** 科学计算器 / CASIO fx-991CN CW II-style calculator. */
+/** 科学计算器 / Site-native scientific calculator. */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDownloadRegular,
@@ -130,16 +130,20 @@ const FUNCTION_ROWS: KeyDef[][] = [
     { label: '√', value: 'sqrt(', kind: 'fn', shift: 'cbrt(', shiftLabel: '∛' },
     { label: 'x²', value: '^2', kind: 'fn', shift: '^3', shiftLabel: 'x³' },
     { label: 'x⁻¹', value: '^-1', kind: 'fn', shift: 'abs(', shiftLabel: '|x|' },
-    { label: 'log', value: 'log(', kind: 'fn', shift: '10^(', shiftLabel: '10ˣ' },
-    { label: 'ln', value: 'ln(', kind: 'fn', shift: 'e^(', shiftLabel: 'eˣ' },
   ],
   [
+    { label: 'log', value: 'log(', kind: 'fn', shift: '10^(', shiftLabel: '10ˣ' },
+    { label: 'ln', value: 'ln(', kind: 'fn', shift: 'e^(', shiftLabel: 'eˣ' },
     { label: '(-)', value: 'neg', kind: 'fn' },
+    { label: '(', value: '(', kind: 'op', shift: '%', shiftLabel: '%' },
+    { label: ')', value: ')', kind: 'op' },
+  ],
+  [
     { label: 'sin', value: 'sin(', kind: 'fn', shift: 'asin(', shiftLabel: 'sin⁻¹' },
     { label: 'cos', value: 'cos(', kind: 'fn', shift: 'acos(', shiftLabel: 'cos⁻¹' },
     { label: 'tan', value: 'tan(', kind: 'fn', shift: 'atan(', shiftLabel: 'tan⁻¹' },
-    { label: '(', value: '(', kind: 'op', shift: '%', shiftLabel: '%' },
-    { label: ')', value: ')', kind: 'op' },
+    { label: 'π', value: 'pi', kind: 'fn' },
+    { label: 'e', value: 'e', kind: 'fn' },
   ],
 ];
 
@@ -386,7 +390,7 @@ export default function CalculatorPage() {
   return (
     <ToolShell
       title="科学计算器"
-      lead="fx-991CN CW II 风格：按 HOME 切换计算、统计、函数表格、方程、不等式、复数、进制、矩阵、向量与比例模式；保留函数图像和 LaTeX 导入导出。"
+      lead="按模式切换计算、统计、函数表格、方程、不等式、复数、进制、矩阵、向量与比例；保留函数图像和 LaTeX 导入导出。"
       meta={[
         { icon: 'sparkle', label: '10 个模式' },
         { icon: 'image', label: '函数图像' },
@@ -398,34 +402,30 @@ export default function CalculatorPage() {
         <div className="calc-body">
           <div className="calc-chrome">
             <div className="calc-brand">
-              <span>CASIO</span>
-              <strong>fx-991CN CW II</strong>
-              <em>中文版 · CLASSWIZ</em>
+              <span className="calc-brand__mark" aria-hidden>∑</span>
+              <div>
+                <strong>科学计算器</strong>
+                <em>SCIENTIFIC · WEB</em>
+              </div>
             </div>
-            <span className="calc-chrome__screen-label">NATURAL TEXTBOOK</span>
+            <span className="calc-chrome__screen-label">10 MODES · 2.0</span>
           </div>
 
           <div className="calc-top">
-            {topButton('ON', 'on', 'is-on')}
-            {topButton('⌂ HOME', 'home', 'is-home')}
+            {topButton('模式', 'home', 'is-home')}
+            {topButton('变量', 'variable', 'is-wide')}
+            {topButton('目录', 'catalog', 'is-wide')}
+            {topButton('工具', 'tools', 'is-wide')}
             <span className="calc-top__spacer" />
-            {topButton('▲', 'up')}
-            {topButton('▼', 'down')}
+            {topButton('↶', 'undo', 'is-icon')}
+            {topButton('SHIFT', 'shift', `is-shift ${shift ? 'is-active' : ''}`)}
           </div>
           <div className="calc-toprow">
-            {topButton('⚙', 'settings', 'is-icon')}
-            {topButton('↶', 'undo', 'is-icon')}
             {topButton('‹', 'left', 'is-icon')}
             {topButton('OK', 'equals', 'is-ok')}
             {topButton('›', 'right', 'is-icon')}
-            {topButton('▤ 目录', 'catalog', 'is-wide')}
-            {topButton('⋯ 工具', 'tools', 'is-wide')}
-          </div>
-          <div className="calc-toprow calc-toprow--labels">
-            {topButton('SHIFT', 'shift', `is-shift ${shift ? 'is-active' : ''}`)}
-            {topButton('变量', 'variable')}
-            {topButton('函数', 'catalog')}
-            {topButton('V', 'variable')}
+            {topButton('AC', 'clear', 'is-wide')}
+            {topButton('DEL', 'del', 'is-wide')}
           </div>
 
           <div className="calc-screen" data-mode={mode}>
@@ -554,7 +554,7 @@ export default function CalculatorPage() {
         <p className="eyebrow">KEYS</p>
         <h2>按键说明</h2>
         <ul className="project-list">
-          <li><strong>HOME / 菜单</strong>：打开 fx-991CN CW II 模式菜单，切换计算、统计、表格、方程、不等式、复数、进制、矩阵、向量与比例。</li>
+          <li><strong>模式 / 菜单</strong>：切换计算、统计、表格、方程、不等式、复数、进制、矩阵、向量与比例。</li>
           <li><strong>SHIFT</strong>：切换第二功能，例如 sin⁻¹、∛、x³、10ˣ、eˣ、π、Ans。</li>
           <li><strong>变量 / 函数 / 目录</strong>：打开变量列表、函数目录；<strong>V</strong> 同样打开变量列表。</li>
           <li><strong>方向键 / OK</strong>：移动输入光标；OK 与 EXE 执行计算，左右键编辑表达式。</li>
@@ -563,8 +563,7 @@ export default function CalculatorPage() {
           <li>键盘支持数字、运算符、括号、Enter 计算、Backspace 删除、← → 移动光标、Esc 清空。</li>
         </ul>
         <p className="project-note">
-          按键与模式参考 <a href="https://support.casio.com/global/cn/calc/manual/fx-991CNCWII_999CNCWII_cn/index.html" target="_blank" rel="noopener noreferrer">CASIO fx-991CN CW II 官方操作指南</a>
-          与 <a href="https://www.casio.com.cn/scientific-calculators/product.FX-991CN-CW-PLUS-GN/" target="_blank" rel="noopener noreferrer">产品页</a>。
+          按键布局按常用科学计算器习惯整理：代数在第一行，对数与括号在第二行，三角与常量在第三行；输入内容只在本地计算。
         </p>
       </section>
 
@@ -587,7 +586,7 @@ export default function CalculatorPage() {
                 ))}
               </div>
             </div>
-            <p className="calc-setting-note">fx-991CN CW II 还支持输入/输出、显示格式、分数结果、复数结果等设置；这里保留与本站计算最相关的角度单位。</p>
+            <p className="calc-setting-note">这里保留与本站计算最相关的角度单位；显示格式与结果格式会随表达式自动处理。</p>
           </div>
         </div>
       )}

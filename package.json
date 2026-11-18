@@ -1,9 +1,9 @@
 {
   "name": "whwdzg-site",
   "private": true,
-  "version": "3.9.4",
+  "version": "3.9.5",
   "type": "module",
-  "description": "沧海水鱼内容站点 3.9.4 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "description": "沧海水鱼内容站点 3.9.5 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "homepage": "https://whwdzg.github.io",
   "repository": {
     "type": "git",

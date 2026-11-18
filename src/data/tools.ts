@@ -54,8 +54,8 @@ export const TOOLS: ToolItem[] = [
   {
     id: 'calculator',
     title: '科学计算器',
-    subtitle: 'ClassWiz',
-    description: '按 CASIO fx-991CN CW II 复刻按键与 10 种模式，附函数图像与 LaTeX。',
+    subtitle: '科学计算',
+    description: '10 种模式、函数图像与 LaTeX，按键布局按本站习惯整理。',
     path: '/tools/calculator/',
     icon: 'sparkle',
     accent: '#f59e0b',

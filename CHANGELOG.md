@@ -1,5 +1,13 @@
 # 更新日志
 
+## 3.9.5 — 2026-11-19
+
+### 科学计算器
+
+- 移除 CASIO 品牌、型号和系列名称，改为本站自己的科学计算器。
+- 功能键改为统一五列：代数、对数 / 括号、三角 / 常量。
+- 顶部工具栏精简，AC / DEL 与光标键单独成行。
+
 ## 3.9.4 — 2026-11-19
 
 ### 掩星终端
@@ -110,7 +118,7 @@
 - 侧栏新增“子站”分组并默认展开：Asteria Player、来福 Simulation Wiki 与 GitHub 项目页。
 - 新增 Asteria Player / 来福 Simulation Wiki 项目页与 GitHub 项目索引；其他仓库只列入口。
 - 新增 2.0 工具重做：Base64、BaseX、进制转换、Unicode、科学计算器、MC 投影查看器。
-- 计算器采用 ClassWiz 风格操作逻辑，支持函数图像、LaTeX 导入导出、历史与记忆。
+- 计算器采用科学计算器操作逻辑，支持函数图像、LaTeX 导入导出、历史与记忆。
 - MC 投影查看器读取 litematic / schematic / schem，支持不完整方块模型、朝向、桌面 / 触摸控制；Minecraft 26.3 资源已复制到站点。
 - B 站归档同步至 251 条，补齐新视频封面、时长与播放量，并纳入 3 条直播回放。
 - 更新 Better Enchantments / Better Mob Drop / Better Crafting Recipes 的 MC 版本分支表。

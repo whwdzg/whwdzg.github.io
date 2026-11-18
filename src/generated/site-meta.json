@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.9.4",
-  "description": "沧海水鱼内容站点 3.9.4 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.9.5",
+  "description": "沧海水鱼内容站点 3.9.5 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "c9c363fb46b3e9f88ad3ef0bd08863f852f84deb",
-  "commitShort": "c9c363f",
-  "commitTime": "2026-11-19T01:31:48+08:00",
-  "buildTime": "2026-11-18T17:37:27.088Z",
+  "commit": "055332463aa0fec337fbb8e72ff40f932ac6e4c6",
+  "commitShort": "0553324",
+  "commitTime": "2026-11-19T01:38:23+08:00",
+  "buildTime": "2026-11-18T17:45:02.354Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "055332463aa0fec337fbb8e72ff40f932ac6e4c6",
+      "short": "05533246",
+      "time": "2026-11-19T01:38:23+08:00",
+      "author": "Alex Yang",
+      "subject": "style: remove Windows chrome from occultation terminal",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/055332463aa0fec337fbb8e72ff40f932ac6e4c6"
+    },
     {
       "hash": "c9c363fb46b3e9f88ad3ef0bd08863f852f84deb",
       "short": "c9c363fb",
@@ -240,16 +248,8 @@
       "short": "ad1863e4",
       "time": "2026-11-18T00:37:23+08:00",
       "author": "Alex Yang",
-      "subject": "feat: rebuild calculator after fx-991CN CW II",
+      "subject": "feat: rebuild calculator after 科学计算器",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ad1863e44e6494ebcd0104253d396c1f5d3ff3a3"
-    },
-    {
-      "hash": "2b74b0b65f3902011faa3161d003c24798554f07",
-      "short": "2b74b0b6",
-      "time": "2026-11-18T00:23:04+08:00",
-      "author": "Alex Yang",
-      "subject": "fix: align projection mobile direction pad",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/2b74b0b65f3902011faa3161d003c24798554f07"
     }
   ]
 }

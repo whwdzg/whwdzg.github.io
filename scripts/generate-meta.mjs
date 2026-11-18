@@ -17,6 +17,15 @@ import path from 'node:path';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const OUT_DIR = path.join(ROOT, 'src', 'generated');
 const OUT_FILE = path.join(OUT_DIR, 'site-meta.json');
+function sanitizeSubject(value) {
+  return String(value ?? '')
+    .replace(/CASIO/gi, '')
+    .replace(/fx-991CN(?:\s+CW\s+II)?/gi, '科学计算器')
+    .replace(/ClassWiz/gi, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
 const REPO_URL = 'https://github.com/whwdzg/whwdzg.github.io';
 
 const pkg = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
@@ -48,7 +57,7 @@ function parseCommits(raw) {
         short,
         time,
         author,
-        subject: subject || '(无提交说明)',
+        subject: sanitizeSubject(subject) || '(无提交说明)',
         url: hash ? `${REPO_URL}/commit/${hash}` : REPO_URL,
       };
     })
