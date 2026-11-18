@@ -130,74 +130,87 @@ export default function ProjectionPage() {
     const THREE = threeRef.current;
     if (!THREE) return null;
     const key = path ?? `color:${id}`;
-    if (materialCache.current.has(key)) return materialCache.current.get(key);
-    if (!path) {
-      const material = new THREE.MeshLambertMaterial({ color: colorFor(id) });
-      materialCache.current.set(key, material);
-      return material;
-    }
-    let texture = textureCache.current.get(path);
-    if (!texture) {
-      texture = await new THREE.TextureLoader().loadAsync(path).catch(() => null);
+    const cached = materialCache.current.get(key);
+    if (cached) return cached;
+
+    // 缓存 Promise，避免 8 个 worker 同时请求同一张贴图/材质。
+    const promise = (async () => {
+      if (!path) return new THREE.MeshLambertMaterial({ color: colorFor(id) });
+      let texturePromise = textureCache.current.get(path);
+      if (!texturePromise) {
+        texturePromise = new THREE.TextureLoader().loadAsync(path).catch(() => null);
+        textureCache.current.set(path, texturePromise);
+      }
+      const texture = await texturePromise;
       if (texture) {
         texture.magFilter = THREE.NearestFilter;
         texture.minFilter = THREE.NearestMipmapNearestFilter;
         texture.colorSpace = THREE.SRGBColorSpace;
       }
-      textureCache.current.set(path, texture);
-    }
-    const material = new THREE.MeshLambertMaterial({
-      map: texture ?? null,
-      color: texture ? 0xffffff : colorFor(id),
-      transparent: false,
-      alphaTest: 0.15,
-      side: THREE.DoubleSide,
-    });
-    materialCache.current.set(key, material);
-    return material;
+      return new THREE.MeshLambertMaterial({
+        map: texture ?? null,
+        color: texture ? 0xffffff : colorFor(id),
+        transparent: false,
+        alphaTest: 0.15,
+        side: THREE.DoubleSide,
+      });
+    })();
+    materialCache.current.set(key, promise);
+    return promise;
   }, []);
 
-  const buildBlockTemplate = useCallback(async (block: BlockState) => {
-    const THREE = threeRef.current;
-    if (!THREE) return null;
+  const buildInstancedState = useCallback(async (THREE: any, block: BlockState, count: number) => {
     const parts = await blockModel(block);
-    const group = new THREE.Group();
+    const meshes: any[] = [];
+    const addInstances = (material: any, local: any) => {
+      const mesh = new THREE.InstancedMesh(boxGeometry.current, material, count);
+      const world = new THREE.Matrix4();
+      for (let index = 0; index < count; index += 1) {
+        // 位置在下面的分组数据里由 buildScene 写入；这里先占位，稍后统一填充。
+        world.identity();
+        mesh.setMatrixAt(index, world);
+      }
+      mesh.instanceMatrix.needsUpdate = true;
+      mesh.frustumCulled = false;
+      mesh.name = block.id;
+      meshes.push({ mesh, local });
+    };
+
     if (!parts.length) {
       const material = await textureMaterial(null, block.id);
-      const mesh = new THREE.Mesh(boxGeometry.current, material);
-      mesh.position.set(0.5, 0.5, 0.5);
-      group.add(mesh);
-      return group;
+      addInstances(material, new THREE.Matrix4().makeTranslation(0.5, 0.5, 0.5));
+      return meshes;
     }
+
     for (const part of parts) {
-      const partGroup = new THREE.Group();
-      partGroup.rotation.x = (part.rotationX * Math.PI) / 180;
-      partGroup.rotation.y = (part.rotationY * Math.PI) / 180;
+      const rotationX = (part.rotationX * Math.PI) / 180;
+      const rotationY = (part.rotationY * Math.PI) / 180;
       for (const element of part.elements) {
         const [fx, fy, fz] = element.from;
         const [tx, ty, tz] = element.to;
-        const sx = Math.abs(tx - fx) / 16;
-        const sy = Math.abs(ty - fy) / 16;
-        const sz = Math.abs(tz - fz) / 16;
+        const sx = Math.max(Math.abs(tx - fx) / 16, 0.003);
+        const sy = Math.max(Math.abs(ty - fy) / 16, 0.003);
+        const sz = Math.max(Math.abs(tz - fz) / 16, 0.003);
         const material = await textureMaterial(element.texture, block.id);
-        const mesh = new THREE.Mesh(boxGeometry.current, material);
-        mesh.scale.set(Math.max(sx, 0.003), Math.max(sy, 0.003), Math.max(sz, 0.003));
-        mesh.position.set((fx + tx) / 32, (fy + ty) / 32, (fz + tz) / 32);
+        const local = new THREE.Matrix4()
+          .makeRotationX(rotationX)
+          .multiply(new THREE.Matrix4().makeRotationY(rotationY))
+          .multiply(new THREE.Matrix4().makeTranslation((fx + tx) / 32, (fy + ty) / 32, (fz + tz) / 32));
         if (element.rotation) {
-          const pivot = new THREE.Group();
-          pivot.position.copy(mesh.position);
-          mesh.position.set(0, 0, 0);
-          pivot.add(mesh);
-          const axis = element.rotation.axis;
-          pivot.rotation[axis] = (element.rotation.angle * Math.PI) / 180;
-          partGroup.add(pivot);
-        } else {
-          partGroup.add(mesh);
+          local.multiply(new THREE.Matrix4().makeRotationAxis(
+            new THREE.Vector3(
+              element.rotation.axis === 'x' ? 1 : 0,
+              element.rotation.axis === 'y' ? 1 : 0,
+              element.rotation.axis === 'z' ? 1 : 0,
+            ),
+            (element.rotation.angle * Math.PI) / 180,
+          ));
         }
+        local.multiply(new THREE.Matrix4().makeScale(sx, sy, sz));
+        addInstances(material, local);
       }
-      group.add(partGroup);
     }
-    return group;
+    return meshes;
   }, [textureMaterial]);
 
   const buildScene = useCallback(async (projection: Projection) => {
@@ -205,26 +218,53 @@ export default function ProjectionPage() {
     const scene = sceneRef.current;
     if (!THREE || !scene) throw new Error('3D 引擎尚未就绪，请稍后重试');
     const old = scene.getObjectByName('projection-root');
-    if (old) scene.remove(old);
+    if (old) {
+      old.traverse((object: any) => { if (object.isInstancedMesh) object.dispose(); });
+      scene.remove(old);
+    }
     const root = new THREE.Group();
     root.name = 'projection-root';
     const limit = 20000;
     const blocks = projection.blocks.slice(0, limit);
-    const templates = new Map<string, any>();
-    for (let index = 0; index < blocks.length; index += 1) {
-      const block = blocks[index];
+
+    // 先按方块状态分组，再用 InstancedMesh 按状态批量绘制。
+    // 这样 2 万块通常只会产生几十到几百个 draw call，而不是每个方块一个 Mesh。
+    const groups = new Map<string, { block: BlockState; positions: Array<{ x: number; y: number; z: number }> }>();
+    for (const block of blocks) {
       const key = blockStateKey(block);
-      if (!templates.has(key)) templates.set(key, await buildBlockTemplate(block));
-      const template = await templates.get(key);
-      if (!template) continue;
-      const object = template.clone(true);
-      object.position.set(block.x, block.y, block.z);
-      root.add(object);
-      if (index % 200 === 0) {
-        setStatus(`构建模型 ${index} / ${blocks.length}`);
+      const group = groups.get(key);
+      if (group) group.positions.push({ x: block.x, y: block.y, z: block.z });
+      else groups.set(key, { block, positions: [{ x: block.x, y: block.y, z: block.z }] });
+    }
+
+    const queue = [...groups.values()];
+    let completed = 0;
+    const workers = Array.from({ length: Math.min(8, Math.max(2, queue.length)) }, async () => {
+      while (queue.length) {
+        const item = queue.shift();
+        if (!item) return;
+        try {
+          const meshes = await buildInstancedState(THREE, item.block, item.positions.length);
+          for (const entry of meshes) {
+            const world = new THREE.Matrix4();
+            for (let index = 0; index < item.positions.length; index += 1) {
+              const position = item.positions[index];
+              world.makeTranslation(position.x, position.y, position.z).multiply(entry.local);
+              entry.mesh.setMatrixAt(index, world);
+            }
+            entry.mesh.instanceMatrix.needsUpdate = true;
+            root.add(entry.mesh);
+          }
+        } catch (error) {
+          console.warn('无法构建方块模型', item.block.id, error);
+        }
+        completed += item.positions.length;
+        setStatus(`构建模型 ${Math.min(completed, blocks.length)} / ${blocks.length}`);
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
-    }
+    });
+    await Promise.all(workers);
+
     scene.add(root);
     const size = projection.size;
     targetRef.current.set(size.x / 2, size.y / 3, size.z / 2);
@@ -239,7 +279,7 @@ export default function ProjectionPage() {
       legend: projection.counts.slice(0, 16),
     });
     setStatus(`已渲染 ${blocks.length} 个方块${projection.blocks.length > limit ? `（超过上限，仅显示前 ${limit} 个）` : ''}`);
-  }, [buildBlockTemplate, updateCamera]);
+  }, [buildInstancedState, updateCamera]);
 
   const loadFile = async (file: File) => {
     setError('');

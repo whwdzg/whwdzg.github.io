@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "8815b64b03db2be651895019a1bfec1ea1ef66fc",
-  "commitShort": "8815b64",
-  "commitTime": "2026-11-18T22:53:14+08:00",
-  "buildTime": "2026-11-18T14:58:34.559Z",
+  "commit": "0478380cda62d768d6f43a8e2c76faae0b0dfd48",
+  "commitShort": "0478380",
+  "commitTime": "2026-11-18T22:59:34+08:00",
+  "buildTime": "2026-11-18T15:02:46.253Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "0478380cda62d768d6f43a8e2c76faae0b0dfd48",
+      "short": "0478380c",
+      "time": "2026-11-18T22:59:34+08:00",
+      "author": "Alex Yang",
+      "subject": "style: use site-native surface for calculator",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/0478380cda62d768d6f43a8e2c76faae0b0dfd48"
+    },
     {
       "hash": "8815b64b03db2be651895019a1bfec1ea1ef66fc",
       "short": "8815b64b",
