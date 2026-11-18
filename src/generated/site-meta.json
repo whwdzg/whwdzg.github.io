@@ -5,12 +5,20 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "50ff49c9894056c5a2699a58ec8ac902ac4f66b3",
-  "commitShort": "50ff49c",
-  "commitTime": "2026-11-18T01:22:55+08:00",
-  "buildTime": "2026-11-17T17:33:50.554Z",
+  "commit": "9894d5b94f8093709decdee3a24f9c931f69f9b3",
+  "commitShort": "9894d5b",
+  "commitTime": "2026-11-18T01:34:28+08:00",
+  "buildTime": "2026-11-18T14:30:10.372Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "9894d5b94f8093709decdee3a24f9c931f69f9b3",
+      "short": "9894d5b9",
+      "time": "2026-11-18T01:34:28+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: hourly external data sync and GitHub snapshots",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/9894d5b94f8093709decdee3a24f9c931f69f9b3"
+    },
     {
       "hash": "50ff49c9894056c5a2699a58ec8ac902ac4f66b3",
       "short": "50ff49c9",

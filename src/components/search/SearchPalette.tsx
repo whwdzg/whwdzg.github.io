@@ -80,12 +80,12 @@ const STATIC_ITEMS: SearchableItem[] = [
   {
     id: 'project:occultation',
     title: '掩星',
-    subtitle: 'OCCULTATION · 尘埃尚未落定，时间仍在谱写',
-    keywords: '掩星 occultation 星星 动画 乱码 实验',
+    subtitle: '掩星 · 一个仍在设计中的世界观',
+    keywords: '掩星 occultation 世界观 终端 密钥',
     group: '项目',
     href: '/projects/occultation/',
     icon: 'sparkle',
-    meta: '实验页',
+    meta: '世界观',
   },
   ...SUBSITES.map((site) => ({
     id: `subsite:${site.id}`,

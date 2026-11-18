@@ -46,7 +46,7 @@ export function Sidebar() {
   const { toast } = useToast();
   const { canInstall, installed, promptInstall } = useInstallPrompt();
   const ref = useRef<HTMLElement>(null);
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['projects', 'subsites']));
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['projects', 'subsites', 'tools']));
 
   const close = () => setSidebarOpen(false);
   useFocusTrap(ref, sidebarOpen, close);

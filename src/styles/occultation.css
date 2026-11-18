@@ -1,4 +1,4 @@
-/* 掩星 / Occultation — immersive star-rise experiment. */
+/* 掩星 / Occultation — immersive star-rise worldview. */
 
 .occultation-page {
   position: relative;
@@ -306,4 +306,114 @@
 @media (prefers-reduced-motion: reduce) {
   .occultation-grid,
   .occultation-scan::after,
+}
+
+
+/* ---------------- 掩星档案终端 ---------------- */
+.occultation-terminal {
+  width: min(1040px, calc(100% - 32px));
+  margin: 16px auto 28px;
+  padding: clamp(14px, 2.4vw, 24px);
+  overflow: hidden;
+  border: 1px solid #273b50;
+  border-radius: var(--r-xl);
+  background:
+    linear-gradient(180deg, rgba(17, 29, 42, 0.94), rgba(4, 9, 15, 0.98)),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(120, 190, 255, 0.025) 3px 4px);
+  box-shadow: 0 24px 60px rgba(3, 10, 18, 0.24), inset 0 1px 0 rgba(140, 210, 255, 0.1);
+  color: #d9edff;
+}
+
+.occultation-terminal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(120, 180, 235, 0.18);
+}
+
+.occultation-terminal__head .eyebrow { color: rgba(139, 196, 255, 0.58); }
+.occultation-terminal__head h2 { margin-top: 2px; color: #e7f5ff; font-size: 18px; letter-spacing: 0.02em; }
+
+.occultation-terminal__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #8fd7b0;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.occultation-terminal__log {
+  display: grid;
+  gap: 6px;
+  max-height: 260px;
+  min-height: 122px;
+  margin: 12px 0;
+  overflow-y: auto;
+  padding: 2px 4px 2px 0;
+  scrollbar-width: thin;
+}
+
+.occultation-terminal__line {
+  display: flex;
+  gap: 7px;
+  margin: 0;
+  color: #a8c5df;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.occultation-terminal__line.is-system { color: #6386a4; }
+.occultation-terminal__line.is-input { color: #e8f5ff; }
+.occultation-terminal__line.is-output { color: #a7e3c2; }
+.occultation-terminal__prompt { color: #68b8f4; font-weight: 700; }
+
+.occultation-terminal__form {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 7px 6px 11px;
+  border: 1px solid rgba(113, 174, 231, 0.28);
+  border-radius: var(--r-sm);
+  background: rgba(3, 10, 17, 0.82);
+}
+
+.occultation-terminal__form input {
+  min-width: 0;
+  flex: 1;
+  padding: 5px 2px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #eaf6ff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  caret-color: #72c4ff;
+}
+
+.occultation-terminal__form input::placeholder { color: #526e86; }
+
+.occultation-terminal__form button {
+  padding: 5px 11px;
+  border: 1px solid rgba(116, 188, 244, 0.4);
+  border-radius: 5px;
+  background: rgba(64, 139, 196, 0.16);
+  color: #bfe5ff;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.occultation-terminal__form button:hover { background: rgba(64, 139, 196, 0.3); }
+.occultation-terminal__hint { margin-top: 7px; color: #547086; font-family: var(--font-mono); font-size: 7.5px; }
+
+@media (max-width: 760px) {
+  .occultation-terminal { width: calc(100% - 16px); margin-top: 10px; border-radius: var(--r-lg); }
+  .occultation-terminal__log { max-height: 300px; }
+  .occultation-terminal__line { font-size: 9px; }
 }

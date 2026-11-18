@@ -1,4 +1,4 @@
-/** 掩星 / Occultation — an experimental star-rise page. */
+/** 掩星 / Occultation — a worldview page with a star-rise scene. */
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeftRegular } from '@fluentui/react-icons';
 import { Link } from '../../lib/router';
@@ -101,6 +101,98 @@ function Hud() {
         <span>DUST / UNRESOLVED</span>
       </div>
     </>
+  );
+}
+
+type TerminalLine = { type: 'input' | 'output' | 'system'; text: string };
+
+const ZHOU_YI = '周熠。文明官方档案称“周熠体”，民间叫“第七日月亮”“小月亮”“闪星”“睁眼星”。\n\n- **外观**：约 **2 km 直径**圆形人造星体，外壳覆盖类月壤材料，远看像一颗灰色小月亮。表面有微弱反光，近看能看到极细的接缝纹路，但远距离观测与自然天体无异。';
+const HIDDEN_HINT = '这个7天循环下的世界，也许你还不知道其背后的故事，去找线索吧，或等待世界揭晓答案。';
+
+const KEY_RESPONSES: Record<string, string> = {
+  '沧海水鱼': 'O1',
+  '沐风火尘': 'O2',
+  '渊行': 'A1',
+  '灼风': 'A2',
+  '周熠': ZHOU_YI,
+};
+
+function OccultationTerminal() {
+  const [value, setValue] = useState('');
+  const [wrongCount, setWrongCount] = useState(0);
+  const [hintShown, setHintShown] = useState(false);
+  const [lines, setLines] = useState<TerminalLine[]>([
+    { type: 'system', text: 'OCCULTATION ARCHIVE TERMINAL · v0.1' },
+    { type: 'system', text: '输入密钥以查询掩星档案。' },
+  ]);
+  const logRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const log = logRef.current;
+    if (log) log.scrollTop = log.scrollHeight;
+  }, [lines]);
+
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const input = value.trim();
+    if (!input) return;
+    let response = '密钥不正确';
+    let wrong = true;
+    if (input.toLowerCase() === 'faiture') {
+      response = '密钥已过期，数据已重写，请重试';
+    } else if (KEY_RESPONSES[input]) {
+      response = KEY_RESPONSES[input];
+      wrong = false;
+    }
+    const additions: TerminalLine[] = [
+      { type: 'input', text: input },
+      { type: 'output', text: response },
+    ];
+    if (wrong) {
+      const nextWrong = wrongCount + 1;
+      setWrongCount(nextWrong);
+      if (nextWrong >= 3 && !hintShown) {
+        additions.push({ type: 'system', text: HIDDEN_HINT });
+        setHintShown(true);
+      }
+    } else {
+      setWrongCount(0);
+    }
+    setLines((current) => [...current, ...additions]);
+    setValue('');
+  };
+
+  return (
+    <section className="occultation-terminal" aria-labelledby="occultation-terminal-title">
+      <div className="occultation-terminal__head">
+        <div>
+          <p className="eyebrow">ARCHIVE TERMINAL</p>
+          <h2 id="occultation-terminal-title">掩星档案终端</h2>
+        </div>
+        <span className="occultation-terminal__status"><span className="status-dot" aria-hidden /> LINKED</span>
+      </div>
+      <div className="occultation-terminal__log" ref={logRef} aria-live="polite">
+        {lines.map((line, index) => (
+          <p key={`${line.type}-${index}`} className={`occultation-terminal__line is-${line.type}`}>
+            {line.type === 'input' ? <span className="occultation-terminal__prompt">&gt;</span> : null}
+            <span>{line.text.split(/(\*\*[^*]+\*\*)/g).map((part, partIndex) => part.startsWith('**') && part.endsWith('**') ? <strong key={partIndex}>{part.slice(2, -2)}</strong> : <span key={partIndex}>{part}</span>)}</span>
+          </p>
+        ))}
+      </div>
+      <form className="occultation-terminal__form" onSubmit={submit}>
+        <span className="occultation-terminal__prompt" aria-hidden>&gt;</span>
+        <input
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+          placeholder="输入密钥 / KEY"
+          aria-label="输入掩星档案密钥"
+          autoComplete="off"
+          spellCheck={false}
+        />
+        <button type="submit">执行</button>
+      </form>
+      <p className="occultation-terminal__hint">本地终端 · 输入内容不会离开当前页面</p>
+    </section>
   );
 }
 
@@ -238,7 +330,8 @@ export default function OccultationPage() {
   }, []);
 
   return (
-    <div className="occultation-page" aria-labelledby="occultation-title">
+    <>
+      <div className="occultation-page" aria-labelledby="occultation-title">
       <canvas ref={canvasRef} className="occultation-canvas" aria-hidden />
       <div className="occultation-grid" aria-hidden />
       <div className="occultation-scan" aria-hidden />
@@ -265,6 +358,9 @@ export default function OccultationPage() {
         <span>SCROLL / NONE</span>
         <span>STAR RISE / 16.0S</span>
       </div>
-    </div>
+      </div>
+
+      <OccultationTerminal />
+    </>
   );
 }

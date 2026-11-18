@@ -528,11 +528,11 @@
 
 /* ---------------- Minecraft item sprites ---------------- */
 .mc-item-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   flex: 0 0 auto;
   border-radius: 3px;
+  line-height: 0;
 }
 
 .mc-item-link:hover {
@@ -542,14 +542,16 @@
 
 .mc-item-icon {
   display: block;
+  margin: auto;
   image-rendering: pixelated;
   object-fit: contain;
 }
 
-.mc-slot {
+ .mc-slot {
   position: relative;
   display: inline-grid;
   place-items: center;
+  line-height: 0;
   flex: 0 0 auto;
   width: 40px;
   height: 40px;
@@ -842,7 +844,7 @@
   min-width: 0;
 }
 
-.recipe-card__result strong {
+.recipe-card__result > div > strong {
   display: block;
   overflow: hidden;
   color: var(--text);
@@ -852,7 +854,7 @@
   white-space: nowrap;
 }
 
-.recipe-card__result span {
+.recipe-card__result > div > span {
   display: block;
   overflow: hidden;
   color: var(--text-3);

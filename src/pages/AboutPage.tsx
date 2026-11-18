@@ -80,7 +80,7 @@ const CHANGELOG = [
     version: '3.3.0',
     date: '2026-11-17',
     items: [
-      '新增 Asteria Player / 来福 Simulation Wiki 子站、GitHub 项目页与「掩星」实验页。',
+      '新增 Asteria Player / 来福 Simulation Wiki 子站、GitHub 项目页与「掩星」世界观页。',
       '带 .html 的旧链接自动重定向到无扩展名路径。',
       '重做 Base64 / BaseX / 进制 / Unicode / 计算器 / MC 投影 6 个工具。',
       '新增 MC 数据包 / 资源包解析器。',

@@ -319,7 +319,7 @@ export const TIMELINE: TimelineEntry[] = [
     year: '2026.11',
     label: '现在',
     title: '3.3 子站与工具',
-    text: 'Asteria Player、Wiki 全量镜像、GitHub 项目页与掩星实验页；6 个工具重做，B 站归档含直播回放。',
+    text: 'Asteria Player、Wiki 全量镜像、GitHub 项目页与掩星世界观页；6 个工具重做，B 站归档含直播回放。',
     tone: 'a',
   },
 ];

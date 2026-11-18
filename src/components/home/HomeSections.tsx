@@ -72,7 +72,7 @@ export function NowSection() {
                 <CheckmarkCircleRegular aria-hidden /> 251 条影像归档，含 3 条直播回放与 2 个合集
               </li>
               <li>
-                <CheckmarkCircleRegular aria-hidden /> 451 页 Wiki 镜像、掩星实验页与 GitHub Pages 部署
+                <CheckmarkCircleRegular aria-hidden /> 451 页 Wiki 镜像、掩星世界观页与 GitHub Pages 部署
               </li>
             </ul>
           </div>
@@ -193,7 +193,7 @@ export function SubsitesAndTools() {
         <SectionHeading
           eyebrow="SUB-SITES · TOOLS"
           title="子站与站内工具"
-          description="播放器、451 页 Wiki 镜像、掩星实验与 8 个站内工具都做成了独立页面；主站只负责导览。"
+          description="播放器、451 页 Wiki 镜像、掩星世界观与 8 个站内工具都做成了独立页面；主站只负责导览。"
           actions={
             <Link className="text-link" to="/projects/github/">
               GitHub 项目页 <ArrowRightRegular aria-hidden />
@@ -205,9 +205,9 @@ export function SubsitesAndTools() {
             <Link className="home-extra-card home-extra-card--site" to="/projects/occultation/" style={{ '--extra-accent': '#7c8cff' } as React.CSSProperties}>
               <span className="home-extra-card__icon"><FluentIcon name="sparkle" size={20} aria-hidden /></span>
               <div>
-                <p>EXPERIMENT</p>
+                <p>WORLDVIEW</p>
                 <h3>掩星</h3>
-                <span>星星升天动画与动态乱码：尘埃尚未落定，时间仍在谱写。</span>
+                <span>一个仍在设计中的世界观。尘埃尚未落定，时间仍在谱写。</span>
               </div>
               <ArrowRightRegular aria-hidden />
             </Link>
