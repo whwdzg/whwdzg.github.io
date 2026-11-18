@@ -18,10 +18,17 @@ async function loadJson(path: string): Promise<any> {
   return jsonCache.get(key);
 }
 
+const FACE_NAMES = ['east', 'west', 'up', 'down', 'south', 'north'] as const;
+export type ModelFace = (typeof FACE_NAMES)[number];
+
+/** 方块模型面 -> 纹理路径，用于一个方块六面不同贴图。 */
+export type ModelFaces = Record<ModelFace, string | null>;
+
 export interface ModelElement {
   from: [number, number, number];
   to: [number, number, number];
   texture: string | null;
+  faces?: ModelFaces;
   rotation?: { origin: [number, number, number]; axis: 'x' | 'y' | 'z'; angle: number };
   shade: boolean;
 }
@@ -92,6 +99,16 @@ function elementTexture(element: any, textures: Record<string, string>): string 
   return firstTexture(textures);
 }
 
+function elementFaces(element: any, textures: Record<string, string>): ModelFaces {
+  const fallback = firstTexture(textures);
+  return Object.fromEntries(
+    FACE_NAMES.map((name) => {
+      const face = element.faces?.[name];
+      return [name, texturePath(face?.texture, textures) ?? fallback];
+    }),
+  ) as ModelFaces;
+}
+
 export async function blockModel(block: BlockState): Promise<ModelPart[]> {
   const name = block.id.replace(/^minecraft:/, '');
   const blockstate = await loadJson(`blockstates/${name}.json`);
@@ -118,7 +135,7 @@ export async function blockModel(block: BlockState): Promise<ModelPart[]> {
     let elements = model.elements;
     const fallbackTexture = firstTexture(model.textures);
     if (!elements.length) {
-      elements = [{ from: [0, 0, 0], to: [16, 16, 16], texture: fallbackTexture }];
+      elements = [{ from: [0, 0, 0], to: [16, 16, 16], texture: fallbackTexture, faces: { east: fallbackTexture, west: fallbackTexture, up: fallbackTexture, down: fallbackTexture, south: fallbackTexture, north: fallbackTexture } }];
     }
     const resolved = elements
       .filter((element) => Array.isArray(element.from) && Array.isArray(element.to))
@@ -126,6 +143,7 @@ export async function blockModel(block: BlockState): Promise<ModelPart[]> {
         from: element.from as [number, number, number],
         to: element.to as [number, number, number],
         texture: element.texture ?? elementTexture(element, model.textures) ?? fallbackTexture,
+        faces: elementFaces(element, model.textures),
         rotation: element.rotation,
         shade: element.shade !== false,
       }));

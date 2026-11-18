@@ -781,6 +781,32 @@
   height: 14px;
 }
 
+.proj-lift {
+  position: absolute;
+  right: 120px;
+  bottom: 12px;
+  display: grid;
+  gap: 3px;
+  opacity: 0.7;
+}
+
+.proj-lift:hover { opacity: 1; }
+
+.proj-lift button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  background: rgba(20, 25, 34, 0.8);
+  color: #dbe8f5;
+}
+
+.proj-lift button:first-child { color: #9fd7ff; }
+.proj-lift button:last-child { color: #aebdcd; }
+.proj-lift svg { width: 14px; height: 14px; }
+
 /* ---------------- Responsive ---------------- */
 @media (max-width: 1050px) {
   .tool-layout {

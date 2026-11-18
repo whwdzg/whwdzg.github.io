@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.3.0",
-  "description": "沧海水鱼内容站点 3.3 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.4.0",
+  "description": "沧海水鱼内容站点 3.4 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "0478380cda62d768d6f43a8e2c76faae0b0dfd48",
-  "commitShort": "0478380",
-  "commitTime": "2026-11-18T22:59:34+08:00",
-  "buildTime": "2026-11-18T15:02:46.253Z",
+  "commit": "417399fd4b7d5c461dabd2bb3ffeedcb76bbf9d8",
+  "commitShort": "417399f",
+  "commitTime": "2026-11-18T23:05:32+08:00",
+  "buildTime": "2026-11-18T15:20:21.148Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "417399fd4b7d5c461dabd2bb3ffeedcb76bbf9d8",
+      "short": "417399fd",
+      "time": "2026-11-18T23:05:32+08:00",
+      "author": "Alex Yang",
+      "subject": "perf: instance projection blocks and dedupe textures",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/417399fd4b7d5c461dabd2bb3ffeedcb76bbf9d8"
+    },
     {
       "hash": "0478380cda62d768d6f43a8e2c76faae0b0dfd48",
       "short": "0478380c",

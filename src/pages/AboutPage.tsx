@@ -77,6 +77,18 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.4.0',
+    date: '2026-11-18',
+    items: [
+      '外部数据改为每小时 GitHub Actions 同步，仓库内保存 Modrinth / MC百科 / B站 / GitHub 快照，关于页显示最近获取时间。',
+      'GitHub 项目页展示 Star、Fork 与最近更新时间；GitHub 快照进入仓库。',
+      '掩星新增 CMD 风格档案终端与世界观描述，侧栏选中态改为短竖线，工具分组默认展开。',
+      'MC 投影改用 InstancedMesh 批量绘制并按状态缓存材质；支持六面不同纹理、结构 NBT、中文本地化方块名与空格 / Shift 升降。',
+      '科学计算器保留 CW 布局与功能，视觉改回本站 Fluent 表面。',
+      '来福 Wiki 图标替换为仓库主页图片；修复 MC 物品居中与 Wiki 图标显示。',
+    ],
+  },
+  {
     version: '3.3.0',
     date: '2026-11-17',
     items: [
@@ -198,7 +210,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.3"
+        eyebrow="ABOUT · 3.4"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -244,7 +256,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.3 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.4 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

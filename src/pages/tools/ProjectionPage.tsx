@@ -13,6 +13,7 @@ import {
 import { ToolShell } from '../../components/tools/ToolShell';
 import { blockModel } from '../../lib/mc/models';
 import { blockStateKey, parseProjectionFile, type BlockState, type Projection } from '../../lib/mc/nbt';
+import { blockNameZh } from '../../data/projects/block-names';
 import '../../styles/tools.css';
 
 const TOC = [
@@ -191,7 +192,10 @@ export default function ProjectionPage() {
         const sx = Math.max(Math.abs(tx - fx) / 16, 0.003);
         const sy = Math.max(Math.abs(ty - fy) / 16, 0.003);
         const sz = Math.max(Math.abs(tz - fz) / 16, 0.003);
-        const material = await textureMaterial(element.texture, block.id);
+        const faceOrder = ['east', 'west', 'up', 'down', 'south', 'north'] as const;
+        const facePaths = faceOrder.map((face) => element.faces?.[face] ?? element.texture);
+        const materials = await Promise.all(facePaths.map((path) => textureMaterial(path, block.id)));
+        const material = new Set(materials).size === 1 ? materials[0] : materials;
         const local = new THREE.Matrix4()
           .makeRotationX(rotationX)
           .multiply(new THREE.Matrix4().makeRotationY(rotationY))
@@ -331,6 +335,13 @@ export default function ProjectionPage() {
     updateCamera();
   };
 
+  const lift = (direction: 1 | -1) => {
+    const target = targetRef.current;
+    if (!target) return;
+    target.y += direction * Math.max(0.5, sphereRef.current.radius * 0.008);
+    updateCamera();
+  };
+
   const onPointerDown = (event: React.PointerEvent) => {
     (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
     touchRef.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
@@ -354,7 +365,7 @@ export default function ProjectionPage() {
     const dx = event.clientX - pointerRef.current.x;
     const dy = event.clientY - pointerRef.current.y;
     pointerRef.current = { x: event.clientX, y: event.clientY, button: event.button };
-    if (event.button === 2 || event.shiftKey) pan(dx, dy);
+    if (event.button === 2 || event.altKey) pan(dx, dy);
     else rotate(dx, dy);
   };
 
@@ -369,7 +380,9 @@ export default function ProjectionPage() {
       const target = event.target as HTMLElement | null;
       if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return;
       const key = event.key.toLowerCase();
-      if (key === 'w' || event.key === 'ArrowUp') { event.preventDefault(); move('up'); }
+      if (event.code === 'Space') { event.preventDefault(); lift(1); }
+      else if (event.key === 'Shift') { event.preventDefault(); lift(-1); }
+      else if (key === 'w' || event.key === 'ArrowUp') { event.preventDefault(); move('up'); }
       else if (key === 's' || event.key === 'ArrowDown') { event.preventDefault(); move('down'); }
       else if (key === 'a' || event.key === 'ArrowLeft') { event.preventDefault(); move('left'); }
       else if (key === 'd' || event.key === 'ArrowRight') { event.preventDefault(); move('right'); }
@@ -394,7 +407,7 @@ export default function ProjectionPage() {
   return (
     <ToolShell
       title="MC 投影查看器"
-      lead="上传 .litematic / .schematic / .schem，在浏览器里查看带方块模型、朝向与不完整方块的 3D 投影。支持鼠标、触摸、WASD 与屏幕方向键。"
+      lead="上传 .litematic / .schematic / .schem / .nbt，在浏览器里查看带方块模型、朝向与不完整方块的 3D 投影。支持鼠标、触摸、WASD、空格 / Shift 升降与屏幕方向键。"
       meta={[
         { icon: 'cube', label: '方块模型' },
         { icon: 'image', label: '本地贴图' },
@@ -429,7 +442,7 @@ export default function ProjectionPage() {
               />
               <OpenRegular aria-hidden />
               <strong>拖入投影文件</strong>
-              <span>.litematic / .schematic / .schem</span>
+              <span>.litematic / .schematic / .schem / .nbt</span>
             </div>
             <p className={`proj-status ${error ? 'is-error' : ''}`}>{error || status}</p>
             {stats && (
@@ -440,7 +453,7 @@ export default function ProjectionPage() {
                   <div><strong>{stats.size}</strong><span>尺寸</span></div>
                 </div>
                 <ul className="proj-legend">
-                  {stats.legend.map((item) => <li key={item.id}><span>{item.id.replace('minecraft:', '')}</span><strong>{item.count}</strong></li>)}
+                  {stats.legend.map((item) => <li key={item.id} title={item.id}><span>{blockNameZh(item.id)}</span><strong>{item.count}</strong></li>)}
                 </ul>
               </>
             )}
@@ -475,11 +488,15 @@ export default function ProjectionPage() {
                 updateCamera();
               }}
             />
-            <div className="proj-pad" aria-label="移动视角">
+            <div className="proj-pad" aria-label="水平移动视角">
               <button type="button" className="proj-pad__up" aria-label="向前" onClick={() => move('up')}><ArrowUpRegular aria-hidden /></button>
               <button type="button" className="proj-pad__left" aria-label="向左" onClick={() => move('left')}><ArrowLeftRegular aria-hidden /></button>
               <button type="button" className="proj-pad__down" aria-label="向后" onClick={() => move('down')}><ArrowDownRegular aria-hidden /></button>
               <button type="button" className="proj-pad__right" aria-label="向右" onClick={() => move('right')}><ArrowRightRegular aria-hidden /></button>
+            </div>
+            <div className="proj-lift" aria-label="上下移动视角">
+              <button type="button" aria-label="上升" onClick={() => lift(1)}><ArrowUpRegular aria-hidden /></button>
+              <button type="button" aria-label="下降" onClick={() => lift(-1)}><ArrowDownRegular aria-hidden /></button>
             </div>
           </div>
         </div>
@@ -489,8 +506,8 @@ export default function ProjectionPage() {
         <p className="eyebrow">CONTROLS</p>
         <h2>操作</h2>
         <div className="project-feature-grid">
-          <div><strong>桌面</strong><p>拖动旋转，右键 / Shift + 拖动平移，滚轮缩放；WASD / 方向键移动，Shift 加速。</p></div>
-          <div><strong>移动端</strong><p>单指旋转，双指捏合缩放；屏幕方向键移动。全屏按钮在查看器右上角。</p></div>
+          <div><strong>桌面</strong><p>拖动旋转，右键 / Alt + 拖动平移，滚轮缩放；WASD / 方向键水平移动，空格上升，Shift 下降。</p></div>
+          <div><strong>移动端</strong><p>单指旋转，双指捏合缩放；屏幕方向键水平移动，右侧升降按钮调整高度。全屏按钮在查看器右上角。</p></div>
           <div><strong>模型</strong><p>支持 blockstate 变体旋转、台阶 / 楼梯 / 栅栏等不完整方块模型；找不到模型时回退为彩色方块。</p></div>
         </div>
       </section>
@@ -502,6 +519,7 @@ export default function ProjectionPage() {
           <li><strong>.litematic</strong>：Litematica 投影，读取 Region / BlockStatePalette / BlockStates。</li>
           <li><strong>.schematic</strong>：经典 MCEdit / WorldEdit 格式，读取 Palette 与 BlockData。</li>
           <li><strong>.schem</strong>：Sponge Schematic，读取 Palette 与 Blocks。</li>
+          <li><strong>.nbt</strong>：结构方块导出的 structure NBT，读取 size / palette / blocks。</li>
           <li>方块模型与贴图来自站点内置的 Minecraft 26.3 资源，不会上传文件。</li>
         </ul>
       </section>

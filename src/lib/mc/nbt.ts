@@ -128,9 +128,20 @@ export function parseNbt(bytes: Uint8Array): unknown {
 }
 
 async function decompress(bytes: Uint8Array): Promise<Uint8Array> {
-  if (bytes[0] !== 0x1f || bytes[1] !== 0x8b) return bytes;
-  const stream = new Blob([bytes as BlobPart]).stream().pipeThrough(new DecompressionStream('gzip'));
-  return new Uint8Array(await new Response(stream).arrayBuffer());
+  if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
+    const stream = new Blob([bytes as BlobPart]).stream().pipeThrough(new DecompressionStream('gzip'));
+    return new Uint8Array(await new Response(stream).arrayBuffer());
+  }
+  // 少数工具导出的 .nbt 使用 zlib（deflate）而非 gzip。
+  if (bytes[0] === 0x78) {
+    try {
+      const stream = new Blob([bytes as BlobPart]).stream().pipeThrough(new DecompressionStream('deflate'));
+      return new Uint8Array(await new Response(stream).arrayBuffer());
+    } catch {
+      // 不是 zlib 时继续按未压缩 NBT 处理。
+    }
+  }
+  return bytes;
 }
 
 function asRecord(value: unknown): Record<string, any> {
@@ -177,6 +188,31 @@ function parseLitematic(root: Record<string, any>): Projection {
     }
   }
 
+  return finishProjection(blocks);
+}
+
+function parseStructureNbt(root: Record<string, any>): Projection {
+  const size = Array.isArray(root.size) ? root.size : [];
+  const paletteRaw = Array.isArray(root.palette) ? root.palette : [];
+  const rawBlocks = Array.isArray(root.blocks) ? root.blocks : [];
+  if (!size.length || !paletteRaw.length || !rawBlocks.length) {
+    throw new Error('NBT 结构文件缺少 size / palette / blocks');
+  }
+  const palette = paletteRaw.map(paletteEntry);
+  const blocks: ProjectionBlock[] = [];
+  for (const raw of rawBlocks) {
+    const record = asRecord(raw);
+    const state = palette[Number(record.state ?? 0)] ?? { id: 'minecraft:air', properties: {} };
+    const position = Array.isArray(record.pos) ? record.pos : [0, 0, 0];
+    if (state.id === 'minecraft:air' || state.id === 'minecraft:cave_air' || state.id === 'minecraft:structure_void') continue;
+    blocks.push({
+      ...state,
+      x: Number(position[0] ?? 0),
+      y: Number(position[1] ?? 0),
+      z: Number(position[2] ?? 0),
+    });
+  }
+  if (!blocks.length) throw new Error('NBT 结构文件中没有可显示的方块');
   return finishProjection(blocks);
 }
 
@@ -246,7 +282,11 @@ function finishProjection(blocks: ProjectionBlock[], transform?: (value: number)
 export async function parseProjectionFile(file: File): Promise<Projection> {
   const decompressed = await decompress(new Uint8Array(await file.arrayBuffer()));
   const root = asRecord(parseNbt(decompressed));
-  const projection = root.Regions ? parseLitematic(root) : parseSchematic(root);
+  const projection = root.Regions
+    ? parseLitematic(root)
+    : Array.isArray(root.size) && Array.isArray(root.palette) && Array.isArray(root.blocks)
+      ? parseStructureNbt(root)
+      : parseSchematic(root);
   projection.name = file.name.replace(/\.(litematic|schematic|schem|nbt)$/i, '');
   return projection;
 }
