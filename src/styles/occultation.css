@@ -220,6 +220,13 @@
   z-index: 1;
 }
 
+.occultation-caption {
+  margin-top: 7px;
+  color: rgba(185, 222, 255, 0.56);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+}
+
 .occultation-coordinates {
   margin-top: 10px;
   color: rgba(142, 188, 231, 0.42);

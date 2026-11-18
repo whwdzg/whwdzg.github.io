@@ -45,7 +45,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
     "cover": "/media/bilibili/v01.webp",
     "coverAlt": "Minecraft 官方短视频",
     "count": 161,
-    "fetchedAt": "2026-11-17T17:30:44.204Z",
+    "fetchedAt": "2026-11-18T14:36:26.105Z",
     "sections": [
       {
         "title": "村民新闻联动",
@@ -309,7 +309,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】我们都有一个这样的朋友......",
             "date": "2024-08-13",
             "durationSeconds": 16,
-            "views": 86002,
+            "views": 86003,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1TbYzeAE6s/"
           },
@@ -342,7 +342,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】你是试炼密室中的哪一个？",
             "date": "2024-08-23",
             "durationSeconds": 42,
-            "views": 21604,
+            "views": 21605,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV16PWSeoEac/"
           },
@@ -430,7 +430,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】你能找出10个不合理之处吗？",
             "date": "2024-09-17",
             "durationSeconds": 25,
-            "views": 73860,
+            "views": 73861,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1LcteeEEqM/"
           },
@@ -716,7 +716,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】别在Minecraft里这么做！",
             "date": "2024-12-15",
             "durationSeconds": 44,
-            "views": 39405,
+            "views": 39406,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1DPqdYMEut/"
           },
@@ -738,7 +738,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】阵亡之歌",
             "date": "2024-12-24",
             "durationSeconds": 46,
-            "views": 8910,
+            "views": 8911,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1ZDkdYeEZX/"
           },
@@ -749,7 +749,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】你自认为对生物很了解吗？来猜猜试试",
             "date": "2024-12-28",
             "durationSeconds": 30,
-            "views": 58008,
+            "views": 58009,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1RFChYxETn/"
           },
@@ -826,7 +826,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】你是Minecraft音效大师吗？",
             "date": "2025-01-15",
             "durationSeconds": 43,
-            "views": 39552,
+            "views": 39553,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1mNcieuEVF/"
           },
@@ -837,7 +837,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】准备，开始！哼🐷",
             "date": "2025-01-17",
             "durationSeconds": 18,
-            "views": 11972,
+            "views": 11973,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1TywJeaEyA/"
           },
@@ -958,7 +958,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】猪灵的一天！",
             "date": "2025-03-01",
             "durationSeconds": 34,
-            "views": 22205,
+            "views": 22211,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1TpXSYdEzn/"
           },
@@ -969,7 +969,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】新版刷怪蛋现已来到Minecraft！",
             "date": "2025-03-01",
             "durationSeconds": 33,
-            "views": 16265,
+            "views": 16267,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1NxXSY9ESG/"
           },
@@ -991,7 +991,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】你就没有对村民好一点过吗？",
             "date": "2025-03-01",
             "durationSeconds": 27,
-            "views": 17037,
+            "views": 17039,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1d2XSYuEbH/"
           },
@@ -1167,7 +1167,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】I... AM STEVE!",
             "date": "2025-05-11",
             "durationSeconds": 30,
-            "views": 28964,
+            "views": 28966,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1JqEuz9EBi/"
           },
@@ -1486,7 +1486,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】让铜傀儡帮你整理箱子？",
             "date": "2025-07-15",
             "durationSeconds": 9,
-            "views": 2088,
+            "views": 2090,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV18JuJzCEJ4/"
           },
@@ -1706,7 +1706,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】MINECRAFT DIGGING SONG",
             "date": "2026-09-06",
             "durationSeconds": 29,
-            "views": 1477,
+            "views": 1478,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1BPbE6WEij/"
           },
@@ -1739,7 +1739,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】又做梦了，梦见经验自由了",
             "date": "2026-09-11",
             "durationSeconds": 18,
-            "views": 2084,
+            "views": 2085,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1S2Y26AESQ/"
           },
@@ -1794,7 +1794,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】你能找出10个错误吗？",
             "date": "2026-09-26",
             "durationSeconds": 25,
-            "views": 4435,
+            "views": 4440,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1Behm6VEj4/"
           },
@@ -1827,7 +1827,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Minecraft官方短视频】来雪球大战？",
             "date": "2026-09-26",
             "durationSeconds": 18,
-            "views": 642,
+            "views": 643,
             "section": "官方短视频",
             "url": "https://www.bilibili.com/video/BV1v6hm6gEzd/"
           }
@@ -1844,7 +1844,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
     "cover": "/media/bilibili/v05.webp",
     "coverAlt": "Hypixel 官方短视频",
     "count": 46,
-    "fetchedAt": "2026-11-17T17:30:44.286Z",
+    "fetchedAt": "2026-11-18T14:36:26.178Z",
     "sections": [
       {
         "title": "正片",
@@ -2197,7 +2197,7 @@ export const BILIBILI_COLLECTIONS: BilibiliCollection[] = [
             "coverAlt": "【Hypixel官方短视频】Hypixel空岛生存山顶现已推出！准备好加入巫师之旅了吗？",
             "date": "2024-12-15",
             "durationSeconds": 40,
-            "views": 1016,
+            "views": 1017,
             "section": "正片",
             "url": "https://www.bilibili.com/video/BV1yFqfYBE9C/"
           },

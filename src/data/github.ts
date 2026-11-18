@@ -19,7 +19,7 @@ export interface GithubRepoSnapshot {
   archived: boolean;
 }
 
-export const GITHUB_SYNCED_AT = "2026-11-18T08:34:48.730Z";
+export const GITHUB_SYNCED_AT = "2026-11-18T14:36:05.922Z";
 
 export const GITHUB_REPOS: GithubRepoSnapshot[] = [
   {
@@ -33,7 +33,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "TypeScript",
     "updatedAt": "2026-11-16T17:14:31Z",
-    "pushedAt": "2026-11-18T01:00:04Z",
+    "pushedAt": "2026-11-18T14:32:21Z",
     "archived": false
   },
   {
@@ -145,7 +145,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "JavaScript",
     "updatedAt": "2026-08-15T16:11:57Z",
-    "pushedAt": "2026-11-17T17:03:51Z",
+    "pushedAt": "2026-11-18T14:27:32Z",
     "archived": false
   }
 ];

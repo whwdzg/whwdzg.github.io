@@ -10,29 +10,29 @@ export interface SyncSource {
 }
 
 export const SYNC_STATUS = {
-  "updatedAt": "2026-11-18T08:35:28.611Z",
+  "updatedAt": "2026-11-18T14:36:26.259Z",
   "sources": {
     "github": {
       "label": "GitHub",
-      "at": "2026-11-18T08:34:48.762Z",
+      "at": "2026-11-18T14:36:06.000Z",
       "count": 9,
       "status": "ok"
     },
     "modrinth": {
       "label": "Modrinth",
-      "at": "2026-11-18T08:34:37.823Z",
+      "at": "2026-11-18T14:35:59.268Z",
       "count": 6,
       "status": "ok"
     },
     "mcmod": {
       "label": "MC百科",
-      "at": "2026-11-18T08:34:46.078Z",
+      "at": "2026-11-18T14:36:00.734Z",
       "count": 3,
       "status": "ok"
     },
     "bilibili": {
       "label": "哔哩哔哩",
-      "at": "2026-11-18T08:35:28.611Z",
+      "at": "2026-11-18T14:36:26.259Z",
       "count": 251,
       "status": "ok"
     }

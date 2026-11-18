@@ -5,12 +5,36 @@
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "9894d5b94f8093709decdee3a24f9c931f69f9b3",
-  "commitShort": "9894d5b",
-  "commitTime": "2026-11-18T01:34:28+08:00",
-  "buildTime": "2026-11-18T14:30:10.372Z",
+  "commit": "bfb798e190d39074fac393dcc00cfba996e0e9ab",
+  "commitShort": "bfb798e",
+  "commitTime": "2026-11-18T22:31:52+08:00",
+  "buildTime": "2026-11-18T14:36:38.392Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "bfb798e190d39074fac393dcc00cfba996e0e9ab",
+      "short": "bfb798e1",
+      "time": "2026-11-18T22:31:52+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: occultation terminal, wiki icon and UI fixes",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/bfb798e190d39074fac393dcc00cfba996e0e9ab"
+    },
+    {
+      "hash": "92d06d2e08f8ca629bf561418962689e9071f0f0",
+      "short": "92d06d2e",
+      "time": "2026-11-18T08:35:29Z",
+      "author": "github-actions[bot]",
+      "subject": "chore: sync external data snapshots",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/92d06d2e08f8ca629bf561418962689e9071f0f0"
+    },
+    {
+      "hash": "c40075b513678362e4133f0bde759465c1a9a6f7",
+      "short": "c40075b5",
+      "time": "2026-11-18T01:00:03Z",
+      "author": "github-actions[bot]",
+      "subject": "chore: sync external data snapshots",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/c40075b513678362e4133f0bde759465c1a9a6f7"
+    },
     {
       "hash": "9894d5b94f8093709decdee3a24f9c931f69f9b3",
       "short": "9894d5b9",

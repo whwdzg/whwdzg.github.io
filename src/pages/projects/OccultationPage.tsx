@@ -349,6 +349,7 @@ export default function OccultationPage() {
           <span className="occultation-title__en">OCCULTATION</span>
         </h1>
         <ScrambleLine />
+        <p className="occultation-caption">一个仍在设计中的世界观</p>
         <p className="occultation-coordinates" aria-hidden>
           05 35 17.3 / −05 23 28 / DUST NOT SETTLED / TIME STILL WRITING
         </p>
