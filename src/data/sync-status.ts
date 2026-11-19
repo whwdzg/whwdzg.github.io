@@ -7,6 +7,9 @@ export interface SyncSource {
   at: string;
   count: number;
   status: 'ok' | 'error';
+  stale?: boolean;
+  lastAttempt?: string;
+  error?: string;
 }
 
 export const SYNC_STATUS = {

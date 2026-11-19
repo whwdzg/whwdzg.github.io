@@ -5,6 +5,7 @@ import { MCMOD_COMMENTS_SYNCED_AT, mcmodComments } from '../../data/projects/mcm
 import { mcmodProject } from '../../data/projects/mcmod';
 import { formatDateTime, relativeTime } from '../../lib/format';
 import { Reveal } from '../common/Reveal';
+import { StaleBadge, isSyncSourceStale } from '../common/StaleBadge';
 import '../../styles/mcmod-comments.css';
 
 interface McmodCommentsProps {
@@ -18,6 +19,7 @@ const CHANNELS: Record<number, string> = {
 
 export function McmodComments({ slug }: McmodCommentsProps) {
   const entry = mcmodProject(slug);
+  const stale = isSyncSourceStale('mcmod');
   const comments = mcmodComments(slug);
   const replyTotal = comments.reduce((sum, comment) => sum + comment.replies.length, 0);
   const [openReplies, setOpenReplies] = useState<Set<string>>(() => new Set());
@@ -30,13 +32,14 @@ export function McmodComments({ slug }: McmodCommentsProps) {
     });
   };
   return (
-    <Reveal as="section" className="article-card" id="mcmod-comments">
+    <Reveal as="section" className={`article-card${stale ? ' is-stale' : ''}`} id="mcmod-comments">
       <div className="article-card__head">
         <div>
           <p className="eyebrow">MCMOD · COMMENTS</p>
           <h2>MC百科评论</h2>
         </div>
         <span className="badge badge--muted">{comments.length} 条短评{replyTotal ? ` · ${replyTotal} 条楼中楼` : ''}</span>
+        <StaleBadge source="mcmod" label="MC百科数据已过期" />
       </div>
       <p className="project-section-lead">
         来自 MC百科条目下的公开短评，保留原话与楼层；有回复的评论可以展开楼中楼。评论只在构建期同步，不在浏览器里请求 MC百科。

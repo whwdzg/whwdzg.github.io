@@ -8,9 +8,11 @@ import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
 import { Reveal } from '../components/common/Reveal';
 import { BilibiliStats } from '../components/bilibili/BilibiliStats';
 import { BilibiliComments } from '../components/bilibili/BilibiliComments';
+import { StaleBadge, isSyncSourceStale } from '../components/common/StaleBadge';
 import '../styles/bilibili-profile.css';
 
 export default function BilibiliDynamicsPage() {
+  const stale = isSyncSourceStale('bilibili');
   const [openComments, setOpenComments] = useState<Set<string>>(() => new Set());
   const toggleComments = (id: string) => {
     setOpenComments((current) => {
@@ -37,8 +39,9 @@ export default function BilibiliDynamicsPage() {
           </a>
         }
       />
-      <div className="container bili-subpage">
+      <div className={`container bili-subpage${stale ? ' is-stale' : ''}`}>
         <BilibiliTabs active="dynamics" />
+        <div className="bili-stale-row"><StaleBadge source="bilibili" label="动态数据已过期" /></div>
         <div className="bili-dynamic-list">
           {BILIBILI_DYNAMICS.map((dynamic, index) => (
             <Reveal key={dynamic.id} delay={Math.min(index, 6) * 30}>

@@ -1,4 +1,4 @@
-# 水鱼 Blog · 3.12.1
+# 水鱼 Blog · 3.13.0
 
 沧海水鱼（whwdzg）的个人网站，2026 年从零重写。
 
@@ -81,7 +81,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 ### 每天自动同步
 
-`.github/workflows/sync-data.yml` 每天运行 `scripts/sync-all.mjs`，更新 `src/data/` 下的快照、B 站封面和 `sync-status.ts`，随后提交并触发 Pages 部署。About 页会显示每个来源最近一次成功获取的时间。
+`.github/workflows/sync-data.yml` 每天运行 `scripts/sync-all.mjs`（失败时保留旧快照并标记过期），更新 `src/data/` 下的快照、B 站封面和 `sync-status.ts`，随后提交并触发 Pages 部署。About 页会显示每个来源最近一次成功获取的时间。
 
 `data:projects` 需要同级目录下存在 `better-crafting-recipes`、`better-enchantments`、`better-mob-drop`、`only-survival-mode`、`glowing-players`，以及 `D:\Documents\assets` 的 Minecraft 资源。脚本会保留所有配方 / 掉落 / 附魔 / 进度关系，并把用到的物品贴图复制到 `public/media/minecraft/items/`。
 
@@ -215,7 +215,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 ## 版本与部署
 
-当前版本 **3.12.1**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
+当前版本 **3.13.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
 
 关于页展示：
 

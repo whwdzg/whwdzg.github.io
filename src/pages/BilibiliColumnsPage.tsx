@@ -5,9 +5,11 @@ import { formatDate, formatDateTime, formatViews, relativeTime } from '../lib/fo
 import { PageIntro } from '../components/layout/PageIntro';
 import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
 import { Reveal } from '../components/common/Reveal';
+import { StaleBadge, isSyncSourceStale } from '../components/common/StaleBadge';
 import '../styles/bilibili-profile.css';
 
 export default function BilibiliColumnsPage() {
+  const stale = isSyncSourceStale('bilibili');
   return (
     <div className="page page--bili-columns">
       <PageIntro
@@ -25,8 +27,9 @@ export default function BilibiliColumnsPage() {
           </a>
         }
       />
-      <div className="container bili-subpage">
+      <div className={`container bili-subpage${stale ? ' is-stale' : ''}`}>
         <BilibiliTabs active="columns" />
+        <div className="bili-stale-row"><StaleBadge source="bilibili" label="专栏数据已过期" /></div>
         <div className="bili-article-list">
           {BILIBILI_ARTICLES.map((article, index) => (
             <Reveal key={article.id} delay={index * 60}>

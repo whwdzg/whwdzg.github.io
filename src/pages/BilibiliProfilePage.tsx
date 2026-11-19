@@ -6,9 +6,11 @@ import { videos } from '../data/videos';
 import { formatDateTime, formatViews, relativeTime } from '../lib/format';
 import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
 import { Reveal } from '../components/common/Reveal';
+import { StaleBadge, isSyncSourceStale } from '../components/common/StaleBadge';
 import '../styles/bilibili-profile.css';
 
 export default function BilibiliProfilePage() {
+  const stale = isSyncSourceStale('bilibili');
   const profile = BILIBILI_PROFILE;
   const archiveViews = videos.reduce((sum, video) => sum + (video.views ?? 0), 0);
   const stats = [
@@ -52,9 +54,10 @@ export default function BilibiliProfilePage() {
         <div className="bili-profile-sync">
           <ArrowSyncRegular className="bili-profile-sync__icon" aria-hidden />
           每天同步 · {formatDateTime(BILIBILI_PROFILE_SYNCED_AT)} · {relativeTime(BILIBILI_PROFILE_SYNCED_AT)}
+          <StaleBadge source="bilibili" label="B 站数据已过期" />
         </div>
 
-        <Reveal as="section" className="bili-stat-grid" aria-label="个人数据">
+        <Reveal as="section" className={`bili-stat-grid${stale ? ' is-stale' : ''}`} aria-label="个人数据">
           {stats.map((stat) => (
             <div key={stat.label} className="bili-stat-card">
               <span>{stat.label}</span>

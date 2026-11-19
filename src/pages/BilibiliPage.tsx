@@ -27,6 +27,7 @@ import { CollectionDetail } from '../components/bilibili/CollectionDetail';
 import { Button, IconButton } from '../components/common/Button';
 import { Select } from '../components/common/Select';
 import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
+import { StaleBadge } from '../components/common/StaleBadge';
 import { useRouter } from '../lib/router';
 import { readStorage, writeStorage } from '../lib/storage';
 import { videos, videosById, videoStats, type Video } from '../data/videos';
@@ -266,7 +267,7 @@ export default function BilibiliPage() {
         }
       />
 
-      <div className="container"><BilibiliTabs active="videos" /></div>
+      <div className="container"><BilibiliTabs active="videos" /><div className="bili-stale-row"><StaleBadge source="bilibili" label="影像数据已过期" /></div></div>
 
       <section className="section archive" aria-labelledby="archive-title">
         <div className="container">

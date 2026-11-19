@@ -5,6 +5,7 @@ import { LINKS, PROJECTS } from '../../data/site';
 import { MODRINTH_PROJECTS, MODRINTH_SYNCED_AT, MODRINTH_TOTALS } from '../../data/projects/modrinth';
 import { MODRINTH_HISTORY } from '../../data/projects/modrinth-history';
 import { ModrinthTrendChart } from '../../components/projects/ModrinthTrendChart';
+import { StaleBadge, isSyncSourceStale } from '../../components/common/StaleBadge';
 import { formatDate, formatViews } from '../../lib/format';
 import { PageIntro } from '../../components/layout/PageIntro';
 import { FluentIcon } from '../../components/common/FluentIcon';
@@ -13,6 +14,7 @@ import { SectionHeading } from '../../components/common/SectionHeading';
 import '../../styles/projects.css';
 
 export default function ModrinthPage() {
+  const stale = isSyncSourceStale('modrinth');
   return (
     <div className="page page--modrinth">
       <PageIntro
@@ -62,7 +64,8 @@ export default function ModrinthPage() {
         }
       />
 
-      <div className="container modrinth-page">
+      <div className={`container modrinth-page${stale ? ' is-stale' : ''}`}>
+        <div className="stale-row"><StaleBadge source="modrinth" label="Modrinth 数据已过期" /></div>
         <Reveal as="section" className="article-card" id="projects">
           <SectionHeading
             eyebrow="ALL PROJECTS"

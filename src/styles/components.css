@@ -1536,3 +1536,19 @@
     font-size: clamp(38px, 12vw, 54px);
   }
 }
+
+/* 过期在线数据提示 */
+.stale-wrap { position: relative; display: inline-flex; align-items: center; vertical-align: middle; }
+.stale-badge { display: inline-flex; align-items: center; gap: 3px; padding: 3px 7px; border: 1px solid #d6a21e; border-radius: var(--r-pill); background: #fff8df; color: #8a5a00; font-family: var(--font-mono); font-size: 8px; line-height: 1; }
+.stale-badge svg { width: 12px; height: 12px; }
+.stale-badge:hover, .stale-badge[aria-expanded='true'] { border-color: #b7791f; background: #ffefb8; }
+.stale-popover { position: absolute; top: calc(100% + 7px); left: 0; z-index: 90; display: grid; gap: 4px; width: min(280px, 78vw); padding: 9px 10px; border: 1px solid #d6a21e; border-radius: 7px; background: #fffaf0; color: #6b4a12; box-shadow: 0 12px 30px rgba(80, 55, 10, .18); font-size: 9px; line-height: 1.55; }
+.stale-popover strong { color: #8a5a00; font-size: 10px; }
+.stale-popover em { color: #9a6a16; font-style: normal; }
+.stale-popover::before { content: ''; position: absolute; top: -5px; left: 12px; width: 8px; height: 8px; border-top: 1px solid #d6a21e; border-left: 1px solid #d6a21e; background: #fffaf0; transform: rotate(45deg); }
+@media (max-width: 620px) { .stale-popover { left: auto; right: -8px; } .stale-popover::before { left: auto; right: 18px; } }
+.is-stale .bili-stat-card > strong, .is-stale .github-profile-stats strong, .is-stale .modrinth-summary__stats strong { color: #a76a00; }
+
+.stale-row { display: flex; align-items: center; min-height: 0; margin: 10px 0 0; }
+
+.is-stale .bili-engagement__item b, .is-stale .bili-dynamic-card__likes { color: #a76a00; }

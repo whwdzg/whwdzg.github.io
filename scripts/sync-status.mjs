@@ -30,6 +30,8 @@ function load() {
 
 const source = process.argv[2];
 const count = Number(process.argv[3]) || 0;
+const failed = process.argv.includes('--fail');
+const error = process.argv[4] || '';
 const status = load();
 if (!source || !(source in LABELS)) {
   console.error(`usage: node scripts/sync-status.mjs <${Object.keys(LABELS).join('|')}> [count]`);
@@ -37,9 +39,12 @@ if (!source || !(source in LABELS)) {
 }
 const at = new Date().toISOString();
 status.updatedAt = at;
+const previous = status.sources?.[source] ?? {};
 status.sources = {
   ...status.sources,
-  [source]: { label: LABELS[source], at, count, status: 'ok' },
+  [source]: failed
+    ? { ...previous, label: LABELS[source], lastAttempt: at, stale: true, status: 'error', error }
+    : { ...previous, label: LABELS[source], at, lastAttempt: at, count, status: 'ok', stale: false, error: '' },
 };
 const output = `/**
  * 外部数据同步状态 / External sync status.
@@ -50,6 +55,9 @@ export interface SyncSource {
   at: string;
   count: number;
   status: 'ok' | 'error';
+  stale?: boolean;
+  lastAttempt?: string;
+  error?: string;
 }
 
 export const SYNC_STATUS = ${JSON.stringify(status, null, 2)} as const;

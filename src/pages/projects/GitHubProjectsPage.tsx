@@ -7,6 +7,7 @@ import { formatDate, formatViews } from '../../lib/format';
 import { PageIntro } from '../../components/layout/PageIntro';
 import { FluentIcon } from '../../components/common/FluentIcon';
 import { Reveal } from '../../components/common/Reveal';
+import { StaleBadge, isSyncSourceStale } from '../../components/common/StaleBadge';
 import { SectionHeading } from '../../components/common/SectionHeading';
 import '../../styles/projects.css';
 
@@ -21,6 +22,7 @@ const OTHER_REPOS = [
 ];
 
 export default function GitHubProjectsPage() {
+  const stale = isSyncSourceStale('github');
   return (
     <div className="page page--modrinth">
       <PageIntro
@@ -68,7 +70,8 @@ export default function GitHubProjectsPage() {
         }
       />
 
-      <div className="container modrinth-page">
+      <div className={`container modrinth-page${stale ? ' is-stale' : ''}`}>
+        <div className="stale-row"><StaleBadge source="github" label="GitHub 数据已过期" /></div>
         <Reveal as="section" className="article-card github-profile-card" id="profile">
           <div className="github-profile-head">
             <img src={GITHUB_PROFILE.avatar} alt={`${GITHUB_PROFILE.name} 的 GitHub 头像`} width={92} height={92} loading="lazy" />

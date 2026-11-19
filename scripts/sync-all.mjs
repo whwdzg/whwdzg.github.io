@@ -28,6 +28,10 @@ function mark(source, count) {
   run(`mark ${source}`, 'scripts/sync-status.mjs', [source, String(count)]);
 }
 
+function markFailed(source, reason) {
+  run(`mark ${source} failed`, 'scripts/sync-status.mjs', [source, '0', '--fail', reason.slice(0, 160)]);
+}
+
 function countVideos() {
   try {
     const text = readFileSync(path.join(ROOT, 'src/data/videos.ts'), 'utf8');
@@ -38,18 +42,25 @@ function countVideos() {
   }
 }
 
-if (run('Modrinth', 'scripts/sync-modrinth.mjs')) mark('modrinth', 6);
-if (run('MC百科', 'scripts/sync-mcmod.mjs')) mark('mcmod', 3);
-run('MC百科评论', 'scripts/sync-mcmod-comments.mjs');
-if (run('GitHub', 'scripts/sync-github.mjs')) mark('github', 9);
+const modrinthOk = run('Modrinth', 'scripts/sync-modrinth.mjs');
+if (modrinthOk) mark('modrinth', 6);
+else markFailed('modrinth', 'Modrinth sync failed');
+const mcmodOk = run('MC百科', 'scripts/sync-mcmod.mjs');
+const mcmodCommentsOk = run('MC百科评论', 'scripts/sync-mcmod-comments.mjs');
+if (mcmodOk && mcmodCommentsOk) mark('mcmod', 3);
+else markFailed('mcmod', 'MC百科或评论同步失败');
+const githubOk = run('GitHub', 'scripts/sync-github.mjs');
+if (githubOk) mark('github', 9);
+else markFailed('github', 'GitHub sync failed');
 
 // B 站接口偶发风控；失败时保留已有归档，不阻塞其他来源。
-run('B站个人主页', 'scripts/sync-bilibili-profile.mjs');
-run('B站空间新视频', 'scripts/sync-bilibili-space.mjs');
+const profileOk = run('B站个人主页', 'scripts/sync-bilibili-profile.mjs');
+const spaceOk = run('B站空间新视频', 'scripts/sync-bilibili-space.mjs');
 const coversOk = run('B站封面与元数据', 'scripts/fetch-covers.mjs');
 const seasonsOk = run('B站合集', 'scripts/sync-bilibili-seasons.mjs');
-run('B站视频评论', 'scripts/sync-bilibili-comments.mjs');
-if (coversOk || seasonsOk) mark('bilibili', countVideos());
+const commentsOk = run('B站视频评论', 'scripts/sync-bilibili-comments.mjs');
+if (profileOk && spaceOk && coversOk && seasonsOk && commentsOk) mark('bilibili', countVideos());
+else markFailed('bilibili', '部分 B 站数据同步失败');
 
 console.log(`\n[sync] 完成${failures.length ? `，失败：${failures.join('、')}` : '，全部成功'}`);
 // 允许部分失败：工作流仍然提交成功更新的数据与状态。
