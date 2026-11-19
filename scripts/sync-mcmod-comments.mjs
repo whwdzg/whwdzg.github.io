@@ -65,7 +65,36 @@ async function fetchComments(entry, channel) {
     replyCount: Number(row.reply_count ?? 0),
     likes: Number(row.attitude?.up ?? 0),
     text: htmlToText(row.content),
+    replies: [],
   }));
+}
+
+async function fetchReplies(commentId, entryUrl) {
+  const all = [];
+  let totalPage = 1;
+  for (let page = 1; page <= Math.min(totalPage, 5); page += 1) {
+    const body = 'data=' + encodeURIComponent(JSON.stringify({ replyID: String(commentId), page }));
+    const response = await fetch('https://www.mcmod.cn/frame/comment/CommentReply/', {
+      method: 'POST',
+      headers: { ...HEADERS, Referer: entryUrl },
+      body,
+    });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const json = await response.json();
+    if (json.state !== 0 || !json.data) break;
+    totalPage = Number(json.data.page?.total_page ?? 1);
+    all.push(...(json.data.row ?? []).map((row) => ({
+      id: String(row.id ?? ''),
+      author: String(row.user?.name ?? 'MC百科用户'),
+      avatar: String(row.user?.avatar?.img ?? '').replace(/^\/\//, 'https://'),
+      replyTo: String(row.reply_user?.name ?? ''),
+      date: String(row.time?.source ?? ''),
+      relative: String(row.time?.range ?? ''),
+      likes: Number(row.attitude?.up ?? 0),
+      text: htmlToText(row.content),
+    })));
+  }
+  return all;
 }
 
 function previous() {
@@ -89,6 +118,15 @@ for (const entry of ENTRIES) {
       seen.add(comment.id);
       return true;
     }).sort((a, b) => b.date.localeCompare(a.date));
+    for (const comment of result[entry.slug]) {
+      if (!comment.replyCount) continue;
+      try {
+        comment.replies = await fetchReplies(comment.id, entry.url);
+      } catch (error) {
+        comment.replies = [];
+        console.warn('[mcmod-comments] replies ' + comment.id + ' failed: ' + error.message);
+      }
+    }
     console.log('[mcmod-comments] ' + entry.slug + ': ' + result[entry.slug].length + ' comments');
   } catch (error) {
     const fallback = old[entry.slug] ?? [];
@@ -98,6 +136,17 @@ for (const entry of ENTRIES) {
 }
 
 const content = `/* 由 scripts/sync-mcmod-comments.mjs 生成，请勿手动编辑。 */
+export interface McmodReply {
+  id: string;
+  author: string;
+  avatar: string;
+  replyTo: string;
+  date: string;
+  relative: string;
+  likes: number;
+  text: string;
+}
+
 export interface McmodComment {
   id: string;
   author: string;
@@ -109,6 +158,7 @@ export interface McmodComment {
   replyCount: number;
   likes: number;
   text: string;
+  replies: McmodReply[];
 }
 
 export type McmodComments = Record<string, McmodComment[]>;

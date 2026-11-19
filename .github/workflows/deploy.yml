@@ -45,6 +45,9 @@ jobs:
         run: |
           test -f dist/index.html
           test -f dist/bilibili/index.html
+          test -f dist/bilibili/videos/index.html
+          test -f dist/bilibili/dynamics/index.html
+          test -f dist/bilibili/columns/index.html
           test -f dist/comments/index.html
           test -f dist/comments/github/index.html
           test -f dist/projects/modrinth/index.html

@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.9.7",
-  "description": "沧海水鱼内容站点 3.9.7 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.10.0",
+  "description": "沧海水鱼内容站点 3.10.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "712ee61f1adc8585223f5d17071ec1412ed8593d",
-  "commitShort": "712ee61",
-  "commitTime": "2026-11-19T01:52:23+08:00",
-  "buildTime": "2026-11-19T14:44:24.759Z",
+  "commit": "78a61bef2c47bab03a6c96687f0311998e40e570",
+  "commitShort": "78a61be",
+  "commitTime": "2026-11-19T22:46:40+08:00",
+  "buildTime": "2026-11-19T15:25:05.388Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "78a61bef2c47bab03a6c96687f0311998e40e570",
+      "short": "78a61bef",
+      "time": "2026-11-19T22:46:40+08:00",
+      "author": "Alex Yang",
+      "subject": "content: replace first column with latest Bilibili post",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/78a61bef2c47bab03a6c96687f0311998e40e570"
+    },
     {
       "hash": "712ee61f1adc8585223f5d17071ec1412ed8593d",
       "short": "712ee61f",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "content: refresh Wiki mirror info and homepage",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/94f1ae328fb7eeabf3f3cc05066a1b3ad400afb5"
-    },
-    {
-      "hash": "f86c1b93bce72d76efd4b700f2cfb576c2dd5399",
-      "short": "f86c1b93",
-      "time": "2026-11-18T00:55:24+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: include Bilibili live replay uploads",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/f86c1b93bce72d76efd4b700f2cfb576c2dd5399"
     }
   ]
 }

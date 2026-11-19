@@ -44,6 +44,7 @@ run('MC百科评论', 'scripts/sync-mcmod-comments.mjs');
 if (run('GitHub', 'scripts/sync-github.mjs')) mark('github', 9);
 
 // B 站接口偶发风控；失败时保留已有归档，不阻塞其他来源。
+run('B站个人主页', 'scripts/sync-bilibili-profile.mjs');
 run('B站空间新视频', 'scripts/sync-bilibili-space.mjs');
 const coversOk = run('B站封面与元数据', 'scripts/fetch-covers.mjs');
 const seasonsOk = run('B站合集', 'scripts/sync-bilibili-seasons.mjs');

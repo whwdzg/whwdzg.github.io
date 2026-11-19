@@ -26,6 +26,7 @@ import { VideoDetail } from '../components/bilibili/VideoDetail';
 import { CollectionDetail } from '../components/bilibili/CollectionDetail';
 import { Button, IconButton } from '../components/common/Button';
 import { Select } from '../components/common/Select';
+import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
 import { useRouter } from '../lib/router';
 import { readStorage, writeStorage } from '../lib/storage';
 import { videos, videosById, videoStats, type Video } from '../data/videos';
@@ -155,18 +156,18 @@ export default function BilibiliPage() {
     if (video.status === 'collection') {
       setDetailId(null);
       setCollectionVideo(video);
-      navigate('/bilibili/', { replace: true, scroll: false });
+      navigate('/bilibili/videos/', { replace: true, scroll: false });
       return;
     }
     setCollectionVideo(null);
     setDetailId(video.id);
-    navigate(`/bilibili/?video=${video.id}`, { replace: true, scroll: false });
+    navigate(`/bilibili/videos/?video=${video.id}`, { replace: true, scroll: false });
   };
 
   const closeDetail = () => {
     setDetailId(null);
     setCollectionVideo(null);
-    navigate('/bilibili/', { replace: true, scroll: false });
+    navigate('/bilibili/videos/', { replace: true, scroll: false });
   };
 
   const detailList = filtered.length ? filtered : videos;
@@ -264,6 +265,8 @@ export default function BilibiliPage() {
           </div>
         }
       />
+
+      <div className="container"><BilibiliTabs active="videos" /></div>
 
       <section className="section archive" aria-labelledby="archive-title">
         <div className="container">
