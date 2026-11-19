@@ -8,6 +8,7 @@ import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
 import { Reveal } from '../components/common/Reveal';
 import { BilibiliStats } from '../components/bilibili/BilibiliStats';
 import { BilibiliComments } from '../components/bilibili/BilibiliComments';
+import { BilibiliDynamicText } from '../components/bilibili/BilibiliDynamicText';
 import { StaleBadge, isSyncSourceStale } from '../components/common/StaleBadge';
 import '../styles/bilibili-profile.css';
 
@@ -50,13 +51,22 @@ export default function BilibiliDynamicsPage() {
                   <a className="badge" href={dynamic.url} target="_blank" rel="noopener noreferrer">动态 #{dynamic.id}</a>
                   <span className="bili-dynamic-card__likes">{formatViews(dynamic.stats.like)} 赞</span>
                 </div>
-                <p>{dynamic.text}</p>
+                <BilibiliDynamicText dynamic={dynamic} className="bili-dynamic-card__text" />
+                {dynamic.images.length > 0 && (
+                  <div className="bili-dynamic-images">
+                    {dynamic.images.map((image, imageIndex) => (
+                      <a key={image.url} href={dynamic.url} target="_blank" rel="noopener noreferrer" aria-label={`查看动态图片 ${imageIndex + 1}`}>
+                        <img src={image.url} alt="" width={image.width || 480} height={image.height || 480} loading="lazy" data-lightbox="on" referrerPolicy="no-referrer" />
+                      </a>
+                    ))}
+                  </div>
+                )}
                 <BilibiliStats stats={dynamic.stats} sourceUrl={dynamic.url} />
                 <div className="bili-dynamic-card__foot">
-                  <span>{dynamic.cover ? '含图片' : '文字动态'} · {dynamic.date ? formatDate(dynamic.date) : '近期'}</span>
+                  <span>{dynamic.date ? `发布于 ${formatDate(dynamic.date)}` : '发布日期未记录'}</span>
                   <button type="button" className="bili-dynamic-card__toggle" aria-expanded={openComments.has(dynamic.id)} onClick={() => toggleComments(dynamic.id)}>
                     <CommentRegular aria-hidden />
-                    {openComments.has(dynamic.id) ? '收起评论' : `查看评论 ${dynamic.comments.length ? `(${dynamic.comments.length})` : ''}`}
+                    {openComments.has(dynamic.id) ? '收起评论' : `查看评论 (${dynamic.stats.comment})`}
                   </button>
                 </div>
                 {openComments.has(dynamic.id) && (

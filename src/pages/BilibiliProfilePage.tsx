@@ -3,10 +3,11 @@ import { ArrowRightRegular, ArrowSyncRegular, CalendarLtrRegular, OpenRegular, P
 import { Link } from '../lib/router';
 import { BILIBILI_PROFILE, BILIBILI_PROFILE_SYNCED_AT, BILIBILI_DYNAMICS } from '../data/bilibili-profile';
 import { videos } from '../data/videos';
-import { formatDateTime, formatViews, relativeTime } from '../lib/format';
+import { formatDate, formatDateTime, formatViews, relativeTime } from '../lib/format';
 import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
 import { Reveal } from '../components/common/Reveal';
 import { StaleBadge, isSyncSourceStale } from '../components/common/StaleBadge';
+import { BilibiliDynamicText } from '../components/bilibili/BilibiliDynamicText';
 import '../styles/bilibili-profile.css';
 
 export default function BilibiliProfilePage() {
@@ -131,8 +132,9 @@ export default function BilibiliProfilePage() {
               <div className="bili-recent-dynamics">
                 {BILIBILI_DYNAMICS.slice(0, 3).map((dynamic) => (
                   <a key={dynamic.id} href={dynamic.url} target="_blank" rel="noopener noreferrer">
-                    <p>{dynamic.text}</p>
-                    <small>{dynamic.likes} 赞 <OpenRegular aria-hidden /></small>
+                    <BilibiliDynamicText dynamic={dynamic} />
+                    {dynamic.images[0] && <img className="bili-recent-dynamics__image" src={dynamic.images[0].url} alt="" loading="lazy" data-lightbox="on" />}
+                    <small>{dynamic.date ? formatDate(dynamic.date) : '发布日期未记录'} · {dynamic.likes} 赞 <OpenRegular aria-hidden /></small>
                   </a>
                 ))}
               </div>

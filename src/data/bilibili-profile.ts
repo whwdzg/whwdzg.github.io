@@ -38,6 +38,8 @@ export interface BilibiliDynamic {
   likes: number;
   cover: string;
   date: string;
+  emojis: Array<{ token: string; icon: string; jump: string }>;
+  images: Array<{ url: string; width: number; height: number }>;
   stats: {
     like: number;
     coin: number;
@@ -60,7 +62,7 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-19T16:03:20.052Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-19T16:39:25.661Z";
 
 export const BILIBILI_PROFILE: BilibiliProfile = {
   "name": "沧海水鱼",
@@ -93,6 +95,14 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 6,
     "cover": "",
     "date": "2026-09-16T16:50:15.000Z",
+    "emojis": [
+      {
+        "token": "[东方收藏集·浮生若梦_吃桃]",
+        "icon": "/media/bilibili/dynamic-emoji-1248714561144487970-0.png",
+        "jump": ""
+      }
+    ],
+    "images": [],
     "stats": {
       "like": 6,
       "coin": 0,
@@ -118,6 +128,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 2,
     "cover": "",
     "date": "2026-09-05T16:10:42.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 2,
       "coin": 0,
@@ -134,6 +146,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 1,
     "cover": "",
     "date": "2026-08-29T07:00:22.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 1,
       "coin": 0,
@@ -150,6 +164,20 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 3,
     "cover": "",
     "date": "2026-08-11T14:50:47.000Z",
+    "emojis": [
+      {
+        "token": "[微笑]",
+        "icon": "/media/bilibili/dynamic-emoji-1235324708551917589-0.png",
+        "jump": ""
+      }
+    ],
+    "images": [
+      {
+        "url": "/media/bilibili/dynamic-1235324708551917589-0.png",
+        "width": 600,
+        "height": 600
+      }
+    ],
     "stats": {
       "like": 3,
       "coin": 0,
@@ -183,6 +211,14 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 1,
     "cover": "",
     "date": "2026-07-25T13:53:53.000Z",
+    "emojis": [
+      {
+        "token": "[笑哭]",
+        "icon": "/media/bilibili/dynamic-emoji-1229001597567107081-0.png",
+        "jump": ""
+      }
+    ],
+    "images": [],
     "stats": {
       "like": 1,
       "coin": 0,
@@ -199,6 +235,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 4,
     "cover": "",
     "date": "2026-07-11T15:11:30.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 4,
       "coin": 0,
@@ -224,6 +262,14 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 5,
     "cover": "",
     "date": "2026-07-05T15:11:30.000Z",
+    "emojis": [
+      {
+        "token": "[藏狐]",
+        "icon": "/media/bilibili/dynamic-emoji-1221599895689887760-0.png",
+        "jump": ""
+      }
+    ],
+    "images": [],
     "stats": {
       "like": 5,
       "coin": 0,
@@ -257,6 +303,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 4,
     "cover": "",
     "date": "2026-05-31T09:40:45.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 4,
       "coin": 0,
@@ -294,10 +342,12 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
   {
     "id": "1172575768907087880",
     "url": "https://www.bilibili.com/opus/1172575768907087880",
-    "text": "数据包官网上线了",
+    "text": "更好的合成配方，更好的生物掉落，更好附魔等数据包已上线官网，支持查看数据包具体内容\nwhwdzg.github.io/projects/modrinth",
     "likes": 2,
     "cover": "",
     "date": "2026-02-23T12:32:51.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 2,
       "coin": 0,
@@ -310,10 +360,18 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
   {
     "id": "1170000334748123174",
     "url": "https://www.bilibili.com/opus/1170000334748123174",
-    "text": "各位除夕快乐！",
+    "text": "[Phigros_phi]",
     "likes": 3,
     "cover": "",
     "date": "2026-02-16T13:58:51.000Z",
+    "emojis": [
+      {
+        "token": "[Phigros_phi]",
+        "icon": "/media/bilibili/dynamic-emoji-1170000334748123174-0.png",
+        "jump": ""
+      }
+    ],
+    "images": [],
     "stats": {
       "like": 3,
       "coin": 0,
@@ -330,6 +388,14 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 5,
     "cover": "",
     "date": "2026-01-01T02:25:26.000Z",
+    "emojis": [
+      {
+        "token": "[Phigros_诶嘿]",
+        "icon": "/media/bilibili/dynamic-emoji-1152751724581093395-0.png",
+        "jump": ""
+      }
+    ],
+    "images": [],
     "stats": {
       "like": 5,
       "coin": 0,
@@ -342,10 +408,12 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
   {
     "id": "1123954050467889159",
     "url": "https://www.bilibili.com/opus/1123954050467889159",
-    "text": "新数据包！更好附魔",
+    "text": "更改一些原版附魔的效果和适用范围\nMCMOD：https://www.mcmod.cn/class/22543.html\nModrinth：https://modrinth.com/datapack/better-enchantment",
     "likes": 2,
     "cover": "",
     "date": "2025-10-15T11:55:45.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 2,
       "coin": 0,
@@ -375,10 +443,12 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
   {
     "id": "1119905330807963656",
     "url": "https://www.bilibili.com/opus/1119905330807963656",
-    "text": "数据包更新快报",
+    "text": "更好的生物掉落1.2.4\n更好的合成配方1.9.1\n\n适配了1.21.9+版本的pack.mcmeta格式",
     "likes": 2,
     "cover": "",
     "date": "2025-10-04T14:04:39.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 2,
       "coin": 0,
@@ -404,6 +474,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 0,
     "cover": "",
     "date": "2025-10-03T04:09:14.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 0,
       "coin": 0,
@@ -416,10 +488,12 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
   {
     "id": "1117615082447044630",
     "url": "https://www.bilibili.com/opus/1117615082447044630",
-    "text": "关于更好的合成配方数据包的更新",
+    "text": "我发起了一个投票​关于是否要加入生物蛋配方\n另外各位觉得有没有必要加切石机加工木板的配方",
     "likes": 0,
     "cover": "",
     "date": "2025-09-28T09:57:19.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 0,
       "coin": 0,
@@ -432,10 +506,12 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
   {
     "id": "1112041164127600663",
     "url": "https://www.bilibili.com/opus/1112041164127600663",
-    "text": "数据包更新快报",
+    "text": "whwdzg的配方（whwdzg' Recipe)现已在1.9.0版本已更名为更好的合成配方（Better Crafting Recipes）",
     "likes": 2,
     "cover": "",
     "date": "2025-09-13T09:27:40.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 2,
       "coin": 0,
@@ -469,6 +545,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 5,
     "cover": "",
     "date": "2025-08-10T07:02:23.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 5,
       "coin": 0,
@@ -485,6 +563,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 7,
     "cover": "",
     "date": "2025-07-31T12:57:40.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 7,
       "coin": 0,
@@ -514,10 +594,12 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
   {
     "id": "1093953420446924801",
     "url": "https://www.bilibili.com/opus/1093953420446924801",
-    "text": "停更通知",
+    "text": "马上就是搬运视频一周年了\n很遗憾的是由于个人原因将暂停搬运工作\n感谢一年来各位的支持！",
     "likes": 11,
     "cover": "",
     "date": "2025-07-26T15:37:59.000Z",
+    "emojis": [],
+    "images": [],
     "stats": {
       "like": 11,
       "coin": 0,
@@ -534,6 +616,14 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "likes": 4,
     "cover": "",
     "date": "2025-07-11T23:22:14.000Z",
+    "emojis": [
+      {
+        "token": "[脱单doge]",
+        "icon": "/media/bilibili/dynamic-emoji-1088506779148484614-0.png",
+        "jump": ""
+      }
+    ],
+    "images": [],
     "stats": {
       "like": 4,
       "coin": 0,

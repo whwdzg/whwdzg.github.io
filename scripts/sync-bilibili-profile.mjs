@@ -58,6 +58,44 @@ function toDynamicComment(reply) {
   };
 }
 
+function extractContent(detail) {
+  const module = detail.modules?.find((entry) => entry.module_type === 'MODULE_TYPE_CONTENT')?.module_content;
+  const paragraphs = module?.paragraphs ?? [];
+  const emojis = new Map();
+  const images = [];
+  let text = '';
+  for (const paragraph of paragraphs) {
+    for (const node of paragraph.text?.nodes ?? []) {
+      if (node.type === 'TEXT_NODE_TYPE_WORD') {
+        text += node.word?.words ?? '';
+      } else if (node.type === 'TEXT_NODE_TYPE_RICH' && node.rich) {
+        const rich = node.rich;
+        if (rich.type === 'RICH_TEXT_NODE_TYPE_EMOJI' && rich.emoji) {
+          const token = String(rich.text ?? rich.emoji.text ?? '');
+          if (token && !emojis.has(token)) {
+            emojis.set(token, {
+              token,
+              icon: String(rich.emoji.icon_url ?? rich.icon_url ?? '').replace(/^\/\//, 'https://'),
+              jump: String(rich.jump_url ?? rich.emoji.jump_url ?? '').replace(/^\/\//, 'https://'),
+            });
+          }
+        }
+        text += String(rich.text ?? '');
+      }
+    }
+    for (const picture of paragraph.pic?.pics ?? []) {
+      const url = String(picture.url ?? '').replace(/^http:/, 'https:');
+      if (url) images.push({ url, width: Number(picture.width ?? 0), height: Number(picture.height ?? 0) });
+    }
+    text += '\n\n';
+  }
+  return {
+    text: text.replace(/\n{3,}/g, '\n\n').trim(),
+    emojis: [...emojis.values()],
+    images,
+  };
+}
+
 async function fetchOpusDetail(id) {
   const response = await fetch('https://www.bilibili.com/opus/' + id, { headers: MOBILE_HEADERS });
   if (!response.ok) throw new Error('HTTP ' + response.status);
@@ -75,6 +113,7 @@ async function fetchOpusDetail(id) {
     stat: stat ?? {},
     basic,
     pubTs: Number(author?.pub_ts ?? 0) || null,
+    content: extractContent(detail),
   };
 }
 
@@ -100,6 +139,8 @@ const dynamics = (opus.items ?? []).map((item) => ({
   likes: Number(item.stat?.like ?? 0),
   cover: absolute(item.cover ?? ''),
   date: '',
+  emojis: [],
+  images: [],
   stats: {
     like: Number(item.stat?.like ?? 0),
     coin: 0,
@@ -121,6 +162,15 @@ for (const dynamic of dynamics) {
       share: Number(detail.stat.forward?.count ?? 0),
       comment: Number(detail.stat.comment?.count ?? 0),
     };
+    if (detail.content?.text) dynamic.text = detail.content.text;
+    dynamic.emojis = [];
+    for (const [index, emoji] of (detail.content?.emojis ?? []).entries()) {
+      dynamic.emojis.push({ ...emoji, icon: await cacheImage(emoji.icon, 'dynamic-emoji-' + dynamic.id + '-' + index + '.png') });
+    }
+    dynamic.images = [];
+    for (const [index, image] of (detail.content?.images ?? []).entries()) {
+      dynamic.images.push({ ...image, url: await cacheImage(image.url, 'dynamic-' + dynamic.id + '-' + index + '.png') });
+    }
     if (Number(detail.stat.comment?.count ?? 0) > 0) {
       dynamic.comments = await fetchDynamicComments(detail.basic.comment_type, detail.basic.comment_id_str);
     }
@@ -189,6 +239,8 @@ export interface BilibiliDynamic {
   likes: number;
   cover: string;
   date: string;
+  emojis: Array<{ token: string; icon: string; jump: string }>;
+  images: Array<{ url: string; width: number; height: number }>;
   stats: {
     like: number;
     coin: number;

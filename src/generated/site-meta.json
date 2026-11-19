@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.14.1",
-  "description": "沧海水鱼内容站点 3.14.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.15.0",
+  "description": "沧海水鱼内容站点 3.15.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "0ca4d3b0e778ca3c44cdc5913511e0e1ae04e2bb",
-  "commitShort": "0ca4d3b",
-  "commitTime": "2026-11-20T00:28:22+08:00",
-  "buildTime": "2026-11-19T16:34:53.036Z",
+  "commit": "91d18ce470313c06fb1ab5b2581347a1fbd4b9da",
+  "commitShort": "91d18ce",
+  "commitTime": "2026-11-20T00:36:03+08:00",
+  "buildTime": "2026-11-19T16:44:14.172Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "91d18ce470313c06fb1ab5b2581347a1fbd4b9da",
+      "short": "91d18ce4",
+      "time": "2026-11-20T00:36:03+08:00",
+      "author": "Alex Yang",
+      "subject": "style: polish inline media sliders and controls",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/91d18ce470313c06fb1ab5b2581347a1fbd4b9da"
+    },
     {
       "hash": "0ca4d3b0e778ca3c44cdc5913511e0e1ae04e2bb",
       "short": "0ca4d3b0",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "feat: show MCMOD comments on project pages",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/4b3ed26e6b7060c9d0a15dd2d390fadb935f21e9"
-    },
-    {
-      "hash": "e097eaa9e6431c2cb20decb6a23abc5e63e6e768",
-      "short": "e097eaa9",
-      "time": "2026-11-19T01:08:06+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: show MCMOD comments on project pages",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/e097eaa9e6431c2cb20decb6a23abc5e63e6e768"
     }
   ]
 }

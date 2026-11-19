@@ -59,7 +59,11 @@
 .bili-dynamic-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--stroke)); transform: translateY(-1px); }
 .bili-dynamic-card__head { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
 .bili-dynamic-card__likes { color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
-.bili-dynamic-card > p { margin-top: 9px; color: var(--text-2); font-size: 13px; line-height: 1.9; white-space: pre-line; }
+.bili-dynamic-card__text { margin-top: 9px; color: var(--text-2); font-size: 13px; line-height: 1.9; white-space: pre-line; }
+.bili-dynamic-emoji { display: inline-block; width: 22px; height: 22px; margin: 0 1px; object-fit: contain; vertical-align: -5px; }
+.bili-dynamic-images { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+.bili-dynamic-images a { display: block; overflow: hidden; border: 1px solid var(--stroke); border-radius: 6px; background: var(--surface-2); }
+.bili-dynamic-images img { display: block; width: auto; max-width: 100%; max-height: 240px; object-fit: cover; cursor: zoom-in; }
 .bili-dynamic-card__foot { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--stroke); color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
 .bili-dynamic-card__foot span:last-child { display: inline-flex; align-items: center; gap: 3px; color: var(--accent); }
 .bili-dynamic-card__foot svg { width: 11px; height: 11px; }
@@ -129,3 +133,7 @@
 .bili-comments__empty { margin: 7px 0 0; color: var(--text-3); font-size: 9px; }
 
 .bili-stale-row { margin-top: 8px; }
+
+.bili-dynamic-images a:nth-child(n+2) img { width: 150px; height: 110px; }
+
+.bili-recent-dynamics__image { display: block; width: 100%; max-height: 170px; margin-top: 5px; border: 1px solid var(--stroke); border-radius: 5px; object-fit: cover; cursor: zoom-in; }
