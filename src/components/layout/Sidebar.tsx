@@ -33,6 +33,7 @@ import { siteMeta } from '../../lib/meta';
 import { FluentIcon } from '../common/FluentIcon';
 
 const GROUPS = [
+  { id: 'bilibili', label: '哔哩哔哩', icon: 'tv' },
   { id: 'projects', label: '项目', icon: 'rocket' },
   { id: 'columns', label: '专栏', icon: 'document' },
   { id: 'subsites', label: '子站', icon: 'globe' },
@@ -48,7 +49,7 @@ export function Sidebar() {
   const { toast } = useToast();
   const { canInstall, installed, promptInstall } = useInstallPrompt();
   const ref = useRef<HTMLElement>(null);
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['projects', 'columns', 'subsites', 'tools']));
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['bilibili', 'projects', 'columns', 'subsites', 'tools']));
 
   const close = () => setSidebarOpen(false);
   useFocusTrap(ref, sidebarOpen, close);
@@ -124,7 +125,7 @@ export function Sidebar() {
             <p className="sidebar-nav__title">站点</p>
             <ul className="sidebar-nav__list">
               {PRIMARY_NAV.map((item) => {
-                const active = path === item.to;
+                const active = path === item.to || (item.to === '/bilibili/' && path.startsWith('/bilibili/'));
                 return (
                   <li key={item.to}>
                     <Link
@@ -135,7 +136,6 @@ export function Sidebar() {
                     >
                       <FluentIcon name={item.icon} size={19} aria-hidden />
                       <span className="sidebar-nav__label">{item.label}</span>
-                      {item.to === '/bilibili/' && <span className="sidebar-nav__badge">251</span>}
                     </Link>
                   </li>
                 );
@@ -165,6 +165,14 @@ export function Sidebar() {
                     data-open={open || undefined}
                   >
                     <ul>
+                      {group.id === 'bilibili' && (
+                        <>
+                          <li><Link to="/bilibili/" className="sidebar-group__link" onNavigate={close}><FluentIcon name="person" size={18} aria-hidden /><span>个人主页</span><FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden /></Link></li>
+                          <li><Link to="/bilibili/videos/" className="sidebar-group__link" onNavigate={close}><FluentIcon name="play" size={18} aria-hidden /><span>视频</span><FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden /></Link></li>
+                          <li><Link to="/bilibili/dynamics/" className="sidebar-group__link" onNavigate={close}><FluentIcon name="comment" size={18} aria-hidden /><span>动态</span><FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden /></Link></li>
+                          <li><Link to="/bilibili/columns/" className="sidebar-group__link" onNavigate={close}><FluentIcon name="document" size={18} aria-hidden /><span>专栏</span><FluentIcon name="right" size={13} className="sidebar-group__external" aria-hidden /></Link></li>
+                        </>
+                      )}
                       {group.id === 'columns' && (
                         <>
                           <li>

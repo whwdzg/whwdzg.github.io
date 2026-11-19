@@ -62,7 +62,7 @@ function NotFoundPage() {
         <Link className="btn btn--primary btn--md" to="/">
           回到主页
         </Link>
-        <Link className="btn btn--ghost btn--md" to="/bilibili/">
+        <Link className="btn btn--ghost btn--md" to="/bilibili/videos/">
           看看影像归档
         </Link>
       </div>

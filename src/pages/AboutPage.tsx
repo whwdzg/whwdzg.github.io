@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.10.0',
+    date: '2026-11-20',
+    items: [
+      '哔哩哔哩拆分为个人主页、视频、动态、专栏四个页面；个人主页展示粉丝、关注、获赞、视频 / 动态 / 专栏、归档播放与直播状态，数据由每小时 B 站快照更新。',
+      '新增 B 站动态与专栏子页，动态保留原文和点赞，专栏展示标题、摘要、阅读与点赞。',
+      'MC百科评论支持展开楼中楼，同步抓取每条评论的全部分页回复。',
+    ],
+  },
+  {
     version: '3.9.7',
     date: '2026-11-20',
     items: [
@@ -327,7 +336,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.9.7"
+        eyebrow="ABOUT · 3.10.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -370,7 +379,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.9.7 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.10.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
@@ -590,7 +599,7 @@ export default function AboutPage() {
               title="src/"
               code={`src/
 ├─ components/     # 布局、通用组件、首页 / 视频 / 设置
-├─ pages/          # 30 个路由级页面（懒加载）
+├─ pages/          # 33 个路由级页面（懒加载）
 ├─ hooks/          # 设置、搜索、页眉自动收起、计数等
 ├─ lib/            # 路由、设置、格式化、搜索、PWA
 ├─ data/           # 站点内容、留言、视频、GitHub / 同步状态

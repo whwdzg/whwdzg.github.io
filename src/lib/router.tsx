@@ -26,6 +26,9 @@ import {
 const KNOWN_PATHS = new Set([
   '/',
   '/bilibili/',
+  '/bilibili/videos/',
+  '/bilibili/dynamics/',
+  '/bilibili/columns/',
   '/comments/',
   '/comments/github/',
   '/projects/modrinth/',

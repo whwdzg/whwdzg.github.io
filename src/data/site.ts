@@ -395,7 +395,7 @@ export interface NavItem {
 
 export const PRIMARY_NAV: NavItem[] = [
   { label: '主页', to: '/', icon: 'home', description: '站点概览与最新动态' },
-  { label: '哔哩哔哩', to: '/bilibili/', icon: 'tv', description: '251 条影像归档' },
+  { label: '哔哩哔哩', to: '/bilibili/', icon: 'tv', description: '个人主页 · 视频 / 动态 / 专栏' },
   { label: '留言板', to: '/comments/', icon: 'comment', description: '留言摘录与写作入口' },
   { label: 'GitHub 评论', to: '/comments/github/', icon: 'github', description: 'Issue 驱动的评论区' },
   { label: '关于', to: '/about/', icon: 'info', description: '版本、提交历史与技术说明' },
@@ -404,7 +404,7 @@ export const PRIMARY_NAV: NavItem[] = [
 export const ARCHIVE_LINKS: SiteLink[] = [
   { label: '2.0 源码分支', href: LINKS.repo2, description: '2.0-final 完整静态站', external: true },
   { label: 'Legacy 1.0', href: LINKS.legacy, description: '最初的静态页面', external: true },
-  { label: '本站源码', href: LINKS.repo, description: '3.9.7 的 React + Vite 源码', external: true },
+  { label: '本站源码', href: LINKS.repo, description: '3.10.0 的 React + Vite 源码', external: true },
 ];
 
 export type FluentIconName = keyof typeof FLUENT_ICON_NAMES;

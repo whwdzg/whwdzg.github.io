@@ -1,4 +1,5 @@
 /** MC百科短评 / MCMOD comments snapshot. */
+import { useState } from 'react';
 import { CommentRegular, OpenRegular } from '@fluentui/react-icons';
 import { MCMOD_COMMENTS_SYNCED_AT, mcmodComments } from '../../data/projects/mcmod-comments';
 import { mcmodProject } from '../../data/projects/mcmod';
@@ -18,6 +19,16 @@ const CHANNELS: Record<number, string> = {
 export function McmodComments({ slug }: McmodCommentsProps) {
   const entry = mcmodProject(slug);
   const comments = mcmodComments(slug);
+  const replyTotal = comments.reduce((sum, comment) => sum + comment.replies.length, 0);
+  const [openReplies, setOpenReplies] = useState<Set<string>>(() => new Set());
+  const toggleReplies = (id: string) => {
+    setOpenReplies((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
   return (
     <Reveal as="section" className="article-card" id="mcmod-comments">
       <div className="article-card__head">
@@ -25,10 +36,10 @@ export function McmodComments({ slug }: McmodCommentsProps) {
           <p className="eyebrow">MCMOD · COMMENTS</p>
           <h2>MC百科评论</h2>
         </div>
-        <span className="badge badge--muted">{comments.length} 条短评</span>
+        <span className="badge badge--muted">{comments.length} 条短评{replyTotal ? ` · ${replyTotal} 条楼中楼` : ''}</span>
       </div>
       <p className="project-section-lead">
-        来自 MC百科条目下的公开短评，保留原话与楼层；评论只在构建期同步，不在浏览器里请求 MC百科。
+        来自 MC百科条目下的公开短评，保留原话与楼层；有回复的评论可以展开楼中楼。评论只在构建期同步，不在浏览器里请求 MC百科。
       </p>
       {comments.length ? (
         <div className="mcmod-comment-list">
@@ -54,6 +65,37 @@ export function McmodComments({ slug }: McmodCommentsProps) {
                 </div>
                 <p>{comment.text}</p>
                 {comment.likes > 0 && <small>{comment.likes} 人觉得有用</small>}
+                {comment.replies.length > 0 && (
+                  <div className="mcmod-replies">
+                    <button
+                      type="button"
+                      className="mcmod-replies__toggle"
+                      aria-expanded={openReplies.has(comment.id)}
+                      onClick={() => toggleReplies(comment.id)}
+                    >
+                      <CommentRegular aria-hidden />
+                      {openReplies.has(comment.id) ? '收起楼中楼' : `查看 ${comment.replies.length} 条楼中楼`}
+                    </button>
+                    {openReplies.has(comment.id) && (
+                      <div className="mcmod-reply-list">
+                        {comment.replies.map((reply) => (
+                          <div className="mcmod-reply" key={reply.id}>
+                            <img src={reply.avatar} alt="" width={26} height={26} loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+                            <div>
+                              <div className="mcmod-reply__meta">
+                                <strong>{reply.author}</strong>
+                                {reply.replyTo && <span>回复 @{reply.replyTo}</span>}
+                                <span>{reply.relative || reply.date}</span>
+                              </div>
+                              <p>{reply.text}</p>
+                              {reply.likes > 0 && <small>{reply.likes} 人觉得有用</small>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </article>
           ))}

@@ -83,6 +83,9 @@ export default defineConfig({
       input: {
         main: path.resolve('index.html'),
         bilibili: path.resolve('bilibili/index.html'),
+        bilibiliVideos: path.resolve('bilibili/videos/index.html'),
+        bilibiliDynamics: path.resolve('bilibili/dynamics/index.html'),
+        bilibiliColumns: path.resolve('bilibili/columns/index.html'),
         comments: path.resolve('comments/index.html'),
         commentsGithub: path.resolve('comments/github/index.html'),
         projects: path.resolve('projects/modrinth/index.html'),

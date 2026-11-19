@@ -1,0 +1,100 @@
+/* 哔哩哔哩个人主页 / Bilibili profile hub */
+.page--bili-profile, .page--bili-dynamics, .page--bili-columns { padding-top: 22px; }
+.bili-profile-hero { position: relative; overflow: hidden; border: 1px solid var(--stroke); border-radius: var(--r-xl); background: var(--surface); box-shadow: var(--shadow-2); }
+.bili-profile-hero__cover { height: 140px; background:
+  radial-gradient(90% 150% at 15% 0%, rgba(251, 114, 153, 0.42), transparent 65%),
+  radial-gradient(80% 140% at 85% 0%, rgba(90, 160, 255, 0.35), transparent 65%),
+  linear-gradient(115deg, #182536, #0c1420); }
+.bili-profile-hero__body { display: flex; align-items: flex-end; gap: 18px; padding: 0 22px 18px; }
+.bili-profile-avatar { width: 96px; height: 96px; flex: 0 0 auto; margin-top: -48px; border: 4px solid var(--surface); border-radius: 50%; object-fit: cover; background: var(--surface-2); box-shadow: 0 10px 26px rgba(0,0,0,.2); }
+.bili-profile-identity { min-width: 0; flex: 1; }
+.bili-profile-identity h1 { margin: 2px 0 0; color: var(--text); font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px); line-height: 1.05; }
+.bili-profile-sign { max-width: 60ch; margin-top: 4px; color: var(--text-2); font-size: 11px; line-height: 1.6; white-space: pre-line; }
+.bili-profile-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.bili-profile-badges span { padding: 3px 8px; border: 1px solid var(--stroke); border-radius: var(--r-pill); background: var(--surface-2); color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
+.bili-profile-hero__body > .btn { flex: 0 0 auto; margin-bottom: 4px; }
+
+.bili-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin: 14px 0 0; padding: 4px; border: 1px solid var(--stroke); border-radius: var(--r-md); background: var(--surface-2); }
+.bili-tab { display: inline-flex; align-items: center; gap: 5px; padding: 7px 11px; border-radius: 6px; color: var(--text-3); font-size: 10px; }
+.bili-tab svg { width: 14px; height: 14px; }
+.bili-tab:hover { color: var(--text); background: var(--surface); }
+.bili-tab.is-active { background: var(--surface-solid); color: var(--accent); box-shadow: var(--shadow-1); font-weight: 650; }
+
+.bili-profile-sync { display: flex; align-items: center; gap: 6px; margin-top: 10px; color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
+.bili-stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin-top: 14px; }
+.bili-stat-card { display: grid; gap: 2px; padding: 12px; border: 1px solid var(--stroke); border-radius: var(--r-md); background: var(--surface); }
+.bili-stat-card > span { color: var(--text-3); font-size: 8px; }
+.bili-stat-card > strong { color: var(--text); font-family: var(--font-display); font-size: 24px; line-height: 1.05; }
+.bili-stat-card > small { color: var(--text-3); font-size: 7.5px; }
+.bili-profile-layout { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 16px; align-items: start; margin-top: 16px; }
+.bili-profile-main { display: grid; gap: 16px; min-width: 0; }
+.bili-profile-side { display: grid; gap: 12px; position: sticky; top: calc(var(--header-offset) + 16px); }
+.bili-announcement__text { white-space: pre-line; color: var(--text-2); font-size: 13px; line-height: 1.9; }
+.bili-live { display: grid; grid-template-columns: 128px minmax(0, 1fr) auto; align-items: center; gap: 11px; padding: 9px; border: 1px solid var(--stroke); border-radius: var(--r-sm); background: var(--surface-2); }
+.bili-live img { display: block; width: 128px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 5px; }
+.bili-live strong { display: block; color: var(--text); font-size: 12px; }
+.bili-live p { margin-top: 3px; color: var(--text-3); font-size: 9px; }
+.bili-recent-videos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+.bili-recent-videos a { display: grid; gap: 5px; min-width: 0; }
+.bili-recent-videos img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border: 1px solid var(--stroke); border-radius: 5px; }
+.bili-recent-videos span { display: -webkit-box; overflow: hidden; color: var(--text-2); font-size: 9px; line-height: 1.5; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.bili-recent-dynamics { display: grid; gap: 6px; }
+.bili-recent-dynamics a { display: grid; gap: 4px; padding: 8px 9px; border: 1px solid var(--stroke); border-radius: 5px; background: var(--surface-2); }
+.bili-recent-dynamics p { display: -webkit-box; overflow: hidden; margin: 0; color: var(--text-2); font-size: 10px; line-height: 1.6; white-space: pre-line; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+.bili-recent-dynamics small { display: inline-flex; align-items: center; gap: 3px; color: var(--text-3); font-family: var(--font-mono); font-size: 7.5px; }
+.bili-side-card { padding: 14px; border: 1px solid var(--stroke); border-radius: var(--r-lg); background: var(--surface); }
+.bili-side-card h2 { margin: 4px 0 9px; color: var(--text); font-size: 16px; }
+.bili-side-link { display: flex; align-items: center; gap: 7px; padding: 8px 4px; border-top: 1px solid var(--stroke); color: var(--text-2); }
+.bili-side-link > svg:first-child { width: 16px; height: 16px; color: var(--accent); }
+.bili-side-link > span { display: grid; flex: 1; gap: 1px; }
+.bili-side-link strong { color: var(--text); font-size: 10px; }
+.bili-side-link small { color: var(--text-3); font-size: 8px; }
+.bili-side-link > svg:last-child { width: 12px; height: 12px; color: var(--text-3); }
+.bili-profile-note { color: var(--text-3); font-size: 8px; line-height: 1.7; }
+
+/* Sub-pages */
+.bili-subpage { padding-top: 0; }
+.bili-dynamic-list { display: grid; gap: 10px; margin-top: 14px; }
+.bili-dynamic-card { display: block; padding: 14px; border: 1px solid var(--stroke); border-radius: var(--r-lg); background: var(--surface); transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.bili-dynamic-card:hover { border-color: color-mix(in srgb, var(--accent) 42%, var(--stroke)); transform: translateY(-1px); }
+.bili-dynamic-card__head { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.bili-dynamic-card__likes { color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
+.bili-dynamic-card > p { margin-top: 9px; color: var(--text-2); font-size: 13px; line-height: 1.9; white-space: pre-line; }
+.bili-dynamic-card__foot { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--stroke); color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
+.bili-dynamic-card__foot span:last-child { display: inline-flex; align-items: center; gap: 3px; color: var(--accent); }
+.bili-dynamic-card__foot svg { width: 11px; height: 11px; }
+.bili-article-list { display: grid; gap: 10px; margin-top: 14px; }
+.bili-article-card { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 13px; padding: 11px; border: 1px solid var(--stroke); border-radius: var(--r-lg); background: var(--surface); }
+.bili-article-card__visual { display: grid; place-items: center; overflow: hidden; aspect-ratio: 16 / 9; border-radius: var(--r-sm); background: linear-gradient(135deg, var(--accent-softer), var(--surface-2)); color: var(--accent); }
+.bili-article-card__visual img { width: 100%; height: 100%; object-fit: cover; }
+.bili-article-card__visual svg { width: 34px; height: 34px; }
+.bili-article-card__body h2 { margin: 4px 0 0; color: var(--text); font-family: var(--font-display); font-size: 22px; line-height: 1.2; }
+.bili-article-card__body > p:not(.eyebrow) { display: -webkit-box; overflow: hidden; margin-top: 7px; color: var(--text-2); font-size: 11px; line-height: 1.75; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+.bili-article-card__body > div:last-child { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
+.bili-article-card__body > div:last-child strong { display: inline-flex; align-items: center; gap: 3px; margin-left: auto; color: var(--accent); font-weight: 400; }
+.bili-article-card__body > div:last-child svg { width: 11px; height: 11px; }
+.bili-subpage-note { display: flex; align-items: center; gap: 5px; margin-top: 12px; color: var(--text-3); font-size: 8px; }
+.bili-subpage-note svg { width: 13px; height: 13px; color: var(--accent); }
+
+@media (max-width: 900px) {
+  .bili-profile-layout { grid-template-columns: 1fr; }
+  .bili-profile-side { position: static; order: -1; }
+  .bili-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bili-recent-videos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .bili-profile-hero__body { align-items: flex-start; flex-wrap: wrap; gap: 10px; padding: 0 13px 14px; }
+  .bili-profile-avatar { width: 76px; height: 76px; margin-top: -38px; border-width: 3px; }
+  .bili-profile-identity { flex-basis: calc(100% - 90px); }
+  .bili-profile-identity h1 { font-size: 29px; }
+  .bili-profile-hero__body > .btn { margin-left: 86px; }
+  .bili-live { grid-template-columns: 92px minmax(0, 1fr); }
+  .bili-live img { width: 92px; }
+  .bili-live .btn { grid-column: 1 / -1; justify-self: start; }
+  .bili-tabs { gap: 2px; padding: 3px; }
+  .bili-tab { padding: 6px 8px; font-size: 9px; }
+  .bili-article-card { grid-template-columns: 1fr; }
+  .bili-article-card__visual { aspect-ratio: 16 / 8; }
+}
+
+.bili-profile-sync__icon { width: 13px; height: 13px; color: var(--accent); }

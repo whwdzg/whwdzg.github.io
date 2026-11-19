@@ -255,7 +255,7 @@ export function LatestVideos() {
           title="最近影像"
           description="从哔哩哔哩归档里挑出的 6 条。点击卡片可以直接打开归档详情。"
           actions={
-            <Link className="text-link" to="/bilibili/">
+            <Link className="text-link" to="/bilibili/videos/">
               全部 251 条 <ArrowRightRegular aria-hidden />
             </Link>
           }
@@ -264,7 +264,7 @@ export function LatestVideos() {
           {FEATURED_VIDEOS.map((video, index) => (
             <Reveal key={video.id} delay={index * 50} className="video-rail__item">
               <Link
-                to={`/bilibili/?video=${video.id}`}
+                to={`/bilibili/videos/?video=${video.id}`}
                 className="video-mini"
                 aria-label={`${video.title}，${video.date}`}
               >
@@ -289,7 +289,7 @@ export function LatestVideos() {
           <p>
             <EyeRegular aria-hidden /> 封面与时长来自 B 站公开接口，已统一转存为本地 WebP。
           </p>
-          <Link className="btn btn--ghost btn--sm" to="/bilibili/">
+          <Link className="btn btn--ghost btn--sm" to="/bilibili/videos/">
             进入影像归档 <ArrowRightRegular aria-hidden />
           </Link>
         </div>

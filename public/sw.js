@@ -14,6 +14,9 @@ const CACHE = `whwdzg-${VERSION}`;
 const CORE = [
   '/',
   '/bilibili/',
+  '/bilibili/videos/',
+  '/bilibili/dynamics/',
+  '/bilibili/columns/',
   '/comments/',
   '/comments/github/',
   '/projects/modrinth/',

@@ -1,4 +1,4 @@
-# 水鱼 Blog · 3.9.7
+# 水鱼 Blog · 3.10.0
 
 沧海水鱼（whwdzg）的个人网站，2026 年从零重写。
 
@@ -14,7 +14,7 @@
 - **页眉**：固定顶部、玻璃 / 实色可切换；默认展开，全屏闲置时自动收起，鼠标移向顶部立即恢复。设置里可关闭，或扩展为“全屏与滚动”都收起。
 - **侧边栏**：直角矩形，不是圆角卡片；收起时彻底移出视口，不保留窄条；展开时以浮层覆盖内容，点击遮罩或 `Esc` 收起。桌面默认收起，避免遮挡首屏。
 - **主页**：全幅影像轮播、大字号标题、滚动揭示、数字滚动、悬停高光、时间线与 CTA。轮播只渲染当前与下一张图。
-- **哔哩哔哩页**：251 条影像归档，支持标题 / 简介 / BV 号搜索、状态与年份筛选、最新 / 最早 / 标题 / 播放量排序、网格 / 列表视图、详情弹窗、上一条 / 下一条、随机一条。
+- **哔哩哔哩**：个人主页展示粉丝、关注、获赞、视频 / 动态 / 专栏与直播数据；视频、动态、专栏拆成独立子页。视频子页保留 251 条影像归档、搜索、筛选、排序、详情弹窗与随机一条。
 - **留言板**：保留人工整理的留言与回复，新增本地草稿编辑器（自动保存、预览、复制、跳转 B 站私信）、留言锚点与目录。
 - **留言板**：站内人工摘录与 GitHub「留言板」Issue 同步驱动；`/comments/github/` 另提供完整 Issue 列表、筛选 / 搜索 / 深链接 / 引用回复，写入统一跳转 GitHub。
 - **项目页**：6 个数据包详情页、`/projects/modrinth/` 索引与「掩星」世界观页；合成、附魔、掉落、染料配方与进度树全部可视化。
@@ -71,7 +71,7 @@ npm run fetch:covers
 
 ```bash
 npm run data:projects   # 读取数据包仓库 + D:\Documents\assets，生成 src/data/projects/* 与物品贴图
-npm run data:sync       # 按顺序同步 Modrinth / MC百科 / GitHub / B站并写状态
+npm run data:sync       # 按顺序同步 Modrinth / MC百科 / GitHub / B站并写状态（含个人主页快照）
 npm run data:modrinth   # 同步 Modrinth 项目数字与最新版本快照
 npm run data:mcmod      # 抓取 MC百科项目浏览 / 编辑 / 标签数据
 npm run data:mcmod-comments # 抓取 MC百科条目短评快照
@@ -91,6 +91,10 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 ├─ index.html                  # 主页入口
 ├─ bilibili/index.html         # 影像归档入口
 ├─ comments/index.html         # 留言板入口
+├─ bilibili/index.html          # 哔哩哔哩个人主页
+├─ bilibili/videos/index.html   # 视频子页
+├─ bilibili/dynamics/index.html # 动态子页
+├─ bilibili/columns/index.html  # 专栏子页
 ├─ comments/github/index.html  # GitHub Issue 评论区入口
 ├─ projects/modrinth/index.html
 ├─ projects/better-crafting-recipes/index.html
@@ -123,7 +127,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 │  │  ├─ tools/                # 工具页外壳
 │  │  ├─ settings/             # 设置面板
 │  │  └─ search/               # 命令面板搜索
-│  ├─ pages/                   # 30 个路由级页面（懒加载），含 projects/ 与 tools/
+│  ├─ pages/                   # 33 个路由级页面（懒加载），含 projects/ 与 tools/
 │  ├─ hooks/                   # 设置、搜索、页眉自动收起、计数、全屏…
 │  ├─ lib/                     # 路由、设置、壁纸、搜索、GitHub API、tools/、mc/、PWA
 │  ├─ data/                    # 站点内容、留言、视频数据、projects/（生成）
@@ -211,7 +215,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 ## 版本与部署
 
-当前版本 **3.9.7**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
+当前版本 **3.10.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
 
 关于页展示：
 
