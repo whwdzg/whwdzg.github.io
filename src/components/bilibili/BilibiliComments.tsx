@@ -21,6 +21,7 @@ export function BilibiliComments({ comments, sourceUrl, count }: { comments: Bil
                   <strong>{comment.author}</strong>
                   {comment.date && <span>{formatDate(comment.date)}</span>}
                   {comment.likes > 0 && <span>{formatViews(comment.likes)} 赞</span>}
+                  {comment.replyCount ? <span>{comment.replyCount} 条回复</span> : null}
                 </div>
                 <p>{comment.text}</p>
               </div>

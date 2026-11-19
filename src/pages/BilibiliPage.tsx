@@ -27,6 +27,7 @@ import { CollectionDetail } from '../components/bilibili/CollectionDetail';
 import { Button, IconButton } from '../components/common/Button';
 import { Select } from '../components/common/Select';
 import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
+import { BILIBILI_COMMENT_PROGRESS } from '../data/bilibili-comments';
 import { StaleBadge } from '../components/common/StaleBadge';
 import { useRouter } from '../lib/router';
 import { readStorage, writeStorage } from '../lib/storage';
@@ -262,6 +263,9 @@ export default function BilibiliPage() {
             </div>
             <p className="archive-summary__note">
               {videoStats.private} 条已私密 · 封面仅在在线视频时抓取
+            </p>
+            <p className="archive-summary__note">
+              评论抓取 {BILIBILI_COMMENT_PROGRESS.covered}/{BILIBILI_COMMENT_PROGRESS.total} · 第 {BILIBILI_COMMENT_PROGRESS.cycle} 轮
             </p>
           </div>
         }

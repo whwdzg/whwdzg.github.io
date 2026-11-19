@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.17.0',
+    date: '2026-11-20',
+    items: [
+      'B 站视频评论改为轮换抓取：每次同步最多 12 条视频，全部覆盖后从最新视频重新开始。',
+      '抓取失败的视频不标记为完成，会在后续轮换中重试。',
+      '评论只抓一级内容；有回复时仅显示回复条数，不抓取回复正文。',
+    ],
+  },
+  {
     version: '3.16.0',
     date: '2026-11-20',
     items: [
@@ -411,7 +420,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.16.0"
+        eyebrow="ABOUT · 3.17.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -454,7 +463,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.16.0 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.17.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
