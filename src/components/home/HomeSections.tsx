@@ -48,13 +48,13 @@ export function NowSection() {
               <SparkleRegular aria-hidden /> NOW · 2026
             </p>
             <h2 id="now-title" className="display-title">
-              一个由 <em>Minecraft</em>、代码与影像构成的
+              一个由 <em>Minecraft</em>、代码、影像与笔记构成的
               <span className="display-title__accent">内容站点。</span>
             </h2>
           </div>
           <div className="now__copy">
             <p>
-              这个站点整理 Minecraft 数据包、哔哩哔哩影像归档、独立子站与前端工具。
+              这个站点整理 Minecraft 数据包、哔哩哔哩影像与动态档案、独立子站与前端工具。
               内容以项目页、归档和可离线使用的工具为主，目标是清晰、快速、可长期维护。
             </p>
             <p>
@@ -72,7 +72,7 @@ export function NowSection() {
                 <CheckmarkCircleRegular aria-hidden /> 251 条影像归档，含 3 条直播回放与 2 个合集
               </li>
               <li>
-                <CheckmarkCircleRegular aria-hidden /> 451 页 Wiki 镜像、掩星世界观页与 GitHub Pages 部署
+                <CheckmarkCircleRegular aria-hidden /> Paligraph 笔记、451 页 Wiki 镜像、掩星世界观页与 GitHub Pages 部署
               </li>
             </ul>
           </div>
@@ -305,7 +305,7 @@ export function TimelineSection() {
         <SectionHeading
           eyebrow="CHANGELOG"
           title="更新轨迹"
-          description="从传统静态页面到 3.3 子站与工具。完整版本号与提交时间在关于页。"
+          description="从传统静态页面到 3.17 档案、评论与笔记。完整版本号与提交时间在关于页。"
         />
         <ol className="timeline__list">
           {TIMELINE.map((entry, index) => (

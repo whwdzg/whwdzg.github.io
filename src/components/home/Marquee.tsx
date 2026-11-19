@@ -8,6 +8,8 @@ const WORDS = [
   'PERFORMANCE',
   'MINECRAFT',
   'BILIBILI',
+  'PALIGRAPH',
+  'MARKDOWN',
   'GPL-3.0',
 ];
 

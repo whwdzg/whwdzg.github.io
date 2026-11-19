@@ -77,6 +77,13 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.17.1',
+    date: '2026-11-20',
+    items: [
+      '首页按当前内容更新：B 站个人主页 / 视频 / 动态 / 专栏、Paligraph Canvas、三个子站、34 个路由与评论轮换。',
+    ],
+  },
+  {
     version: '3.17.0',
     date: '2026-11-20',
     items: [
@@ -420,7 +427,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.17.0"
+        eyebrow="ABOUT · 3.17.1"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -463,7 +470,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.17.0 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.17.1 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

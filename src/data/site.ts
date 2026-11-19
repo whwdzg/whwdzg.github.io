@@ -331,8 +331,8 @@ export const TIMELINE: TimelineEntry[] = [
   {
     year: '2026.11',
     label: '现在',
-    title: '3.3 子站与工具',
-    text: 'Asteria Player、Wiki 全量镜像、GitHub 项目页与掩星世界观页；6 个工具重做，B 站归档含直播回放。',
+    title: '3.17 档案、评论与笔记',
+    text: 'B 站拆分为个人主页、视频、动态与专栏；Paligraph Canvas 加入子站；评论轮换、互动数据、Modrinth 趋势与 GitHub 贡献图同步上线。',
     tone: 'a',
   },
 ];
@@ -371,8 +371,8 @@ export const HIGHLIGHTS: Highlight[] = [
   },
   {
     icon: 'rocket',
-    title: '多入口与 251 条归档',
-    text: '25 个真实 HTML 页面、路由级代码分割、B 站合集 / 直播回放、PWA 缓存与空闲预取。',
+    title: '34 个路由与 251 条归档',
+    text: '34 个真实 HTML 页面、路由级代码分割、B 站个人主页 / 视频 / 动态 / 专栏、PWA 缓存与空闲预取。',
   },
 ];
 
@@ -417,7 +417,7 @@ export const PRIMARY_NAV: NavItem[] = [
 export const ARCHIVE_LINKS: SiteLink[] = [
   { label: '2.0 源码分支', href: LINKS.repo2, description: '2.0-final 完整静态站', external: true },
   { label: 'Legacy 1.0', href: LINKS.legacy, description: '最初的静态页面', external: true },
-  { label: '本站源码', href: LINKS.repo, description: '3.17.0 的 React + Vite 源码', external: true },
+  { label: '本站源码', href: LINKS.repo, description: '3.17.1 的 React + Vite 源码', external: true },
 ];
 
 export type FluentIconName = keyof typeof FLUENT_ICON_NAMES;
