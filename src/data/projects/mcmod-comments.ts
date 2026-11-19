@@ -14,7 +14,7 @@ export interface McmodComment {
 
 export type McmodComments = Record<string, McmodComment[]>;
 
-export const MCMOD_COMMENTS_SYNCED_AT = "2026-11-19T00:25:12.477Z";
+export const MCMOD_COMMENTS_SYNCED_AT = "2026-11-19T08:50:24.273Z";
 
 export const MCMOD_COMMENTS: McmodComments = {
   "better-crafting-recipes": [
@@ -24,7 +24,7 @@ export const MCMOD_COMMENTS: McmodComments = {
       "avatar": "https://i.mcmod.cn/user/avatar/129/1293544/1293544_1765545130_EFok.png@60x60.jpg",
       "floor": "8楼",
       "date": "2026-10-25 10:50:21",
-      "relative": "24天前",
+      "relative": "25天前",
       "channel": 1,
       "replyCount": 2,
       "likes": 0,
@@ -175,7 +175,7 @@ export const MCMOD_COMMENTS: McmodComments = {
       "channel": 1,
       "replyCount": 1,
       "likes": 1,
-      "text": "纠错纠错\n“最新版本的Minecraft中，Mojang为了所谓保护生物，很多生物都没有对应的凋落物，而这个数据包/模组就是为了解决这个问题的！”https://modrinth.com/datapack/better-mob-drop\n“掉落物”写成了“调落物”\n$(\"#link_gjLlZiMDmqQstuQj\").webuiPopover({title:\"这是一个站外链接\",content:\"此链接会跳转到:\nhttps://modrinth.com/datapack/better-mob-drop\n\n前往链接不要再提示我\n\",trigger:\"click\",closeable:true,delay:0});"
+      "text": "纠错纠错\n“最新版本的Minecraft中，Mojang为了所谓保护生物，很多生物都没有对应的凋落物，而这个数据包/模组就是为了解决这个问题的！”https://modrinth.com/datapack/better-mob-drop\n“掉落物”写成了“调落物”\n$(\"#link_fDRVkYtsYQQPlndi\").webuiPopover({title:\"这是一个站外链接\",content:\"此链接会跳转到:\nhttps://modrinth.com/datapack/better-mob-drop\n\n前往链接不要再提示我\n\",trigger:\"click\",closeable:true,delay:0});"
     },
     {
       "id": "1866561",

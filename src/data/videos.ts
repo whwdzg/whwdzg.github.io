@@ -2633,8 +2633,8 @@ export const videos: Video[] = [
     "url": "https://www.bilibili.com/video/BV1xQSRYbEMR",
     "label": "在哔哩哔哩观看",
     "disabled": false,
-    "durationSeconds": null,
-    "views": null
+    "durationSeconds": 40,
+    "views": 920
   },
   {
     "id": 188,
@@ -3535,8 +3535,8 @@ export const videos: Video[] = [
     "url": "https://www.bilibili.com/video/BV1ZpY4emEfA",
     "label": "在哔哩哔哩观看",
     "disabled": false,
-    "durationSeconds": 21,
-    "views": 2737
+    "durationSeconds": null,
+    "views": null
   },
   {
     "id": 234,
