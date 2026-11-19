@@ -405,8 +405,8 @@ export const videos: Video[] = [
     "url": "https://www.bilibili.com/video/BV1CRb768EPj",
     "label": "在哔哩哔哩观看",
     "disabled": false,
-    "durationSeconds": 14,
-    "views": 925
+    "durationSeconds": null,
+    "views": null
   },
   {
     "id": 64,
@@ -966,8 +966,8 @@ export const videos: Video[] = [
     "url": "https://www.bilibili.com/video/BV1GvM2zsExH",
     "label": "在哔哩哔哩观看",
     "disabled": false,
-    "durationSeconds": 19,
-    "views": 21560
+    "durationSeconds": null,
+    "views": null
   },
   {
     "id": 96,
@@ -1171,8 +1171,8 @@ export const videos: Video[] = [
     "url": "https://www.bilibili.com/video/BV15T5tzpEp8",
     "label": "在哔哩哔哩观看",
     "disabled": false,
-    "durationSeconds": 28,
-    "views": 8737
+    "durationSeconds": null,
+    "views": null
   },
   {
     "id": 107,
@@ -2991,8 +2991,8 @@ export const videos: Video[] = [
     "url": "https://www.bilibili.com/video/BV1GWxDeDEwP",
     "label": "在哔哩哔哩观看",
     "disabled": false,
-    "durationSeconds": 33,
-    "views": 3343
+    "durationSeconds": null,
+    "views": null
   },
   {
     "id": 13,
@@ -3127,8 +3127,8 @@ export const videos: Video[] = [
     "url": "https://www.bilibili.com/video/BV11psfebEvL",
     "label": "在哔哩哔哩观看",
     "disabled": false,
-    "durationSeconds": 10,
-    "views": 15805
+    "durationSeconds": null,
+    "views": null
   },
   {
     "id": 213,
@@ -3535,8 +3535,8 @@ export const videos: Video[] = [
     "url": "https://www.bilibili.com/video/BV1ZpY4emEfA",
     "label": "在哔哩哔哩观看",
     "disabled": false,
-    "durationSeconds": null,
-    "views": null
+    "durationSeconds": 21,
+    "views": 2737
   },
   {
     "id": 234,
