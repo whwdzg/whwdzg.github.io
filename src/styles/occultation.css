@@ -781,3 +781,74 @@
   .occultation-terminal__form .occultation-terminal__prompt { font-size: 7.5px; }
   .occultation-terminal__hint { padding-inline: 12px; }
 }
+
+/* 掩星档案式主界面 / archive-style hero */
+.occultation-shell {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  align-items: end;
+  gap: clamp(18px, 4vw, 56px);
+  min-height: calc(100svh - var(--header-offset));
+  padding: 108px clamp(18px, 5vw, 80px) 78px;
+}
+
+
+.occultation-core {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  z-index: 5;
+  max-width: 860px;
+}
+
+.occultation-dossier {
+  position: relative;
+  align-self: center;
+  padding: 14px 14px 12px;
+  border: 1px solid rgba(135, 195, 255, 0.25);
+  background:
+    linear-gradient(180deg, rgba(11, 22, 38, 0.76), rgba(4, 10, 20, 0.82)),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(120, 190, 255, 0.025) 3px 4px);
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(165, 220, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.occultation-dossier::before,
+.occultation-dossier::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-color: rgba(139, 210, 255, 0.72);
+  border-style: solid;
+}
+
+.occultation-dossier::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.occultation-dossier::after { right: -1px; bottom: -1px; border-width: 0 1px 1px 0; }
+
+.occultation-dossier__head { display: flex; justify-content: space-between; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(130, 190, 245, 0.18); color: rgba(156, 213, 255, 0.62); font-family: var(--font-mono); font-size: 7px; letter-spacing: .1em; }
+.occultation-dossier__head span:last-child { color: #7bd8ae; }
+.occultation-dossier__rows { display: grid; gap: 0; }
+.occultation-dossier__rows > div { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(130, 190, 245, 0.1); }
+.occultation-dossier__rows span { color: rgba(140, 188, 230, 0.58); font-family: var(--font-mono); font-size: 7px; letter-spacing: .08em; }
+.occultation-dossier__rows strong { color: rgba(222, 243, 255, 0.85); font-family: var(--font-mono); font-size: 8px; font-weight: 500; letter-spacing: .03em; text-align: right; }
+.occultation-dossier__redacted { display: grid; gap: 5px; margin-top: 12px; padding-top: 11px; border-top: 1px solid rgba(130, 190, 245, 0.14); }
+.occultation-dossier__redacted i { display: block; height: 7px; background: linear-gradient(90deg, rgba(135, 195, 255, 0.2), rgba(135, 195, 255, 0.06)); }
+.occultation-dossier__redacted i:nth-child(2) { width: 78%; }
+.occultation-dossier__redacted i:nth-child(3) { width: 91%; }
+.occultation-dossier__redacted i:nth-child(4) { width: 54%; }
+.occultation-dossier__stamp { margin-top: 10px; color: rgba(123, 216, 174, 0.64); font-family: var(--font-mono); font-size: 7px; letter-spacing: .12em; }
+
+@media (max-width: 900px) {
+  .occultation-shell { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 24px; padding-top: 88px; padding-bottom: 64px; }
+  .occultation-dossier { width: min(100%, 360px); }
+}
+
+@media (max-width: 760px) {
+  .occultation-hud--tl { display: none; }
+  .occultation-shell { min-height: calc(100svh - var(--header-offset)); padding: 78px 16px 58px; }
+  .occultation-dossier { padding: 11px 12px 10px; }
+}

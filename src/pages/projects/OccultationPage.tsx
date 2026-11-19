@@ -104,6 +104,30 @@ function Hud() {
   );
 }
 
+function ArchiveDossier() {
+  return (
+    <aside className="occultation-dossier" aria-label="OCCULTATION ARCHIVE">
+      <div className="occultation-dossier__head">
+        <span>OCCULTATION ARCHIVE</span>
+        <span>SESSION 001 · LINKED</span>
+      </div>
+      <div className="occultation-dossier__rows">
+        <div><span>PROJECT</span><strong>OCCULTATION · 00</strong></div>
+        <div><span>NODE</span><strong>00-A</strong></div>
+        <div><span>RA</span><strong>05h 35m 17.3s</strong></div>
+        <div><span>DEC</span><strong>−05° 23′ 28″</strong></div>
+        <div><span>SIGNAL</span><strong>SIGNAL LOCKED</strong></div>
+        <div><span>PHASE</span><strong>PHASE 00</strong></div>
+        <div><span>DUST</span><strong>UNRESOLVED</strong></div>
+      </div>
+      <div className="occultation-dossier__redacted" aria-hidden>
+        <i /><i /><i /><i />
+      </div>
+      <p className="occultation-dossier__stamp">ARCHIVE INDEX READY</p>
+    </aside>
+  );
+}
+
 type TerminalLine = { type: 'input' | 'output' | 'system'; text: string };
 
 const ZHOU_YI = '周熠。文明官方档案称“周熠体”，民间叫“第七日月亮”“小月亮”“闪星”“睁眼星”。\n\n- **外观**：约 **2 km 直径**圆形人造星体，外壳覆盖类月壤材料，远看像一颗灰色小月亮。表面有微弱反光，近看能看到极细的接缝纹路，但远距离观测与自然天体无异。';
@@ -315,6 +339,19 @@ export default function OccultationPage() {
 
       drawStar(starX, starY, alpha);
 
+      // 掩星视觉：小型遮挡体从光标前缓慢经过。
+      const bodyX = starX + Math.sin(time * 0.00012) * 48;
+      const bodyY = starY - 22 + Math.cos(time * 0.00009) * 14;
+      context.fillStyle = `rgba(4, 9, 18, ${0.88 * alpha})`;
+      context.beginPath();
+      context.arc(bodyX, bodyY, 9, 0, Math.PI * 2);
+      context.fill();
+      context.strokeStyle = `rgba(162, 219, 255, ${0.34 * alpha})`;
+      context.lineWidth = 0.8;
+      context.beginPath();
+      context.arc(bodyX, bodyY, 9, -0.8, 1.9);
+      context.stroke();
+
       // horizontal signal glitch
       if (!reduced && Math.sin(time * 0.0017) > 0.97) {
         const y = Math.random() * height;
@@ -349,7 +386,8 @@ export default function OccultationPage() {
         <ArrowLeftRegular aria-hidden /> PROJECTS
       </Link>
 
-      <div className="occultation-core">
+      <div className="occultation-shell">
+        <div className="occultation-core">
         <p className="occultation-kicker">PROJECT · OCCULTATION · 00</p>
         <h1 id="occultation-title" className="occultation-title">
           <span className="occultation-title__cn" data-text="掩星">掩星</span>
@@ -360,6 +398,8 @@ export default function OccultationPage() {
         <p className="occultation-coordinates" aria-hidden>
           05 35 17.3 / −05 23 28 / DUST NOT SETTLED / TIME STILL WRITING
         </p>
+        </div>
+        <ArchiveDossier />
       </div>
 
       <div className="occultation-corner occultation-corner--bottom" aria-hidden>
