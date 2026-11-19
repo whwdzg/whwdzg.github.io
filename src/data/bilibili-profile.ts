@@ -22,12 +22,30 @@ export interface BilibiliProfile {
   };
 }
 
+export interface BilibiliDynamicComment {
+  id: string;
+  author: string;
+  avatar: string;
+  text: string;
+  likes: number;
+  date: string;
+}
+
 export interface BilibiliDynamic {
   id: string;
   url: string;
   text: string;
   likes: number;
   cover: string;
+  date: string;
+  stats: {
+    like: number;
+    coin: number;
+    favorite: number;
+    share: number;
+    comment: number;
+  };
+  comments: BilibiliDynamicComment[];
 }
 
 export interface BilibiliArticle {
@@ -42,7 +60,7 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-19T15:06:20.052Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-19T15:52:04.489Z";
 
 export const BILIBILI_PROFILE: BilibiliProfile = {
   "name": "沧海水鱼",
@@ -73,140 +91,457 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
     "url": "https://www.bilibili.com/opus/1248714561144487970",
     "text": "关于更新&直播（26/11/8 更新版）\n\n首先给不太认识的朋友介绍一下，这里是沧海水鱼（原 滄海水魚），主要搬运Minecraft官方账号的短视频内容，同时制作一些实用向数据包，并且在剪辑新系列（来福simulation系列）\n\n鉴于一些现生问题，接下来一年内本账号和数据包会进入缓慢维持状态，不保证更新时间和频率、不保证视频翻译、不保证自制内容发布、不保证数据包更新\n\n预计周六晚上会直播（但看具体情况）\n\n一年内的话主要就是偶尔搬运短视频内容，但不会进行翻译工作，总之就是更新会缓慢，短期内我会尽量每周末搬运一波，但这也得看情况了。如果你关注我了，也许，我是说也许也没必要取关，毕竟不定期更新，关注能第一时间看到，而且等我复活也是第一时间\n[东方收藏集·浮生若梦_吃桃]",
     "likes": 6,
-    "cover": ""
+    "cover": "",
+    "date": "2026-09-16T16:50:15.000Z",
+    "stats": {
+      "like": 6,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 2
+    },
+    "comments": [
+      {
+        "id": "316681401105",
+        "author": "hxhej",
+        "avatar": "https://i0.hdslb.com/bfs/face/35d17fa1647b8f3ff9d003cd07e0720114455f73.jpg",
+        "text": "扣一发住址",
+        "likes": 0,
+        "date": "2026-10-10T15:37:51.000Z"
+      }
+    ]
   },
   {
     "id": "1244622432271073304",
     "url": "https://www.bilibili.com/opus/1244622432271073304",
     "text": "来福视频一时半会是剪不出来了，重操旧业搬一下视频",
     "likes": 2,
-    "cover": ""
+    "cover": "",
+    "date": "2026-09-05T16:10:42.000Z",
+    "stats": {
+      "like": 2,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1241883016241872899",
     "url": "https://www.bilibili.com/opus/1241883016241872899",
     "text": "视频什么的。。。我咕咕咕咕咕咕咕咕咕咕咕咕咕",
     "likes": 1,
-    "cover": ""
+    "cover": "",
+    "date": "2026-08-29T07:00:22.000Z",
+    "stats": {
+      "like": 1,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1235324708551917589",
     "url": "https://www.bilibili.com/opus/1235324708551917589",
     "text": "如果顺利的话。。应该这周会把来福S3EP2的视频剪出来\n不顺利的话。。那就很不顺利了\n顺带一提，更新模组后，我ep5又没有录上语音[微笑]",
     "likes": 3,
-    "cover": ""
+    "cover": "",
+    "date": "2026-08-11T14:50:47.000Z",
+    "stats": {
+      "like": 3,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 3
+    },
+    "comments": [
+      {
+        "id": "309920516689",
+        "author": "沧海水鱼",
+        "avatar": "https://i0.hdslb.com/bfs/face/d4e2a7ff7dfaa7b4ef58267299888be69aeceb64.webp",
+        "text": "那理论来说，联投了那我这期不用剪了对吧，所以素材录费了也没关系对吧（对的吧",
+        "likes": 0,
+        "date": "2026-08-12T04:39:00.000Z"
+      },
+      {
+        "id": "309865630929",
+        "author": "Allay还活着",
+        "avatar": "https://i1.hdslb.com/bfs/face/4a92555d07c4cd2beec19e8645ba86c141df6161.jpg",
+        "text": "哇还有安卓猫咪\n陪一张我的【超级拉面猫】",
+        "likes": 0,
+        "date": "2026-08-11T15:20:25.000Z"
+      }
+    ]
   },
   {
     "id": "1229001597567107081",
     "url": "https://www.bilibili.com/opus/1229001597567107081",
     "text": "原谅我咕咕，感觉8月能剪出来第一期视频就不错了[笑哭]",
     "likes": 1,
-    "cover": ""
+    "cover": "",
+    "date": "2026-07-25T13:53:53.000Z",
+    "stats": {
+      "like": 1,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1223826406774931492",
     "url": "https://www.bilibili.com/opus/1223826406774931492",
     "text": "新视频录上了，新视频路上了",
     "likes": 4,
-    "cover": ""
+    "cover": "",
+    "date": "2026-07-11T15:11:30.000Z",
+    "stats": {
+      "like": 4,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 2
+    },
+    "comments": [
+      {
+        "id": "305957815137",
+        "author": "沧海水鱼",
+        "avatar": "https://i0.hdslb.com/bfs/face/d4e2a7ff7dfaa7b4ef58267299888be69aeceb64.webp",
+        "text": "坏消息，录上了但没完全（",
+        "likes": 0,
+        "date": "2026-07-13T09:29:10.000Z"
+      }
+    ]
   },
   {
     "id": "1221599895689887760",
     "url": "https://www.bilibili.com/opus/1221599895689887760",
     "text": "坏消息：素材录废了\n不是也没人告诉我flashback录制还有去设置里打开svc录制啊！\n什么叫你适配了但是需要我手动打开啊[藏狐]",
     "likes": 5,
-    "cover": ""
+    "cover": "",
+    "date": "2026-07-05T15:11:30.000Z",
+    "stats": {
+      "like": 5,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 2
+    },
+    "comments": [
+      {
+        "id": "304986106081",
+        "author": "hxhej",
+        "avatar": "https://i0.hdslb.com/bfs/face/35d17fa1647b8f3ff9d003cd07e0720114455f73.jpg",
+        "text": "who care？",
+        "likes": 2,
+        "date": "2026-07-05T15:15:17.000Z"
+      },
+      {
+        "id": "304985694401",
+        "author": "沧海水鱼",
+        "avatar": "https://i0.hdslb.com/bfs/face/d4e2a7ff7dfaa7b4ef58267299888be69aeceb64.webp",
+        "text": "所以视频又要延期了\n下一期一定剪出来（应该一定可以了吧",
+        "likes": 2,
+        "date": "2026-07-05T15:12:13.000Z"
+      }
+    ]
   },
   {
     "id": "1208526681013223432",
     "url": "https://www.bilibili.com/opus/1208526681013223432",
     "text": "好消息：新视频素材已经录完了\n坏消息：没时间剪\n\n如果这期效果还可以的话，以后应该会做成系列\n也是正式转向自制稿件了",
     "likes": 4,
-    "cover": ""
+    "cover": "",
+    "date": "2026-05-31T09:40:45.000Z",
+    "stats": {
+      "like": 4,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 4
+    },
+    "comments": [
+      {
+        "id": "304254475824",
+        "author": "LimitedShadow",
+        "avatar": "https://i1.hdslb.com/bfs/face/947c04ad8c1e73cb38ae98642f9c0039e9b87a21.jpg",
+        "text": "剪",
+        "likes": 0,
+        "date": "2026-05-31T11:10:22.000Z"
+      },
+      {
+        "id": "301630929329",
+        "author": "风-BEK",
+        "avatar": "https://i1.hdslb.com/bfs/face/0b8d6f638deb8dc2252748f14bc32b9ca09c242a.jpg",
+        "text": "挖",
+        "likes": 0,
+        "date": "2026-06-04T14:44:07.000Z"
+      },
+      {
+        "id": "301220619297",
+        "author": "影湛Viro",
+        "avatar": "https://i0.hdslb.com/bfs/face/1660b31b37136288cb84307869f52d07e72c2346.jpg",
+        "text": "快剪，然后把所有人引来来福simulation陪我们打麦块。",
+        "likes": 0,
+        "date": "2026-05-31T11:10:01.000Z"
+      }
+    ]
   },
   {
     "id": "1172575768907087880",
     "url": "https://www.bilibili.com/opus/1172575768907087880",
     "text": "数据包官网上线了",
     "likes": 2,
-    "cover": ""
+    "cover": "",
+    "date": "2026-02-23T12:32:51.000Z",
+    "stats": {
+      "like": 2,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1170000334748123174",
     "url": "https://www.bilibili.com/opus/1170000334748123174",
     "text": "各位除夕快乐！",
     "likes": 3,
-    "cover": ""
+    "cover": "",
+    "date": "2026-02-16T13:58:51.000Z",
+    "stats": {
+      "like": 3,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1152751724581093395",
     "url": "https://www.bilibili.com/opus/1152751724581093395",
     "text": "新年快乐啊各位！[Phigros_诶嘿]",
     "likes": 5,
-    "cover": ""
+    "cover": "",
+    "date": "2026-01-01T02:25:26.000Z",
+    "stats": {
+      "like": 5,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1123954050467889159",
     "url": "https://www.bilibili.com/opus/1123954050467889159",
     "text": "新数据包！更好附魔",
     "likes": 2,
-    "cover": ""
+    "cover": "",
+    "date": "2025-10-15T11:55:45.000Z",
+    "stats": {
+      "like": 2,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 2
+    },
+    "comments": [
+      {
+        "id": "277930498625",
+        "author": "DFT219",
+        "avatar": "https://i1.hdslb.com/bfs/face/9e1bbfbf552f26d42295eed9f4d4d1b38fdf1e3c.jpg",
+        "text": "已安装，很期待，支持[doge_金箍]",
+        "likes": 0,
+        "date": "2025-10-17T14:04:07.000Z"
+      },
+      {
+        "id": "277737838705",
+        "author": "影湛Viro",
+        "avatar": "https://i0.hdslb.com/bfs/face/1660b31b37136288cb84307869f52d07e72c2346.jpg",
+        "text": "支持",
+        "likes": 0,
+        "date": "2025-10-15T13:40:16.000Z"
+      }
+    ]
   },
   {
     "id": "1119905330807963656",
     "url": "https://www.bilibili.com/opus/1119905330807963656",
     "text": "数据包更新快报",
     "likes": 2,
-    "cover": ""
+    "cover": "",
+    "date": "2025-10-04T14:04:39.000Z",
+    "stats": {
+      "like": 2,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 1
+    },
+    "comments": [
+      {
+        "id": "276592448513",
+        "author": "沧海水鱼",
+        "avatar": "https://i0.hdslb.com/bfs/face/d4e2a7ff7dfaa7b4ef58267299888be69aeceb64.webp",
+        "text": "逃课失败，这波还是得适配，顺便把全部的资源包和数据包版本号都适配了各个版本的语法",
+        "likes": 1,
+        "date": "2025-10-04T14:07:02.000Z"
+      }
+    ]
   },
   {
     "id": "1119380807974125593",
     "url": "https://www.bilibili.com/opus/1119380807974125593",
     "text": "这几天看看有没有空，如果1.21.9/1.21.10需要重新适配的话会做一下适配（不需要适配直接可以用那我直接逃课）",
     "likes": 0,
-    "cover": ""
+    "cover": "",
+    "date": "2025-10-03T04:09:14.000Z",
+    "stats": {
+      "like": 0,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1117615082447044630",
     "url": "https://www.bilibili.com/opus/1117615082447044630",
     "text": "关于更好的合成配方数据包的更新",
     "likes": 0,
-    "cover": ""
+    "cover": "",
+    "date": "2025-09-28T09:57:19.000Z",
+    "stats": {
+      "like": 0,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1112041164127600663",
     "url": "https://www.bilibili.com/opus/1112041164127600663",
     "text": "数据包更新快报",
     "likes": 2,
-    "cover": ""
+    "cover": "",
+    "date": "2025-09-13T09:27:40.000Z",
+    "stats": {
+      "like": 2,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 4
+    },
+    "comments": [
+      {
+        "id": "274547605057",
+        "author": "hxhej",
+        "avatar": "https://i0.hdslb.com/bfs/face/35d17fa1647b8f3ff9d003cd07e0720114455f73.jpg",
+        "text": "删我评论LLL",
+        "likes": 0,
+        "date": "2025-09-13T10:07:53.000Z"
+      },
+      {
+        "id": "274545472529",
+        "author": "影湛Viro",
+        "avatar": "https://i0.hdslb.com/bfs/face/1660b31b37136288cb84307869f52d07e72c2346.jpg",
+        "text": "大师级更新",
+        "likes": 0,
+        "date": "2025-09-13T09:46:53.000Z"
+      }
+    ]
   },
   {
     "id": "1099386828942737410",
     "url": "https://www.bilibili.com/opus/1099386828942737410",
     "text": "欢迎回来，京阿尼",
     "likes": 5,
-    "cover": ""
+    "cover": "",
+    "date": "2025-08-10T07:02:23.000Z",
+    "stats": {
+      "like": 5,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1095767533003210785",
     "url": "https://www.bilibili.com/opus/1095767533003210785",
     "text": "打算给自己三年时间搞一个项目，随时告吹的那种（",
     "likes": 7,
-    "cover": ""
+    "cover": "",
+    "date": "2025-07-31T12:57:40.000Z",
+    "stats": {
+      "like": 7,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 4
+    },
+    "comments": [
+      {
+        "id": "269582097265",
+        "author": "hxhej",
+        "avatar": "https://i0.hdslb.com/bfs/face/35d17fa1647b8f3ff9d003cd07e0720114455f73.jpg",
+        "text": "招。。。笑",
+        "likes": 1,
+        "date": "2025-07-31T13:06:49.000Z"
+      },
+      {
+        "id": "269657529937",
+        "author": "影湛Viro",
+        "avatar": "https://i0.hdslb.com/bfs/face/1660b31b37136288cb84307869f52d07e72c2346.jpg",
+        "text": "[支持]",
+        "likes": 0,
+        "date": "2025-08-01T05:35:14.000Z"
+      }
+    ]
   },
   {
     "id": "1093953420446924801",
     "url": "https://www.bilibili.com/opus/1093953420446924801",
     "text": "停更通知",
     "likes": 11,
-    "cover": ""
+    "cover": "",
+    "date": "2025-07-26T15:37:59.000Z",
+    "stats": {
+      "like": 11,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   },
   {
     "id": "1088506779148484614",
     "url": "https://www.bilibili.com/opus/1088506779148484614",
     "text": "不是？这是哪？谁这么大早把我hou过来了？\n[脱单doge]",
     "likes": 4,
-    "cover": ""
+    "cover": "",
+    "date": "2025-07-11T23:22:14.000Z",
+    "stats": {
+      "like": 4,
+      "coin": 0,
+      "favorite": 0,
+      "share": 0,
+      "comment": 0
+    },
+    "comments": []
   }
 ];
 
@@ -218,7 +553,7 @@ export const BILIBILI_ARTICLES: BilibiliArticle[] = [
     "url": "https://www.bilibili.com/read/cv37503252",
     "cover": "/media/bilibili/article-37503252.jpg",
     "date": "2024-08-23T06:00:29.000Z",
-    "views": 264,
+    "views": 266,
     "likes": 4,
     "words": 730
   }

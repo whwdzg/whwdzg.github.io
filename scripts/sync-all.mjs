@@ -48,6 +48,7 @@ run('B站个人主页', 'scripts/sync-bilibili-profile.mjs');
 run('B站空间新视频', 'scripts/sync-bilibili-space.mjs');
 const coversOk = run('B站封面与元数据', 'scripts/fetch-covers.mjs');
 const seasonsOk = run('B站合集', 'scripts/sync-bilibili-seasons.mjs');
+run('B站视频评论', 'scripts/sync-bilibili-comments.mjs');
 if (coversOk || seasonsOk) mark('bilibili', countVideos());
 
 console.log(`\n[sync] 完成${failures.length ? `，失败：${failures.join('、')}` : '，全部成功'}`);

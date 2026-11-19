@@ -93,6 +93,16 @@ const videos = source.map((video) => {
     disabled,
     durationSeconds: apiOk ? meta.duration : null,
     views: apiOk ? meta.view : null,
+    aid: apiOk ? (meta.aid ?? null) : null,
+    stats: apiOk && meta.stat ? {
+      view: Number(meta.stat.view ?? 0),
+      danmaku: Number(meta.stat.danmaku ?? 0),
+      reply: Number(meta.stat.reply ?? 0),
+      favorite: Number(meta.stat.favorite ?? 0),
+      coin: Number(meta.stat.coin ?? 0),
+      share: Number(meta.stat.share ?? 0),
+      like: Number(meta.stat.like ?? 0),
+    } : null,
     note,
   };
 });
@@ -152,6 +162,8 @@ export interface Video {
   disabled: boolean;
   durationSeconds: number | null;
   views: number | null;
+  aid?: number | null;
+  stats?: { view: number; danmaku: number; reply: number; favorite: number; coin: number; share: number; like: number } | null;
   note?: string;
 }
 

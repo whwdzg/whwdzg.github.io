@@ -35,6 +35,52 @@ async function cacheImage(url, filename) {
   }
 }
 
+const MOBILE_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 Chrome/131.0 Mobile Safari/537.36',
+  Referer: 'https://www.bilibili.com/',
+};
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function toDynamicComment(reply) {
+  return {
+    id: String(reply.rpid ?? ''),
+    author: String(reply.member?.uname ?? 'B 站用户'),
+    avatar: String(reply.member?.avatar ?? '').replace(/^http:/, 'https:'),
+    text: String(reply.content?.message ?? '').trim(),
+    likes: Number(reply.like ?? 0),
+    date: reply.ctime ? new Date(reply.ctime * 1000).toISOString() : '',
+  };
+}
+
+async function fetchOpusDetail(id) {
+  const response = await fetch('https://www.bilibili.com/opus/' + id, { headers: MOBILE_HEADERS });
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+  const html = await response.text();
+  const start = html.indexOf('window.__INITIAL_STATE__=');
+  if (start < 0) throw new Error('no initial state');
+  const end = html.indexOf(';(function()', start);
+  const state = JSON.parse(html.slice(start + 'window.__INITIAL_STATE__='.length, end).trim());
+  const detail = state.opus?.detail;
+  if (!detail) throw new Error('no opus detail');
+  const stat = detail.modules?.find((module) => module.module_type === 'MODULE_TYPE_STAT')?.module_stat;
+  const author = detail.modules?.find((module) => module.module_type === 'MODULE_TYPE_AUTHOR')?.module_author;
+  const basic = detail.basic ?? {};
+  return {
+    stat: stat ?? {},
+    basic,
+    pubTs: Number(author?.pub_ts ?? 0) || null,
+  };
+}
+
+async function fetchDynamicComments(commentType, commentOid) {
+  if (!commentType || !commentOid) return [];
+  const response = await fetch('https://api.bilibili.com/x/v2/reply?type=' + commentType + '&oid=' + commentOid + '&pn=1&ps=6&sort=2', { headers: HEADERS });
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+  const json = await response.json();
+  if (json.code !== 0) return [];
+  return (json.data?.replies ?? []).map(toDynamicComment).filter((comment) => comment.text);
+}
+
 const card = await json('https://api.bilibili.com/x/web-interface/card?mid=' + MID);
 const nav = await json('https://api.bilibili.com/x/space/navnum?mid=' + MID);
 const live = await json('https://api.live.bilibili.com/room/v1/Room/getRoomInfoOld?mid=' + MID);
@@ -47,7 +93,37 @@ const dynamics = (opus.items ?? []).map((item) => ({
   text: String(item.content ?? '').trim(),
   likes: Number(item.stat?.like ?? 0),
   cover: absolute(item.cover ?? ''),
+  date: '',
+  stats: {
+    like: Number(item.stat?.like ?? 0),
+    coin: 0,
+    favorite: 0,
+    share: 0,
+    comment: 0,
+  },
+  comments: [],
 }));
+
+for (const dynamic of dynamics) {
+  try {
+    const detail = await fetchOpusDetail(dynamic.id);
+    dynamic.date = detail.pubTs ? new Date(detail.pubTs * 1000).toISOString() : '';
+    dynamic.stats = {
+      like: Number(detail.stat.like?.count ?? dynamic.stats.like),
+      coin: Number(detail.stat.coin?.count ?? 0),
+      favorite: Number(detail.stat.favorite?.count ?? 0),
+      share: Number(detail.stat.forward?.count ?? 0),
+      comment: Number(detail.stat.comment?.count ?? 0),
+    };
+    if (Number(detail.stat.comment?.count ?? 0) > 0) {
+      dynamic.comments = await fetchDynamicComments(detail.basic.comment_type, detail.basic.comment_id_str);
+    }
+    console.log('[bilibili-profile] dynamic ' + dynamic.id + ' · like ' + dynamic.stats.like + ' · comments ' + dynamic.comments.length);
+  } catch (error) {
+    console.warn('[bilibili-profile] dynamic ' + dynamic.id + ' detail failed: ' + error.message);
+  }
+  await sleep(120);
+}
 const articleList = (article.articles ?? []).map((item) => ({
   id: Number(item.id ?? 0),
   title: String(item.title ?? ''),
@@ -91,12 +167,30 @@ export interface BilibiliProfile {
   };
 }
 
+export interface BilibiliDynamicComment {
+  id: string;
+  author: string;
+  avatar: string;
+  text: string;
+  likes: number;
+  date: string;
+}
+
 export interface BilibiliDynamic {
   id: string;
   url: string;
   text: string;
   likes: number;
   cover: string;
+  date: string;
+  stats: {
+    like: number;
+    coin: number;
+    favorite: number;
+    share: number;
+    comment: number;
+  };
+  comments: BilibiliDynamicComment[];
 }
 
 export interface BilibiliArticle {

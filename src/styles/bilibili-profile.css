@@ -98,3 +98,32 @@
 }
 
 .bili-profile-sync__icon { width: 13px; height: 13px; color: var(--accent); }
+
+/* 三连 / 分享 / 评论 */
+.bili-engagement { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-top: 9px; }
+.bili-engagement__item { display: inline-flex; align-items: center; gap: 3px; padding: 4px 7px; border: 1px solid var(--stroke); border-radius: var(--r-pill); background: var(--surface-2); color: var(--text-2); font-family: var(--font-mono); font-size: 8px; }
+.bili-engagement__item svg { width: 12px; height: 12px; color: var(--text-3); }
+.bili-engagement__item b { color: var(--text); font-size: 9px; font-weight: 650; }
+.bili-engagement__item small { color: var(--text-3); font-size: 7px; }
+.bili-engagement__item.is-like svg { color: #e05a7a; }
+.bili-engagement__item.is-coin svg, .bili-engagement__item.is-favorite svg { color: #e6a23c; }
+.bili-engagement__source { display: inline-flex; align-items: center; gap: 3px; margin-left: auto; color: var(--accent); font-family: var(--font-mono); font-size: 8px; }
+.bili-engagement__source svg { width: 11px; height: 11px; }
+.bili-dynamic-card__toggle { display: inline-flex; align-items: center; gap: 3px; padding: 2px 0; color: var(--accent); font-family: var(--font-mono); font-size: 8px; }
+.bili-dynamic-card__toggle svg { width: 12px; height: 12px; }
+.bili-dynamic-card__toggle:hover { text-decoration: underline; }
+.bili-comments { margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--stroke); }
+.bili-comments__head { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.bili-comments__head h3 { display: inline-flex; align-items: center; gap: 4px; margin: 0; color: var(--text); font-family: var(--font-display); font-size: 13px; }
+.bili-comments__head h3 svg { width: 14px; height: 14px; color: var(--accent); }
+.bili-comments__head > span { color: var(--text-3); font-family: var(--font-mono); font-size: 7.5px; }
+.bili-comments__head > a { display: inline-flex; align-items: center; gap: 3px; margin-left: auto; color: var(--accent); font-family: var(--font-mono); font-size: 8px; }
+.bili-comments__head > a svg { width: 11px; height: 11px; }
+.bili-comments__list { display: grid; gap: 8px; margin: 8px 0 0; padding: 0; list-style: none; }
+.bili-comments__list li { display: flex; align-items: flex-start; gap: 7px; }
+.bili-comments__list img { width: 28px; height: 28px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; background: var(--surface-2); }
+.bili-comments__list li > div { min-width: 0; flex: 1; }
+.bili-comments__meta { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; color: var(--text-3); font-size: 8px; }
+.bili-comments__meta strong { color: var(--text-2); font-size: 9px; }
+.bili-comments__list p { margin: 2px 0 0; color: var(--text-2); font-size: 10px; line-height: 1.65; white-space: pre-line; }
+.bili-comments__empty { margin: 7px 0 0; color: var(--text-3); font-size: 9px; }

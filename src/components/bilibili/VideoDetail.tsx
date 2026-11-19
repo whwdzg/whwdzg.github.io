@@ -16,6 +16,9 @@ import { copyText } from '../../lib/clipboard';
 import { formatDate, formatDuration, formatViews } from '../../lib/format';
 import type { Video } from '../../data/videos';
 import { STATUS_LABELS } from './VideoCard';
+import { BilibiliStats } from './BilibiliStats';
+import { BilibiliComments } from './BilibiliComments';
+import { BILIBILI_VIDEO_COMMENTS } from '../../data/bilibili-comments';
 
 interface VideoDetailProps {
   video: Video | null;
@@ -30,6 +33,7 @@ interface VideoDetailProps {
 export function VideoDetail({ video, onClose, onPrev, onNext, onOpenCollection, hasPrev, hasNext }: VideoDetailProps) {
   const { toast } = useToast();
   const duration = formatDuration(video?.durationSeconds);
+  const comments = video ? BILIBILI_VIDEO_COMMENTS[String(video.id)] ?? [] : [];
 
   useEffect(() => {
     if (!video) return;
@@ -84,6 +88,8 @@ export function VideoDetail({ video, onClose, onPrev, onNext, onOpenCollection, 
               )}
               {video.bvid && <li className="video-detail__bvid">{video.bvid}</li>}
             </ul>
+
+            {video.stats && <BilibiliStats stats={{ like: video.stats.like, coin: video.stats.coin, favorite: video.stats.favorite, share: video.stats.share, comment: video.stats.reply }} sourceUrl={video.url} />}
 
             {video.description && <p className="video-detail__desc">{video.description}</p>}
             {video.note && <p className="video-detail__note">{video.note}</p>}
@@ -140,6 +146,8 @@ export function VideoDetail({ video, onClose, onPrev, onNext, onOpenCollection, 
                 </Button>
               )}
             </div>
+
+            <BilibiliComments comments={comments} sourceUrl={video.url} count={video.stats?.reply} />
 
             <div className="video-detail__nav">
               <Button

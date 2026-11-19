@@ -60,8 +60,10 @@ async function fetchOne(video) {
         title: detail.title,
         pubdate: detail.pubdate,
         duration: detail.duration,
+        aid: detail.aid,
         view: detail.stat?.view,
         danmaku: detail.stat?.danmaku,
+        stat: detail.stat ?? null,
         owner: detail.owner?.name,
         pic: `${String(detail.pic).replace(/^http:/, 'https:')}@640w_360h.webp`,
       };

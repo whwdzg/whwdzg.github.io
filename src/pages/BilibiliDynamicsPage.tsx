@@ -1,19 +1,31 @@
 /** 哔哩哔哩动态 / Bilibili dynamics. */
-import { ArrowRightRegular, CommentRegular, OpenRegular } from '@fluentui/react-icons';
+import { useState } from 'react';
+import { CommentRegular, OpenRegular } from '@fluentui/react-icons';
 import { BILIBILI_DYNAMICS, BILIBILI_PROFILE, BILIBILI_PROFILE_SYNCED_AT } from '../data/bilibili-profile';
-import { formatDateTime, formatViews, relativeTime } from '../lib/format';
+import { formatDate, formatDateTime, formatViews, relativeTime } from '../lib/format';
 import { PageIntro } from '../components/layout/PageIntro';
 import { BilibiliTabs } from '../components/bilibili/BilibiliTabs';
 import { Reveal } from '../components/common/Reveal';
+import { BilibiliStats } from '../components/bilibili/BilibiliStats';
+import { BilibiliComments } from '../components/bilibili/BilibiliComments';
 import '../styles/bilibili-profile.css';
 
 export default function BilibiliDynamicsPage() {
+  const [openComments, setOpenComments] = useState<Set<string>>(() => new Set());
+  const toggleComments = (id: string) => {
+    setOpenComments((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
   return (
     <div className="page page--bili-dynamics">
       <PageIntro
         eyebrow="BILIBILI · DYNAMICS"
         title="动态"
-        lead="沧海水鱼在 B 站发布的近期动态。这里保留原文、点赞数与跳转链接；完整时间线请到 B 站空间查看。"
+        lead="沧海水鱼在 B 站发布的近期动态。这里保留原文、三连 / 分享数据与评论快照；完整时间线请到 B 站空间查看。"
         meta={[
           { icon: 'comment', label: `${BILIBILI_DYNAMICS.length} 条近期动态` },
           { icon: 'person', label: BILIBILI_PROFILE.name },
@@ -30,17 +42,24 @@ export default function BilibiliDynamicsPage() {
         <div className="bili-dynamic-list">
           {BILIBILI_DYNAMICS.map((dynamic, index) => (
             <Reveal key={dynamic.id} delay={Math.min(index, 6) * 30}>
-              <a className="bili-dynamic-card" href={dynamic.url} target="_blank" rel="noopener noreferrer">
+              <article className="bili-dynamic-card">
                 <div className="bili-dynamic-card__head">
-                  <span className="badge">动态 #{dynamic.id}</span>
-                  <span className="bili-dynamic-card__likes">{formatViews(dynamic.likes)} 赞</span>
+                  <a className="badge" href={dynamic.url} target="_blank" rel="noopener noreferrer">动态 #{dynamic.id}</a>
+                  <span className="bili-dynamic-card__likes">{formatViews(dynamic.stats.like)} 赞</span>
                 </div>
                 <p>{dynamic.text}</p>
+                <BilibiliStats stats={dynamic.stats} sourceUrl={dynamic.url} />
                 <div className="bili-dynamic-card__foot">
-                  <span>{dynamic.cover ? '含图片' : '文字动态'}</span>
-                  <span>在 B 站查看 <ArrowRightRegular aria-hidden /></span>
+                  <span>{dynamic.cover ? '含图片' : '文字动态'} · {dynamic.date ? formatDate(dynamic.date) : '近期'}</span>
+                  <button type="button" className="bili-dynamic-card__toggle" aria-expanded={openComments.has(dynamic.id)} onClick={() => toggleComments(dynamic.id)}>
+                    <CommentRegular aria-hidden />
+                    {openComments.has(dynamic.id) ? '收起评论' : `查看评论 ${dynamic.comments.length ? `(${dynamic.comments.length})` : ''}`}
+                  </button>
                 </div>
-              </a>
+                {openComments.has(dynamic.id) && (
+                  <BilibiliComments comments={dynamic.comments} sourceUrl={dynamic.url} count={dynamic.stats.comment} />
+                )}
+              </article>
             </Reveal>
           ))}
         </div>
