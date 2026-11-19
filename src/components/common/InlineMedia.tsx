@@ -1,5 +1,5 @@
 /** 正文媒体 / Inline audio & video players in the Asteria visual language. */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import {
   FullScreenMaximizeRegular,
   OpenRegular,
@@ -11,6 +11,39 @@ import {
 import '../../styles/inline-media.css';
 
 const ASTERIA_BASE = 'https://whwdzg.github.io/Asteria-Player/';
+
+function MediaRange({
+  value,
+  min = 0,
+  max,
+  step,
+  onChange,
+  label,
+  className = '',
+}: {
+  value: number;
+  min?: number;
+  max: number;
+  step: number;
+  onChange: (value: number) => void;
+  label: string;
+  className?: string;
+}) {
+  const percent = max === min ? 0 : ((value - min) / (max - min)) * 100;
+  return (
+    <input
+      type="range"
+      className={`media-range ${className}`.trim()}
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      aria-label={label}
+      onChange={(event) => onChange(Number(event.currentTarget.value))}
+      style={{ '--range-fill': `${Math.min(100, Math.max(0, percent))}%` } as CSSProperties}
+    />
+  );
+}
 
 function formatTime(value: number): string {
   if (!Number.isFinite(value) || value < 0) return '0:00';
@@ -96,15 +129,13 @@ export function InlineMusicPlayer({ src, title, artist, cover, lyrics = [] }: In
         </p>
         <div className="inline-media__progress">
           <span>{formatTime(current)}</span>
-          <input
-            type="range"
+          <MediaRange
+            value={Math.min(current, duration || 0.1)}
             min={0}
             max={Math.max(duration, 0.1)}
-            step="0.05"
-            value={Math.min(current, duration || 0.1)}
-            aria-label="播放进度"
-            onChange={(event) => {
-              const next = Number(event.currentTarget.value);
+            step={0.05}
+            label="播放进度"
+            onChange={(next) => {
               setCurrent(next);
               if (audioRef.current) audioRef.current.currentTime = next;
             }}
@@ -120,15 +151,7 @@ export function InlineMusicPlayer({ src, title, artist, cover, lyrics = [] }: In
           <button type="button" aria-label={muted ? '取消静音' : '静音'} onClick={() => setMuted((value) => !value)}>
             {muted ? <SpeakerMuteRegular aria-hidden /> : <Speaker2Regular aria-hidden />}
           </button>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step="0.01"
-            value={volume}
-            aria-label="音量"
-            onChange={(event) => setVolume(Number(event.currentTarget.value))}
-          />
+          <MediaRange value={volume} min={0} max={1} step={0.01} label="音量" onChange={setVolume} />
         </div>
         <a className="inline-media__asteria" href={asteriaLink(src, 'audio')} target="_blank" rel="noopener noreferrer">
           <OpenRegular aria-hidden /> Asteria Player
@@ -230,15 +253,13 @@ export function InlineVideoPlayer({ src, poster, title, subtitles = [] }: Inline
       <div className="inline-media__video-controls">
         <div className="inline-media__video-progress">
           <span>{formatTime(current)}</span>
-          <input
-            type="range"
+          <MediaRange
+            value={Math.min(current, duration || 0.1)}
             min={0}
             max={Math.max(duration, 0.1)}
-            step="0.05"
-            value={Math.min(current, duration || 0.1)}
-            aria-label="视频进度"
-            onChange={(event) => {
-              const next = Number(event.currentTarget.value);
+            step={0.05}
+            label="视频进度"
+            onChange={(next) => {
               setCurrent(next);
               if (videoRef.current) videoRef.current.currentTime = next;
             }}
@@ -253,26 +274,18 @@ export function InlineVideoPlayer({ src, poster, title, subtitles = [] }: Inline
             <button type="button" aria-label={muted ? '取消静音' : '静音'} onClick={() => setMuted((value) => !value)}>
               {muted ? <SpeakerMuteRegular aria-hidden /> : <Speaker2Regular aria-hidden />}
             </button>
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step="0.01"
-              value={volume}
-              aria-label="音量"
-              onChange={(event) => setVolume(Number(event.currentTarget.value))}
-            />
+            <MediaRange value={volume} min={0} max={1} step={0.01} label="音量" onChange={setVolume} />
           </div>
           <div className="inline-media__brightness">
             <span aria-hidden>☀</span>
-            <input
-              type="range"
+            <MediaRange
+              value={brightness}
               min={0.45}
               max={1.5}
-              step="0.01"
-              value={brightness}
-              aria-label="亮度"
-              onChange={(event) => setBrightness(Number(event.currentTarget.value))}
+              step={0.01}
+              label="亮度"
+              className="media-range--warm"
+              onChange={setBrightness}
             />
           </div>
           {subtitles.length > 0 && (

@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.14.0",
-  "description": "沧海水鱼内容站点 3.14.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.14.1",
+  "description": "沧海水鱼内容站点 3.14.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "288128a93dfb9c493cb5a7849e6fb660509d6f9f",
-  "commitShort": "288128a",
-  "commitTime": "2026-11-20T00:19:09+08:00",
-  "buildTime": "2026-11-19T16:26:48.596Z",
+  "commit": "0ca4d3b0e778ca3c44cdc5913511e0e1ae04e2bb",
+  "commitShort": "0ca4d3b",
+  "commitTime": "2026-11-20T00:28:22+08:00",
+  "buildTime": "2026-11-19T16:34:53.036Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "0ca4d3b0e778ca3c44cdc5913511e0e1ae04e2bb",
+      "short": "0ca4d3b0",
+      "time": "2026-11-20T00:28:22+08:00",
+      "author": "Alex Yang",
+      "subject": "style: rebuild occultation page as archive interface",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/0ca4d3b0e778ca3c44cdc5913511e0e1ae04e2bb"
+    },
     {
       "hash": "288128a93dfb9c493cb5a7849e6fb660509d6f9f",
       "short": "288128a9",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "feat: show MCMOD comments on project pages",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/e097eaa9e6431c2cb20decb6a23abc5e63e6e768"
-    },
-    {
-      "hash": "2abbfc67b76f04892b35864d3ed049c70c46fa3b",
-      "short": "2abbfc67",
-      "time": "2026-11-19T01:01:24+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: drive guestbook with GitHub issue comments",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/2abbfc67b76f04892b35864d3ed049c70c46fa3b"
     }
   ]
 }
