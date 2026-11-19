@@ -78,3 +78,6 @@
   .column-card__body { padding: 14px; }
   .column-card__body h2 { font-size: 21px; }
 }
+
+.column-emoji { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; }
+.column-emoji img { width: 42px; height: 42px; object-fit: contain; }

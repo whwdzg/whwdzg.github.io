@@ -62,7 +62,7 @@ jobs:
           test -f dist/user/canghaishuiyu/index.html
           test -f dist/user/滄海水魚/index.html
           test -f dist/columns/index.html
-          test -f dist/columns/three-years/index.html
+          test -f dist/columns/update-2026-11/index.html
           test -f dist/tools/index.html
           test -f dist/tools/base64/index.html
           test -f dist/tools/basex/index.html

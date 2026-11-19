@@ -100,7 +100,7 @@ export default defineConfig({
         userCang: path.resolve('user/canghaishuiyu/index.html'),
         userCangLegacy: path.resolve('user/滄海水魚/index.html'),
         columns: path.resolve('columns/index.html'),
-        columnThreeYears: path.resolve('columns/three-years/index.html'),
+        columnUpdate2026: path.resolve('columns/update-2026-11/index.html'),
         tools: path.resolve('tools/index.html'),
         base64: path.resolve('tools/base64/index.html'),
         basex: path.resolve('tools/basex/index.html'),
