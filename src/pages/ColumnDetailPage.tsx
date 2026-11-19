@@ -41,8 +41,15 @@ export default function ColumnDetailPage() {
             <span>{column.number}</span>
             <span>{column.subtitle}</span>
           </div>
-          <blockquote className="column-quote">{column.quote}</blockquote>
+          {column.quote && column.quote !== column.title && (
+            <blockquote className="column-quote">{column.quote}</blockquote>
+          )}
           {column.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+          {column.emoji && (
+            <a className="column-emoji" href={column.emoji.href} target="_blank" rel="noopener noreferrer" title={column.emoji.alt}>
+              <img src={column.emoji.src} alt={column.emoji.alt} width={48} height={48} loading="lazy" />
+            </a>
+          )}
           <div className="column-source">
             <BookRegular aria-hidden />
             <div>
@@ -58,7 +65,7 @@ export default function ColumnDetailPage() {
               <div><dt>作者</dt><dd>沧海水鱼</dd></div>
               <div><dt>发布</dt><dd>{formatDate(column.date)}</dd></div>
               <div><dt>阅读</dt><dd>{column.readTime}</dd></div>
-              <div><dt>来源</dt><dd>B 站置顶动态</dd></div>
+              <div><dt>来源</dt><dd>B 站动态</dd></div>
             </dl>
             <Link className="text-link" to="/columns/">全部专栏 <ArrowRightRegular aria-hidden /></Link>
           </div>

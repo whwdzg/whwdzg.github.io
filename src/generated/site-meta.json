@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.9.6",
-  "description": "沧海水鱼内容站点 3.9.6 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.9.7",
+  "description": "沧海水鱼内容站点 3.9.7 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "4baa75928224c04ee04ba73d374f0d4240ac8d44",
-  "commitShort": "4baa759",
-  "commitTime": "2026-11-19T01:45:56+08:00",
-  "buildTime": "2026-11-18T17:51:11.090Z",
+  "commit": "712ee61f1adc8585223f5d17071ec1412ed8593d",
+  "commitShort": "712ee61",
+  "commitTime": "2026-11-19T01:52:23+08:00",
+  "buildTime": "2026-11-19T14:44:24.759Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "712ee61f1adc8585223f5d17071ec1412ed8593d",
+      "short": "712ee61f",
+      "time": "2026-11-19T01:52:23+08:00",
+      "author": "Alex Yang",
+      "subject": "fix: remove unsupported online status",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/712ee61f1adc8585223f5d17071ec1412ed8593d"
+    },
     {
       "hash": "4baa75928224c04ee04ba73d374f0d4240ac8d44",
       "short": "4baa7592",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "feat: include Bilibili live replay uploads",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/f86c1b93bce72d76efd4b700f2cfb576c2dd5399"
-    },
-    {
-      "hash": "013bb080ffebb24abedca17f1ce92807e0d2f82c",
-      "short": "013bb080",
-      "time": "2026-11-18T00:40:42+08:00",
-      "author": "Alex Yang",
-      "subject": "style: disable mobile tap highlight",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/013bb080ffebb24abedca17f1ce92807e0d2f82c"
     }
   ]
 }

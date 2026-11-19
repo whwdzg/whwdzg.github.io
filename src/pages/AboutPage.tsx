@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.9.7',
+    date: '2026-11-20',
+    items: [
+      '第一篇专栏替换为沧海水鱼 2026-11-08 的 B 站动态原文「关于更新&直播（26/11/8 更新版）」。',
+      '专栏链接改为 /columns/update-2026-11/，标题、摘要、来源链接与动态末尾表情同步更新。',
+    ],
+  },
+  {
     version: '3.9.6',
     date: '2026-11-19',
     items: [
@@ -146,7 +154,7 @@ const CHANGELOG = [
     date: '2026-11-19',
     items: [
       '新增侧边栏「专栏」板块、专栏索引与文章详情页。',
-      '把沧海水鱼 B 站置顶动态「打算给自己三年时间搞一个项目，随时告吹的那种（」整理为第一篇专栏。',
+      '第一篇专栏整理自沧海水鱼 B 站动态。',
       '专栏支持搜索、侧栏直达、Service Worker 缓存与独立 HTML 入口。',
     ],
   },
@@ -319,7 +327,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.9.6"
+        eyebrow="ABOUT · 3.9.7"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -362,7 +370,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.9.6 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.9.7 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

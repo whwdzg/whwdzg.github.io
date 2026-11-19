@@ -43,7 +43,7 @@ const KNOWN_PATHS = new Set([
   '/user/canghaishuiyu/',
   '/user/滄海水魚/',
   '/columns/',
-  '/columns/three-years/',
+  '/columns/update-2026-11/',
   '/tools/',
   '/tools/base64/',
   '/tools/basex/',
