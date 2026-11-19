@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.10.1",
-  "description": "沧海水鱼内容站点 3.10.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.11.0",
+  "description": "沧海水鱼内容站点 3.11.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "1cf89f6f68830638f283c7710141f7e899a099c2",
-  "commitShort": "1cf89f6",
-  "commitTime": "2026-11-19T23:29:10+08:00",
-  "buildTime": "2026-11-19T15:33:10.564Z",
+  "commit": "ec4dc94191e8a9abdca145f59302a4f0e21979f5",
+  "commitShort": "ec4dc94",
+  "commitTime": "2026-11-19T23:34:29+08:00",
+  "buildTime": "2026-11-19T15:45:25.897Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "ec4dc94191e8a9abdca145f59302a4f0e21979f5",
+      "short": "ec4dc941",
+      "time": "2026-11-19T23:34:29+08:00",
+      "author": "Alex Yang",
+      "subject": "chore: reduce data sync frequency to daily",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ec4dc94191e8a9abdca145f59302a4f0e21979f5"
+    },
     {
       "hash": "1cf89f6f68830638f283c7710141f7e899a099c2",
       "short": "1cf89f6f",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "feat: add 2.0 user pages and guestbook avatar links",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/a1bd65f7f67c05d3d08d78da219394a73331ef94"
-    },
-    {
-      "hash": "d20f6519a71d01fff82f4837a724e19f17f5a27f",
-      "short": "d20f6519",
-      "time": "2026-11-19T00:30:15+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: add 2.0 user pages and guestbook avatar links",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/d20f6519a71d01fff82f4837a724e19f17f5a27f"
     }
   ]
 }

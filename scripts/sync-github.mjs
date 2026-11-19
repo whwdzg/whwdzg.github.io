@@ -3,13 +3,15 @@
  *
  * 运行：node scripts/sync-github.mjs
  * GitHub Actions 会注入 GITHUB_TOKEN；本地无 Token 时使用匿名额度。
+ * 有 Token 时额外读取个人资料与 contributionsCollection。
  */
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const OUTPUT = path.join(ROOT, 'src/data/github.ts');
 const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
+const LOGIN = 'whwdzg';
 const REPOS = [
   { name: 'whwdzg.github.io', role: 'site', title: '本站源码' },
   { name: 'better-crafting-recipes', role: 'datapack', title: '更好的合成配方' },
@@ -24,7 +26,7 @@ const REPOS = [
 
 const headers = {
   Accept: 'application/vnd.github+json',
-  'User-Agent': 'whwdzg-site/3.3 (+https://whwdzg.github.io)',
+  'User-Agent': 'whwdzg-site/3.10 (+https://whwdzg.github.io)',
   ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
 };
 
@@ -48,6 +50,67 @@ async function fetchRepo(name) {
   };
 }
 
+async function fetchProfile() {
+  const [userResponse, reposResponse] = await Promise.all([
+    fetch(`https://api.github.com/users/${LOGIN}`, { headers }),
+    fetch(`https://api.github.com/users/${LOGIN}/repos?per_page=100&type=owner&sort=updated`, { headers }),
+  ]);
+  if (!userResponse.ok) throw new Error(`user: HTTP ${userResponse.status}`);
+  const user = await userResponse.json();
+  let totalStars = 0;
+  if (reposResponse.ok) {
+    const repos = await reposResponse.json();
+    totalStars = Array.isArray(repos) ? repos.reduce((sum, repo) => sum + (repo.stargazers_count ?? 0), 0) : 0;
+  }
+  return {
+    avatar: user.avatar_url ?? '',
+    name: user.name || user.login,
+    login: user.login,
+    bio: user.bio ?? '',
+    followers: user.followers ?? 0,
+    following: user.following ?? 0,
+    publicRepos: user.public_repos ?? 0,
+    totalStars,
+    joined: user.created_at ?? '',
+    location: user.location ?? '',
+    blog: user.blog ?? '',
+  };
+}
+
+async function fetchContributions() {
+  if (!TOKEN) return null;
+  const query = `query($login:String!){user(login:$login){contributionsCollection{contributionCalendar{totalContributions weeks{contributionDays{date contributionCount color}}}}}}`;
+  const response = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: { ...headers, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables: { login: LOGIN } }),
+  });
+  if (!response.ok) throw new Error(`graphql: HTTP ${response.status}`);
+  const json = await response.json();
+  const calendar = json.data?.user?.contributionsCollection?.contributionCalendar;
+  if (!calendar) throw new Error('graphql: no calendar');
+  return {
+    total: Number(calendar.totalContributions ?? 0),
+    weeks: (calendar.weeks ?? []).map((week) => ({
+      days: (week.contributionDays ?? []).map((day) => ({
+        date: day.date,
+        count: Number(day.contributionCount ?? 0),
+        color: String(day.color ?? '#ebedf0'),
+      })),
+    })),
+  };
+}
+
+function previousProfile() {
+  try {
+    const text = readFileSync(OUTPUT, 'utf8');
+    const match = text.match(/export const GITHUB_PROFILE: GithubProfileSnapshot = (\{[\s\S]*?\});/);
+    return match ? JSON.parse(match[1]) : null;
+  } catch {
+    return null;
+  }
+}
+
 const repos = [];
 for (const entry of REPOS) {
   try {
@@ -60,6 +123,35 @@ for (const entry of REPOS) {
 }
 
 if (!repos.length) throw new Error('没有获取到任何 GitHub 仓库');
+const oldProfile = previousProfile();
+let profile = oldProfile ?? {
+  avatar: '',
+  name: 'whwdzg',
+  login: LOGIN,
+  bio: '',
+  followers: 0,
+  following: 0,
+  publicRepos: 0,
+  totalStars: 0,
+  joined: '',
+  location: '',
+  blog: '',
+};
+try {
+  profile = { ...profile, ...(await fetchProfile()) };
+  console.log(`✓ profile ${profile.login} · ${profile.followers} followers · ${profile.totalStars} stars`);
+} catch (error) {
+  console.warn(`! profile: ${error.message}`);
+}
+let contributions = oldProfile?.contributions ?? { total: 0, weeks: [] };
+try {
+  const next = await fetchContributions();
+  if (next) contributions = next;
+  console.log(`✓ contributions ${contributions.total}`);
+} catch (error) {
+  console.warn(`! contributions: ${error.message}`);
+}
+
 const fetchedAt = new Date().toISOString();
 const output = `/**
  * GitHub 仓库快照 / GitHub repository snapshot.
@@ -82,7 +174,37 @@ export interface GithubRepoSnapshot {
   archived: boolean;
 }
 
+export interface GithubContributionDay {
+  date: string;
+  count: number;
+  color: string;
+}
+
+export interface GithubContributionWeek {
+  days: GithubContributionDay[];
+}
+
+export interface GithubProfileSnapshot {
+  avatar: string;
+  name: string;
+  login: string;
+  bio: string;
+  followers: number;
+  following: number;
+  publicRepos: number;
+  totalStars: number;
+  joined: string;
+  location: string;
+  blog: string;
+  contributions: {
+    total: number;
+    weeks: GithubContributionWeek[];
+  };
+}
+
 export const GITHUB_SYNCED_AT = ${JSON.stringify(fetchedAt)};
+
+export const GITHUB_PROFILE: GithubProfileSnapshot = ${JSON.stringify({ ...profile, contributions }, null, 2)};
 
 export const GITHUB_REPOS: GithubRepoSnapshot[] = ${JSON.stringify(repos, null, 2)};
 

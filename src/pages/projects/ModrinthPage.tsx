@@ -3,6 +3,8 @@ import { ArrowDownloadRegular, ArrowRightRegular, OpenRegular, PersonRegular } f
 import { Link } from '../../lib/router';
 import { LINKS, PROJECTS } from '../../data/site';
 import { MODRINTH_PROJECTS, MODRINTH_SYNCED_AT, MODRINTH_TOTALS } from '../../data/projects/modrinth';
+import { MODRINTH_HISTORY } from '../../data/projects/modrinth-history';
+import { ModrinthTrendChart } from '../../components/projects/ModrinthTrendChart';
 import { formatDate, formatViews } from '../../lib/format';
 import { PageIntro } from '../../components/layout/PageIntro';
 import { FluentIcon } from '../../components/common/FluentIcon';
@@ -117,6 +119,41 @@ export default function ModrinthPage() {
               );
             })}
           </div>
+        </Reveal>
+
+        <Reveal as="section" className="article-card" id="trends">
+          <SectionHeading
+            eyebrow="TRENDS"
+            title="下载与关注趋势"
+            description="按仓库历史快照绘制的折线图；Modrinth 公开 API 不提供浏览量，因此第二张图使用公开关注量。"
+          />
+          <div className="modrinth-trend-grid">
+            {MODRINTH_PROJECTS.map((project) => {
+              const points = MODRINTH_HISTORY[project.localSlug] ?? [];
+              return (
+                <article className="modrinth-trend-card" key={project.localSlug}>
+                  <div className="modrinth-trend-card__head">
+                    <img src={project.icon} alt="" width={28} height={28} loading="lazy" />
+                    <div>
+                      <strong>{project.title}</strong>
+                      <small>{points.length ? `${points.length} 个快照` : '等待下一次快照'}</small>
+                    </div>
+                  </div>
+                  {points.length > 0 ? (
+                    <div className="modrinth-trend-card__charts">
+                      <ModrinthTrendChart points={points} metric="downloads" label="下载量" />
+                      <ModrinthTrendChart points={points} metric="followers" label="关注量" />
+                    </div>
+                  ) : (
+                    <p className="project-note">趋势数据将在下一次同步后出现。</p>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+          <p className="project-note">
+            趋势数据来自仓库内的 Modrinth 快照，最近同步 {formatDate(MODRINTH_SYNCED_AT)}；浏览量无法通过公开 API 获取。
+          </p>
         </Reveal>
 
         <Reveal as="section" className="article-card" id="about">

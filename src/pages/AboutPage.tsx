@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.11.0',
+    date: '2026-11-20',
+    items: [
+      'Modrinth 项目页新增每个数据包的下载量 / 关注量折线图；趋势来自仓库历史快照，随每日同步增长。',
+      'GitHub 项目页新增个人资料、总 Star、关注者 / 关注中、公开仓库、徽章与最近一年贡献图。',
+      '贡献图通过 GitHub GraphQL contributionsCollection 在同步阶段生成；个人简介与计数来自 GitHub 用户 API。',
+    ],
+  },
+  {
     version: '3.10.1',
     date: '2026-11-20',
     items: [
@@ -344,7 +353,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.10.1"
+        eyebrow="ABOUT · 3.11.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -387,7 +396,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.10.1 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.11.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

@@ -1884,3 +1884,59 @@
 }
 
 .github-project-card__snapshot { margin-top: 7px; color: var(--text-3); font-family: var(--font-mono); font-size: 8px; }
+
+/* Modrinth 趋势折线图 */
+.modrinth-trend-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.modrinth-trend-card { padding: 10px; border: 1px solid var(--stroke); border-radius: var(--r-md); background: var(--surface-2); }
+.modrinth-trend-card__head { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
+.modrinth-trend-card__head img { width: 28px; height: 28px; border-radius: 5px; object-fit: cover; }
+.modrinth-trend-card__head div { display: grid; gap: 1px; min-width: 0; }
+.modrinth-trend-card__head strong { overflow: hidden; color: var(--text); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.modrinth-trend-card__head small { color: var(--text-3); font-family: var(--font-mono); font-size: 7px; }
+.modrinth-trend-card__charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.modrinth-trend { min-width: 0; padding: 6px; border: 1px solid var(--stroke); border-radius: 5px; background: var(--surface); }
+.modrinth-trend__head { display: flex; align-items: baseline; justify-content: space-between; gap: 5px; }
+.modrinth-trend__head span { color: var(--text-3); font-size: 8px; }
+.modrinth-trend__head strong { color: var(--text); font-family: var(--font-display); font-size: 13px; }
+.modrinth-trend svg { display: block; width: 100%; height: 72px; margin-top: 3px; overflow: visible; }
+.modrinth-trend__grid { stroke: var(--stroke); stroke-width: 1; stroke-dasharray: 2 3; }
+.modrinth-trend__foot { display: flex; justify-content: space-between; gap: 4px; margin-top: 2px; color: var(--text-3); font-family: var(--font-mono); font-size: 7px; }
+.modrinth-trend__foot .is-up { color: #2e9b65; }
+.modrinth-trend__foot .is-down { color: #c46755; }
+@media (max-width: 760px) { .modrinth-trend-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .modrinth-trend-card__charts { grid-template-columns: 1fr; } .modrinth-trend svg { height: 64px; } }
+
+/* GitHub 个人资料与贡献图 */
+.github-profile-card { padding: 16px; }
+.github-profile-head { display: flex; align-items: flex-start; gap: 14px; }
+.github-profile-head > img { width: 92px; height: 92px; flex: 0 0 auto; border: 1px solid var(--stroke); border-radius: 50%; object-fit: cover; background: var(--surface-2); }
+.github-profile-head__body { min-width: 0; flex: 1; }
+.github-profile-head__body h2 { margin: 2px 0 0; color: var(--text); font-family: var(--font-display); font-size: 28px; line-height: 1.1; }
+.github-profile-bio { max-width: 60ch; margin-top: 4px; color: var(--text-2); font-size: 12px; line-height: 1.65; }
+.github-profile-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.github-profile-badges em { align-self: center; color: var(--text-3); font-family: var(--font-mono); font-size: 7px; font-style: normal; letter-spacing: .08em; }
+.github-profile-badges span { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border: 1px solid var(--stroke); border-radius: var(--r-pill); background: var(--surface-2); color: var(--text-2); font-size: 8px; }
+.github-profile-badges svg { color: var(--accent); }
+.github-profile-head > .btn { flex: 0 0 auto; margin-top: 2px; }
+.github-profile-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--stroke); }
+.github-profile-stats div { display: grid; gap: 1px; }
+.github-profile-stats strong { color: var(--text); font-family: var(--font-display); font-size: 22px; line-height: 1; }
+.github-profile-stats span { color: var(--text-3); font-size: 8px; }
+.github-contrib-card { padding: 16px; }
+.github-contrib-scroll { overflow-x: auto; padding: 4px 0 2px; }
+.github-contrib-graph { display: flex; gap: 3px; width: max-content; }
+.github-contrib-week { display: grid; grid-template-rows: repeat(7, 10px); gap: 3px; }
+.github-contrib-day { display: block; width: 10px; height: 10px; border-radius: 2px; background: var(--surface-3); outline: 1px solid rgba(0,0,0,.04); outline-offset: -1px; }
+.github-contrib-legend { display: flex; align-items: center; justify-content: flex-end; gap: 3px; margin-top: 7px; color: var(--text-3); font-family: var(--font-mono); font-size: 7px; }
+.github-contrib-legend i { display: block; width: 10px; height: 10px; border-radius: 2px; }
+@media (max-width: 760px) {
+  .github-profile-head { flex-wrap: wrap; }
+  .github-profile-head__body { flex-basis: calc(100% - 106px); }
+  .github-profile-head > .btn { margin-left: 106px; }
+  .github-profile-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  .github-profile-head__body h2 { font-size: 24px; }
+  .github-profile-head > .btn { margin-left: 0; }
+  .github-profile-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

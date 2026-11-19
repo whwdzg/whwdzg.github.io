@@ -4,6 +4,7 @@
  *
  * 运行：node --dns-result-order=ipv4first scripts/sync-modrinth.mjs
  */
+import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 
@@ -126,4 +127,5 @@ export function modrinthProject(slug: string): ModrinthProjectSnapshot | undefin
 `;
 
 writeFileSync(path.join(SITE, 'src/data/projects/modrinth.ts'), content, 'utf8');
+execFileSync(process.execPath, [path.join(SITE, 'scripts/build-modrinth-history.mjs')], { cwd: SITE, stdio: 'inherit' });
 console.log(`[modrinth] ${projects.length} projects, ${totals.downloads} downloads`);

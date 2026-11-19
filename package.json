@@ -1,9 +1,9 @@
 {
   "name": "whwdzg-site",
   "private": true,
-  "version": "3.10.1",
+  "version": "3.11.0",
   "type": "module",
-  "description": "沧海水鱼内容站点 3.10.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "description": "沧海水鱼内容站点 3.11.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "homepage": "https://whwdzg.github.io",
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "data:sync": "node --dns-result-order=ipv4first scripts/sync-all.mjs",
     "data:github": "node --dns-result-order=ipv4first scripts/sync-github.mjs",
     "data:modrinth": "node --dns-result-order=ipv4first scripts/sync-modrinth.mjs",
+    "data:modrinth-history": "node scripts/build-modrinth-history.mjs",
     "data:mcmod": "node --dns-result-order=ipv4first scripts/sync-mcmod.mjs",
     "data:mcmod-comments": "node --dns-result-order=ipv4first scripts/sync-mcmod-comments.mjs",
     "data:bilibili": "node --dns-result-order=ipv4first scripts/sync-bilibili-space.mjs",

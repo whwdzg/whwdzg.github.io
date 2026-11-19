@@ -1,0 +1,111 @@
+/* 由 scripts/build-modrinth-history.mjs 生成，请勿手动编辑。 */
+export interface ModrinthHistoryPoint {
+  date: string;
+  downloads: number;
+  followers: number;
+}
+
+export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
+  "better-crafting-recipes": [
+    {
+      "date": "2026-11-17",
+      "downloads": 12125,
+      "followers": 5
+    },
+    {
+      "date": "2026-11-18",
+      "downloads": 12393,
+      "followers": 5
+    },
+    {
+      "date": "2026-11-19",
+      "downloads": 12501,
+      "followers": 5
+    }
+  ],
+  "better-enchantments": [
+    {
+      "date": "2026-11-17",
+      "downloads": 2216,
+      "followers": 2
+    },
+    {
+      "date": "2026-11-18",
+      "downloads": 2288,
+      "followers": 2
+    },
+    {
+      "date": "2026-11-19",
+      "downloads": 2316,
+      "followers": 2
+    }
+  ],
+  "better-mob-drop": [
+    {
+      "date": "2026-11-17",
+      "downloads": 90830,
+      "followers": 31
+    },
+    {
+      "date": "2026-11-18",
+      "downloads": 91142,
+      "followers": 31
+    },
+    {
+      "date": "2026-11-19",
+      "downloads": 91341,
+      "followers": 31
+    }
+  ],
+  "only-survival-mode": [
+    {
+      "date": "2026-11-17",
+      "downloads": 1400,
+      "followers": 3
+    },
+    {
+      "date": "2026-11-18",
+      "downloads": 1407,
+      "followers": 3
+    },
+    {
+      "date": "2026-11-19",
+      "downloads": 1410,
+      "followers": 3
+    }
+  ],
+  "glowing-players": [
+    {
+      "date": "2026-11-17",
+      "downloads": 72059,
+      "followers": 68
+    },
+    {
+      "date": "2026-11-18",
+      "downloads": 72144,
+      "followers": 68
+    },
+    {
+      "date": "2026-11-19",
+      "downloads": 72254,
+      "followers": 68
+    }
+  ],
+  "magical-dye": [
+    {
+      "date": "2026-11-17",
+      "downloads": 174,
+      "followers": 2
+    },
+    {
+      "date": "2026-11-18",
+      "downloads": 174,
+      "followers": 2
+    },
+    {
+      "date": "2026-11-19",
+      "downloads": 175,
+      "followers": 2
+    }
+  ]
+};

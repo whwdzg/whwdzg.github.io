@@ -2,8 +2,8 @@
 import { ArrowRightRegular, CodeRegular, OpenRegular, StarRegular } from '@fluentui/react-icons';
 import { Link } from '../../lib/router';
 import { LINKS, SUBSITES } from '../../data/site';
-import { GITHUB_REPOS, GITHUB_SYNCED_AT, githubRepo } from '../../data/github';
-import { formatDate } from '../../lib/format';
+import { GITHUB_PROFILE, GITHUB_REPOS, GITHUB_SYNCED_AT, githubRepo } from '../../data/github';
+import { formatDate, formatViews } from '../../lib/format';
 import { PageIntro } from '../../components/layout/PageIntro';
 import { FluentIcon } from '../../components/common/FluentIcon';
 import { Reveal } from '../../components/common/Reveal';
@@ -26,7 +26,7 @@ export default function GitHubProjectsPage() {
       <PageIntro
         eyebrow="PROJECTS · GITHUB"
         title="GitHub 项目"
-        lead="这里只详细展开两个独立子站：Asteria Player 与来福 Simulation Wiki。其他仓库保持简单列表，方便找到源码，但不在主站重复介绍。"
+        lead="展示 GitHub 个人资料、Star / 关注数据、徽章与贡献图；下方详细展开 Asteria Player 与来福 Simulation Wiki 两个独立子站，其他仓库保持简单入口。"
         meta={[
           { icon: 'github', label: '2 个详细项目' },
           { icon: 'code', label: `${OTHER_REPOS.length} 个其他仓库` },
@@ -69,6 +69,71 @@ export default function GitHubProjectsPage() {
       />
 
       <div className="container modrinth-page">
+        <Reveal as="section" className="article-card github-profile-card" id="profile">
+          <div className="github-profile-head">
+            <img src={GITHUB_PROFILE.avatar} alt={`${GITHUB_PROFILE.name} 的 GitHub 头像`} width={92} height={92} loading="lazy" />
+            <div className="github-profile-head__body">
+              <p className="eyebrow">GITHUB · @{GITHUB_PROFILE.login}</p>
+              <h2>{GITHUB_PROFILE.name}</h2>
+              <p className="github-profile-bio">{GITHUB_PROFILE.bio || '这个账号还没有填写个人简介。'}</p>
+              <div className="github-profile-badges" aria-label="徽章">
+                <em>徽章</em>
+                <span><FluentIcon name="calendar" size={13} aria-hidden /> 加入 GitHub {GITHUB_PROFILE.joined ? Math.max(1, new Date().getFullYear() - new Date(GITHUB_PROFILE.joined).getFullYear()) : '—'} 年</span>
+                <span><FluentIcon name="cube" size={13} aria-hidden /> Minecraft 数据包</span>
+                <span><FluentIcon name="code" size={13} aria-hidden /> 前端 / 子站</span>
+                <span><FluentIcon name="github" size={13} aria-hidden /> {GITHUB_PROFILE.publicRepos} 个公开仓库</span>
+              </div>
+            </div>
+            <a className="btn btn--primary btn--md" href={LINKS.github} target="_blank" rel="noopener noreferrer">
+              打开 GitHub <OpenRegular aria-hidden />
+            </a>
+          </div>
+          <div className="github-profile-stats">
+            <div><strong>{formatViews(GITHUB_PROFILE.totalStars)}</strong><span>Star</span></div>
+            <div><strong>{formatViews(GITHUB_PROFILE.followers)}</strong><span>关注者</span></div>
+            <div><strong>{formatViews(GITHUB_PROFILE.following)}</strong><span>关注中</span></div>
+            <div><strong>{formatViews(GITHUB_PROFILE.publicRepos)}</strong><span>公开仓库</span></div>
+            <div><strong>{formatViews(GITHUB_PROFILE.contributions.total)}</strong><span>年度贡献</span></div>
+          </div>
+        </Reveal>
+
+        <Reveal as="section" className="article-card github-contrib-card" id="contributions">
+          <div className="article-card__head">
+            <div>
+              <p className="eyebrow">CONTRIBUTIONS</p>
+              <h2>贡献图</h2>
+            </div>
+            <span className="badge">{GITHUB_PROFILE.contributions.total} 次贡献</span>
+          </div>
+          {GITHUB_PROFILE.contributions.weeks.length ? (
+            <>
+              <div className="github-contrib-scroll">
+                <div className="github-contrib-graph" role="img" aria-label="GitHub 最近一年的贡献图">
+                  {GITHUB_PROFILE.contributions.weeks.map((week, weekIndex) => (
+                    <div className="github-contrib-week" key={weekIndex}>
+                      {week.days.map((day) => (
+                        <span
+                          key={day.date}
+                          className="github-contrib-day"
+                          style={{ backgroundColor: day.count ? day.color : undefined }}
+                          title={`${day.date} · ${day.count} 次贡献`}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="github-contrib-legend">
+                <span>少</span>
+                {['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'].map((color) => <i key={color} style={{ backgroundColor: color }} />)}
+                <span>多</span>
+              </div>
+            </>
+          ) : (
+            <p className="project-note">贡献图需要 GitHub Token 才能通过 GraphQL 获取；下一次 Actions 同步后显示。</p>
+          )}
+        </Reveal>
+
         <Reveal as="section" className="article-card" id="detailed">
           <SectionHeading
             eyebrow="DETAILED"
