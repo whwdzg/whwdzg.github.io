@@ -1,9 +1,9 @@
-name: Sync external data
+name: Sync external data (daily)
 
 on:
   schedule:
-    # 每小时第 17 分钟同步，避开整点高峰
-    - cron: '17 * * * *'
+    # 每天北京时间 03:17 同步，避开访问高峰
+    - cron: '17 19 * * *'
   workflow_dispatch:
 
 permissions:

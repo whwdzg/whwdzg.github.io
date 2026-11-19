@@ -1,6 +1,6 @@
 /**
  * 外部数据同步状态 / External sync status.
- * 由 scripts/sync-status.mjs 与每小时 GitHub Actions 生成。
+ * 由 scripts/sync-status.mjs 与每天 GitHub Actions 生成。
  */
 export interface SyncSource {
   label: string;

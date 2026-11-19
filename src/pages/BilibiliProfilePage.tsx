@@ -51,7 +51,7 @@ export default function BilibiliProfilePage() {
 
         <div className="bili-profile-sync">
           <ArrowSyncRegular className="bili-profile-sync__icon" aria-hidden />
-          每小时同步 · {formatDateTime(BILIBILI_PROFILE_SYNCED_AT)} · {relativeTime(BILIBILI_PROFILE_SYNCED_AT)}
+          每天同步 · {formatDateTime(BILIBILI_PROFILE_SYNCED_AT)} · {relativeTime(BILIBILI_PROFILE_SYNCED_AT)}
         </div>
 
         <Reveal as="section" className="bili-stat-grid" aria-label="个人数据">
@@ -156,7 +156,7 @@ export default function BilibiliProfilePage() {
                 <ArrowRightRegular aria-hidden />
               </Link>
             </div>
-            <p className="bili-profile-note">数据来自 B 站公开接口，由 GitHub Actions 每小时自动同步；播放量为站内影像归档合计。</p>
+            <p className="bili-profile-note">数据来自 B 站公开接口，由 GitHub Actions 每天自动同步；播放量为站内影像归档合计。</p>
           </aside>
         </div>
       </div>

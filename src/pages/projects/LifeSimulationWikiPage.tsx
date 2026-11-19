@@ -24,7 +24,7 @@ export default function LifeSimulationWikiPage() {
     <SubsiteShell
       title={project.title}
       subtitle={project.subtitle}
-      description="来福 Simulation Wiki 的全量静态镜像：通过 MediaWiki API 每小时同步页面、模板与媒体，生成可离线浏览、可搜索的静态站点。"
+      description="来福 Simulation Wiki 的全量静态镜像：通过 MediaWiki API 定期同步页面、模板与媒体，生成可离线浏览、可搜索的静态站点。"
       icon={project.icon}
       url={project.url}
       github={project.github}
@@ -32,7 +32,7 @@ export default function LifeSimulationWikiPage() {
       meta={[
         { icon: 'document', label: '451 个页面' },
         { icon: 'image', label: '195 个媒体文件' },
-        { icon: 'refresh', label: '每小时同步' },
+        { icon: 'refresh', label: '定期同步' },
         { icon: 'install', label: '可离线浏览' },
       ]}
       toc={toc}
@@ -141,7 +141,7 @@ export default function LifeSimulationWikiPage() {
           <table className="project-table">
             <tbody>
               <tr><td>生成器</td><td>Node.js 20 + 自定义静态站点生成器</td></tr>
-              <tr><td>数据源</td><td>MediaWiki API（action=parse，每小时同步）</td></tr>
+              <tr><td>数据源</td><td>MediaWiki API（action=parse，定期同步）</td></tr>
               <tr><td>范围</td><td>9 个命名空间 · 451 个页面 · 195 个媒体文件</td></tr>
               <tr><td>数据</td><td><code>data/search.json</code> + 页面 HTML + <code>dist/media/</code></td></tr>
               <tr><td>运行</td><td>静态 HTML、本地搜索、PWA / Service Worker</td></tr>

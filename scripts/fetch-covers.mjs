@@ -48,7 +48,7 @@ async function fetchOne(video) {
       });
       const data = await response.json();
       if (data.code !== 0) {
-        cache[bvid] = { code: data.code, message: data.message };
+        cache[bvid] = { ...(cache[bvid] ?? {}), lastError: { code: data.code, message: data.message } };
         return { id: video.id, bvid, status: data.code, message: data.message };
       }
 

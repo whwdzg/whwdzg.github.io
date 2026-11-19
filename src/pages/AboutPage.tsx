@@ -62,7 +62,7 @@ const TECH_STACK = [
   { name: 'Fluent UI Icons', note: '微软 Fluent System Icons，按需 tree-shake' },
   { name: '原生 CSS', note: 'CSS 变量、color-mix、容器查询、无 UI 框架' },
   { name: 'Service Worker', note: '静态资源缓存与离线回退' },
-  { name: 'GitHub Actions', note: '构建、测试、每小时数据同步、Pages 部署' },
+  { name: 'GitHub Actions', note: '构建、测试、每天数据同步、Pages 部署' },
   { name: 'WebP / AVIF', note: '全部本地封面与壁纸，懒加载' },
 ];
 
@@ -77,10 +77,18 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.10.1',
+    date: '2026-11-20',
+    items: [
+      '外部数据同步从每小时改为每天一次：北京时间 03:17 运行，降低 B 站 / MC百科 / GitHub 请求与自动提交频率。',
+      'B 站封面缓存保留上一次成功数据，接口失败时不再清空播放量；恢复归档播放统计。',
+    ],
+  },
+  {
     version: '3.10.0',
     date: '2026-11-20',
     items: [
-      '哔哩哔哩拆分为个人主页、视频、动态、专栏四个页面；个人主页展示粉丝、关注、获赞、视频 / 动态 / 专栏、归档播放与直播状态，数据由每小时 B 站快照更新。',
+      '哔哩哔哩拆分为个人主页、视频、动态、专栏四个页面；个人主页展示粉丝、关注、获赞、视频 / 动态 / 专栏、归档播放与直播状态，数据由每天 B 站快照更新。',
       '新增 B 站动态与专栏子页，动态保留原文和点赞，专栏展示标题、摘要、阅读与点赞。',
       'MC百科评论支持展开楼中楼，同步抓取每条评论的全部分页回复。',
     ],
@@ -147,7 +155,7 @@ const CHANGELOG = [
     items: [
       '更好的合成配方、更好附魔、更好的生物掉落页面底部展示 MC百科条目短评。',
       '新增 MC百科短评快照与同步脚本，保留作者、头像、楼层、日期、频道与回复数。',
-      '每小时外部数据同步现在同时更新 MC百科短评。',
+      '每天外部数据同步现在同时更新 MC百科短评。',
     ],
   },
   {
@@ -206,7 +214,7 @@ const CHANGELOG = [
     version: '3.4.0',
     date: '2026-11-18',
     items: [
-      '外部数据改为每小时 GitHub Actions 同步，仓库内保存 Modrinth / MC百科 / B站 / GitHub 快照，关于页显示最近获取时间。',
+      '外部数据改为每天 GitHub Actions 同步，仓库内保存 Modrinth / MC百科 / B站 / GitHub 快照，关于页显示最近获取时间。',
       'GitHub 项目页展示 Star、Fork 与最近更新时间；GitHub 快照进入仓库。',
       '掩星新增 CMD 风格档案终端与世界观描述，侧栏选中态改为短竖线，工具分组默认展开。',
       'MC 投影改用 InstancedMesh 批量绘制并按状态缓存材质；支持六面不同纹理、结构 NBT、中文本地化方块名与空格 / Shift 升降。',
@@ -336,7 +344,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.10.0"
+        eyebrow="ABOUT · 3.10.1"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -379,7 +387,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.10.0 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.10.1 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
@@ -428,10 +436,10 @@ export default function AboutPage() {
                 <p className="eyebrow">SYNC STATUS</p>
                 <h2>外部数据同步</h2>
               </div>
-              <span className="badge">每小时</span>
+              <span className="badge">每天</span>
             </div>
             <p>
-              GitHub Actions 每小时抓取 Modrinth、MC百科、GitHub 与哔哩哔哩，更新仓库快照后自动提交并重新部署。
+              GitHub Actions 每天抓取 Modrinth、MC百科、GitHub 与哔哩哔哩，更新仓库快照后自动提交并重新部署。
               页面显示的是最近一次成功同步的时间。
             </p>
             <div className="sync-status-grid">
@@ -608,9 +616,9 @@ export default function AboutPage() {
 
 scripts/
 ├─ generate-meta.mjs       # 版本 + git log → site-meta.json
-├─ sync-all.mjs            # 每小时外部数据同步编排
+├─ sync-all.mjs            # 每天外部数据同步编排
 ├─ build-videos-data.mjs   # B 站缓存 → videos.ts
-└─ fetch-covers.mjs        # 抓取封面与元数据（Actions 每小时）
+└─ fetch-covers.mjs        # 抓取封面与元数据（Actions 每天）
 
 public/
 ├─ media/bilibili/  # 251 张 640×360 WebP

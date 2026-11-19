@@ -65,7 +65,7 @@ const output = `/**
  * GitHub 仓库快照 / GitHub repository snapshot.
  *
  * 由 scripts/sync-github.mjs 通过 GitHub API 生成；
- * 每小时由 GitHub Actions 同步，页面不直接依赖匿名 API。
+ * 每天由 GitHub Actions 同步，页面不直接依赖匿名 API。
  */
 export interface GithubRepoSnapshot {
   name: string;

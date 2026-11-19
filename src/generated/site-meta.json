@@ -1,16 +1,40 @@
 {
   "name": "whwdzg-site",
-  "version": "3.10.0",
-  "description": "沧海水鱼内容站点 3.10.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.10.1",
+  "description": "沧海水鱼内容站点 3.10.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "78a61bef2c47bab03a6c96687f0311998e40e570",
-  "commitShort": "78a61be",
-  "commitTime": "2026-11-19T22:46:40+08:00",
-  "buildTime": "2026-11-19T15:25:05.388Z",
+  "commit": "1cf89f6f68830638f283c7710141f7e899a099c2",
+  "commitShort": "1cf89f6",
+  "commitTime": "2026-11-19T23:29:10+08:00",
+  "buildTime": "2026-11-19T15:33:10.564Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "1cf89f6f68830638f283c7710141f7e899a099c2",
+      "short": "1cf89f6f",
+      "time": "2026-11-19T23:29:10+08:00",
+      "author": "Alex Yang",
+      "subject": "Merge branch 'main' of https://github.com/whwdzg/whwdzg.github.io",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/1cf89f6f68830638f283c7710141f7e899a099c2"
+    },
+    {
+      "hash": "dd0ddc0c9ab2904486d49cca988bbdbd3cc19ec9",
+      "short": "dd0ddc0c",
+      "time": "2026-11-19T23:26:24+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: split Bilibili pages and add nested MCMOD replies",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/dd0ddc0c9ab2904486d49cca988bbdbd3cc19ec9"
+    },
+    {
+      "hash": "6d9f14badb7826d4dbbbbea1a3d2ba21e22e7ccf",
+      "short": "6d9f14ba",
+      "time": "2026-11-19T23:26:24+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: split Bilibili pages and add nested MCMOD replies",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/6d9f14badb7826d4dbbbbea1a3d2ba21e22e7ccf"
+    },
     {
       "hash": "78a61bef2c47bab03a6c96687f0311998e40e570",
       "short": "78a61bef",
@@ -18,6 +42,38 @@
       "author": "Alex Yang",
       "subject": "content: replace first column with latest Bilibili post",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/78a61bef2c47bab03a6c96687f0311998e40e570"
+    },
+    {
+      "hash": "62f372ea98dd491dc4dbcc754cb694b54460f86f",
+      "short": "62f372ea",
+      "time": "2026-11-19T22:46:40+08:00",
+      "author": "Alex Yang",
+      "subject": "content: replace first column with latest Bilibili post",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/62f372ea98dd491dc4dbcc754cb694b54460f86f"
+    },
+    {
+      "hash": "f21ee53338c198e4ea4c7e2c2fd912d444df9871",
+      "short": "f21ee533",
+      "time": "2026-11-19T08:51:07Z",
+      "author": "github-actions[bot]",
+      "subject": "chore: sync external data snapshots",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/f21ee53338c198e4ea4c7e2c2fd912d444df9871"
+    },
+    {
+      "hash": "e8ee3bb52b342847729333db2d60eee136558878",
+      "short": "e8ee3bb5",
+      "time": "2026-11-19T00:25:56Z",
+      "author": "github-actions[bot]",
+      "subject": "chore: sync external data snapshots",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/e8ee3bb52b342847729333db2d60eee136558878"
+    },
+    {
+      "hash": "4b1533099f6625711e1ddfbcf65d302c01612861",
+      "short": "4b153309",
+      "time": "2026-11-18T18:07:46Z",
+      "author": "github-actions[bot]",
+      "subject": "chore: sync external data snapshots",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/4b1533099f6625711e1ddfbcf65d302c01612861"
     },
     {
       "hash": "712ee61f1adc8585223f5d17071ec1412ed8593d",
@@ -28,12 +84,28 @@
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/712ee61f1adc8585223f5d17071ec1412ed8593d"
     },
     {
+      "hash": "26fcbde3ae914f40419b64f7b4cffe1eb87137b8",
+      "short": "26fcbde3",
+      "time": "2026-11-19T01:52:23+08:00",
+      "author": "Alex Yang",
+      "subject": "fix: remove unsupported online status",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/26fcbde3ae914f40419b64f7b4cffe1eb87137b8"
+    },
+    {
       "hash": "4baa75928224c04ee04ba73d374f0d4240ac8d44",
       "short": "4baa7592",
       "time": "2026-11-19T01:45:56+08:00",
       "author": "Alex Yang",
       "subject": "style: rebrand and reorganize scientific calculator",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/4baa75928224c04ee04ba73d374f0d4240ac8d44"
+    },
+    {
+      "hash": "b3440ff113226bac300de1821f487ffb83943101",
+      "short": "b3440ff1",
+      "time": "2026-11-19T01:45:56+08:00",
+      "author": "Alex Yang",
+      "subject": "style: rebrand and reorganize scientific calculator",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/b3440ff113226bac300de1821f487ffb83943101"
     },
     {
       "hash": "055332463aa0fec337fbb8e72ff40f932ac6e4c6",
@@ -44,12 +116,28 @@
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/055332463aa0fec337fbb8e72ff40f932ac6e4c6"
     },
     {
+      "hash": "6b1d4f182455ff3815cdd70b1018305e4420e0ee",
+      "short": "6b1d4f18",
+      "time": "2026-11-19T01:38:23+08:00",
+      "author": "Alex Yang",
+      "subject": "style: remove Windows chrome from occultation terminal",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/6b1d4f182455ff3815cdd70b1018305e4420e0ee"
+    },
+    {
       "hash": "c9c363fb46b3e9f88ad3ef0bd08863f852f84deb",
       "short": "c9c363fb",
       "time": "2026-11-19T01:31:48+08:00",
       "author": "Alex Yang",
       "subject": "style: refine lightbox layout and drag behavior",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/c9c363fb46b3e9f88ad3ef0bd08863f852f84deb"
+    },
+    {
+      "hash": "201325efafa978e77dd85130405d2815e0434d88",
+      "short": "201325ef",
+      "time": "2026-11-19T01:31:48+08:00",
+      "author": "Alex Yang",
+      "subject": "style: refine lightbox layout and drag behavior",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/201325efafa978e77dd85130405d2815e0434d88"
     },
     {
       "hash": "b5f624be68b6776439a94afa388beaaead3bb4bd",
@@ -60,12 +148,28 @@
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/b5f624be68b6776439a94afa388beaaead3bb4bd"
     },
     {
+      "hash": "8ec7e46bde56218c7a33378e0666bd09bd2db76f",
+      "short": "8ec7e46b",
+      "time": "2026-11-19T01:22:42+08:00",
+      "author": "Alex Yang",
+      "subject": "style: redesign archive dropdown menus",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/8ec7e46bde56218c7a33378e0666bd09bd2db76f"
+    },
+    {
       "hash": "e9ab0724ac9fac29c7b237b7ee17a416b163bf57",
       "short": "e9ab0724",
       "time": "2026-11-19T01:14:35+08:00",
       "author": "Alex Yang",
       "subject": "feat: auto-load Bilibili archive on scroll",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/e9ab0724ac9fac29c7b237b7ee17a416b163bf57"
+    },
+    {
+      "hash": "e6dfe35b6a1a30305ecc76f72f67c79bec4f0074",
+      "short": "e6dfe35b",
+      "time": "2026-11-19T01:14:35+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: auto-load Bilibili archive on scroll",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/e6dfe35b6a1a30305ecc76f72f67c79bec4f0074"
     },
     {
       "hash": "87a83e5e424e57857680a606080757d797eb457d",
@@ -76,12 +180,28 @@
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/87a83e5e424e57857680a606080757d797eb457d"
     },
     {
+      "hash": "de6fe03fc516147b005adde51befc024e1db2d7a",
+      "short": "de6fe03f",
+      "time": "2026-11-19T01:08:39+08:00",
+      "author": "Alex Yang",
+      "subject": "chore: sync MCMOD comments hourly",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/de6fe03fc516147b005adde51befc024e1db2d7a"
+    },
+    {
       "hash": "4b3ed26e6b7060c9d0a15dd2d390fadb935f21e9",
       "short": "4b3ed26e",
       "time": "2026-11-19T01:08:06+08:00",
       "author": "Alex Yang",
       "subject": "feat: show MCMOD comments on project pages",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/4b3ed26e6b7060c9d0a15dd2d390fadb935f21e9"
+    },
+    {
+      "hash": "e097eaa9e6431c2cb20decb6a23abc5e63e6e768",
+      "short": "e097eaa9",
+      "time": "2026-11-19T01:08:06+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: show MCMOD comments on project pages",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/e097eaa9e6431c2cb20decb6a23abc5e63e6e768"
     },
     {
       "hash": "2abbfc67b76f04892b35864d3ed049c70c46fa3b",
@@ -92,12 +212,28 @@
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/2abbfc67b76f04892b35864d3ed049c70c46fa3b"
     },
     {
+      "hash": "5b235beb837704b81b456e7b0919194d8865fe15",
+      "short": "5b235beb",
+      "time": "2026-11-19T01:01:24+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: drive guestbook with GitHub issue comments",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/5b235beb837704b81b456e7b0919194d8865fe15"
+    },
+    {
       "hash": "b959a6346e6d715c326271c5dafc10312c750387",
       "short": "b959a634",
       "time": "2026-11-19T00:48:48+08:00",
       "author": "Alex Yang",
       "subject": "feat: add columns section and pinned post article",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/b959a6346e6d715c326271c5dafc10312c750387"
+    },
+    {
+      "hash": "f4ac68180bf0d415e3b8e9ef6268df962908333c",
+      "short": "f4ac6818",
+      "time": "2026-11-19T00:48:48+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add columns section and pinned post article",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/f4ac68180bf0d415e3b8e9ef6268df962908333c"
     },
     {
       "hash": "a1bd65f7f67c05d3d08d78da219394a73331ef94",
@@ -108,148 +244,12 @@
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/a1bd65f7f67c05d3d08d78da219394a73331ef94"
     },
     {
-      "hash": "212a8c301326e436aabe28c09a685db07e4d219d",
-      "short": "212a8c30",
-      "time": "2026-11-19T00:17:41+08:00",
+      "hash": "d20f6519a71d01fff82f4837a724e19f17f5a27f",
+      "short": "d20f6519",
+      "time": "2026-11-19T00:30:15+08:00",
       "author": "Alex Yang",
-      "subject": "feat: embed project demo videos",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/212a8c301326e436aabe28c09a685db07e4d219d"
-    },
-    {
-      "hash": "2ec1b14328cc70221bbc3002f82253d9c1e2cd47",
-      "short": "2ec1b143",
-      "time": "2026-11-19T00:08:06+08:00",
-      "author": "Alex Yang",
-      "subject": "style: remove white backgrounds from project icons",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/2ec1b14328cc70221bbc3002f82253d9c1e2cd47"
-    },
-    {
-      "hash": "403c73d9bfa672a1e57ab72f922f0b4dbbaf14c6",
-      "short": "403c73d9",
-      "time": "2026-11-18T23:53:25+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: inline article media players",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/403c73d9bfa672a1e57ab72f922f0b4dbbaf14c6"
-    },
-    {
-      "hash": "f971a6a8cd7325abb79b70a7781d7da2d2a01766",
-      "short": "f971a6a8",
-      "time": "2026-11-18T23:36:04+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: image lightbox tools, zoom and filmstrip",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/f971a6a8cd7325abb79b70a7781d7da2d2a01766"
-    },
-    {
-      "hash": "b6210c74a6935eb844881abcf24097714ecb53f1",
-      "short": "b6210c74",
-      "time": "2026-11-18T23:21:50+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: projection faces, NBT, names and 3.4.0",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/b6210c74a6935eb844881abcf24097714ecb53f1"
-    },
-    {
-      "hash": "417399fd4b7d5c461dabd2bb3ffeedcb76bbf9d8",
-      "short": "417399fd",
-      "time": "2026-11-18T23:05:32+08:00",
-      "author": "Alex Yang",
-      "subject": "perf: instance projection blocks and dedupe textures",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/417399fd4b7d5c461dabd2bb3ffeedcb76bbf9d8"
-    },
-    {
-      "hash": "0478380cda62d768d6f43a8e2c76faae0b0dfd48",
-      "short": "0478380c",
-      "time": "2026-11-18T22:59:34+08:00",
-      "author": "Alex Yang",
-      "subject": "style: use site-native surface for calculator",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/0478380cda62d768d6f43a8e2c76faae0b0dfd48"
-    },
-    {
-      "hash": "8815b64b03db2be651895019a1bfec1ea1ef66fc",
-      "short": "8815b64b",
-      "time": "2026-11-18T22:53:14+08:00",
-      "author": "Alex Yang",
-      "subject": "content: use Life Simulation Wiki logo as icon",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/8815b64b03db2be651895019a1bfec1ea1ef66fc"
-    },
-    {
-      "hash": "1d19cc636a3ed833067b442e4b3472bb127073f1",
-      "short": "1d19cc63",
-      "time": "2026-11-18T22:47:38+08:00",
-      "author": "Alex Yang",
-      "subject": "style: restyle occultation terminal as CMD window",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/1d19cc636a3ed833067b442e4b3472bb127073f1"
-    },
-    {
-      "hash": "9c1d1e17c169eda7a1ffff79743fa003ae9f283f",
-      "short": "9c1d1e17",
-      "time": "2026-11-18T22:37:10+08:00",
-      "author": "Alex Yang",
-      "subject": "chore: refresh snapshots and finalize occultation UI",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/9c1d1e17c169eda7a1ffff79743fa003ae9f283f"
-    },
-    {
-      "hash": "bfb798e190d39074fac393dcc00cfba996e0e9ab",
-      "short": "bfb798e1",
-      "time": "2026-11-18T22:31:52+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: occultation terminal, wiki icon and UI fixes",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/bfb798e190d39074fac393dcc00cfba996e0e9ab"
-    },
-    {
-      "hash": "92d06d2e08f8ca629bf561418962689e9071f0f0",
-      "short": "92d06d2e",
-      "time": "2026-11-18T08:35:29Z",
-      "author": "github-actions[bot]",
-      "subject": "chore: sync external data snapshots",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/92d06d2e08f8ca629bf561418962689e9071f0f0"
-    },
-    {
-      "hash": "c40075b513678362e4133f0bde759465c1a9a6f7",
-      "short": "c40075b5",
-      "time": "2026-11-18T01:00:03Z",
-      "author": "github-actions[bot]",
-      "subject": "chore: sync external data snapshots",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/c40075b513678362e4133f0bde759465c1a9a6f7"
-    },
-    {
-      "hash": "9894d5b94f8093709decdee3a24f9c931f69f9b3",
-      "short": "9894d5b9",
-      "time": "2026-11-18T01:34:28+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: hourly external data sync and GitHub snapshots",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/9894d5b94f8093709decdee3a24f9c931f69f9b3"
-    },
-    {
-      "hash": "50ff49c9894056c5a2699a58ec8ac902ac4f66b3",
-      "short": "50ff49c9",
-      "time": "2026-11-18T01:22:55+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: add Minecraft datapack and resource pack analyzers",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/50ff49c9894056c5a2699a58ec8ac902ac4f66b3"
-    },
-    {
-      "hash": "ab080ca2a273006ee7be55f3ef78aca56e7271fa",
-      "short": "ab080ca2",
-      "time": "2026-11-18T01:11:17+08:00",
-      "author": "Alex Yang",
-      "subject": "fix: repair changelog entry syntax",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ab080ca2a273006ee7be55f3ef78aca56e7271fa"
-    },
-    {
-      "hash": "2a4c40519d136173654b5e0b2a943c87d29cdce5",
-      "short": "2a4c4051",
-      "time": "2026-11-18T01:09:13+08:00",
-      "author": "Alex Yang",
-      "subject": "content: update version branches, Wiki and homepage",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/2a4c40519d136173654b5e0b2a943c87d29cdce5"
-    },
-    {
-      "hash": "94f1ae328fb7eeabf3f3cc05066a1b3ad400afb5",
-      "short": "94f1ae32",
-      "time": "2026-11-18T01:03:52+08:00",
-      "author": "Alex Yang",
-      "subject": "content: refresh Wiki mirror info and homepage",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/94f1ae328fb7eeabf3f3cc05066a1b3ad400afb5"
+      "subject": "feat: add 2.0 user pages and guestbook avatar links",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/d20f6519a71d01fff82f4837a724e19f17f5a27f"
     }
   ]
 }

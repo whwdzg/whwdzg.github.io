@@ -1,4 +1,4 @@
-# 水鱼 Blog · 3.10.0
+# 水鱼 Blog · 3.10.1
 
 沧海水鱼（whwdzg）的个人网站，2026 年从零重写。
 
@@ -63,7 +63,7 @@ npm run fetch:covers
 4. 更新 `scripts/bilibili-cache.json`；
 5. 自动运行 `node scripts/build-videos-data.mjs` 生成 `src/data/videos.ts`。
 
-已私密 / 已失效的视频会返回 `62002` / `62012`，脚本保留本地封面与旧数据，不会破坏归档。封面抓取与元数据更新由每小时 GitHub Actions 自动完成；本地也可用 `npm run data:sync` 手动执行。
+已私密 / 已失效的视频会返回 `62002` / `62012`，脚本保留本地封面与旧数据，不会破坏归档。封面抓取与元数据更新由每天 GitHub Actions 自动完成；本地也可用 `npm run data:sync` 手动执行。
 
 ### 更新项目数据
 
@@ -79,9 +79,9 @@ npm run data:bilibili   # 同步 B 站空间当前公开视频（仅追加新 BV
 npm run data:collections # 同步 B 站合集全部成员视频、封面与时间
 ```
 
-### 每小时自动同步
+### 每天自动同步
 
-`.github/workflows/sync-data.yml` 每小时运行 `scripts/sync-all.mjs`，更新 `src/data/` 下的快照、B 站封面和 `sync-status.ts`，随后提交并触发 Pages 部署。About 页会显示每个来源最近一次成功获取的时间。
+`.github/workflows/sync-data.yml` 每天运行 `scripts/sync-all.mjs`，更新 `src/data/` 下的快照、B 站封面和 `sync-status.ts`，随后提交并触发 Pages 部署。About 页会显示每个来源最近一次成功获取的时间。
 
 `data:projects` 需要同级目录下存在 `better-crafting-recipes`、`better-enchantments`、`better-mob-drop`、`only-survival-mode`、`glowing-players`，以及 `D:\Documents\assets` 的 Minecraft 资源。脚本会保留所有配方 / 掉落 / 附魔 / 进度关系，并把用到的物品贴图复制到 `public/media/minecraft/items/`。
 
@@ -215,7 +215,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 ## 版本与部署
 
-当前版本 **3.10.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
+当前版本 **3.10.1**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
 
 关于页展示：
 

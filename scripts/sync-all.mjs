@@ -1,5 +1,5 @@
 /**
- * 每小时外部数据同步编排 / Orchestrate hourly data sync.
+ * 每天外部数据同步编排 / Orchestrate daily data sync.
  *
  * 依次同步 Modrinth、MC百科、GitHub、B站，并在成功后写入
  * src/data/sync-status.ts。单个来源失败不会阻止其他来源更新。
