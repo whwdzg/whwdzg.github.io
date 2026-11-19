@@ -60,7 +60,7 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-19T15:52:04.489Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-19T16:03:20.052Z";
 
 export const BILIBILI_PROFILE: BilibiliProfile = {
   "name": "沧海水鱼",
@@ -104,7 +104,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
       {
         "id": "316681401105",
         "author": "hxhej",
-        "avatar": "https://i0.hdslb.com/bfs/face/35d17fa1647b8f3ff9d003cd07e0720114455f73.jpg",
+        "avatar": "/media/avatars/hxhej.webp",
         "text": "扣一发住址",
         "likes": 0,
         "date": "2026-10-10T15:37:51.000Z"
@@ -161,7 +161,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
       {
         "id": "309920516689",
         "author": "沧海水鱼",
-        "avatar": "https://i0.hdslb.com/bfs/face/d4e2a7ff7dfaa7b4ef58267299888be69aeceb64.webp",
+        "avatar": "/media/avatars/shuiyu.webp",
         "text": "那理论来说，联投了那我这期不用剪了对吧，所以素材录费了也没关系对吧（对的吧",
         "likes": 0,
         "date": "2026-08-12T04:39:00.000Z"
@@ -210,7 +210,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
       {
         "id": "305957815137",
         "author": "沧海水鱼",
-        "avatar": "https://i0.hdslb.com/bfs/face/d4e2a7ff7dfaa7b4ef58267299888be69aeceb64.webp",
+        "avatar": "/media/avatars/shuiyu.webp",
         "text": "坏消息，录上了但没完全（",
         "likes": 0,
         "date": "2026-07-13T09:29:10.000Z"
@@ -235,7 +235,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
       {
         "id": "304986106081",
         "author": "hxhej",
-        "avatar": "https://i0.hdslb.com/bfs/face/35d17fa1647b8f3ff9d003cd07e0720114455f73.jpg",
+        "avatar": "/media/avatars/hxhej.webp",
         "text": "who care？",
         "likes": 2,
         "date": "2026-07-05T15:15:17.000Z"
@@ -243,7 +243,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
       {
         "id": "304985694401",
         "author": "沧海水鱼",
-        "avatar": "https://i0.hdslb.com/bfs/face/d4e2a7ff7dfaa7b4ef58267299888be69aeceb64.webp",
+        "avatar": "/media/avatars/shuiyu.webp",
         "text": "所以视频又要延期了\n下一期一定剪出来（应该一定可以了吧",
         "likes": 2,
         "date": "2026-07-05T15:12:13.000Z"
@@ -390,7 +390,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
       {
         "id": "276592448513",
         "author": "沧海水鱼",
-        "avatar": "https://i0.hdslb.com/bfs/face/d4e2a7ff7dfaa7b4ef58267299888be69aeceb64.webp",
+        "avatar": "/media/avatars/shuiyu.webp",
         "text": "逃课失败，这波还是得适配，顺便把全部的资源包和数据包版本号都适配了各个版本的语法",
         "likes": 1,
         "date": "2025-10-04T14:07:02.000Z"
@@ -447,7 +447,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
       {
         "id": "274547605057",
         "author": "hxhej",
-        "avatar": "https://i0.hdslb.com/bfs/face/35d17fa1647b8f3ff9d003cd07e0720114455f73.jpg",
+        "avatar": "/media/avatars/hxhej.webp",
         "text": "删我评论LLL",
         "likes": 0,
         "date": "2025-09-13T10:07:53.000Z"
@@ -496,7 +496,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
       {
         "id": "269582097265",
         "author": "hxhej",
-        "avatar": "https://i0.hdslb.com/bfs/face/35d17fa1647b8f3ff9d003cd07e0720114455f73.jpg",
+        "avatar": "/media/avatars/hxhej.webp",
         "text": "招。。。笑",
         "likes": 1,
         "date": "2025-07-31T13:06:49.000Z"

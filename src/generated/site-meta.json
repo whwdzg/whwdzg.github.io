@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.12.0",
-  "description": "沧海水鱼内容站点 3.12.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.12.1",
+  "description": "沧海水鱼内容站点 3.12.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "85ffdbd291d1996c4fb8ec22157f91e42a789bc9",
-  "commitShort": "85ffdbd",
-  "commitTime": "2026-11-19T23:46:31+08:00",
-  "buildTime": "2026-11-19T15:58:08.905Z",
+  "commit": "de55f1c548be7b6ff36a28ecaca166d773b540b7",
+  "commitShort": "de55f1c",
+  "commitTime": "2026-11-19T23:59:17+08:00",
+  "buildTime": "2026-11-19T16:06:43.916Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "de55f1c548be7b6ff36a28ecaca166d773b540b7",
+      "short": "de55f1c5",
+      "time": "2026-11-19T23:59:17+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add Bilibili engagement stats and comments",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/de55f1c548be7b6ff36a28ecaca166d773b540b7"
+    },
     {
       "hash": "85ffdbd291d1996c4fb8ec22157f91e42a789bc9",
       "short": "85ffdbd2",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "feat: add columns section and pinned post article",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/b959a6346e6d715c326271c5dafc10312c750387"
-    },
-    {
-      "hash": "f4ac68180bf0d415e3b8e9ef6268df962908333c",
-      "short": "f4ac6818",
-      "time": "2026-11-19T00:48:48+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: add columns section and pinned post article",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/f4ac68180bf0d415e3b8e9ef6268df962908333c"
     }
   ]
 }

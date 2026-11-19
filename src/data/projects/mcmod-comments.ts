@@ -399,7 +399,7 @@ export const MCMOD_COMMENTS: McmodComments = {
     {
       "id": "1434162",
       "author": "hxhej",
-      "avatar": "https://www.mcmod.cn/static/public/images/identicons/77.jpg",
+      "avatar": "/media/avatars/hxhej.webp",
       "floor": "1楼",
       "date": "2025-01-01 14:37:59",
       "relative": "1年前",

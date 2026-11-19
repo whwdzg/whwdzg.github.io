@@ -42,10 +42,16 @@ const MOBILE_HEADERS = {
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function toDynamicComment(reply) {
+  const author = String(reply.member?.uname ?? 'B 站用户');
+  const avatar = author === 'hxhej'
+    ? '/media/avatars/hxhej.webp'
+    : author === '沧海水鱼'
+      ? '/media/avatars/shuiyu.webp'
+      : String(reply.member?.avatar ?? '').replace(/^http:/, 'https:');
   return {
     id: String(reply.rpid ?? ''),
-    author: String(reply.member?.uname ?? 'B 站用户'),
-    avatar: String(reply.member?.avatar ?? '').replace(/^http:/, 'https:'),
+    author,
+    avatar,
     text: String(reply.content?.message ?? '').trim(),
     likes: Number(reply.like ?? 0),
     date: reply.ctime ? new Date(reply.ctime * 1000).toISOString() : '',

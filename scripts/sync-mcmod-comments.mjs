@@ -57,7 +57,7 @@ async function fetchComments(entry, channel) {
   return (json.data.row ?? []).map((row) => ({
     id: String(row.id ?? ''),
     author: String(row.user?.name ?? 'MC百科用户'),
-    avatar: String(row.user?.avatar?.img ?? '').replace(/^\/\//, 'https://'),
+    avatar: String(row.user?.name ?? '') === 'hxhej' ? '/media/avatars/hxhej.webp' : String(row.user?.avatar?.img ?? '').replace(/^\/\//, 'https://'),
     floor: String(row.floor ?? ''),
     date: String(row.time?.source ?? ''),
     relative: String(row.time?.range ?? ''),
