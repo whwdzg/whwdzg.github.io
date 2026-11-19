@@ -58,6 +58,7 @@ jobs:
           test -f dist/projects/only-survival-mode/index.html
           test -f dist/projects/glowing-players/index.html
           test -f dist/projects/asteria-player/index.html
+          test -f dist/projects/paligraph-canvas/index.html
           test -f dist/projects/life-simulation-wiki/index.html
           test -f dist/projects/github/index.html
           test -f dist/projects/occultation/index.html

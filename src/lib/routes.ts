@@ -148,6 +148,14 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/projects/AsteriaPlayerPage'),
   },
   {
+    path: '/projects/paligraph-canvas/',
+    title: 'Paligraph Canvas · 水鱼 Blog',
+    shortTitle: 'Paligraph Canvas',
+    description: '本地优先的无限画布笔记：压感笔迹、Markdown / Obsidian 导入与 PDF 导出。',
+    prefetch: false,
+    load: () => import('../pages/projects/PaligraphCanvasPage'),
+  },
+  {
     path: '/projects/life-simulation-wiki/',
     title: '来福 Simulation Wiki · 水鱼 Blog',
     shortTitle: 'Simulation Wiki',

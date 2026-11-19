@@ -1,5 +1,12 @@
 # 更新日志
 
+## 3.16.0 — 2026-11-20
+
+### Paligraph Canvas
+
+- 新增 `/projects/paligraph-canvas/` 子站项目页。
+- 首页、侧边栏、GitHub 项目页、搜索与 sitemap 增加入口与表述。
+
 ## 3.15.0 — 2026-11-20
 
 ### B 站动态

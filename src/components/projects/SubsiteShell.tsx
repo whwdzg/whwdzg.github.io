@@ -18,6 +18,7 @@ interface SubsiteShellProps {
   accent: string;
   meta: { icon: string; label: string }[];
   toc: TocItem[];
+  pwa?: boolean;
   children: ReactNode;
 }
 
@@ -31,6 +32,7 @@ export function SubsiteShell({
   accent,
   meta,
   toc,
+  pwa = true,
   children,
 }: SubsiteShellProps) {
   const ids = useMemo(() => toc.map((item) => item.id), [toc]);
@@ -73,8 +75,8 @@ export function SubsiteShell({
                 <span>开源</span>
               </div>
               <div>
-                <strong>PWA</strong>
-                <span>可安装</span>
+                <strong>{pwa ? 'PWA' : '本地'}</strong>
+                <span>{pwa ? '可安装' : '优先'}</span>
               </div>
             </div>
             <div className="project-summary__links">

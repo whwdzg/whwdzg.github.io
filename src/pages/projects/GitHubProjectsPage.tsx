@@ -28,9 +28,9 @@ export default function GitHubProjectsPage() {
       <PageIntro
         eyebrow="PROJECTS · GITHUB"
         title="GitHub 项目"
-        lead="展示 GitHub 个人资料、Star / 关注数据、徽章与贡献图；下方详细展开 Asteria Player 与来福 Simulation Wiki 两个独立子站，其他仓库保持简单入口。"
+        lead={`展示 GitHub 个人资料、Star / 关注数据、徽章与贡献图；下方详细展开 ${SUBSITES.length} 个独立子站，其他仓库保持简单入口。`}
         meta={[
-          { icon: 'github', label: '2 个详细项目' },
+          { icon: 'github', label: `${SUBSITES.length} 个详细子站` },
           { icon: 'code', label: `${OTHER_REPOS.length} 个其他仓库` },
           { icon: 'globe', label: 'GitHub Pages 子站' },
           { icon: 'refresh', label: "同步 " + formatDate(GITHUB_SYNCED_AT) },
@@ -50,8 +50,8 @@ export default function GitHubProjectsPage() {
             <p className="eyebrow">CURATED</p>
             <div className="modrinth-summary__stats">
               <div>
-                <strong>2</strong>
-                <span>详细项目</span>
+                <strong>{SUBSITES.length}</strong>
+                <span>详细子站</span>
               </div>
               <div>
                 <strong>{OTHER_REPOS.length}</strong>
@@ -140,7 +140,7 @@ export default function GitHubProjectsPage() {
         <Reveal as="section" className="article-card" id="detailed">
           <SectionHeading
             eyebrow="DETAILED"
-            title="两个独立子站"
+            title={`${SUBSITES.length} 个独立子站`}
             description="它们有独立的代码、构建与 GitHub Pages 部署，主站只做导览。"
           />
           <div className="github-project-grid">

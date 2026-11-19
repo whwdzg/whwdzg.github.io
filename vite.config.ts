@@ -96,6 +96,7 @@ export default defineConfig({
         onlySurvival: path.resolve('projects/only-survival-mode/index.html'),
         glowingPlayers: path.resolve('projects/glowing-players/index.html'),
         asteriaPlayer: path.resolve('projects/asteria-player/index.html'),
+        paligraphCanvas: path.resolve('projects/paligraph-canvas/index.html'),
         lifeWiki: path.resolve('projects/life-simulation-wiki/index.html'),
         githubProjects: path.resolve('projects/github/index.html'),
         occultation: path.resolve('projects/occultation/index.html'),

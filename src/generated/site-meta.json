@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.15.0",
-  "description": "沧海水鱼内容站点 3.15.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.16.0",
+  "description": "沧海水鱼内容站点 3.16.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "91d18ce470313c06fb1ab5b2581347a1fbd4b9da",
-  "commitShort": "91d18ce",
-  "commitTime": "2026-11-20T00:36:03+08:00",
-  "buildTime": "2026-11-19T16:44:14.172Z",
+  "commit": "004f58bc95b64564dfb6367b658858e58c2fad69",
+  "commitShort": "004f58b",
+  "commitTime": "2026-11-20T00:45:34+08:00",
+  "buildTime": "2026-11-19T16:54:40.429Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "004f58bc95b64564dfb6367b658858e58c2fad69",
+      "short": "004f58bc",
+      "time": "2026-11-20T00:45:34+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: render Bilibili dynamic emojis and images",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/004f58bc95b64564dfb6367b658858e58c2fad69"
+    },
     {
       "hash": "91d18ce470313c06fb1ab5b2581347a1fbd4b9da",
       "short": "91d18ce4",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "chore: sync MCMOD comments hourly",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/de6fe03fc516147b005adde51befc024e1db2d7a"
-    },
-    {
-      "hash": "4b3ed26e6b7060c9d0a15dd2d390fadb935f21e9",
-      "short": "4b3ed26e",
-      "time": "2026-11-19T01:08:06+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: show MCMOD comments on project pages",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/4b3ed26e6b7060c9d0a15dd2d390fadb935f21e9"
     }
   ]
 }

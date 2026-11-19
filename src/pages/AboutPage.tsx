@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.16.0',
+    date: '2026-11-20',
+    items: [
+      '新增 Paligraph Canvas 子站页面：无限画布、压感笔迹、Markdown / Obsidian 导入与本地存储介绍。',
+      '补充首页子站卡片、侧边栏、GitHub 项目页、搜索与 sitemap 入口。',
+    ],
+  },
+  {
     version: '3.15.0',
     date: '2026-11-20',
     items: [
@@ -403,7 +411,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.15.0"
+        eyebrow="ABOUT · 3.16.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -446,7 +454,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.15.0 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.16.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
@@ -666,7 +674,7 @@ export default function AboutPage() {
               title="src/"
               code={`src/
 ├─ components/     # 布局、通用组件、首页 / 视频 / 设置
-├─ pages/          # 33 个路由级页面（懒加载）
+├─ pages/          # 34 个路由级页面（懒加载）
 ├─ hooks/          # 设置、搜索、页眉自动收起、计数等
 ├─ lib/            # 路由、设置、格式化、搜索、PWA
 ├─ data/           # 站点内容、留言、视频、GitHub / 同步状态

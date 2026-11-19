@@ -193,7 +193,7 @@ export function SubsitesAndTools() {
         <SectionHeading
           eyebrow="SUB-SITES · TOOLS"
           title="子站与站内工具"
-          description="播放器、451 页 Wiki 镜像、掩星世界观与 8 个站内工具都做成了独立页面；主站只负责导览。"
+          description="播放器、Paligraph 笔记、451 页 Wiki 镜像、掩星世界观与 8 个站内工具都做成了独立页面；主站只负责导览。"
           actions={
             <Link className="text-link" to="/projects/github/">
               GitHub 项目页 <ArrowRightRegular aria-hidden />

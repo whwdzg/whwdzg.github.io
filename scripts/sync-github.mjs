@@ -22,6 +22,7 @@ const REPOS = [
   { name: 'glowing-players', role: 'datapack', title: 'Glowing Players' },
   { name: 'Asteria-Player', role: 'subsite', title: 'Asteria Player' },
   { name: 'Life-Simulation-Wiki', role: 'subsite', title: '来福 Simulation Wiki' },
+  { name: 'Paligraph-Canvas', role: 'subsite', title: 'Paligraph Canvas' },
 ];
 
 const headers = {

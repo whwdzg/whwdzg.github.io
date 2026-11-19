@@ -36,6 +36,7 @@ const ROUTE_ICONS: Record<string, string> = {
   '/projects/only-survival-mode/': 'rocket',
   '/projects/glowing-players/': 'rocket',
   '/projects/asteria-player/': 'play',
+  '/projects/paligraph-canvas/': 'document',
   '/projects/life-simulation-wiki/': 'document',
   '/projects/github/': 'github',
   '/projects/occultation/': 'sparkle',

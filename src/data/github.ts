@@ -47,7 +47,7 @@ export interface GithubProfileSnapshot {
   };
 }
 
-export const GITHUB_SYNCED_AT = "2026-11-19T15:41:31.989Z";
+export const GITHUB_SYNCED_AT = "2026-11-19T16:51:20.614Z";
 
 export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "avatar": "https://avatars.githubusercontent.com/u/91038761?v=4",
@@ -62,7 +62,7 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "location": "Shanghai",
   "blog": "whwdzg.github.io",
   "contributions": {
-    "total": 336,
+    "total": 345,
     "weeks": [
       {
         "days": [
@@ -2107,7 +2107,7 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
           {
             "date": "2026-11-17",
             "count": 10,
-            "color": "#40c463"
+            "color": "#9be9a8"
           },
           {
             "date": "2026-11-18",
@@ -2116,8 +2116,13 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
           },
           {
             "date": "2026-11-19",
-            "count": 37,
+            "count": 40,
             "color": "#216e39"
+          },
+          {
+            "date": "2026-11-20",
+            "count": 6,
+            "color": "#9be9a8"
           }
         ]
       }
@@ -2137,7 +2142,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 1,
     "language": "TypeScript",
     "updatedAt": "2026-11-16T17:14:31Z",
-    "pushedAt": "2026-11-19T15:35:15Z",
+    "pushedAt": "2026-11-19T16:46:21Z",
     "archived": false
   },
   {
@@ -2250,6 +2255,20 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "language": "JavaScript",
     "updatedAt": "2026-08-15T16:11:57Z",
     "pushedAt": "2026-11-19T14:37:04Z",
+    "archived": false
+  },
+  {
+    "name": "Paligraph-Canvas",
+    "title": "Paligraph Canvas",
+    "role": "subsite",
+    "url": "https://github.com/whwdzg/Paligraph-Canvas",
+    "description": "A local-first Fluent Design notebook for ink, Markdown and Obsidian vaults.",
+    "stars": 0,
+    "forks": 0,
+    "openIssues": 0,
+    "language": "TypeScript",
+    "updatedAt": "2026-11-19T15:58:37Z",
+    "pushedAt": "2026-11-19T16:29:33Z",
     "archived": false
   }
 ];

@@ -238,6 +238,7 @@ export interface Subsite {
   url: string;
   github: string;
   accent: string;
+  pwa?: boolean;
 }
 
 export const SUBSITES: Subsite[] = [
@@ -251,6 +252,18 @@ export const SUBSITES: Subsite[] = [
     url: 'https://whwdzg.github.io/Asteria-Player/',
     github: 'https://github.com/whwdzg/Asteria-Player',
     accent: '#5b8cff',
+  },
+  {
+    id: 'paligraph-canvas',
+    title: 'Paligraph Canvas',
+    subtitle: 'Fluent 笔记 / 无限画布',
+    description: '无限画布笔记：压感笔迹、Markdown / Obsidian 导入、PDF 导出，数据只保存在本地。',
+    icon: '/media/projects/paligraph-icon.webp',
+    path: '/projects/paligraph-canvas/',
+    url: 'https://whwdzg.github.io/Paligraph-Canvas/',
+    github: 'https://github.com/whwdzg/Paligraph-Canvas',
+    accent: '#c98b3a',
+    pwa: false,
   },
   {
     id: 'life-simulation-wiki',
@@ -404,7 +417,7 @@ export const PRIMARY_NAV: NavItem[] = [
 export const ARCHIVE_LINKS: SiteLink[] = [
   { label: '2.0 源码分支', href: LINKS.repo2, description: '2.0-final 完整静态站', external: true },
   { label: 'Legacy 1.0', href: LINKS.legacy, description: '最初的静态页面', external: true },
-  { label: '本站源码', href: LINKS.repo, description: '3.15.0 的 React + Vite 源码', external: true },
+  { label: '本站源码', href: LINKS.repo, description: '3.16.0 的 React + Vite 源码', external: true },
 ];
 
 export type FluentIconName = keyof typeof FLUENT_ICON_NAMES;

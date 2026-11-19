@@ -39,6 +39,7 @@ const KNOWN_PATHS = new Set([
   '/projects/only-survival-mode/',
   '/projects/glowing-players/',
   '/projects/asteria-player/',
+  '/projects/paligraph-canvas/',
   '/projects/life-simulation-wiki/',
   '/projects/github/',
   '/projects/occultation/',
