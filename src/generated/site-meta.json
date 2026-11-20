@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.20.0",
-  "description": "沧海水鱼内容站点 3.20.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.20.1",
+  "description": "沧海水鱼内容站点 3.20.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "1b85c7bad65e3025e337d14f7e37cfb6f4fe9aec",
-  "commitShort": "1b85c7b",
-  "commitTime": "2026-11-20T22:29:13+08:00",
-  "buildTime": "2026-11-20T14:34:48.114Z",
+  "commit": "bde4f1b5fb56e78eae01938260d83ea633d811b4",
+  "commitShort": "bde4f1b",
+  "commitTime": "2026-11-20T22:36:07+08:00",
+  "buildTime": "2026-11-20T14:42:58.975Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "bde4f1b5fb56e78eae01938260d83ea633d811b4",
+      "short": "bde4f1b5",
+      "time": "2026-11-20T22:36:07+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: redesign site icon in pixel-tech style",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/bde4f1b5fb56e78eae01938260d83ea633d811b4"
+    },
     {
       "hash": "1b85c7bad65e3025e337d14f7e37cfb6f4fe9aec",
       "short": "1b85c7ba",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "style: refine lightbox layout and drag behavior",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/201325efafa978e77dd85130405d2815e0434d88"
-    },
-    {
-      "hash": "b5f624be68b6776439a94afa388beaaead3bb4bd",
-      "short": "b5f624be",
-      "time": "2026-11-19T01:22:42+08:00",
-      "author": "Alex Yang",
-      "subject": "style: redesign archive dropdown menus",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/b5f624be68b6776439a94afa388beaaead3bb4bd"
     }
   ]
 }

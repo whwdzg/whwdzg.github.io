@@ -40,6 +40,7 @@ type ViewMode = 'grid' | 'list';
 
 const PAGE_SIZE = 12;
 const VIEW_KEY = 'whwdzg-bilibili-view';
+const COLLAPSE_KEY = 'whwdzg-bilibili-collapse-collections';
 
 const STATUS_OPTIONS: Array<{ value: StatusFilter; label: string; count: number }> = [
   { value: 'all', label: '全部', count: videoStats.total },
@@ -64,6 +65,7 @@ export default function BilibiliPage() {
   const [year, setYear] = useState('all');
   const [sort, setSort] = useState<SortMode>('newest');
   const [view, setView] = useState<ViewMode>(() => (readStorage(VIEW_KEY) === 'list' ? 'list' : 'grid'));
+  const [collapseCollections, setCollapseCollections] = useState(() => readStorage(COLLAPSE_KEY) === 'true');
   const [limit, setLimit] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const [collectionVideo, setCollectionVideo] = useState<Video | null>(null);
@@ -87,10 +89,14 @@ export default function BilibiliPage() {
     writeStorage(VIEW_KEY, view);
   }, [view]);
 
+  useEffect(() => {
+    writeStorage(COLLAPSE_KEY, String(collapseCollections));
+  }, [collapseCollections]);
+
   // 筛选条件变化时回到第一批
   useEffect(() => {
     setLimit(PAGE_SIZE);
-  }, [deferredQuery, status, year, sort]);
+  }, [deferredQuery, status, year, sort, collapseCollections]);
 
   const yearCounts = useMemo(() => {
     const map = new Map<string, number>();
@@ -104,6 +110,7 @@ export default function BilibiliPage() {
   const filtered = useMemo(() => {
     const needle = deferredQuery.trim().toLowerCase();
     const result = videos.filter((video) => {
+      if (collapseCollections && status !== 'collection' && video.status === 'collection') return false;
       if (!matchesStatus(video, status)) return false;
       if (year === 'unknown' && video.date) return false;
       if (year !== 'all' && year !== 'unknown' && video.date?.slice(0, 4) !== year) return false;
@@ -127,7 +134,7 @@ export default function BilibiliPage() {
       return a.id - b.id;
     });
     return result;
-  }, [deferredQuery, status, year, sort]);
+  }, [deferredQuery, status, year, sort, collapseCollections]);
 
   const visible = filtered.slice(0, limit);
   const canLoadMore = limit < filtered.length && detailId == null && collectionVideo == null;
@@ -186,7 +193,7 @@ export default function BilibiliPage() {
   };
 
   const randomVideo = () => {
-    const pool = videos.filter((video) => !video.disabled);
+    const pool = videos.filter((video) => !video.disabled && !(collapseCollections && video.status === 'collection'));
     if (!pool.length) return;
     openDetail(pool[Math.floor(Math.random() * pool.length)]);
   };
@@ -328,6 +335,15 @@ export default function BilibiliPage() {
                 />
               </div>
 
+              <label className="archive-collapse">
+                <input
+                  type="checkbox"
+                  checked={collapseCollections}
+                  onChange={(event) => setCollapseCollections(event.target.checked)}
+                />
+                <span>折叠合集</span>
+              </label>
+
               <div className="view-toggle" role="group" aria-label="视图切换">
                 <IconButton label="网格视图" size="sm" active={view === 'grid'} onClick={() => setView('grid')}>
                   <GridRegular aria-hidden />
@@ -343,6 +359,7 @@ export default function BilibiliPage() {
             <p aria-live="polite">
               显示 <strong>{visible.length}</strong> / {filtered.length} 条
               {hasFilters && <span className="archive-result-bar__filtered">（已筛选）</span>}
+              {collapseCollections && <span className="archive-result-bar__filtered"> · 合集已折叠</span>}
             </p>
             {hasFilters && (
               <button type="button" className="text-btn" onClick={resetFilters}>

@@ -2137,3 +2137,7 @@
   .guestbook-github__issue { align-items: flex-start; flex-direction: column; }
   .guestbook-github__issue .btn { align-self: flex-start; }
 }
+
+.archive-collapse { display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 9px; border: 1px solid var(--stroke); border-radius: var(--r-sm); background: var(--surface-2); color: var(--text-2); font-size: 10px; cursor: pointer; white-space: nowrap; }
+.archive-collapse input { width: 13px; height: 13px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.archive-collapse:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--stroke)); }
