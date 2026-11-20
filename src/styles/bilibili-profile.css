@@ -152,3 +152,9 @@
 .bili-comment-reply p { margin-top: 1px; font-size: 9.5px; }
 .bili-comment-replies__more { display: inline-flex; align-items: center; gap: 3px; margin-top: 5px; color: var(--accent); font-family: var(--font-mono); font-size: 8px; }
 .bili-comment-replies__more svg { width: 11px; height: 11px; }
+
+.bili-comment-images { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+.bili-comment-images a { position: relative; display: block; overflow: hidden; border: 1px solid var(--stroke); border-radius: 5px; background: var(--surface-2); }
+.bili-comment-images img { display: block; width: auto; max-width: 160px; max-height: 120px; object-fit: cover; cursor: zoom-in; }
+.bili-comment-images a > span { position: absolute; right: 3px; bottom: 3px; padding: 1px 4px; border-radius: 3px; background: rgba(0,0,0,.58); color: #fff; font-family: var(--font-mono); font-size: 6px; }
+.bili-comment-reply .bili-comment-images img { max-width: 110px; max-height: 90px; }

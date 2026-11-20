@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.20.2",
-  "description": "沧海水鱼内容站点 3.20.2 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.21.0",
+  "description": "沧海水鱼内容站点 3.21.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "6f93046a6314c8fe53567467444bc8aea7cd7a44",
-  "commitShort": "6f93046",
-  "commitTime": "2026-11-20T22:43:59+08:00",
-  "buildTime": "2026-11-20T14:57:20.493Z",
+  "commit": "7a7d9b660dd465bc6a936705dff121a70d3d7745",
+  "commitShort": "7a7d9b6",
+  "commitTime": "2026-11-20T22:59:35+08:00",
+  "buildTime": "2026-11-20T15:12:56.192Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "7a7d9b660dd465bc6a936705dff121a70d3d7745",
+      "short": "7a7d9b66",
+      "time": "2026-11-20T22:59:35+08:00",
+      "author": "Alex Yang",
+      "subject": "fix: collapse collection members instead of collections",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/7a7d9b660dd465bc6a936705dff121a70d3d7745"
+    },
     {
       "hash": "6f93046a6314c8fe53567467444bc8aea7cd7a44",
       "short": "6f93046a",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "style: remove Windows chrome from occultation terminal",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/6b1d4f182455ff3815cdd70b1018305e4420e0ee"
-    },
-    {
-      "hash": "c9c363fb46b3e9f88ad3ef0bd08863f852f84deb",
-      "short": "c9c363fb",
-      "time": "2026-11-19T01:31:48+08:00",
-      "author": "Alex Yang",
-      "subject": "style: refine lightbox layout and drag behavior",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/c9c363fb46b3e9f88ad3ef0bd08863f852f84deb"
     }
   ]
 }

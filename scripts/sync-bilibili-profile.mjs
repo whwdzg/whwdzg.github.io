@@ -56,10 +56,19 @@ async function refreshCookie() {
 await refreshCookie();
 
 function commentEmojis(content) {
-  return Object.entries(content?.emote ?? {}).map(([token, emoji]) => ({
-    token,
-    url: String(emoji?.url ?? '').replace(/^http:/, 'https:'),
-  })).filter((emoji) => emoji.token && emoji.url);
+  return Object.entries(content?.emote ?? {}).map(([token, emoji]) => {
+    const gif = String(emoji?.gif_url ?? '').replace(/^http:/, 'https:');
+    const still = String(emoji?.url ?? '').replace(/^http:/, 'https:');
+    return { token, url: gif || still, animated: Boolean(gif) };
+  }).filter((emoji) => emoji.token && emoji.url);
+}
+
+function commentImages(content) {
+  return (content?.pictures ?? []).map((picture) => {
+    const raw = String(picture?.img_src ?? picture?.url ?? '').replace(/^http:/, 'https:');
+    const format = String(picture?.img_format ?? '').toLowerCase();
+    return { url: raw, width: Number(picture?.img_width ?? 0), height: Number(picture?.img_height ?? 0), animated: /gif|webp/i.test(raw) || format.includes('gif') || format.includes('webp') };
+  }).filter((image) => image.url);
 }
 
 function toDynamicReply(reply) {
@@ -77,6 +86,7 @@ function toDynamicReply(reply) {
     likes: Number(reply.like ?? 0),
     date: reply.ctime ? new Date(reply.ctime * 1000).toISOString() : '',
     emojis: commentEmojis(reply.content),
+    images: commentImages(reply.content),
   };
 }
 
@@ -96,6 +106,7 @@ function toDynamicComment(reply) {
     replyCount: Number(reply.rcount ?? reply.count ?? 0),
     date: reply.ctime ? new Date(reply.ctime * 1000).toISOString() : '',
     emojis: commentEmojis(reply.content),
+    images: commentImages(reply.content),
     replies: (reply.replies ?? []).map(toDynamicReply).filter((item) => item.text),
   };
 }
@@ -170,13 +181,30 @@ async function fetchOpusDetail(id) {
   throw lastError;
 }
 
-async function fetchDynamicComments(commentType, commentOid) {
-  if (!commentType || !commentOid) return [];
-  const response = await fetch('https://api.bilibili.com/x/v2/reply?type=' + commentType + '&oid=' + commentOid + '&pn=1&ps=15&sort=2', { headers: HEADERS });
+async function fetchDynamicReplies(commentType, commentOid, root) {
+  const response = await fetch('https://api.bilibili.com/x/v2/reply/reply?type=' + commentType + '&oid=' + commentOid + '&root=' + root + '&pn=1&ps=10&sort=2', { headers: HEADERS });
   if (!response.ok) throw new Error('HTTP ' + response.status);
   const json = await response.json();
   if (json.code !== 0) return [];
-  return (json.data?.replies ?? []).map(toDynamicComment).filter((comment) => comment.text);
+  return (json.data?.replies ?? []).map(toDynamicReply).filter((reply) => reply.text);
+}
+
+async function fetchDynamicComments(commentType, commentOid) {
+  if (!commentType || !commentOid) return [];
+  const response = await fetch('https://api.bilibili.com/x/v2/reply?type=' + commentType + '&oid=' + commentOid + '&pn=1&ps=10&sort=2', { headers: HEADERS });
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+  const json = await response.json();
+  if (json.code !== 0) return [];
+  const list = (json.data?.replies ?? []).map(toDynamicComment).filter((comment) => comment.text);
+  for (const comment of list) {
+    if (comment.replyCount > 0) {
+      try {
+        const replies = await fetchDynamicReplies(commentType, commentOid, comment.id);
+        if (replies.length) comment.replies = replies;
+      } catch {}
+    }
+  }
+  return list;
 }
 
 function readJson(file, fallback) {
@@ -264,6 +292,7 @@ for (const dynamic of dynamics) {
     ...comment,
     replyCount: Number(comment.replyCount ?? 0),
     emojis: comment.emojis ?? [],
+    images: comment.images ?? [],
     replies: comment.replies ?? [],
   }));
   try {
@@ -362,6 +391,14 @@ export interface BilibiliProfile {
 export interface BilibiliDynamicCommentEmoji {
   token: string;
   url: string;
+  animated: boolean;
+}
+
+export interface BilibiliDynamicCommentImage {
+  url: string;
+  width: number;
+  height: number;
+  animated: boolean;
 }
 
 export interface BilibiliDynamicCommentReply {
@@ -372,6 +409,7 @@ export interface BilibiliDynamicCommentReply {
   likes: number;
   date: string;
   emojis: BilibiliDynamicCommentEmoji[];
+  images: BilibiliDynamicCommentImage[];
 }
 
 export interface BilibiliDynamicComment {
@@ -383,6 +421,7 @@ export interface BilibiliDynamicComment {
   replyCount?: number;
   date: string;
   emojis: BilibiliDynamicCommentEmoji[];
+  images: BilibiliDynamicCommentImage[];
   replies: BilibiliDynamicCommentReply[];
 }
 

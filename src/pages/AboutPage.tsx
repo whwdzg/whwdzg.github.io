@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.21.0',
+    date: '2026-11-20',
+    items: [
+      'B 站评论改为每页 10 条一级评论、每条楼中楼最多 10 条。',
+      '评论支持静态图片与 GIF / WebP 动图，楼中楼同样支持表情和图片。',
+      '重新全量抓取 218 个视频与 20 条动态的评论快照。',
+    ],
+  },
+  {
     version: '3.20.2',
     date: '2026-11-20',
     items: [
@@ -466,7 +475,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.20.2"
+        eyebrow="ABOUT · 3.21.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -509,7 +518,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.20.2 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.21.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

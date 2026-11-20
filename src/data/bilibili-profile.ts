@@ -25,6 +25,14 @@ export interface BilibiliProfile {
 export interface BilibiliDynamicCommentEmoji {
   token: string;
   url: string;
+  animated: boolean;
+}
+
+export interface BilibiliDynamicCommentImage {
+  url: string;
+  width: number;
+  height: number;
+  animated: boolean;
 }
 
 export interface BilibiliDynamicCommentReply {
@@ -35,6 +43,7 @@ export interface BilibiliDynamicCommentReply {
   likes: number;
   date: string;
   emojis: BilibiliDynamicCommentEmoji[];
+  images: BilibiliDynamicCommentImage[];
 }
 
 export interface BilibiliDynamicComment {
@@ -46,6 +55,7 @@ export interface BilibiliDynamicComment {
   replyCount?: number;
   date: string;
   emojis: BilibiliDynamicCommentEmoji[];
+  images: BilibiliDynamicCommentImage[];
   replies: BilibiliDynamicCommentReply[];
 }
 
@@ -80,7 +90,7 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-20T14:23:21.645Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-20T15:10:03.577Z";
 
 export interface BilibiliDynamicCommentProgress {
   covered: number;
@@ -94,9 +104,8 @@ export const BILIBILI_DYNAMIC_COMMENT_PROGRESS: BilibiliDynamicCommentProgress =
   "covered": 20,
   "total": 20,
   "cycle": 1,
-  "updatedAt": "2026-11-20T14:24:36.759Z",
+  "updatedAt": "2026-11-20T15:10:03.495Z",
   "failed": []
-
 };
 
 export const BILIBILI_PROFILE: BilibiliProfile = {
@@ -155,6 +164,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 1,
         "date": "2026-10-10T15:37:51.000Z",
         "emojis": [],
+        "images": [],
         "replies": [
           {
             "id": "316683149617",
@@ -163,7 +173,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
             "text": "已拉黑（不是",
             "likes": 0,
             "date": "2026-10-10T15:56:18.000Z",
-            "emojis": []
+            "emojis": [],
+            "images": []
           }
         ]
       }
@@ -243,6 +254,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 0,
         "date": "2026-08-12T04:39:00.000Z",
         "emojis": [],
+        "images": [],
         "replies": []
       },
       {
@@ -254,6 +266,14 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 1,
         "date": "2026-08-11T15:20:25.000Z",
         "emojis": [],
+        "images": [
+          {
+            "url": "https://i0.hdslb.com/bfs/new_dyn/3c0a01a88962e6b383d73364bed99f5d456938890.png",
+            "width": 360,
+            "height": 360,
+            "animated": false
+          }
+        ],
         "replies": [
           {
             "id": "309919592529",
@@ -265,9 +285,11 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
             "emojis": [
               {
                 "token": "[笑哭]",
-                "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+                "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+                "animated": false
               }
-            ]
+            ],
+            "images": []
           }
         ]
       }
@@ -323,6 +345,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 1,
         "date": "2026-07-13T09:29:10.000Z",
         "emojis": [],
+        "images": [],
         "replies": [
           {
             "id": "306207108337",
@@ -331,7 +354,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
             "text": "没事了其实录全了",
             "likes": 0,
             "date": "2026-07-15T07:54:05.000Z",
-            "emojis": []
+            "emojis": [],
+            "images": []
           }
         ]
       }
@@ -369,6 +393,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 0,
         "date": "2026-07-05T15:15:17.000Z",
         "emojis": [],
+        "images": [],
         "replies": []
       },
       {
@@ -380,6 +405,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 0,
         "date": "2026-07-05T15:12:13.000Z",
         "emojis": [],
+        "images": [],
         "replies": []
       }
     ]
@@ -410,6 +436,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 1,
         "date": "2026-05-31T11:10:22.000Z",
         "emojis": [],
+        "images": [],
         "replies": [
           {
             "id": "304254524272",
@@ -421,9 +448,11 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
             "emojis": [
               {
                 "token": "[委屈]",
-                "url": "https://i0.hdslb.com/bfs/emote/d2f26cbdd6c96960320af03f5514c5b524990840.png"
+                "url": "https://i0.hdslb.com/bfs/emote/d2f26cbdd6c96960320af03f5514c5b524990840.png",
+                "animated": false
               }
-            ]
+            ],
+            "images": []
           }
         ]
       },
@@ -436,6 +465,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 0,
         "date": "2026-06-04T14:44:07.000Z",
         "emojis": [],
+        "images": [],
         "replies": []
       },
       {
@@ -447,6 +477,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 0,
         "date": "2026-05-31T11:10:01.000Z",
         "emojis": [],
+        "images": [],
         "replies": []
       }
     ]
@@ -545,9 +576,11 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "emojis": [
           {
             "token": "[doge_金箍]",
-            "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png"
+            "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png",
+            "animated": false
           }
         ],
+        "images": [],
         "replies": []
       },
       {
@@ -559,6 +592,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 0,
         "date": "2025-10-15T13:40:16.000Z",
         "emojis": [],
+        "images": [],
         "replies": []
       }
     ]
@@ -589,6 +623,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 0,
         "date": "2025-10-04T14:07:02.000Z",
         "emojis": [],
+        "images": [],
         "replies": []
       }
     ]
@@ -655,6 +690,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 1,
         "date": "2025-09-13T10:07:53.000Z",
         "emojis": [],
+        "images": [],
         "replies": [
           {
             "id": "274551013233",
@@ -663,7 +699,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
             "text": "谁没事删你评论",
             "likes": 0,
             "date": "2025-09-13T10:43:04.000Z",
-            "emojis": []
+            "emojis": [],
+            "images": []
           }
         ]
       },
@@ -676,6 +713,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 1,
         "date": "2025-09-13T09:46:53.000Z",
         "emojis": [],
+        "images": [],
         "replies": [
           {
             "id": "274551144609",
@@ -687,9 +725,11 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
             "emojis": [
               {
                 "token": "[doge]",
-                "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+                "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+                "animated": false
               }
-            ]
+            ],
+            "images": []
           }
         ]
       }
@@ -739,6 +779,7 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "replyCount": 2,
         "date": "2025-07-31T13:06:49.000Z",
         "emojis": [],
+        "images": [],
         "replies": [
           {
             "id": "269582951409",
@@ -747,7 +788,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
             "text": "别笑，如果这个项目有戏的话，以后可能找你",
             "likes": 1,
             "date": "2025-07-31T13:14:06.000Z",
-            "emojis": []
+            "emojis": [],
+            "images": []
           },
           {
             "id": "269588644369",
@@ -756,7 +798,8 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
             "text": "回复 @滄海水魚 :好的，不笑了",
             "likes": 1,
             "date": "2025-07-31T13:59:09.000Z",
-            "emojis": []
+            "emojis": [],
+            "images": []
           }
         ]
       },
@@ -771,9 +814,11 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "emojis": [
           {
             "token": "[支持]",
-            "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png"
+            "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png",
+            "animated": false
           }
         ],
+        "images": [],
         "replies": []
       }
     ]

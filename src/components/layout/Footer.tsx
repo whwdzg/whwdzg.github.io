@@ -19,7 +19,7 @@ export function Footer() {
             </div>
           </div>
           <p className="site-footer__desc">
-            一个由 Minecraft、代码与影像构成的内容站点。3.20.2 使用 Fluent Design Sun Valley、可选的液态玻璃表面，集中展示数据包、影像归档、独立子站与前端工具。
+            一个由 Minecraft、代码与影像构成的内容站点。3.21.0 使用 Fluent Design Sun Valley、可选的液态玻璃表面，集中展示数据包、影像归档、独立子站与前端工具。
           </p>
           <div className="site-footer__badges">
             <span className="badge badge--muted">Fluent Design</span>

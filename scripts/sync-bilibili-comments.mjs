@@ -38,10 +38,24 @@ function previousComments() {
 }
 
 function emojisOf(content) {
-  return Object.entries(content?.emote ?? {}).map(([token, emoji]) => ({
-    token,
-    url: String(emoji?.url ?? '').replace(/^http:/, 'https:'),
-  })).filter((emoji) => emoji.token && emoji.url);
+  return Object.entries(content?.emote ?? {}).map(([token, emoji]) => {
+    const gif = String(emoji?.gif_url ?? '').replace(/^http:/, 'https:');
+    const still = String(emoji?.url ?? '').replace(/^http:/, 'https:');
+    return { token, url: gif || still, animated: Boolean(gif) };
+  }).filter((emoji) => emoji.token && emoji.url);
+}
+
+function imagesOf(content) {
+  return (content?.pictures ?? []).map((picture) => {
+    const raw = String(picture?.img_src ?? picture?.url ?? '').replace(/^http:/, 'https:');
+    const format = String(picture?.img_format ?? '').toLowerCase();
+    return {
+      url: raw,
+      width: Number(picture?.img_width ?? 0),
+      height: Number(picture?.img_height ?? 0),
+      animated: /gif|webp/i.test(raw) || format.includes('gif') || format.includes('webp'),
+    };
+  }).filter((image) => image.url);
 }
 
 function siteAvatar(name, remote) {
@@ -60,6 +74,7 @@ function toReply(reply) {
     likes: Number(reply.like ?? 0),
     date: reply.ctime ? new Date(reply.ctime * 1000).toISOString() : '',
     emojis: emojisOf(reply.content),
+    images: imagesOf(reply.content),
   };
 }
 
@@ -74,6 +89,7 @@ function toComment(reply) {
     replyCount: Number(reply.rcount ?? reply.count ?? 0),
     date: reply.ctime ? new Date(reply.ctime * 1000).toISOString() : '',
     emojis: emojisOf(reply.content),
+    images: imagesOf(reply.content),
     replies: (reply.replies ?? []).map(toReply).filter((item) => item.text),
   };
 }
@@ -86,8 +102,17 @@ async function refreshCookie() {
 }
 await refreshCookie();
 
+async function fetchReplies(video, root) {
+  const url = 'https://api.bilibili.com/x/v2/reply/reply?type=1&oid=' + video.aid + '&root=' + root + '&pn=1&ps=10&sort=2';
+  const response = await fetch(url, { headers: { ...HEADERS, Referer: 'https://www.bilibili.com/video/' + video.bvid } });
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+  const json = await response.json();
+  if (json.code !== 0) return [];
+  return (json.data?.replies ?? []).map(toReply).filter((reply) => reply.text);
+}
+
 async function fetchComments(video) {
-  const url = 'https://api.bilibili.com/x/v2/reply?type=1&oid=' + video.aid + '&pn=1&ps=15&sort=2';
+  const url = 'https://api.bilibili.com/x/v2/reply?type=1&oid=' + video.aid + '&pn=1&ps=10&sort=2';
   let lastError;
   for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
@@ -95,7 +120,16 @@ async function fetchComments(video) {
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const json = await response.json();
       if (json.code !== 0) throw new Error('Bilibili ' + json.code);
-      return (json.data?.replies ?? []).map(toComment).filter((comment) => comment.text);
+      const list = (json.data?.replies ?? []).map(toComment).filter((comment) => comment.text);
+      for (const comment of list) {
+        if (comment.replyCount > 0) {
+          try {
+            const replies = await fetchReplies(video, comment.id);
+            if (replies.length) comment.replies = replies;
+          } catch {}
+        }
+      }
+      return list;
     } catch (error) {
       lastError = error;
       await refreshCookie();
@@ -156,6 +190,7 @@ for (const [id, value] of Object.entries(previous)) {
       ...comment,
       replyCount: Number(comment.replyCount ?? 0),
       emojis: comment.emojis ?? [],
+      images: comment.images ?? [],
       replies: comment.replies ?? [],
     }));
   }
@@ -172,6 +207,7 @@ for (const { video } of selected) {
       ...comment,
       replyCount: Number(comment.replyCount ?? 0),
       emojis: comment.emojis ?? [],
+      images: comment.images ?? [],
       replies: comment.replies ?? [],
     }));
     console.warn('[bili-comments] ' + video.id + ' failed, will retry later: ' + error.message);
@@ -195,6 +231,14 @@ const content = `/* 由 scripts/sync-bilibili-comments.mjs 生成，请勿手动
 export interface BilibiliCommentEmoji {
   token: string;
   url: string;
+  animated: boolean;
+}
+
+export interface BilibiliCommentImage {
+  url: string;
+  width: number;
+  height: number;
+  animated: boolean;
 }
 
 export interface BilibiliCommentReply {
@@ -205,6 +249,7 @@ export interface BilibiliCommentReply {
   likes: number;
   date: string;
   emojis: BilibiliCommentEmoji[];
+  images: BilibiliCommentImage[];
 }
 
 export interface BilibiliComment {
@@ -216,6 +261,7 @@ export interface BilibiliComment {
   replyCount?: number;
   date: string;
   emojis: BilibiliCommentEmoji[];
+  images: BilibiliCommentImage[];
   replies: BilibiliCommentReply[];
 }
 

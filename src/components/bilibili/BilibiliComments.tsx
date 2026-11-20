@@ -1,6 +1,6 @@
 /** B 站评论快照 / Snapshot comments with nested replies and emoji. */
 import { CommentRegular, OpenRegular } from '@fluentui/react-icons';
-import type { BilibiliCommentEmoji, BilibiliCommentReply } from '../../data/bilibili-comments';
+import type { BilibiliCommentEmoji, BilibiliCommentImage, BilibiliCommentReply } from '../../data/bilibili-comments';
 
 interface CommentLike {
   id: string;
@@ -11,6 +11,7 @@ interface CommentLike {
   replyCount?: number;
   date: string;
   emojis?: BilibiliCommentEmoji[];
+  images?: BilibiliCommentImage[];
   replies?: BilibiliCommentReply[];
 }
 import { formatDate, formatViews } from '../../lib/format';
@@ -30,6 +31,20 @@ function RichText({ text, emojis }: { text: string; emojis?: BilibiliCommentEmoj
   );
 }
 
+function CommentImages({ images }: { images?: BilibiliCommentImage[] }) {
+  if (!images?.length) return null;
+  return (
+    <div className="bili-comment-images">
+      {images.map((image) => (
+        <a key={image.url} href={image.url} target="_blank" rel="noopener noreferrer" className={image.animated ? 'is-animated' : ''}>
+          <img src={image.url} alt="" loading="lazy" referrerPolicy="no-referrer" data-lightbox="on" />
+          {image.animated && <span>GIF</span>}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function ReplyItem({ reply }: { reply: BilibiliCommentReply }) {
   return (
     <div className="bili-comment-reply">
@@ -41,6 +56,7 @@ function ReplyItem({ reply }: { reply: BilibiliCommentReply }) {
           {reply.likes > 0 && <span>{formatViews(reply.likes)} 赞</span>}
         </div>
         <RichText text={reply.text} emojis={reply.emojis} />
+        <CommentImages images={reply.images} />
       </div>
     </div>
   );
@@ -70,6 +86,7 @@ export function BilibiliComments({ comments, sourceUrl, count }: { comments: Com
                     {totalReplies > 0 && <span>{totalReplies} 条回复</span>}
                   </div>
                   <RichText text={comment.text} emojis={comment.emojis} />
+                  <CommentImages images={comment.images} />
                   {replies.length > 0 && (
                     <details className="bili-comment-replies">
                       <summary>展开楼中楼 · 已载入 {replies.length}/{totalReplies}</summary>

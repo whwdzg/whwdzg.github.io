@@ -2,6 +2,14 @@
 export interface BilibiliCommentEmoji {
   token: string;
   url: string;
+  animated: boolean;
+}
+
+export interface BilibiliCommentImage {
+  url: string;
+  width: number;
+  height: number;
+  animated: boolean;
 }
 
 export interface BilibiliCommentReply {
@@ -12,6 +20,7 @@ export interface BilibiliCommentReply {
   likes: number;
   date: string;
   emojis: BilibiliCommentEmoji[];
+  images: BilibiliCommentImage[];
 }
 
 export interface BilibiliComment {
@@ -23,6 +32,7 @@ export interface BilibiliComment {
   replyCount?: number;
   date: string;
   emojis: BilibiliCommentEmoji[];
+  images: BilibiliCommentImage[];
   replies: BilibiliCommentReply[];
 }
 
@@ -33,13 +43,13 @@ export interface BilibiliCommentProgress {
   updatedAt: string;
 }
 
-export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-20T14:09:50.202Z";
+export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-20T15:06:51.115Z";
 
 export const BILIBILI_COMMENT_PROGRESS: BilibiliCommentProgress = {
   "covered": 218,
   "total": 218,
   "cycle": 1,
-  "updatedAt": "2026-11-20T14:09:50.201Z"
+  "updatedAt": "2026-11-20T15:06:51.113Z"
 };
 
 export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
@@ -55,9 +65,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[支持]",
-          "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -69,6 +81,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-07-13T10:47:07.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "267464663505",
@@ -80,9 +93,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "267465986049",
@@ -94,9 +109,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[呲牙]",
-              "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+              "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -113,9 +130,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -127,6 +146,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-30T09:15:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -140,9 +160,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[少女乐队的呐喊表情包_吐舌]",
-          "url": "https://i0.hdslb.com/bfs/garb/ab8159a36644e440755e9874e2c82490de895819.png"
+          "url": "https://i0.hdslb.com/bfs/garb/ab8159a36644e440755e9874e2c82490de895819.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -156,7 +178,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 4,
       "date": "2025-01-07T04:23:48.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "251218533377",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "这玩意理论上是烧僵尸/凋零骷髅/苦力怕/猪另头之后获取，但貌似有bug，下次更新看看能不能修了[笑哭]",
+          "likes": 0,
+          "date": "2025-01-07T11:17:03.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
         {
           "id": "251764534880",
           "author": "chong_dan613",
@@ -164,7 +203,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @滄海水魚 : 要不改成玩家戴这些头颅呢",
           "likes": 0,
           "date": "2025-01-07T12:28:45.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251228685665",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "回复 @我是一只虫单QAQ :有空我再加一个成就吧",
+          "likes": 0,
+          "date": "2025-01-07T13:21:52.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "251228715185",
@@ -176,18 +226,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "251228685665",
-          "author": "沧海水鱼",
-          "avatar": "/media/avatars/shuiyu.webp",
-          "text": "回复 @我是一只虫单QAQ :有空我再加一个成就吧",
-          "likes": 0,
-          "date": "2025-01-07T13:21:52.000Z",
-          "emojis": []
+          ],
+          "images": []
         }
       ]
     },
@@ -202,9 +245,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -216,6 +261,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-09T07:21:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -229,6 +275,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 35,
       "date": "2024-10-21T00:22:50.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244879680849",
@@ -240,18 +287,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "244885799009",
-          "author": "2884omgpy",
-          "avatar": "https://i2.hdslb.com/bfs/face/518bc8540a2c82c5d3e7bad188599b08974a5c1a.jpg",
-          "text": "直接插一个1TB的u盘上去肯定能认的吧",
-          "likes": 134,
-          "date": "2024-10-21T03:05:59.000Z",
-          "emojis": []
+          "id": "245108415584",
+          "author": "今天想来瓶可乐",
+          "avatar": "https://i2.hdslb.com/bfs/face/c206e4468b0a4a5608fb506676bee054b7090e63.jpg",
+          "text": "换个大的[吃瓜]",
+          "likes": 77,
+          "date": "2024-10-21T01:03:16.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "245110085952",
@@ -263,9 +319,122 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "244885799009",
+          "author": "2884omgpy",
+          "avatar": "https://i2.hdslb.com/bfs/face/518bc8540a2c82c5d3e7bad188599b08974a5c1a.jpg",
+          "text": "直接插一个1TB的u盘上去肯定能认的吧",
+          "likes": 134,
+          "date": "2024-10-21T03:05:59.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245116150624",
+          "author": "澪mimo",
+          "avatar": "https://i1.hdslb.com/bfs/face/6f7dc73ea0b1ed9bdf2b2abe397708e92de3c3ed.jpg",
+          "text": "6[笑哭]",
+          "likes": 14,
+          "date": "2024-10-21T03:31:13.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "244893047921",
+          "author": "AngelRaindyGotou",
+          "avatar": "https://i2.hdslb.com/bfs/face/6a51946734b6fc41ec850d6f641c9bd4c66d6862.jpg",
+          "text": "插个光盘或者软盘[doge]",
+          "likes": 34,
+          "date": "2024-10-21T04:50:50.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245146524000",
+          "author": "沉_明",
+          "avatar": "https://i1.hdslb.com/bfs/face/937013ad757731c17b26edf37914dad34304f701.jpg",
+          "text": "不是[笑哭][响指]",
+          "likes": 2,
+          "date": "2024-10-21T11:12:59.000Z",
+          "emojis": [
+            {
+              "token": "[响指]",
+              "url": "https://i0.hdslb.com/bfs/emote/1b5c53cf14336903e1d2ae3527ca380a1256a077.png",
+              "animated": false
+            },
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245149097040",
+          "author": "7878787867676767",
+          "avatar": "https://i0.hdslb.com/bfs/face/1496caccaea826e53d1562e6b3d839cc9b5182f2.jpg",
+          "text": "逆天[初音未来圣诞快乐_啊？？]",
+          "likes": 17,
+          "date": "2024-10-21T11:46:19.000Z",
+          "emojis": [
+            {
+              "token": "[初音未来圣诞快乐_啊？？]",
+              "url": "https://i0.hdslb.com/bfs/emote/e2a93e8f4cfff5aee287237a63fe5d59760ef55e.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "244932726497",
+          "author": "AAA劣质校服批发",
+          "avatar": "https://i0.hdslb.com/bfs/face/45d553464026c321650a8b07de5862ee43dbc6be.jpg",
+          "text": "回复 @AngelCEMEMZ :太老了，真是老登[吃瓜][吃瓜][吃瓜]",
+          "likes": 18,
+          "date": "2024-10-21T14:53:40.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245183123840",
+          "author": "FeatherWtr",
+          "avatar": "https://i2.hdslb.com/bfs/face/f6ab8c47ecd59d3ec4335f25a80b949002effa4b.jpg",
+          "text": "回复 @月伴丛雨吾伴绫aya :萝莉都嫌你小了你就该好好反思了[Mygo表情包_让我看看]",
+          "likes": 66,
+          "date": "2024-10-22T00:55:23.000Z",
+          "emojis": [
+            {
+              "token": "[Mygo表情包_让我看看]",
+              "url": "https://i0.hdslb.com/bfs/garb/item/ea42e2cdfb5a7d5aa67c8d02564213ba020b14a0.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -278,6 +447,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 19,
       "date": "2024-10-20T14:30:37.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244862850705",
@@ -286,7 +456,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "当年的win7",
           "likes": 46,
           "date": "2024-10-20T15:27:02.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "245091276640",
@@ -295,7 +466,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @橘猫猫猫猫猫猫猫儿 :win7确实是微软日本官方牵头搞的设定，win11可不是，不过目前看大家还是挺认可的，很不错",
           "likes": 245,
           "date": "2024-10-20T15:40:18.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244867251985",
+          "author": "1Lithium2",
+          "avatar": "https://i0.hdslb.com/bfs/face/0b98b9e3c558842d0415e2fe0815c6a279db8ce1.jpg",
+          "text": "这是西藏画师画的[热词系列_啊?]",
+          "likes": 19,
+          "date": "2024-10-20T16:32:38.000Z",
+          "emojis": [
+            {
+              "token": "[热词系列_啊?]",
+              "url": "https://i0.hdslb.com/bfs/emote/3e2f1385777a3428f413dea75755abb5d4fd7b08.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "245100952720",
@@ -304,7 +492,86 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "【格桑拉姆Official的个人空间-哔哩哔哩】 https://b23.tv/mv8RcXC",
           "likes": 68,
           "date": "2024-10-20T18:55:20.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244873272849",
+          "author": "哦不我给忘了",
+          "avatar": "https://i2.hdslb.com/bfs/face/7d0ebcd038616a6a77a3a64d62fdb4e614c8a5de.jpg",
+          "text": "karv[doge]",
+          "likes": 10,
+          "date": "2024-10-20T19:22:31.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "244881919681",
+          "author": "哈哈哈3542",
+          "avatar": "https://i0.hdslb.com/bfs/face/d298461294f946c367d86017ff2534d9fe41db7a.jpg",
+          "text": "比那位画师的更屑[doge][doge]",
+          "likes": 11,
+          "date": "2024-10-21T01:51:37.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245117817824",
+          "author": "ISYM-3055",
+          "avatar": "https://i1.hdslb.com/bfs/face/83e97e644321a76a7329672fd6c7347e1918361a.jpg",
+          "text": "西藏居然也通网？",
+          "likes": 5,
+          "date": "2024-10-21T03:55:25.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245122172064",
+          "author": "MicrosoftTeams",
+          "avatar": "https://i1.hdslb.com/bfs/face/040ec4aa53b79878beb5a45a58653be161e77031.jpg",
+          "text": "回复 @欣清秋 :你猜进藏旅游的人是怎么边游边发视频的",
+          "likes": 34,
+          "date": "2024-10-21T04:50:04.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245122269328",
+          "author": "MicrosoftTeams",
+          "avatar": "https://i1.hdslb.com/bfs/face/040ec4aa53b79878beb5a45a58653be161e77031.jpg",
+          "text": "回复 @欣清秋 :另外画师又不是长居西藏，现在在外省啊",
+          "likes": 28,
+          "date": "2024-10-21T04:50:45.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245127122688",
+          "author": "月见八千兔",
+          "avatar": "https://i1.hdslb.com/bfs/face/b1d7b2a507bfb9fc0659732ca8679be17adbfc0b.jpg",
+          "text": "一样，最早win11刚出21h1的时候我就保存了她的娘化图[doge]",
+          "likes": 4,
+          "date": "2024-10-21T06:04:44.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -319,10 +586,71 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[蟑小螂_快来]",
-          "url": "https://i0.hdslb.com/bfs/garb/a46b719f88041cffe3fc7c72e6f8a857e129c0b5.png"
+          "url": "https://i0.hdslb.com/bfs/garb/a46b719f88041cffe3fc7c72e6f8a857e129c0b5.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/99a8ccfd21eb7c59beca14c24951e8e244705849.gif",
+          "width": 1920,
+          "height": 1080,
+          "animated": true
         }
       ],
       "replies": [
+        {
+          "id": "245098797920",
+          "author": "44娘の游戏",
+          "avatar": "https://i0.hdslb.com/bfs/face/31c5ba0103fe2231215e65e56ea8ae4927700597.jpg",
+          "text": "可爱的宝宝",
+          "likes": 32,
+          "date": "2024-10-20T17:49:20.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244873619665",
+          "author": "KTS_ほしの",
+          "avatar": "https://i1.hdslb.com/bfs/face/2431b24e24c8891221400c16a4f57c5c138cea1c.jpg",
+          "text": "帧数正确！",
+          "likes": 25,
+          "date": "2024-10-20T19:37:47.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244877461969",
+          "author": "黑康HK",
+          "avatar": "https://i1.hdslb.com/bfs/face/c0234d7435cb70c49c0d68ef27d09376e3f13003.jpg",
+          "text": "好图[doge]拿了",
+          "likes": 7,
+          "date": "2024-10-20T23:58:18.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245106179440",
+          "author": "老仁游戏解说",
+          "avatar": "https://i0.hdslb.com/bfs/face/28036715389669aa7d7a4cee469204a969e6e2c5.jpg",
+          "text": "图归我了[doge]",
+          "likes": 7,
+          "date": "2024-10-21T00:07:13.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
         {
           "id": "244880527889",
           "author": "bili_36319782382",
@@ -333,27 +661,73 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[微笑]",
-              "url": "https://i0.hdslb.com/bfs/emote/685612eadc33f6bc233776c6241813385844f182.png"
+              "url": "https://i0.hdslb.com/bfs/emote/685612eadc33f6bc233776c6241813385844f182.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "245098797920",
-          "author": "44娘の游戏",
-          "avatar": "https://i0.hdslb.com/bfs/face/31c5ba0103fe2231215e65e56ea8ae4927700597.jpg",
-          "text": "可爱的宝宝",
-          "likes": 32,
-          "date": "2024-10-20T17:49:20.000Z",
-          "emojis": []
+          "id": "244880636865",
+          "author": "竹鼠大师",
+          "avatar": "https://i1.hdslb.com/bfs/face/ea7ac8dbe9c61694f3b0d6ca3a76aaf9f8b73db2.jpg",
+          "text": "回复 @黑康HK :兄啊，这图怎么拿啊？[委屈]",
+          "likes": 7,
+          "date": "2024-10-21T01:27:59.000Z",
+          "emojis": [
+            {
+              "token": "[委屈]",
+              "url": "https://i0.hdslb.com/bfs/emote/d2f26cbdd6c96960320af03f5514c5b524990840.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
-          "id": "244873619665",
-          "author": "KTS_ほしの",
-          "avatar": "https://i1.hdslb.com/bfs/face/2431b24e24c8891221400c16a4f57c5c138cea1c.jpg",
-          "text": "帧数正确！",
-          "likes": 25,
-          "date": "2024-10-20T19:37:47.000Z",
-          "emojis": []
+          "id": "244881554193",
+          "author": "就叫我小灰",
+          "avatar": "https://i2.hdslb.com/bfs/face/0b9fba0379d8494b206750dbb1d05264c6459ea7.jpg",
+          "text": "回复 @竹鼠大师 :长按图片就能保存",
+          "likes": 2,
+          "date": "2024-10-21T01:41:24.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244882119041",
+          "author": "辞欢的紫藤花",
+          "avatar": "https://i2.hdslb.com/bfs/face/52db5abc90e22bcabf87a9c79fdf15e30e2d1009.jpg",
+          "text": "回复 @-睡午觉- :我长按没反应[笑哭]",
+          "likes": 1,
+          "date": "2024-10-21T01:53:54.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "244885104721",
+          "author": "DaVinci-2nd",
+          "avatar": "https://i1.hdslb.com/bfs/face/b066cf8745a32ecc502c4d0988cc319977910702.jpg",
+          "text": "可爱",
+          "likes": 0,
+          "date": "2024-10-21T02:54:26.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244885183505",
+          "author": "黑康HK",
+          "avatar": "https://i1.hdslb.com/bfs/face/c0234d7435cb70c49c0d68ef27d09376e3f13003.jpg",
+          "text": "回复 @天枝叶 :长按后就有保存图片的按钮",
+          "likes": 0,
+          "date": "2024-10-21T02:56:36.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -370,9 +744,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -384,6 +760,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-10-22T11:10:56.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244987280593",
@@ -392,7 +769,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "片头有，由element animation（元素动画）制作",
           "likes": 1,
           "date": "2024-10-22T11:11:33.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -405,6 +783,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-02T09:05:41.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -418,6 +797,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-01T10:45:52.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -431,9 +811,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[少女日记表情包_这就是青春]",
-          "url": "https://i0.hdslb.com/bfs/garb/8e8cfe7f43b5d4b6822e4aae776513b5fa926a1a.png"
+          "url": "https://i0.hdslb.com/bfs/garb/8e8cfe7f43b5d4b6822e4aae776513b5fa926a1a.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "243279432145",
@@ -442,16 +824,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "（如果可以的话，给个三连和关注，便是我无偿搬运翻译的最好帮助了）",
           "likes": 1,
           "date": "2024-09-29T12:33:03.000Z",
-          "emojis": []
-        },
-        {
-          "id": "272525849504",
-          "author": "冷调白花",
-          "avatar": "https://i2.hdslb.com/bfs/face/e6c86bd042d078ef0391fc521bae6a34ece7e6a9.jpg",
-          "text": "感谢伟大的烤肉",
-          "likes": 0,
-          "date": "2025-08-13T23:40:29.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "243417389121",
@@ -460,7 +834,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "字幕制作完毕！",
           "likes": 0,
           "date": "2024-10-01T10:44:29.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "272525849504",
+          "author": "冷调白花",
+          "avatar": "https://i2.hdslb.com/bfs/face/e6c86bd042d078ef0391fc521bae6a34ece7e6a9.jpg",
+          "text": "感谢伟大的烤肉",
+          "likes": 0,
+          "date": "2025-08-13T23:40:29.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -473,6 +858,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-29T13:02:25.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -486,6 +872,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-09-16T13:59:02.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "242415636208",
@@ -494,7 +881,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "好笑的是之前hyp为了凑人数搞了很多假人在skb挂机",
           "likes": 6,
           "date": "2024-09-17T01:12:05.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -507,6 +895,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-09-16T01:22:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "242373066929",
@@ -515,7 +904,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "一针见血的",
           "likes": 1,
           "date": "2024-09-17T10:36:55.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "242376106017",
@@ -524,7 +914,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @SlykerGellerwald :true",
           "likes": 0,
           "date": "2024-09-17T11:12:43.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -537,6 +928,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-16T01:05:02.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -552,9 +944,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "224073669952",
@@ -563,7 +957,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "玩什么游戏滚去学习byd还玩那",
           "likes": 5,
           "date": "2024-05-31T13:22:33.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "224084630912",
@@ -575,9 +970,53 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "228402909360",
+          "author": "想要AAA草神",
+          "avatar": "https://i1.hdslb.com/bfs/face/5368e618d8cc793dccc15a2403c1bddf34bd7892.jpg",
+          "text": "我不想堆尸了，真的太痛苦了，上次堆尸还是在arc终战包几个byd11手上的[笑哭]，但是这堆尸还得要里程真受不了",
+          "likes": 0,
+          "date": "2024-06-27T06:09:20.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "228607688128",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "回复 @原初草神 :这样卡着练习也行",
+          "likes": 0,
+          "date": "2024-06-28T10:32:59.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "228659873200",
+          "author": "想要AAA草神",
+          "avatar": "https://i1.hdslb.com/bfs/face/5368e618d8cc793dccc15a2403c1bddf34bd7892.jpg",
+          "text": "回复 @滄海水魚 :刚入坑半个月，根本撑不到尾杀[笑哭]（音律值13.7，ap了几个比较水的12）",
+          "likes": 0,
+          "date": "2024-06-28T15:37:23.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "228660116784",
@@ -589,9 +1028,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -604,6 +1045,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-05-31T14:14:39.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -617,9 +1059,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -633,6 +1077,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2023-10-14T13:28:10.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -646,6 +1091,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2023-08-19T19:01:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -661,9 +1107,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[神操作]",
-          "url": "https://i0.hdslb.com/bfs/emote/60c1473eb9ff1e9ab1af4fc62581ab9f420cc08e.png"
+          "url": "https://i0.hdslb.com/bfs/emote/60c1473eb9ff1e9ab1af4fc62581ab9f420cc08e.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -677,16 +1125,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 7,
       "date": "2026-09-26T04:04:12.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "315882748161",
-          "author": "人畜无害的秋雨菌",
-          "avatar": "https://i0.hdslb.com/bfs/face/0273468a4c30e7eee8e5bc127370fb3f5215e689.jpg",
-          "text": "还有理论上铁剑不蓄力攻击三下打不死流浪商人",
-          "likes": 0,
-          "date": "2026-10-03T08:57:32.000Z",
-          "emojis": []
-        },
         {
           "id": "318652985600",
           "author": "小木兆SaMa",
@@ -694,7 +1134,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "还有吃东西声音不对",
           "likes": 2,
           "date": "2026-09-26T05:50:04.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "318652985696",
@@ -703,7 +1144,58 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "还有吃东西声音不对",
           "likes": 0,
           "date": "2026-09-26T05:50:04.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "315132694817",
+          "author": "老练不太老练",
+          "avatar": "https://i0.hdslb.com/bfs/face/2321bbc39538832bfbfb4e817436e223d3fcd182.jpg",
+          "text": "！？细细？！",
+          "likes": 0,
+          "date": "2026-09-26T09:51:27.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "315206041601",
+          "author": "为什么不让我加角标",
+          "avatar": "https://i0.hdslb.com/bfs/face/5992f3e00a014eb0da2948461604e5e204a6cb58.jpg",
+          "text": "鸡下蛋的颜色是没错的，所以第七个应该就是吃东西声音不对🤔",
+          "likes": 0,
+          "date": "2026-09-27T03:00:29.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "315882596865",
+          "author": "人畜无害的秋雨菌",
+          "avatar": "https://i0.hdslb.com/bfs/face/0273468a4c30e7eee8e5bc127370fb3f5215e689.jpg",
+          "text": "还有一个11饱食度",
+          "likes": 0,
+          "date": "2026-10-03T08:56:25.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "315882748161",
+          "author": "人畜无害的秋雨菌",
+          "avatar": "https://i0.hdslb.com/bfs/face/0273468a4c30e7eee8e5bc127370fb3f5215e689.jpg",
+          "text": "还有理论上铁剑不蓄力攻击三下打不死流浪商人",
+          "likes": 0,
+          "date": "2026-10-03T08:57:32.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "315891715697",
+          "author": "-DropZ-",
+          "avatar": "https://i0.hdslb.com/bfs/face/56396a74111db3755620bab0220b6e67473e8584.jpg",
+          "text": "回复 @人畜无害的秋雨菌 :这是基岩版",
+          "likes": 0,
+          "date": "2026-10-03T10:22:41.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -718,9 +1210,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -732,6 +1226,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-10-08T14:27:46.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -745,6 +1240,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-26T05:36:13.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -756,6 +1252,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-27T13:14:20.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -767,6 +1264,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-25T16:36:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -780,6 +1278,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-27T02:40:42.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -796,7 +1295,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/05ab38db7f54ab1fa58c645575ba80552037139312.jpg",
+          "width": 1080,
+          "height": 1277,
+          "animated": false
         }
       ],
       "replies": []
@@ -810,6 +1318,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-20T07:21:36.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -826,9 +1335,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -842,6 +1353,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-12T00:33:36.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -855,9 +1367,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -869,6 +1383,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-12T04:28:40.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -884,6 +1399,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-27T06:04:26.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -899,9 +1415,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -920,9 +1438,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -934,6 +1454,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-06T02:52:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -947,9 +1468,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -963,6 +1486,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-13T09:21:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -976,6 +1500,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2026-09-08T11:26:55.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "315000149137",
@@ -984,7 +1509,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "并非\n这是说如果有人摧毁他的沙子",
           "likes": 0,
           "date": "2026-09-25T06:08:48.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -997,6 +1523,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-06T05:32:43.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1008,6 +1535,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2026-09-07T15:59:46.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "314999998833",
@@ -1016,7 +1544,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "有字幕",
           "likes": 0,
           "date": "2026-09-25T06:08:53.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -1033,9 +1562,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -1047,6 +1578,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-10-01T13:01:23.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1058,6 +1590,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-23T14:01:57.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1071,6 +1604,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-09-25T15:16:51.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1085,6 +1619,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2026-09-05T16:13:14.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "313058208449",
@@ -1093,7 +1628,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "其实我动态有发我的 拖更【划掉】的心路历程",
           "likes": 1,
           "date": "2026-09-05T16:16:21.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -1110,7 +1646,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/48a6e4986d72fa1afec91e9e8e1a62e8476691390.jpg",
+          "width": 1290,
+          "height": 961,
+          "animated": false
         }
       ],
       "replies": []
@@ -1126,9 +1671,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[打call]",
-          "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png"
+          "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -1142,6 +1689,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-12-30T09:40:36.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/08c529d1d401e7e951b8558ea90f4b471277887732.jpg",
+          "width": 967,
+          "height": 862,
+          "animated": false
+        }
+      ],
       "replies": []
     },
     {
@@ -1153,6 +1708,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-12-30T13:10:58.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/43282beec9b271444cb74083df75d3bf3546953015101946.png",
+          "width": 1079,
+          "height": 588,
+          "animated": false
+        }
+      ],
       "replies": []
     },
     {
@@ -1164,16 +1727,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-12-29T13:54:31.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "284920481393",
-          "author": "神奇の中二羊",
-          "avatar": "https://i0.hdslb.com/bfs/face/f55ccf626070cc63c9df2d18b77698107b4d6d99.jpg",
-          "text": "好友让他赶紧回去，他总觉得还有钻石，不想回去",
-          "likes": 0,
-          "date": "2025-12-30T11:32:53.000Z",
-          "emojis": []
-        },
         {
           "id": "284892614401",
           "author": "法棍小猫猫",
@@ -1181,7 +1736,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "让好友滚回来，但是好友觉得肯定有钻没回话",
           "likes": 0,
           "date": "2025-12-30T05:58:56.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "284920481393",
+          "author": "神奇の中二羊",
+          "avatar": "https://i0.hdslb.com/bfs/face/f55ccf626070cc63c9df2d18b77698107b4d6d99.jpg",
+          "text": "好友让他赶紧回去，他总觉得还有钻石，不想回去",
+          "likes": 0,
+          "date": "2025-12-30T11:32:53.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -1198,9 +1764,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[少女乐队的呐喊表情包_愣住]",
-          "url": "https://i0.hdslb.com/bfs/garb/4605b087c9b14bfe66b516ee0756ff00a01f2b8c.png"
+          "url": "https://i0.hdslb.com/bfs/garb/4605b087c9b14bfe66b516ee0756ff00a01f2b8c.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "285772546929",
@@ -1209,7 +1777,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "鸡眼国际版不是注册了就能直接连了吗",
           "likes": 0,
           "date": "2026-01-07T23:50:53.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "287846860032",
@@ -1218,7 +1787,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @XiLIovo :Java",
           "likes": 0,
           "date": "2026-01-07T23:57:50.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "288558469792",
@@ -1227,7 +1797,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "视频里的是基岩版，加好友就能直接联机",
           "likes": 0,
           "date": "2026-01-15T01:35:16.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -1240,6 +1811,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-12-30T10:52:25.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "284925904817",
@@ -1248,7 +1820,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "6 6",
           "likes": 1,
           "date": "2025-12-30T12:28:38.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "287040030736",
@@ -1257,7 +1830,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "huh",
           "likes": 0,
           "date": "2025-12-31T06:55:06.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -1272,9 +1846,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -1290,9 +1866,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -1304,6 +1882,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-01-03T09:22:48.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1315,6 +1894,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2026-01-10T08:28:11.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1328,6 +1908,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-12-30T06:13:09.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1339,6 +1920,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-12-30T06:12:41.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1350,6 +1932,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2026-01-26T12:30:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "292777089744",
@@ -1361,9 +1944,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -1380,9 +1965,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "285953200481",
@@ -1394,9 +1981,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "286806267393",
@@ -1408,9 +1997,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -1423,6 +2014,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-12-30T03:22:51.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "284908931841",
@@ -1431,7 +2023,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "高强度冲浪_(:з」∠)_",
           "likes": 0,
           "date": "2025-12-30T09:37:14.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -1444,6 +2037,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-12-30T12:58:28.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/6bc1722c421e3c6b6636e6168206db271154236062.png",
+          "width": 1259,
+          "height": 2294,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "292758124993",
@@ -1452,7 +2053,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "666这里也有烦村",
           "likes": 5,
           "date": "2026-03-11T11:10:42.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -1467,7 +2069,49 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 4,
       "date": "2025-07-15T14:40:49.000Z",
       "emojis": [],
-      "replies": []
+      "images": [],
+      "replies": [
+        {
+          "id": "267709657569",
+          "author": "MicrosoftRewards",
+          "avatar": "https://i2.hdslb.com/bfs/face/0091fe86e3159dfd94cdd5dcd2fd318a812c4649.jpg",
+          "text": "深金之域(雾",
+          "likes": 0,
+          "date": "2025-07-15T16:49:19.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "268931100928",
+          "author": "有理想の核",
+          "avatar": "https://i2.hdslb.com/bfs/face/932e2f9801b51af80dab441a1e608360c84947dc.jpg",
+          "text": "回复 @广告不招租喵喵喵 :这是生态域，你应该说古城",
+          "likes": 0,
+          "date": "2025-07-16T07:57:06.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267771905313",
+          "author": "MicrosoftRewards",
+          "avatar": "https://i2.hdslb.com/bfs/face/0091fe86e3159dfd94cdd5dcd2fd318a812c4649.jpg",
+          "text": "回复 @没理想的鐳 :qwq",
+          "likes": 0,
+          "date": "2025-07-16T08:54:41.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "270566020160",
+          "author": "有理想の核",
+          "avatar": "https://i2.hdslb.com/bfs/face/932e2f9801b51af80dab441a1e608360c84947dc.jpg",
+          "text": "回复 @广告不招租喵喵喵 :(｀・ω・´)",
+          "likes": 0,
+          "date": "2025-07-29T15:28:20.000Z",
+          "emojis": [],
+          "images": []
+        }
+      ]
     },
     {
       "id": "268854038608",
@@ -1480,9 +2124,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -1494,6 +2140,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-07-18T03:30:16.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "268081343969",
@@ -1502,7 +2149,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "这是搬运的",
           "likes": 0,
           "date": "2025-07-19T01:12:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "268138620385",
@@ -1511,7 +2159,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @AOL_7258 :我说会剪的是官方",
           "likes": 1,
           "date": "2025-07-19T10:59:20.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -1526,6 +2175,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-15T15:39:14.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1537,6 +2187,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-15T12:05:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1548,6 +2199,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-15T09:41:49.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1561,7 +2213,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 20,
       "date": "2025-07-15T09:35:03.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "268826719184",
+          "author": "皑菱",
+          "avatar": "https://i2.hdslb.com/bfs/face/2b9c90f1ca734ce8631cad363fb8967f1f69b6ba.jpg",
+          "text": "指正：第2、第8没错\n进下界音效错\n丛林生成犰狳错",
+          "likes": 9,
+          "date": "2025-07-15T09:54:34.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "267665512881",
           "author": "Tont-cuber",
@@ -1569,7 +2232,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @皑菱 :废门不会自带火焰，玩家进入末地的一瞬间不会生成末影龙",
           "likes": 1,
           "date": "2025-07-15T09:56:52.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267665692817",
+          "author": "Tont-cuber",
+          "avatar": "https://i1.hdslb.com/bfs/face/73dc2c6234ed304f6a834d80f6e15fae8d3050ae.jpg",
+          "text": "废门黑曜石堆叠最多不超过2，这里是4个",
+          "likes": 0,
+          "date": "2025-07-15T09:57:22.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267665860417",
+          "author": "Tont-cuber",
+          "avatar": "https://i1.hdslb.com/bfs/face/73dc2c6234ed304f6a834d80f6e15fae8d3050ae.jpg",
+          "text": "回复 @皑菱 :如对废门有异议，请看此视频BV1oW4y1d7NZ",
+          "likes": 0,
+          "date": "2025-07-15T09:58:57.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "267666417745",
@@ -1578,16 +2262,64 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @皑菱 :并且废门没有这种样子的，一共有13种不同形状的废门，没有一种符合视频中的样子",
           "likes": 1,
           "date": "2025-07-15T10:03:34.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "268826719184",
+          "id": "268828491088",
           "author": "皑菱",
           "avatar": "https://i2.hdslb.com/bfs/face/2b9c90f1ca734ce8631cad363fb8967f1f69b6ba.jpg",
-          "text": "指正：第2、第8没错\n进下界音效错\n丛林生成犰狳错",
-          "likes": 9,
-          "date": "2025-07-15T09:54:34.000Z",
-          "emojis": []
+          "text": "回复 @Tont-cuber :谢谢\n刚刚查了wiki，确实如此\n不过传送门音效确实错了（视频中是唤魔者召唤音效）\n犰狳也只会在热带草原生成",
+          "likes": 0,
+          "date": "2025-07-15T10:08:12.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267669071441",
+          "author": "Butin_III",
+          "avatar": "https://i1.hdslb.com/bfs/face/b025c0065195327687a6a404f8ebb6ffb5643f6a.jpg",
+          "text": "回复 @皑菱 :至少java版好像是进入末地后1s才会生成末影龙，不知道官方有没有扣这个细节了（",
+          "likes": 0,
+          "date": "2025-07-15T10:25:33.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267670350657",
+          "author": "收纳袋收纳收纳袋",
+          "avatar": "https://i1.hdslb.com/bfs/face/62e1bec8b7a2a6d674c44fe4521a2cf2ba014e75.jpg",
+          "text": "回复 @Tont-cuber :丛林地形废弃传送门地狱岩上有时候会生成一堆的叶子，叶子被旁边的岩浆烧掉就会留下火焰（见过好几次）",
+          "likes": 1,
+          "date": "2025-07-15T10:35:38.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267670660609",
+          "author": "Tont-cuber",
+          "avatar": "https://i1.hdslb.com/bfs/face/73dc2c6234ed304f6a834d80f6e15fae8d3050ae.jpg",
+          "text": "回复 @收纳袋收纳收纳袋 :就算如此，废门的形状也是错的，在13种废门里，没有一种是像视频中这样的",
+          "likes": 0,
+          "date": "2025-07-15T10:38:32.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267671567777",
+          "author": "Butin_III",
+          "avatar": "https://i1.hdslb.com/bfs/face/b025c0065195327687a6a404f8ebb6ffb5643f6a.jpg",
+          "text": "回复 @Tont-cuber :我感觉这个废门有点像仿海豚种那个[吃瓜]上面有石头吊框架，箱子在后面",
+          "likes": 0,
+          "date": "2025-07-15T10:45:42.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -1600,6 +2332,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-08-08T03:13:10.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1611,6 +2344,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-27T03:47:28.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1624,6 +2358,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-19T00:07:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1637,9 +2372,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[呲牙]",
-          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -1651,6 +2388,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-17T04:16:12.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1666,9 +2404,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "267670013121",
@@ -1677,7 +2417,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "mojang放暑假呢，这几周别等了",
           "likes": 11,
           "date": "2025-07-15T10:32:57.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267675842561",
+          "author": "篝火旁pq",
+          "avatar": "https://i2.hdslb.com/bfs/face/2d5e4921aa71aa02f296ad4e555968a0bd31aab2.jpg",
+          "text": "放暑假了，至少得等8月",
+          "likes": 0,
+          "date": "2025-07-15T11:20:19.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "267681272641",
@@ -1686,7 +2437,102 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @滄海水魚 :我说怎么基岩版测试版怎么卡在1.21.100.23就不动了，不过下个版本最好带来一点新东西，要是就修了两三个bug真的可以把mojang给炸了",
           "likes": 2,
           "date": "2025-07-15T12:09:20.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267684713665",
+          "author": "收纳袋收纳收纳袋",
+          "avatar": "https://i1.hdslb.com/bfs/face/62e1bec8b7a2a6d674c44fe4521a2cf2ba014e75.jpg",
+          "text": "回复 @滄海水魚 :这样啊，我还以为在搞灵动视效[笑哭]",
+          "likes": 0,
+          "date": "2025-07-15T12:41:41.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "267716807041",
+          "author": "根号二吃泡面",
+          "avatar": "https://i0.hdslb.com/bfs/face/fc95f698ca28be9b8ec2c6f056d1aeed8f818639.jpg",
+          "text": "mojiang说要休息几周，具体几周没说，但7月份估计是不行了",
+          "likes": 0,
+          "date": "2025-07-15T19:29:00.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "268883517584",
+          "author": "秋日超级咒",
+          "avatar": "https://i0.hdslb.com/bfs/face/535c66993f5480dc6e5cd26359af4ad6326a49b1.jpg",
+          "text": "sb ojng更了个1.21.8rc1[笑哭]",
+          "likes": 0,
+          "date": "2025-07-15T22:44:45.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "268883529200",
+          "author": "秋日超级咒",
+          "avatar": "https://i0.hdslb.com/bfs/face/535c66993f5480dc6e5cd26359af4ad6326a49b1.jpg",
+          "text": "我报告的bug显示已修复但根本没修复[笑哭]",
+          "likes": 0,
+          "date": "2025-07-15T22:45:25.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "267847795521",
+          "author": "胡湘嫦",
+          "avatar": "https://i2.hdslb.com/bfs/face/8b0fac4587957dfe8b7e7cf859a4d39d973b3ffc.jpg",
+          "text": "回复 @Minecraft不详试炼刷怪笼 :必须优化铜傀儡再搞个怒目怪不然ojang等s吧[doge]",
+          "likes": 0,
+          "date": "2025-07-17T01:36:20.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "267853199153",
+          "author": "Minecraft不详试炼刷怪笼",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @胡湘嫦 :半个月以上不更新诶，不带来一点新东西就修复几个bug真的可以等死",
+          "likes": 0,
+          "date": "2025-07-17T02:40:37.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267853259825",
+          "author": "Minecraft不详试炼刷怪笼",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @胡湘嫦 :确实",
+          "likes": 0,
+          "date": "2025-07-17T02:40:49.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -1699,6 +2545,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-07-26T01:21:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "268915515313",
@@ -1707,7 +2554,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "好想法",
           "likes": 1,
           "date": "2025-07-26T04:16:40.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -1722,9 +2570,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[打call]",
-          "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png"
+          "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "270882755905",
@@ -1736,9 +2586,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[哦呼]",
-              "url": "https://i0.hdslb.com/bfs/emote/362bded07ea5434886271d23fa25f5d85d8af06c.png"
+              "url": "https://i0.hdslb.com/bfs/emote/362bded07ea5434886271d23fa25f5d85d8af06c.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -1753,6 +2605,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-16T06:47:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1766,9 +2619,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -1782,9 +2637,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -1798,6 +2655,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-29T16:42:30.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1811,9 +2669,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[呲牙]",
-          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -1825,6 +2685,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-02T01:54:49.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1840,9 +2701,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[千恋万花表情包_不愧是我]",
-          "url": "https://i0.hdslb.com/bfs/garb/6fc2df6abc38e5c817cce04da5f51b5335d84714.png"
+          "url": "https://i0.hdslb.com/bfs/garb/6fc2df6abc38e5c817cce04da5f51b5335d84714.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "266257333713",
@@ -1851,7 +2714,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "n1993r",
           "likes": 0,
           "date": "2025-07-02T02:19:02.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "268577997072",
@@ -1860,7 +2724,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "嗯哼，我不是негр!",
           "likes": 1,
           "date": "2025-07-13T09:07:57.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -1873,6 +2738,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-06-29T15:51:18.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "266148296705",
@@ -1884,9 +2750,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -1899,6 +2767,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-01T10:21:39.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1912,6 +2781,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-03T02:24:15.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1923,6 +2793,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-29T09:03:35.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -1934,6 +2805,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-01T17:07:05.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -1947,6 +2819,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-06-29T04:58:49.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "266044283105",
@@ -1955,7 +2828,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "最多12个，最少零个",
           "likes": 0,
           "date": "2025-06-29T23:33:23.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "266049048401",
@@ -1964,7 +2838,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @216300555555 :他问的是你多少个能激活",
           "likes": 1,
           "date": "2025-06-30T01:11:38.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "267343417392",
@@ -1976,9 +2851,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -1991,6 +2868,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-06-29T13:03:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "266172728945",
@@ -2002,9 +2880,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "267299814320",
@@ -2013,7 +2893,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @ILcp331 :我发言时有一些语病，这是我的正常情况",
           "likes": 1,
           "date": "2025-07-01T12:47:52.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "266214225697",
+          "author": "ILcp331",
+          "avatar": "https://i0.hdslb.com/bfs/face/5801c64b6c412274781c2c08c2820a9aba8ec598.jpg",
+          "text": "回复 @甜瓜白灰块2号 :哈哈没事",
+          "likes": 0,
+          "date": "2025-07-01T13:38:41.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2026,6 +2917,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-06-30T12:56:16.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "267226844944",
@@ -2037,9 +2929,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "267237837872",
@@ -2051,9 +2945,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[呲牙]",
-              "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+              "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "267244177760",
+          "author": "Source_Crystal",
+          "avatar": "https://i0.hdslb.com/bfs/face/9a5fb20826dd454fe94ee96864d2d6b8b90f90bf.jpg",
+          "text": "回复 @祈之繁瀅 :所以要灵活应变啊[笑哭]",
+          "likes": 0,
+          "date": "2025-07-01T02:44:20.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -2070,36 +2982,33 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         },
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/0a5129f66f43e0574eaf9ba762e154523493104178956505.jpg",
+          "width": 1388,
+          "height": 1080,
+          "animated": false
         }
       ],
       "replies": [
         {
-          "id": "267620350177",
-          "author": "五千四百一十八号",
-          "avatar": "https://i1.hdslb.com/bfs/face/8c1d894d78d9c5dc4f7825a5931288e2949700f4.jpg",
-          "text": "草",
+          "id": "265978269569",
+          "author": "悠了个蓝",
+          "avatar": "https://i1.hdslb.com/bfs/face/87b415727b985d981425fbbc790709cad9fadf16.jpg",
+          "text": "那很惨了",
           "likes": 1,
-          "date": "2025-07-15T02:34:27.000Z",
-          "emojis": []
-        },
-        {
-          "id": "266080081249",
-          "author": "TOJ_文",
-          "avatar": "https://i1.hdslb.com/bfs/face/ab9fcd93d3c48da591de8e0bc9aa1a943370070f.jpg",
-          "text": "绷不住了[doge]",
-          "likes": 1,
-          "date": "2025-06-30T07:32:22.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
-            }
-          ]
+          "date": "2025-06-29T07:20:04.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "266020722817",
@@ -2111,9 +3020,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "266080081249",
+          "author": "TOJ_文",
+          "avatar": "https://i1.hdslb.com/bfs/face/ab9fcd93d3c48da591de8e0bc9aa1a943370070f.jpg",
+          "text": "绷不住了[doge]",
+          "likes": 1,
+          "date": "2025-06-30T07:32:22.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "267620350177",
+          "author": "五千四百一十八号",
+          "avatar": "https://i1.hdslb.com/bfs/face/8c1d894d78d9c5dc4f7825a5931288e2949700f4.jpg",
+          "text": "草",
+          "likes": 1,
+          "date": "2025-07-15T02:34:27.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2126,6 +3063,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-29T05:53:09.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -2139,6 +3077,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-02T01:53:35.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -2152,9 +3091,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -2166,6 +3107,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-02T06:13:30.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -2181,9 +3123,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -2195,6 +3139,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-06-29T08:48:32.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "267620472113",
@@ -2206,9 +3151,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "268805636352",
@@ -2217,7 +3164,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @74號 :官方的嘛，期待一下",
           "likes": 1,
           "date": "2025-07-15T06:24:39.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2232,9 +3180,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -2250,10 +3200,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "265810566560",
+          "author": "DarkOrion_Wxy",
+          "avatar": "https://i1.hdslb.com/bfs/face/0f77fb8f5ef57456ece851d666056e5b05b0e4d8.jpg",
+          "text": "17号晚上出正式版",
+          "likes": 0,
+          "date": "2025-06-16T14:11:07.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "265811291008",
           "author": "H3XB_XwX",
@@ -2264,18 +3226,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "265810566560",
-          "author": "DarkOrion_Wxy",
-          "avatar": "https://i1.hdslb.com/bfs/face/0f77fb8f5ef57456ece851d666056e5b05b0e4d8.jpg",
-          "text": "17号晚上出正式版",
-          "likes": 0,
-          "date": "2025-06-16T14:11:07.000Z",
-          "emojis": []
+          ],
+          "images": []
         }
       ]
     },
@@ -2288,6 +3243,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-17T20:37:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -2299,16 +3255,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-06-16T02:54:57.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "265332643697",
-          "author": "hxhej",
-          "avatar": "/media/avatars/hxhej.webp",
-          "text": "回复 @_小严同学_ :666二周目玩家",
-          "likes": 0,
-          "date": "2025-06-22T14:07:57.000Z",
-          "emojis": []
-        },
         {
           "id": "265325907361",
           "author": "_小严同学_",
@@ -2316,7 +3264,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "这位是来自上海的……诶之前的视频也有你",
           "likes": 0,
           "date": "2025-06-22T13:02:45.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "265332643697",
+          "author": "hxhej",
+          "avatar": "/media/avatars/hxhej.webp",
+          "text": "回复 @_小严同学_ :666二周目玩家",
+          "likes": 0,
+          "date": "2025-06-22T14:07:57.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -2331,6 +3290,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-15T15:18:35.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -2344,9 +3304,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[大哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png"
+          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "267129311968",
@@ -2355,7 +3317,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "找猪灵交易也有几率拿到失水恶魂",
           "likes": 0,
           "date": "2025-06-29T23:02:17.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "266566904609",
@@ -2364,7 +3327,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "猪灵交易也能拿",
           "likes": 0,
           "date": "2025-07-05T03:22:32.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2379,9 +3343,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -2395,6 +3361,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-06T05:48:01.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -2406,6 +3373,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-25T02:30:18.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -2419,6 +3387,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-06-25T16:52:20.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "265628711473",
@@ -2427,7 +3396,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "我说是现在有胡子的。",
           "likes": 2,
           "date": "2025-06-25T16:52:30.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2442,7 +3412,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[支持]",
-          "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/14361fa424c26bab1ec1f4dde79f80093546916646292236.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
         }
       ],
       "replies": [
@@ -2456,9 +3435,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "268367173312",
@@ -2470,9 +3451,31 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "268372902656",
+          "author": "MC_END",
+          "avatar": "https://i2.hdslb.com/bfs/face/2e1a30aeda7da43793966b4d0c38fc7c52748462.jpg",
+          "text": "回复 @星辰大海_喵 :\\o",
+          "likes": 0,
+          "date": "2025-07-11T11:57:54.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "268372917904",
+          "author": "星辰大海_喵",
+          "avatar": "https://i2.hdslb.com/bfs/face/14b1fcb92416801a040965498c584fa66f019855.jpg",
+          "text": "回复 @MC_END :掉落物",
+          "likes": 1,
+          "date": "2025-07-11T11:58:18.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "268372843088",
@@ -2481,7 +3484,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "看不懂没关系",
           "likes": 0,
           "date": "2025-07-11T11:58:33.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "268372868272",
+          "author": "MC_END",
+          "avatar": "https://i2.hdslb.com/bfs/face/2e1a30aeda7da43793966b4d0c38fc7c52748462.jpg",
+          "text": "回复 @星辰大海_喵 :拉了？",
+          "likes": 0,
+          "date": "2025-07-11T11:59:16.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2494,6 +3508,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-16T09:07:16.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -2509,9 +3524,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -2525,9 +3542,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[大哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png"
+          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -2541,6 +3560,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-17T01:42:09.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -2554,9 +3574,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -2570,6 +3592,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-16T12:16:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -2583,9 +3606,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[喜欢]",
-          "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png"
+          "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "266339566033",
@@ -2597,23 +3622,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[喜欢]",
-              "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png"
+              "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "266906058241",
-          "author": "祺sama睡不醒_Zzz",
-          "avatar": "https://i0.hdslb.com/bfs/face/d5a076e50cc88a389bf77d5423736db7e022e8ce.jpg",
-          "text": "回复 @巧克力味の贝SAMA :要成为五字神人总得失去点东西[doge]",
-          "likes": 0,
-          "date": "2025-07-08T08:33:29.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
-            }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "266893476465",
@@ -2625,9 +3638,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "266906058241",
+          "author": "祺sama睡不醒_Zzz",
+          "avatar": "https://i0.hdslb.com/bfs/face/d5a076e50cc88a389bf77d5423736db7e022e8ce.jpg",
+          "text": "回复 @巧克力味の贝SAMA :要成为五字神人总得失去点东西[doge]",
+          "likes": 0,
+          "date": "2025-07-08T08:33:29.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -2640,6 +3671,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-07-09T11:37:35.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -2653,6 +3685,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2025-06-16T06:38:31.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "266139617648",
@@ -2664,23 +3697,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "266997212849",
-          "author": "空间是一格半",
-          "avatar": "https://i0.hdslb.com/bfs/face/0cca5c4f5bb1267f670b61abeb602a98c3078b79.jpg",
-          "text": "回复 @bili_401165872 :不先做铁套和盾牌，下矿被打成筛子[吃瓜]",
-          "likes": 5,
-          "date": "2025-07-09T05:19:15.000Z",
-          "emojis": [
-            {
-              "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
-            }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "265970196449",
@@ -2692,9 +3713,53 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "266966439745",
+          "author": "bili_401165872",
+          "avatar": "https://i1.hdslb.com/bfs/face/ec4155ddc0f3f0fc292c7aebc75c0b426af61380.jpg",
+          "text": "回复 @空间是一格半 :1.18以后的地下结构很大，完全不至于说看到苦力怕跑不了。思几百次了只能说是水平问题",
+          "likes": 1,
+          "date": "2025-07-08T22:49:32.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "266997212849",
+          "author": "空间是一格半",
+          "avatar": "https://i0.hdslb.com/bfs/face/0cca5c4f5bb1267f670b61abeb602a98c3078b79.jpg",
+          "text": "回复 @bili_401165872 :不先做铁套和盾牌，下矿被打成筛子[吃瓜]",
+          "likes": 5,
+          "date": "2025-07-09T05:19:15.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "268248043952",
+          "author": "惠杲",
+          "avatar": "https://i0.hdslb.com/bfs/face/1ce0d52fe4f9e98b05827fe822276fdcb440b5e1.jpg",
+          "text": "还用做，直接去铁匠铺不香吗[吃瓜]",
+          "likes": 0,
+          "date": "2025-07-10T10:07:26.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -2707,6 +3772,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2025-06-14T23:57:34.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "265642234592",
@@ -2715,7 +3781,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "但是皮革靴子还是挺好用的",
           "likes": 10,
           "date": "2025-06-14T23:57:46.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "265652980688",
@@ -2727,9 +3794,43 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "265839031184",
+          "author": "KeepCool有话好好说",
+          "avatar": "https://i0.hdslb.com/bfs/face/4cd62e04142de7653f61d233a82b06b42158f7d3.jpg",
+          "text": "回复 @AIM752 :为啥呀[doge]",
+          "likes": 0,
+          "date": "2025-06-17T00:39:26.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "265141261089",
+          "author": "屑屑的机枪豌豆",
+          "avatar": "https://i1.hdslb.com/bfs/face/9d42def3e70000676a76021bce4fb03a24aae308.jpg",
+          "text": "玩起床呢[doge]",
+          "likes": 0,
+          "date": "2025-06-20T16:51:47.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "265846223809",
@@ -2738,7 +3839,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @希世理 :细雪吧",
           "likes": 0,
           "date": "2025-06-28T02:46:33.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2751,6 +3853,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-06-29T23:09:57.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "267114990353",
@@ -2759,7 +3862,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "收藏品，能一样吗？",
           "likes": 1,
           "date": "2025-07-10T07:01:53.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -2774,6 +3878,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-15T03:55:22.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -2787,13 +3892,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         },
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "264646718401",
@@ -2802,7 +3910,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "也就12个月",
           "likes": 3,
           "date": "2025-06-15T11:11:09.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "264686920817",
@@ -2814,9 +3923,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "267174875808",
@@ -2825,7 +3936,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @疑久疑久罢已零 :捉",
           "likes": 1,
           "date": "2025-06-30T09:05:15.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267679853248",
+          "author": "Noelseed",
+          "avatar": "https://i1.hdslb.com/bfs/face/61d705609d1605457578670046fc03b45e7d93b2.jpg",
+          "text": "时之沙[吃瓜]",
+          "likes": 0,
+          "date": "2025-07-05T05:24:23.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -2840,9 +3968,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -2856,6 +3986,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 4,
       "date": "2025-06-15T02:56:41.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/0d2454fba48f30d23ec3ee4fea967fc5617651652.png",
+          "width": 752,
+          "height": 1344,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "264625905697",
@@ -2864,7 +4002,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "暴击没有粒子不算！是可以关闭的",
           "likes": 5,
           "date": "2025-06-15T07:09:51.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "264647959761",
@@ -2873,7 +4012,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "开箱子后视角还移动了一点，所以这个箱子UI图就是P的",
           "likes": 1,
           "date": "2025-06-15T11:23:55.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "265799293312",
@@ -2885,9 +4025,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "264836302769",
+          "author": "暗区小芒果",
+          "avatar": "https://i0.hdslb.com/bfs/face/b7945a052ad645e6386577126f686612078d60c4.jpg",
+          "text": "被炸死的时候字幕显示的是史蒂夫 溺水了",
+          "likes": 0,
+          "date": "2025-06-17T12:14:46.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2900,7 +4052,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 4,
       "date": "2025-07-02T17:03:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "268148455808",
+          "author": "蓝天西方",
+          "avatar": "https://i2.hdslb.com/bfs/face/6e3977df5fc7ce0a5c108e5fb5a8b53b584d3268.jpg",
+          "text": "还有莫名出现的灵魂火把",
+          "likes": 0,
+          "date": "2025-07-09T11:53:15.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267137152065",
+          "author": "jimlol",
+          "avatar": "https://i0.hdslb.com/bfs/face/ea6534dca47a2c633a2a19d7977313eb95b2b3a8.jpg",
+          "text": "回复 @蓝天西方 :11就是",
+          "likes": 0,
+          "date": "2025-07-10T10:50:59.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "268322097824",
           "author": "橡木Noak",
@@ -2911,18 +4084,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "268148455808",
-          "author": "蓝天西方",
-          "avatar": "https://i2.hdslb.com/bfs/face/6e3977df5fc7ce0a5c108e5fb5a8b53b584d3268.jpg",
-          "text": "还有莫名出现的灵魂火把",
-          "likes": 0,
-          "date": "2025-07-09T11:53:15.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "267337240257",
@@ -2931,7 +4097,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "开箱的时候背包物品栏只有一把剑",
           "likes": 0,
           "date": "2025-07-12T07:50:27.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -2944,16 +4111,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-06-22T12:34:42.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "266837620625",
-          "author": "不会唱歌の小鸟",
-          "avatar": "https://i1.hdslb.com/bfs/face/846c74db9a82168d229b815ba679a4e22d97c5e8.jpg",
-          "text": "我怎么记得箱子矿车被打掉之后掉的是箱子和矿车",
-          "likes": 1,
-          "date": "2025-07-07T14:40:31.000Z",
-          "emojis": []
-        },
         {
           "id": "265357019681",
           "author": "悸风荡回廊",
@@ -2961,7 +4120,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "9.泥土放置音效\n10.史蒂夫溺水",
           "likes": 1,
           "date": "2025-06-22T22:32:38.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "266837620625",
+          "author": "不会唱歌の小鸟",
+          "avatar": "https://i1.hdslb.com/bfs/face/846c74db9a82168d229b815ba679a4e22d97c5e8.jpg",
+          "text": "我怎么记得箱子矿车被打掉之后掉的是箱子和矿车",
+          "likes": 1,
+          "date": "2025-07-07T14:40:31.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -2978,9 +4148,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -2992,6 +4164,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-27T07:48:26.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -3005,9 +4178,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -3021,6 +4196,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-14T12:59:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -3034,9 +4210,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -3048,6 +4226,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-14T13:50:56.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -3063,9 +4242,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -3079,9 +4260,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[呲牙]",
-          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -3095,9 +4278,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -3111,6 +4296,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-05-17T03:55:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "263448718848",
@@ -3122,9 +4308,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[微笑]",
-              "url": "https://i0.hdslb.com/bfs/emote/685612eadc33f6bc233776c6241813385844f182.png"
+              "url": "https://i0.hdslb.com/bfs/emote/685612eadc33f6bc233776c6241813385844f182.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -3137,6 +4325,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-05-12T16:06:03.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -3148,6 +4337,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-05-17T12:06:02.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -3161,6 +4351,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-05-11T17:46:39.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -3174,6 +4365,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-05-11T07:53:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -3187,9 +4379,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -3201,6 +4395,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-06-15T11:07:15.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/f77c021f3072d0bb0ac6599b08840e7a3546855195544417.jpg",
+          "width": 630,
+          "height": 1400,
+          "animated": false
+        }
+      ],
       "replies": []
     }
   ],
@@ -3214,6 +4416,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-05-11T07:33:48.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -3227,6 +4430,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 4,
       "date": "2025-05-11T07:33:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "261627153153",
@@ -3235,7 +4439,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "必须的 总体肯定是进步的 要不然早就查无此人了 也不会世界第一销量了 我个人认为黑红也是红 特别是这种单机游戏最怕的就是没热度",
           "likes": 44,
           "date": "2025-05-11T13:08:14.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "261844127361",
@@ -3244,7 +4449,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "感觉是利大于弊",
           "likes": 4,
           "date": "2025-05-14T12:30:21.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "263003617040",
+          "author": "henlanle-lijnyeu",
+          "avatar": "https://i0.hdslb.com/bfs/face/5e086370963efc4e010b935b46d3736c855b25f0.jpg",
+          "text": "不是，哥们儿，你那些bug消除后，生电玩家该怎么活啊啊啊啊啊啊",
+          "likes": 4,
+          "date": "2025-05-16T23:04:09.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "263836081824",
@@ -3256,9 +4472,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -3273,9 +4491,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "261617322449",
@@ -3284,16 +4504,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "2011的场景现在也可以还原",
           "likes": 12,
           "date": "2025-05-11T11:03:32.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "261698389521",
-          "author": "Nerverakes",
-          "avatar": "https://i0.hdslb.com/bfs/face/5c1a2228a50e7f3e7de908cc8e908517a325ffab.jpg",
-          "text": "回复 @Minecraft_焦糖 :你猜猜视频里的是什么版本？是1.0，还没有多语言的第一个正式版本",
-          "likes": 4,
-          "date": "2025-05-12T12:53:13.000Z",
-          "emojis": []
+          "id": "262596667024",
+          "author": "DeFuAdGen",
+          "avatar": "https://i2.hdslb.com/bfs/face/e446440d9543648e9d70a7b483ac9a4a87dbbf5d.jpg",
+          "text": "1.7.10和1.12.2才是真神",
+          "likes": 6,
+          "date": "2025-05-11T15:33:30.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "262637022192",
+          "author": "吃的丰富多彩",
+          "avatar": "https://i0.hdslb.com/bfs/face/e8704b8fbec387ba6a428526dcc1c9766fd992db.jpg",
+          "text": "个人感觉2025年看着更舒服，可能是大的时候玩的比较多吧[doge]",
+          "likes": 6,
+          "date": "2025-05-12T07:38:57.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "262655768608",
@@ -3302,7 +4540,86 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "2011更纯净，说实话我也喜欢老版本，没有那么多杂七杂八的东西很好",
           "likes": 5,
           "date": "2025-05-12T12:12:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "261698389521",
+          "author": "Nerverakes",
+          "avatar": "https://i0.hdslb.com/bfs/face/5c1a2228a50e7f3e7de908cc8e908517a325ffab.jpg",
+          "text": "回复 @Minecraft_焦糖 :你猜猜视频里的是什么版本？是1.0，还没有多语言的第一个正式版本",
+          "likes": 4,
+          "date": "2025-05-12T12:53:13.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "261698393057",
+          "author": "Nerverakes",
+          "avatar": "https://i0.hdslb.com/bfs/face/5c1a2228a50e7f3e7de908cc8e908517a325ffab.jpg",
+          "text": "你猜猜视频里的是什么版本？是1.0.0，还没有多语言的第一个正式版本",
+          "likes": 2,
+          "date": "2025-05-12T12:53:24.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "261745215953",
+          "author": "铁血-提尔比茨",
+          "avatar": "https://i1.hdslb.com/bfs/face/b2084916905f228eff3dc469349482a43ac7a848.jpg",
+          "text": "回复 @Minecraft_焦糖 :最主要还是小的时候那种感觉[doge]",
+          "likes": 0,
+          "date": "2025-05-13T06:15:39.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "261745298673",
+          "author": "铁血-提尔比茨",
+          "avatar": "https://i1.hdslb.com/bfs/face/b2084916905f228eff3dc469349482a43ac7a848.jpg",
+          "text": "回复 @Minecraft_焦糖 :这些版本已经奠定了mc的基本玩法[doge]",
+          "likes": 0,
+          "date": "2025-05-13T06:16:14.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "262961692801",
+          "author": "氰氰的莱",
+          "avatar": "https://i0.hdslb.com/bfs/face/5f90893772f66a29df52669f5daca3f02de386db.jpg",
+          "text": "1.7.10是mod最丰富，最巅峰的,1.8.9是PVP小游戏服务器最巅峰的时候，1.12.2是mod第二春，但比不上1.7.10",
+          "likes": 2,
+          "date": "2025-05-28T01:22:06.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "262971545137",
+          "author": "铁血-提尔比茨",
+          "avatar": "https://i1.hdslb.com/bfs/face/b2084916905f228eff3dc469349482a43ac7a848.jpg",
+          "text": "回复 @氰氰的莱 :1.7.10那个时候大概好像是13.14年，那个年代有这么一款高自由度的沙盒游戏风靡了世界，记得当时有不少的实况主，身边随处可见有人玩[吃瓜]",
+          "likes": 0,
+          "date": "2025-05-28T04:04:14.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -3317,10 +4634,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "262627049152",
+          "author": "Last_龙",
+          "avatar": "https://i0.hdslb.com/bfs/face/b25f3fe478784184e68eb8cb101cd4f93a0d4289.jpg",
+          "text": "看得出麻将想多做点新的吸引人的东西出来。个人感觉1.16是个转折点，之后的更新都是创造性的转换自由度的延展。比如扩大矿洞，加各种群系。水平也时高时低的，最拉能整出发光鱿鱼，幻翼这种沟槽的生物投票。我个人认为更新最好的还是1.18的矿脉延展，以及村民的职业扩充",
+          "likes": 34,
+          "date": "2025-05-12T04:42:42.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "261773591217",
           "author": "野生xy-t",
@@ -3331,18 +4660,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "262627049152",
-          "author": "Last_龙",
-          "avatar": "https://i0.hdslb.com/bfs/face/b25f3fe478784184e68eb8cb101cd4f93a0d4289.jpg",
-          "text": "看得出麻将想多做点新的吸引人的东西出来。个人感觉1.16是个转折点，之后的更新都是创造性的转换自由度的延展。比如扩大矿洞，加各种群系。水平也时高时低的，最拉能整出发光鱿鱼，幻翼这种沟槽的生物投票。我个人认为更新最好的还是1.18的矿脉延展，以及村民的职业扩充",
-          "likes": 34,
-          "date": "2025-05-12T04:42:42.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "262918560961",
@@ -3351,7 +4673,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @TpygHa :感觉mojang是故意不让投票生物功能性强的，因为投票输了的那两个可以说一辈子不会加入Minecraft，伴随的特性也一同消失了也很可惜",
           "likes": 0,
           "date": "2025-05-27T11:09:49.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "263926329168",
+          "author": "Last_龙",
+          "avatar": "https://i0.hdslb.com/bfs/face/b25f3fe478784184e68eb8cb101cd4f93a0d4289.jpg",
+          "text": "回复 @Six_ears :还真是，比如2023年的犰狳，螃蟹，企鹅。犰狳的壳能做狼铠，而螃蟹能在生存延展方块放置的距离，而企鹅则就是为了扩充动物。那大部分玩家肯定要么选犰狳，要么选螃蟹。只有选企鹅的是真的想要在mc里养企鹅，但是mc中已经有北极熊了和企鹅不能同时存在。最后也知道是犰狳获胜了。但麻将每次生物投票都感觉有做局，要么投出来的是没什么实用性的，要么就是以有争议废除投票结果。下个版本直接加内定的生物。但是说是不能加入已经落选的生物，但是后来的青蛙和悦灵都落选还加入了。还有铜傀儡和发光鱿鱼这种争议比较大的。真的搞不懂麻将在搞什么[笑哭]",
+          "likes": 1,
+          "date": "2025-05-27T11:22:32.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "284937013153",
+          "author": "Nerverakes",
+          "avatar": "https://i0.hdslb.com/bfs/face/5c1a2228a50e7f3e7de908cc8e908517a325ffab.jpg",
+          "text": "1.0.0也不经典啊",
+          "likes": 0,
+          "date": "2025-12-30T14:19:13.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -3366,6 +4715,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-05-11T07:47:23.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -3379,19 +4729,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "262034123121",
-          "author": "Jiwoniverse",
-          "avatar": "https://i0.hdslb.com/bfs/face/519c9d6d6e50eaa65030e90050637195264b9c8d.jpg",
-          "text": "回复 @_flos___ : 不是不是。。我是up的朋友 玩抽象的",
-          "likes": 1,
-          "date": "2025-05-17T01:50:09.000Z",
-          "emojis": []
-        },
         {
           "id": "262569084336",
           "author": "_flos___",
@@ -3399,7 +4742,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "亲你是个好人但是没必要勉强自己的（",
           "likes": 0,
           "date": "2025-05-11T09:59:55.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "262034123121",
+          "author": "Jiwoniverse",
+          "avatar": "https://i0.hdslb.com/bfs/face/519c9d6d6e50eaa65030e90050637195264b9c8d.jpg",
+          "text": "回复 @_flos___ : 不是不是。。我是up的朋友 玩抽象的",
+          "likes": 1,
+          "date": "2025-05-17T01:50:09.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "263011630816",
+          "author": "_flos___",
+          "avatar": "https://i1.hdslb.com/bfs/face/6e0d25ea1ce0495670321b29aff7b34a50bd14cb.jpg",
+          "text": "回复 @Jiwoniverse :草（",
+          "likes": 0,
+          "date": "2025-05-17T01:56:06.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -3414,9 +4778,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -3432,9 +4798,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "261693609473",
@@ -3443,21 +4811,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "估计视频号和电影制作不是一帮人",
           "likes": 128,
           "date": "2025-05-12T11:46:58.000Z",
-          "emojis": []
-        },
-        {
-          "id": "261724769329",
-          "author": "Mr_L00nyN1on",
-          "avatar": "https://i1.hdslb.com/bfs/face/7f1dc642b68a39dc2f6433a6a09345b79bba9cc2.jpg",
-          "text": "应该就是玩那个播音腔的梗[doge]",
-          "likes": 39,
-          "date": "2025-05-13T00:06:30.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
-            }
-          ]
+          "emojis": [],
+          "images": []
         },
         {
           "id": "262675041008",
@@ -3469,9 +4824,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "261724769329",
+          "author": "Mr_L00nyN1on",
+          "avatar": "https://i1.hdslb.com/bfs/face/7f1dc642b68a39dc2f6433a6a09345b79bba9cc2.jpg",
+          "text": "应该就是玩那个播音腔的梗[doge]",
+          "likes": 39,
+          "date": "2025-05-13T00:06:30.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "268572745921",
+          "author": "24k纯种非酋",
+          "avatar": "https://i1.hdslb.com/bfs/face/e6956e530232c8ee5aef40a917204612b435130c.jpg",
+          "text": "好像电影里的“steve”本质上是cos史蒂夫的游戏爱好者来着？就和网上那种自称吴彦祖的人一样()",
+          "likes": 13,
+          "date": "2025-07-23T07:20:11.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -3484,6 +4867,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-05-11T10:35:27.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "261632272241",
@@ -3492,7 +4876,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "杰克:布莱克",
           "likes": 1,
           "date": "2025-05-11T14:11:21.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -3507,9 +4892,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "261600799665",
@@ -3518,7 +4905,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "以后不翻译了亲（",
           "likes": 3,
           "date": "2025-05-11T07:13:06.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -3533,6 +4921,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-04-20T04:09:49.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "260830107696",
@@ -3541,7 +4930,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "一般不都故意不穿金去打劫一次，下回就有金套穿了。",
           "likes": 6,
           "date": "2025-04-20T04:10:49.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "261115667696",
@@ -3550,7 +4940,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "顶多带个靴子，如果想要衰落保护的话就只戴头盔，全黄金的鉴定为想被烈焰人做成烤肉了",
           "likes": 2,
           "date": "2025-04-23T14:51:22.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "260280399233",
@@ -3562,9 +4953,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -3577,6 +4970,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-04-20T09:34:20.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -3590,9 +4984,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -3606,6 +5002,20 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-04-24T10:55:54.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/6104fa705f75d89be2e576adaea898bf1108623580.png",
+          "width": 591,
+          "height": 588,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/07e1e0f38ae26eb033a9724ce492323b1108623580.png",
+          "width": 817,
+          "height": 543,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "261685942240",
@@ -3614,7 +5024,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "僵尸:来一个？",
           "likes": 1,
           "date": "2025-04-30T17:23:05.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -3627,7 +5038,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-04-19T12:08:37.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "259899567969",
+          "author": "_小严同学_",
+          "avatar": "https://i1.hdslb.com/bfs/face/1557a7ae20181f078eace9e540888999908c69d4.jpg",
+          "text": "（个人经历）沙漠村庄的一些房子窗户一格高还没玻璃，小僵尸能摸进去",
+          "likes": 0,
+          "date": "2025-04-19T15:53:54.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "260796422576",
           "author": "风雨下黑猫",
@@ -3635,7 +5057,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @_小严同学_ :小僵尸够得到吗？",
           "likes": 0,
           "date": "2025-04-19T15:55:23.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "259899983329",
@@ -3644,16 +5067,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @风雨下黑猫 :一格高，正常生物都能跳上去，而且小僵尸自己也是一格高",
           "likes": 0,
           "date": "2025-04-19T16:00:15.000Z",
-          "emojis": []
-        },
-        {
-          "id": "259899567969",
-          "author": "_小严同学_",
-          "avatar": "https://i1.hdslb.com/bfs/face/1557a7ae20181f078eace9e540888999908c69d4.jpg",
-          "text": "（个人经历）沙漠村庄的一些房子窗户一格高还没玻璃，小僵尸能摸进去",
-          "likes": 0,
-          "date": "2025-04-19T15:53:54.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -3666,6 +5081,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-04-19T12:08:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -3681,9 +5097,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -3697,9 +5115,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "261720475280",
@@ -3708,7 +5128,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "前几个版本灌石灌多了愧疚玩家了",
           "likes": 2,
           "date": "2025-05-01T06:11:30.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "261739733984",
@@ -3720,9 +5141,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -3735,6 +5158,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-04-23T11:00:16.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/8397a12453d73ef60c7fae6d01f050d13546617959417870.jpg",
+          "width": 1080,
+          "height": 1080,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "261670173297",
@@ -3743,7 +5174,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "我记得新版本栓绳不需要粘液球了，只需要线，更方便合成了",
           "likes": 3,
           "date": "2025-05-12T05:13:01.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "262671445232",
@@ -3755,9 +5187,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -3774,9 +5208,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -3792,7 +5228,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[吃瓜]",
-          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/28d27bb0def87fbb7cfedb6a0b9322182113464264.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
         }
       ],
       "replies": [
@@ -3803,21 +5248,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "宣传片是工作，实机是生活",
           "likes": 33,
           "date": "2025-04-19T14:40:58.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "262049684672",
-          "author": "装青蛙的蛤蟆",
-          "avatar": "https://i1.hdslb.com/bfs/face/fec3a68e9f155cde9fade077dbad5a117b01e3b7.jpg",
-          "text": "流浪拴绳和行商皮革[喜欢]",
-          "likes": 3,
-          "date": "2025-05-05T00:21:59.000Z",
+          "id": "260813534896",
+          "author": "东EL",
+          "avatar": "https://i2.hdslb.com/bfs/face/7cb9892815deef3b8f02836b3961de794653cdd3.jpg",
+          "text": "[笑哭][笑哭][笑哭]",
+          "likes": 1,
+          "date": "2025-04-20T00:11:46.000Z",
           "emojis": [
             {
-              "token": "[喜欢]",
-              "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png"
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "260974981472",
+          "author": "J-魔珺",
+          "avatar": "https://i1.hdslb.com/bfs/face/0ac7a27235e206e28a793daa2cd4078bb0f64a0b.jpg",
+          "text": "奸商！",
+          "likes": 0,
+          "date": "2025-04-21T18:23:27.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "261278489728",
@@ -3829,9 +5287,83 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "262049684672",
+          "author": "装青蛙的蛤蟆",
+          "avatar": "https://i1.hdslb.com/bfs/face/fec3a68e9f155cde9fade077dbad5a117b01e3b7.jpg",
+          "text": "流浪拴绳和行商皮革[喜欢]",
+          "likes": 3,
+          "date": "2025-05-05T00:21:59.000Z",
+          "emojis": [
+            {
+              "token": "[喜欢]",
+              "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "262893617728",
+          "author": "纯净水DEF",
+          "avatar": "https://i0.hdslb.com/bfs/face/d9d1dfe05fa887905ef647ef3d199b56db09dddc.jpg",
+          "text": "回复 @哦_又活了一天 :并非没用啊",
+          "likes": 0,
+          "date": "2025-05-15T13:00:05.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "262894374352",
+          "author": "竟活着",
+          "avatar": "https://i1.hdslb.com/bfs/face/e6bc96c5337e4d2916762bf9b050df45de82ff50.jpg",
+          "text": "回复 @纯净水chenjinshuo :最新版本栓绳只用线就能合成了，不需要再杀这玩意儿了[笑哭]",
+          "likes": 1,
+          "date": "2025-05-15T13:10:02.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "262897715280",
+          "author": "纯净水DEF",
+          "avatar": "https://i0.hdslb.com/bfs/face/d9d1dfe05fa887905ef647ef3d199b56db09dddc.jpg",
+          "text": "回复 @哦_又活了一天 :不不不，流浪拴绳的商品还是有点用的，他卖的都是一些当前群系没有的东西，如果没有流浪商人，想要找到树苗、苔藓块、种子就要花费很长的时间，有了流浪商人直接买就行",
+          "likes": 0,
+          "date": "2025-05-15T13:47:39.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "262962928064",
+          "author": "竟活着",
+          "avatar": "https://i1.hdslb.com/bfs/face/e6bc96c5337e4d2916762bf9b050df45de82ff50.jpg",
+          "text": "回复 @纯净水chenjinshuo :好吧，但正常生存应该用不到吧",
+          "likes": 0,
+          "date": "2025-05-16T10:36:30.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "262964231392",
+          "author": "纯净水DEF",
+          "avatar": "https://i0.hdslb.com/bfs/face/d9d1dfe05fa887905ef647ef3d199b56db09dddc.jpg",
+          "text": "回复 @哦_又活了一天 :用不到，但对服务器里的建筑党很有帮助，找材料不用跑图了",
+          "likes": 1,
+          "date": "2025-05-16T10:53:22.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -3844,6 +5376,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-04-20T07:15:20.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/006c5664563642b4c8e14e18e1cdf4853546379030890590.jpg",
+          "width": 2382,
+          "height": 1080,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "260108734817",
@@ -3855,9 +5395,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -3870,6 +5412,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-04-30T12:10:02.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -3883,6 +5426,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-04-19T10:56:59.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -3894,7 +5438,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-04-20T05:48:37.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "265661694128",
+          "author": "时耀-timeshine",
+          "avatar": "https://i0.hdslb.com/bfs/face/b4ef0900f52bb8eba3bdbf847503b7c67e4ce0db.jpg",
+          "text": "交易等级有分绿宝石和钻石吗？不是新手学徒专家和大师吗？",
+          "likes": 0,
+          "date": "2025-06-15T04:09:23.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "265669208592",
           "author": "这是个王虫",
@@ -3902,7 +5457,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @时耀-timeshine :腰上的牌",
           "likes": 1,
           "date": "2025-06-15T05:23:17.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "272115085840",
@@ -3911,16 +5467,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @这是个王虫 : 6我只顾买买买了忘记看他长啥样了",
           "likes": 0,
           "date": "2025-08-10T16:23:53.000Z",
-          "emojis": []
-        },
-        {
-          "id": "265661694128",
-          "author": "时耀-timeshine",
-          "avatar": "https://i0.hdslb.com/bfs/face/b4ef0900f52bb8eba3bdbf847503b7c67e4ce0db.jpg",
-          "text": "交易等级有分绿宝石和钻石吗？不是新手学徒专家和大师吗？",
-          "likes": 0,
-          "date": "2025-06-15T04:09:23.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -3935,9 +5483,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -3953,9 +5503,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "257676827121",
@@ -3964,7 +5516,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "好慢",
           "likes": 1,
           "date": "2025-03-23T05:03:06.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -3979,9 +5532,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[少女乐队的呐喊表情包_吐舌]",
-          "url": "https://i0.hdslb.com/bfs/garb/ab8159a36644e440755e9874e2c82490de895819.png"
+          "url": "https://i0.hdslb.com/bfs/garb/ab8159a36644e440755e9874e2c82490de895819.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -3995,9 +5550,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -4013,7 +5570,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[吃瓜]",
-          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/2f444b50eb5010f77596ea8d959b7ced1734738561.jpg",
+          "width": 720,
+          "height": 1612,
+          "animated": false
         }
       ],
       "replies": []
@@ -4029,9 +5595,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[给心心]",
-          "url": "https://i0.hdslb.com/bfs/emote/1597302b98827463f5b75c7cac1f29ea6ce572c4.png"
+          "url": "https://i0.hdslb.com/bfs/emote/1597302b98827463f5b75c7cac1f29ea6ce572c4.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -4047,9 +5615,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -4061,6 +5631,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-23T09:25:10.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -4072,6 +5643,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-23T15:46:39.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -4085,6 +5657,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-23T16:15:37.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -4096,6 +5669,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2025-03-23T13:04:05.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "257715172577",
@@ -4107,18 +5681,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "258526986112",
-          "author": "一棵橡木",
-          "avatar": "https://i2.hdslb.com/bfs/face/1fc1475c03a629d027c93b930ed93c5c05002aba.jpg",
-          "text": "回复 @熟羊不是数羊 :他说的是第一句的中文那里",
+          "id": "257715283937",
+          "author": "熟羊不是数羊",
+          "avatar": "https://i1.hdslb.com/bfs/face/03dee8e0a882fbb52daf90cf7ff51a6acd10e2a6.jpg",
+          "text": "回复 @熟羊不是数羊 :是blocky，打错了[笑哭]",
           "likes": 1,
-          "date": "2025-03-23T14:41:42.000Z",
-          "emojis": []
+          "date": "2025-03-23T13:33:20.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "257715527409",
@@ -4127,7 +5710,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @熟羊不是数羊 :我指的是第二个字。。。刚才有个人跟你一样，他很快就撤回了",
           "likes": 1,
           "date": "2025-03-23T13:36:37.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "258526986112",
+          "author": "一棵橡木",
+          "avatar": "https://i2.hdslb.com/bfs/face/1fc1475c03a629d027c93b930ed93c5c05002aba.jpg",
+          "text": "回复 @熟羊不是数羊 :他说的是第一句的中文那里",
+          "likes": 1,
+          "date": "2025-03-23T14:41:42.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257769350993",
+          "author": "熟羊不是数羊",
+          "avatar": "https://i1.hdslb.com/bfs/face/03dee8e0a882fbb52daf90cf7ff51a6acd10e2a6.jpg",
+          "text": "回复 @一棵橡木 :哦哦哦，看到了[doge]",
+          "likes": 0,
+          "date": "2025-03-24T08:24:56.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -4142,23 +5752,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
-          "id": "260269909952",
-          "author": "竟活哟",
-          "avatar": "https://i0.hdslb.com/bfs/face/0edc4461bc9137d7b9308a946b1731e3a53de01f.jpg",
-          "text": "回复 @__Infinitive__ :艹[笑哭]",
+          "id": "258911332816",
+          "author": "普通的阿狗",
+          "avatar": "https://i0.hdslb.com/bfs/face/a855ac7c33b764902a34104022819e62420dddc0.jpg",
+          "text": "[打call]",
           "likes": 0,
-          "date": "2025-04-13T06:13:51.000Z",
+          "date": "2025-03-28T10:08:39.000Z",
           "emojis": [
             {
-              "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "token": "[打call]",
+              "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "259896450224",
@@ -4170,9 +5784,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[脱单doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png"
+              "url": "https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "259395551649",
@@ -4181,7 +5797,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @哦_又似了一天 : 你也打错子，是“字”",
           "likes": 0,
           "date": "2025-04-13T05:51:54.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "260269909952",
+          "author": "竟活哟",
+          "avatar": "https://i0.hdslb.com/bfs/face/0edc4461bc9137d7b9308a946b1731e3a53de01f.jpg",
+          "text": "回复 @__Infinitive__ :艹[笑哭]",
+          "likes": 0,
+          "date": "2025-04-13T06:13:51.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -4196,6 +5829,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 28,
       "date": "2025-03-15T14:35:41.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "257871675440",
@@ -4204,7 +5838,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "最绝望的一集",
           "likes": 90,
           "date": "2025-03-15T16:24:58.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257087168977",
+          "author": "苍风浅天",
+          "avatar": "https://i0.hdslb.com/bfs/face/adee3a59bcbdc2b77486d78a20ac2c4ab0bbd1ac.jpg",
+          "text": "回复 @iCHETi :什么才是真正的绝望.JPG",
+          "likes": 17,
+          "date": "2025-03-15T16:43:01.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257098073985",
+          "author": "5343411",
+          "avatar": "https://i2.hdslb.com/bfs/face/b813eb7977865fb5cd4da4d3401477bf29dcc8a0.jpg",
+          "text": "布豪!😭😭",
+          "likes": 9,
+          "date": "2025-03-15T23:08:42.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "257889971792",
@@ -4216,9 +5871,67 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "257103854145",
+          "author": "苍风浅天",
+          "avatar": "https://i0.hdslb.com/bfs/face/adee3a59bcbdc2b77486d78a20ac2c4ab0bbd1ac.jpg",
+          "text": "回复 @winter0203 :根据真实事件改编()",
+          "likes": 11,
+          "date": "2025-03-16T01:26:11.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257890561024",
+          "author": "winter0203",
+          "avatar": "https://i0.hdslb.com/bfs/face/23bc9629bf8befe0f75426b297066cead14ef2b5.jpg",
+          "text": "回复 @苍风浅天 :那建议来我服,没这些花里胡哨的东西,机制纯原版",
+          "likes": 4,
+          "date": "2025-03-16T01:33:06.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257107476497",
+          "author": "谢迹",
+          "avatar": "https://i1.hdslb.com/bfs/face/18a340b2f4316bdcfa5d79ee3e87627116cfedcb.jpg",
+          "text": "死了过后区块卸载了应该清不到吧",
+          "likes": 5,
+          "date": "2025-03-16T02:18:44.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257897358176",
+          "author": "FWLX812",
+          "avatar": "https://i2.hdslb.com/bfs/face/b2ae7580c47c46cc48707dac457e98ee23d451e0.webp",
+          "text": "回复 @winter0203 :纯生存搞生电不就完啦，全是掉落物，玩到后面都毕业了都会搞生电不然谁还玩",
+          "likes": 12,
+          "date": "2025-03-16T03:05:48.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257900437792",
+          "author": "忠诚的等离子永不过载",
+          "avatar": "https://i2.hdslb.com/bfs/face/e083f584afd576b704e6fabf40f373955d988633.jpg",
+          "text": "回复 @winter0203 :之前我宿舍自己搞了个服玩，有个天才在我们搞建筑的地方地底下搞了个刷雪机而且走了不关，服务器都快卡死了[笑哭]",
+          "likes": 2,
+          "date": "2025-03-16T03:42:26.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "257117557025",
@@ -4230,13 +5943,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[支持]",
-              "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png",
+              "animated": false
             },
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -4249,20 +5965,39 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 32,
       "date": "2025-03-15T03:38:04.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
-          "id": "257028357585",
+          "id": "257026479825",
           "author": "DFT219",
           "avatar": "https://i1.hdslb.com/bfs/face/9e1bbfbf552f26d42295eed9f4d4d1b38fdf1e3c.jpg",
-          "text": "回复 @FPV-cube :牢玩家甚至能通过周围只有平原的截图看出来是不是基岩版[doge]",
-          "likes": 59,
-          "date": "2025-03-15T04:29:47.000Z",
+          "text": "一眼基岩版，用不了这方法[辣眼睛]",
+          "likes": 43,
+          "date": "2025-03-15T04:09:39.000Z",
           "emojis": [
             {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "token": "[辣眼睛]",
+              "url": "https://i0.hdslb.com/bfs/emote/35d62c496d1e4ea9e091243fa812866f5fecc101.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "257028198417",
+          "author": "蝶影覓蹤",
+          "avatar": "https://i2.hdslb.com/bfs/face/70f06b107be7c9e69a72cf96e19100465c0a382e.jpg",
+          "text": "回复 @DFT219327 :怎么看出视频中是基岩版的[思考]",
+          "likes": 5,
+          "date": "2025-03-15T04:28:03.000Z",
+          "emojis": [
+            {
+              "token": "[思考]",
+              "url": "https://i0.hdslb.com/bfs/emote/cfa9b7e89e4bfe04bbcd34ccb1b0df37f4fa905c.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "257028231841",
@@ -4274,23 +6009,93 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "257026479825",
+          "id": "257028357585",
           "author": "DFT219",
           "avatar": "https://i1.hdslb.com/bfs/face/9e1bbfbf552f26d42295eed9f4d4d1b38fdf1e3c.jpg",
-          "text": "一眼基岩版，用不了这方法[辣眼睛]",
-          "likes": 43,
-          "date": "2025-03-15T04:09:39.000Z",
+          "text": "回复 @FPV-cube :牢玩家甚至能通过周围只有平原的截图看出来是不是基岩版[doge]",
+          "likes": 59,
+          "date": "2025-03-15T04:29:47.000Z",
           "emojis": [
             {
-              "token": "[辣眼睛]",
-              "url": "https://i0.hdslb.com/bfs/emote/35d62c496d1e4ea9e091243fa812866f5fecc101.png"
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "257815341552",
+          "author": "flu0r1te",
+          "avatar": "https://i0.hdslb.com/bfs/face/32059540047142b457986df61941a55931ece056.jpg",
+          "text": "基岩版：你好",
+          "likes": 9,
+          "date": "2025-03-15T05:04:50.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257036416769",
+          "author": "斯莱罗先生",
+          "avatar": "https://i2.hdslb.com/bfs/face/4f20c9f0147c5570a6382f0f594a3ba22af95469.jpg",
+          "text": "回复 @FPV-cube :基岩版有水滤镜渲染",
+          "likes": 16,
+          "date": "2025-03-15T06:12:28.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257842689152",
+          "author": "雨中二七",
+          "avatar": "https://i1.hdslb.com/bfs/face/a6e2a880f514356af80987f8075952e2cd2f145f.jpg",
+          "text": "回复 @DFT219327 :视频里是java版",
+          "likes": 3,
+          "date": "2025-03-15T11:03:12.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257073702161",
+          "author": "DFT219",
+          "avatar": "https://i1.hdslb.com/bfs/face/9e1bbfbf552f26d42295eed9f4d4d1b38fdf1e3c.jpg",
+          "text": "回复 @雨中二七 :不像吧[笑哭]",
+          "likes": 0,
+          "date": "2025-03-15T14:02:32.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "257091462673",
+          "author": "理塘的美丽传说",
+          "avatar": "https://i2.hdslb.com/bfs/face/ab112457872f24d0e2c3796ca2e0fad8bf7e07c6.jpg",
+          "text": "基岩版的色调和Java版不一样，也说不出来具体的差别但就是感觉有色差",
+          "likes": 35,
+          "date": "2025-03-15T17:56:24.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257885886272",
+          "author": "电脑玩家_迪克",
+          "avatar": "https://i2.hdslb.com/bfs/face/be3b334f147bc658de29ff2e59051eb3415db9f6.jpg",
+          "text": "回复 @雨中二七 :不像",
+          "likes": 0,
+          "date": "2025-03-16T00:07:13.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -4305,9 +6110,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "257126093297",
@@ -4319,9 +6126,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "257217378433",
@@ -4330,7 +6139,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "以前爱下矿的我因为那破大溶洞已经不想再下矿了",
           "likes": 14,
           "date": "2025-03-17T08:43:25.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "258803347168",
@@ -4339,7 +6149,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "😂池中莲十多，我采一朵，你采九朵莲\n新版本大矿洞也就前期过渡上上分，铁套搓出来就是矿物印钞机，这还会死建议退出游戏界，因为mc已经很简单了",
           "likes": 4,
           "date": "2025-03-27T03:52:40.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "259174693408",
+          "author": "海洋之兵2",
+          "avatar": "https://i2.hdslb.com/bfs/face/73a891d07667c0889d6b0772e6c6835b425dd5e5.jpg",
+          "text": "还真是",
+          "likes": 0,
+          "date": "2025-03-31T09:49:15.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "268607309248",
+          "author": "bili_3546729450310241",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @bili_64321579521 :空降苦力怕贴脸你就老实了",
+          "likes": 0,
+          "date": "2025-07-13T13:40:58.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -4354,16 +6185,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-03-15T01:50:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "257827713552",
-          "author": "飞不起来的电棍",
-          "avatar": "https://i1.hdslb.com/bfs/face/3d78313514bde5f4fdb1a563888b3a535c9531ae.jpg",
-          "text": "回复 @CharaMoxer :多个人会显示多个图标",
-          "likes": 5,
-          "date": "2025-03-15T07:54:20.000Z",
-          "emojis": []
-        },
         {
           "id": "257800517792",
           "author": "CharaMoxer",
@@ -4371,7 +6194,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "只能一对一用",
           "likes": 0,
           "date": "2025-03-15T01:58:31.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257827713552",
+          "author": "飞不起来的电棍",
+          "avatar": "https://i1.hdslb.com/bfs/face/3d78313514bde5f4fdb1a563888b3a535c9531ae.jpg",
+          "text": "回复 @CharaMoxer :多个人会显示多个图标",
+          "likes": 5,
+          "date": "2025-03-15T07:54:20.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -4384,6 +6218,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-03-15T10:31:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "257846306640",
@@ -4392,7 +6227,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "等级还是一直显示的，只是显示还要多少升级的那个条只在捡经验球时显示",
           "likes": 11,
           "date": "2025-03-15T11:42:54.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "258051749056",
@@ -4401,7 +6237,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "此功能可自由开关",
           "likes": 2,
           "date": "2025-03-17T22:32:27.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -4414,6 +6251,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-03-21T11:14:27.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "258372988896",
@@ -4422,7 +6260,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "是最近的更新哦",
           "likes": 0,
           "date": "2025-03-22T00:55:00.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "257573928881",
@@ -4431,7 +6270,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @ClearXII :哦哦，忘了，谢谢",
           "likes": 0,
           "date": "2025-03-22T01:23:35.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -4446,7 +6286,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 16,
       "date": "2025-03-15T01:55:40.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "257806272704",
+          "author": "讨厌改名的屑-",
+          "avatar": "https://i0.hdslb.com/bfs/face/d755f4b91b093e2ca617793db2babafe9b2a1d26.jpg",
+          "text": "为什么潜行可以开箱子",
+          "likes": 0,
+          "date": "2025-03-15T03:17:55.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "257026768513",
           "author": "绿袍尊者_",
@@ -4454,7 +6305,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @讨厌改名的屑- :因为这是箱子船，正常按右键是坐上去",
           "likes": 4,
           "date": "2025-03-15T04:11:21.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "257822178304",
@@ -4463,7 +6315,38 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "女巫的明明是幻术师的声音",
           "likes": 2,
           "date": "2025-03-15T06:33:09.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257039459985",
+          "author": "北空幽星",
+          "avatar": "https://i2.hdslb.com/bfs/face/d0f46a3aa0865334172d2852fc98815c1416a6db.jpg",
+          "text": "小屋材质不对",
+          "likes": 0,
+          "date": "2025-03-15T06:58:26.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257053347793",
+          "author": "齐归符龙kge",
+          "avatar": "https://i2.hdslb.com/bfs/face/37c2236a297b00563f8e264404c13d89d321bca9.jpg",
+          "text": "原版好像有绿色青蛙吧",
+          "likes": 0,
+          "date": "2025-03-15T10:11:32.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257053447249",
+          "author": "齐归符龙kge",
+          "avatar": "https://i2.hdslb.com/bfs/face/37c2236a297b00563f8e264404c13d89d321bca9.jpg",
+          "text": "女巫还不攻击",
+          "likes": 0,
+          "date": "2025-03-15T10:12:16.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "257058476465",
@@ -4472,7 +6355,44 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @一只很弱的西部巨人 :沼泽不会刷绿色青蛙",
           "likes": 2,
           "date": "2025-03-15T11:13:27.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257077754241",
+          "author": "苍风浅天",
+          "avatar": "https://i0.hdslb.com/bfs/face/adee3a59bcbdc2b77486d78a20ac2c4ab0bbd1ac.jpg",
+          "text": "回复 @一只很弱的西部巨人 :沼泽不刷绿蛙",
+          "likes": 1,
+          "date": "2025-03-15T14:48:04.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257078008161",
+          "author": "苍风浅天",
+          "avatar": "https://i0.hdslb.com/bfs/face/adee3a59bcbdc2b77486d78a20ac2c4ab0bbd1ac.jpg",
+          "text": "下了200年的矿，睡个回笼觉怎么了[doge]",
+          "likes": 1,
+          "date": "2025-03-15T14:48:44.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "257869714992",
+          "author": "一点也不萌的佳佳",
+          "avatar": "https://i2.hdslb.com/bfs/face/4e623d08d56855e17962ba8ca712019f5335a3ca.jpg",
+          "text": "回笼觉/懒觉可还行！",
+          "likes": 0,
+          "date": "2025-03-15T15:59:53.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -4487,9 +6407,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -4501,6 +6423,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-17T14:15:11.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -4516,9 +6439,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -4530,6 +6455,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-09T06:57:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -4541,6 +6467,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-09T07:24:32.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -4556,9 +6483,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "256663225057",
@@ -4567,21 +6496,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "海豚我倒是一眼看出来了，背景蓝色明显是海，海里就海豚一个这个颜色的",
           "likes": 4,
           "date": "2025-03-10T10:56:09.000Z",
-          "emojis": []
-        },
-        {
-          "id": "257803023840",
-          "author": "mc_石英",
-          "avatar": "https://i2.hdslb.com/bfs/face/6fbd39e0f6360066b26010573bb5c3dde9157940.jpg",
-          "text": "我倒是感觉烈焰人看不出来[doge]",
-          "likes": 1,
-          "date": "2025-03-15T02:36:09.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
-            }
-          ]
+          "emojis": [],
+          "images": []
         },
         {
           "id": "256667478833",
@@ -4593,9 +6509,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "257803023840",
+          "author": "mc_石英",
+          "avatar": "https://i2.hdslb.com/bfs/face/6fbd39e0f6360066b26010573bb5c3dde9157940.jpg",
+          "text": "我倒是感觉烈焰人看不出来[doge]",
+          "likes": 1,
+          "date": "2025-03-15T02:36:09.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "257021194321",
+          "author": "野生xy-t",
+          "avatar": "https://i0.hdslb.com/bfs/face/76148372019191d9fa85ed1a3d6583385eeb359c.jpg",
+          "text": "回复 @mc_石英 :mc里直立的黄色生物只有烈焰人好像",
+          "likes": 0,
+          "date": "2025-03-15T03:03:27.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -4608,6 +6552,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-09T06:56:45.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -4621,19 +6566,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "256888414961",
-          "author": "夏莱大善人",
-          "avatar": "https://i1.hdslb.com/bfs/face/15c1fdb8eefa60fd41488ac31b2289116fd112c4.jpg",
-          "text": "我看成蠹虫了",
-          "likes": 2,
-          "date": "2025-03-13T10:22:26.000Z",
-          "emojis": []
-        },
         {
           "id": "257409138352",
           "author": "B站笑传之常尝冰",
@@ -4641,7 +6579,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "我看成远古守卫者了，最离谱",
           "likes": 1,
           "date": "2025-03-10T04:24:10.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "257584334176",
@@ -4650,7 +6589,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @B站笑传之擦擦板 :我也看成远古守卫者了，色调相近是这样的",
           "likes": 0,
           "date": "2025-03-12T09:00:16.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256888414961",
+          "author": "夏莱大善人",
+          "avatar": "https://i1.hdslb.com/bfs/face/15c1fdb8eefa60fd41488ac31b2289116fd112c4.jpg",
+          "text": "我看成蠹虫了",
+          "likes": 2,
+          "date": "2025-03-13T10:22:26.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -4665,6 +6615,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-01T01:03:26.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/30d665f2457bb959f928971612bda0e3588003657.png",
+          "width": 576,
+          "height": 635,
+          "animated": false
+        }
+      ],
       "replies": []
     },
     {
@@ -4676,6 +6634,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-02T04:05:33.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -4689,9 +6648,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -4707,10 +6668,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "256765407248",
+          "author": "冬日寒风于此处消逝",
+          "avatar": "https://i0.hdslb.com/bfs/face/3e8e5f91818281cf38867514a6b96e49539b399a.jpg",
+          "text": "我还真这样干过。。。",
+          "likes": 14,
+          "date": "2025-03-02T07:20:37.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "256067095633",
           "author": "蟑螂滚过的粪球",
@@ -4721,9 +6694,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "256823829472",
@@ -4735,9 +6710,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "256824579520",
+          "author": "是路豆呀-",
+          "avatar": "https://i2.hdslb.com/bfs/face/91b9a7f8f18c3a06f19ce87f312e957e09465c0b.jpg",
+          "text": "小时候我在超平坦世界建了个超大村庄，有城墙和灯，晚上灯火通明的",
+          "likes": 14,
+          "date": "2025-03-03T00:45:48.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256839534160",
+          "author": "钢丝的三维萝卜动画",
+          "avatar": "https://i1.hdslb.com/bfs/face/cf3c5460e2d2a4417f334aabb9ac4dce42bf5c1d.jpg",
+          "text": "我现在也是，主打一个文明复兴[doge]",
+          "likes": 11,
+          "date": "2025-03-03T04:43:58.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "256927568656",
@@ -4746,7 +6749,48 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "然后亲眼看着刷尸潮的时候天都塌了",
           "likes": 15,
           "date": "2025-03-04T06:49:34.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256997016272",
+          "author": "Salted_Pogola",
+          "avatar": "https://i2.hdslb.com/bfs/face/a752ab94e7aef1dc786afb1fa2e17e8d1554095a.jpg",
+          "text": "我现在就是这样玩的（不过不是多么高的城墙，只是用石头栅栏围起来，再开几个装饰得比较好的大门，里面插满火把，这样子就可以防止怪物了）",
+          "likes": 8,
+          "date": "2025-03-05T04:15:09.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256420961473",
+          "author": "朝日六花Lock桑",
+          "avatar": "https://i2.hdslb.com/bfs/face/ddf93d73b1c327ee2721d313df50162081c9413f.jpg",
+          "text": "溜出来的村民： 哦累哇……基友打！！！",
+          "likes": 8,
+          "date": "2025-03-07T11:18:27.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256423672065",
+          "author": "别急3",
+          "avatar": "https://i2.hdslb.com/bfs/face/176f247c4a1250adb74c885f35082edeab204956.jpg",
+          "text": "那很有善心了",
+          "likes": 4,
+          "date": "2025-03-07T11:53:09.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257920518704",
+          "author": "幻影流星语",
+          "avatar": "https://i2.hdslb.com/bfs/face/511ac8582d8021aeff97aa9677bfb632e2617029.jpg",
+          "text": "艹我也干过",
+          "likes": 1,
+          "date": "2025-03-16T07:37:11.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -4761,10 +6805,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "255985751553",
+          "author": "黑白不咕咕",
+          "avatar": "https://i1.hdslb.com/bfs/face/dd8a438be4d226d43804b51dcdbce096e702cde6.jpg",
+          "text": "你看村民高兴的都冒爱心了",
+          "likes": 27,
+          "date": "2025-03-02T00:41:34.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "257010153201",
           "author": "一块豆腐分两瓣",
@@ -4775,18 +6831,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "255985751553",
-          "author": "黑白不咕咕",
-          "avatar": "https://i1.hdslb.com/bfs/face/dd8a438be4d226d43804b51dcdbce096e702cde6.jpg",
-          "text": "你看村民高兴的都冒爱心了",
-          "likes": 27,
-          "date": "2025-03-02T00:41:34.000Z",
-          "emojis": []
+          ],
+          "images": []
         }
       ]
     },
@@ -4799,6 +6848,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2025-03-01T08:30:21.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "256073578161",
@@ -4807,7 +6857,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "村民和铁哥×\n掠夺者与白色僵尸✓",
           "likes": 47,
           "date": "2025-03-03T00:49:50.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "267045948353",
@@ -4819,9 +6870,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -4836,6 +6889,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 14,
       "date": "2025-03-02T02:54:33.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "256044221409",
@@ -4844,16 +6898,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "那很强大了",
           "likes": 66,
           "date": "2025-03-02T13:13:02.000Z",
-          "emojis": []
-        },
-        {
-          "id": "256866841488",
-          "author": "ANDE4A",
-          "avatar": "https://i1.hdslb.com/bfs/face/d5ddd60ed0ca9fece8930eb2222249af934ac8e3.jpg",
-          "text": "不是小僵尸你就庆幸吧",
-          "likes": 46,
-          "date": "2025-03-03T11:16:42.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "256106799249",
@@ -4862,7 +6908,112 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "细节僵尸抢装备",
           "likes": 34,
           "date": "2025-03-03T09:44:40.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256866841488",
+          "author": "ANDE4A",
+          "avatar": "https://i1.hdslb.com/bfs/face/d5ddd60ed0ca9fece8930eb2222249af934ac8e3.jpg",
+          "text": "不是小僵尸你就庆幸吧",
+          "likes": 46,
+          "date": "2025-03-03T11:16:42.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256153348225",
+          "author": "小竖霖",
+          "avatar": "https://i2.hdslb.com/bfs/face/46adf37046d5f557bc66dc18435b20644dcc7dff.jpg",
+          "text": "回复 @ANDE4A :闪电冲刺回旋劈，碰撞判定就小，跑的还快，不削能玩？[doge]",
+          "likes": 20,
+          "date": "2025-03-04T01:46:15.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "256157475697",
+          "author": "虚梦游人",
+          "avatar": "https://i1.hdslb.com/bfs/face/03d41f2e22d9185adc656e18ad4441b4bb64ca3a.jpg",
+          "text": "那很生活了",
+          "likes": 4,
+          "date": "2025-03-04T03:01:25.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256208442801",
+          "author": "C0m6B",
+          "avatar": "https://i0.hdslb.com/bfs/face/a033df434dcc9f521f67a57c751f63202501be37.jpg",
+          "text": "骷髅穿更nb",
+          "likes": 6,
+          "date": "2025-03-04T15:02:18.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257172911376",
+          "author": "探究者阿莫斯",
+          "avatar": "https://i0.hdslb.com/bfs/face/c0e87b0d1ec314803440f3ca88477683464bac3a.jpg",
+          "text": "回复 @C0m6B :我全身上下最好的一件装备附魔锋利，火焰附加，击退，耐久的一把从下界传送门开局找到的附魔金剑被小白抢了之后，他甚至藏在角落里趁我不注意砍我[大哭]",
+          "likes": 7,
+          "date": "2025-03-07T08:46:59.000Z",
+          "emojis": [
+            {
+              "token": "[大哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "256417225217",
+          "author": "斯莱罗先生",
+          "avatar": "https://i2.hdslb.com/bfs/face/4f20c9f0147c5570a6382f0f594a3ba22af95469.jpg",
+          "text": "回复 @ANDE4A :这位更是重量级",
+          "likes": 2,
+          "date": "2025-03-07T10:33:00.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256615904481",
+          "author": "⑨骑士团",
+          "avatar": "https://i1.hdslb.com/bfs/face/11844523673298a7f2c879a04954608ada6a9d73.jpg",
+          "text": "带船啊，bro[doge]",
+          "likes": 1,
+          "date": "2025-03-09T17:00:20.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "257792870400",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @小竖霖 :1.13之前的版本小僵尸甚至不怕阳光[吃瓜]",
+          "likes": 0,
+          "date": "2025-03-14T23:20:03.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -4875,21 +7026,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 8,
       "date": "2025-03-01T08:39:09.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "255980014081",
-          "author": "廉价辞藻",
-          "avatar": "https://i0.hdslb.com/bfs/face/6004914aa453625ec35f72d7891a8eafc23b6a40.jpg",
-          "text": "啊……好久没听到老琪的梗了[笑哭]",
-          "likes": 12,
-          "date": "2025-03-01T20:10:45.000Z",
-          "emojis": [
-            {
-              "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
-            }
-          ]
-        },
         {
           "id": "255949275377",
           "author": "514的6",
@@ -4900,9 +7038,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "255980014081",
+          "author": "廉价辞藻",
+          "avatar": "https://i0.hdslb.com/bfs/face/6004914aa453625ec35f72d7891a8eafc23b6a40.jpg",
+          "text": "啊……好久没听到老琪的梗了[笑哭]",
+          "likes": 12,
+          "date": "2025-03-01T20:10:45.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "255984661697",
@@ -4911,7 +7067,70 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "哇∽Creeper∽",
           "likes": 3,
           "date": "2025-03-02T00:18:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256734389296",
+          "author": "唯手熟尔尔尔尔",
+          "avatar": "https://i0.hdslb.com/bfs/face/86c23d5e31fbd33f1b56a1c7137a0f3f49919774.jpg",
+          "text": "贵 不 贵━[doge]",
+          "likes": 2,
+          "date": "2025-03-02T00:59:16.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "256028563969",
+          "author": "红豆今天吃鸭梨",
+          "avatar": "https://i1.hdslb.com/bfs/face/6f2eedb8199728bae4919126466a1e0b13359579.jpg",
+          "text": "文艺复兴",
+          "likes": 1,
+          "date": "2025-03-02T10:00:08.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256091674593",
+          "author": "意呆利dv",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "河神：你好，请问你掉的是这个金锭还是这个银锭呢[doge]",
+          "likes": 0,
+          "date": "2025-03-03T05:34:41.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "256879624016",
+          "author": "雪燕夲",
+          "avatar": "https://i0.hdslb.com/bfs/face/10660846b5fa23135f146dddcb4b99930867d809.jpg",
+          "text": "回复 @意呆利dv :我掉的是钻石",
+          "likes": 0,
+          "date": "2025-03-03T13:50:49.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256913145392",
+          "author": "1919130数字哥",
+          "avatar": "https://i0.hdslb.com/bfs/face/721c62b0c700d1c00f24bdcdcfde01af2dfff152.jpg",
+          "text": "哇sei！爱购no外！",
+          "likes": 0,
+          "date": "2025-03-04T03:17:06.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -4924,6 +7143,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2025-03-03T03:29:42.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "256082215089",
@@ -4935,9 +7155,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "256897428080",
@@ -4946,7 +7168,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "火攻就行了",
           "likes": 2,
           "date": "2025-03-03T18:22:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "257054254289",
+          "author": "byd真言",
+          "avatar": "https://i0.hdslb.com/bfs/face/12d26a2aad9261d5381a74bdce0284fdec958c19.jpg",
+          "text": "回复 @传奇的瓶水 :船吧",
+          "likes": 1,
+          "date": "2025-03-15T10:22:37.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "258776413168",
@@ -4955,7 +7188,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "让僵尸一直放水里泡，等一会变溺尸了装备可以全部爆出来（注意封顶以防僵尸探头）",
           "likes": 1,
           "date": "2025-03-26T15:53:23.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "270448905952",
+          "author": "SheepDog001",
+          "avatar": "https://i0.hdslb.com/bfs/face/bbdaa43a0cccf22956366fab5de03f8323d15835.jpg",
+          "text": "回复 @Tech_Go :这个方法目前仅限基岩版，另外现在基岩版泡水法溺尸再次捡起转化时掉落的装备的几率变高了，所以还是要手动撸掉，区别就是溺尸速度慢点[doge]",
+          "likes": 0,
+          "date": "2025-07-28T16:25:50.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -4972,9 +7222,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "255932462321",
@@ -4983,7 +7235,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "查无此人",
           "likes": 15,
           "date": "2025-03-01T09:15:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "255936963745",
@@ -4995,9 +7248,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "256688239632",
@@ -5009,9 +7264,67 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "255945699665",
+          "author": "两盒枕梦溪",
+          "avatar": "https://i1.hdslb.com/bfs/face/29a89cd5b9a46caa20f592b95164ad7d43d3a464.jpg",
+          "text": "回复 @哦_又似了一天 :奇怪的是明明不打算使用但纹理更新却有带上僵尸马，而且僵尸马的刷怪蛋没有像凋零末影龙一样被隐藏，而是一直放在创造背包",
+          "likes": 22,
+          "date": "2025-03-01T11:48:50.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256692795056",
+          "author": "竟活哟",
+          "avatar": "https://i0.hdslb.com/bfs/face/0edc4461bc9137d7b9308a946b1731e3a53de01f.jpg",
+          "text": "回复 @两盒枕梦溪 :或许这玩意儿一直在官方的未来更新计划中",
+          "likes": 8,
+          "date": "2025-03-01T12:00:41.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256699217664",
+          "author": "竟活哟",
+          "avatar": "https://i0.hdslb.com/bfs/face/0edc4461bc9137d7b9308a946b1731e3a53de01f.jpg",
+          "text": "回复 @两盒枕梦溪 :还可能是因为僵尸马没有任何危害性",
+          "likes": 8,
+          "date": "2025-03-01T13:09:02.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "258016080400",
+          "author": "帅气的曰鲨",
+          "avatar": "https://i0.hdslb.com/bfs/face/e668ac296c2ce6348c4eb0986a1c4e8111094528.jpg",
+          "text": "也不知道幻术师啥时候能真正加入到游戏中[笑哭]",
+          "likes": 0,
+          "date": "2025-03-17T10:49:17.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "257910444161",
+          "author": "狮握波奇",
+          "avatar": "https://i2.hdslb.com/bfs/face/e5e50a300985bc3f3aa4ecad769444ae6a057fee.jpg",
+          "text": "昨天晚上我看到僵尸马刷怪蛋了，MC原本Java最新版本",
+          "likes": 0,
+          "date": "2025-03-26T04:16:22.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5026,11 +7339,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[吃瓜]",
-          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+          "animated": false
         },
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/afe45e83fe32ce5bd0acb220622a4d1e402134350.jpg",
+          "width": 1080,
+          "height": 1905,
+          "animated": false
         }
       ],
       "replies": [
@@ -5044,9 +7367,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "257095586160",
@@ -5058,9 +7383,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "257179105328",
@@ -5069,7 +7396,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "类似于远古版本里到处乱跑的史蒂夫",
           "likes": 7,
           "date": "2025-03-07T10:10:37.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5084,7 +7412,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/b8442ae1fcd5cc314188261caa2dd5b3583304662.png",
+          "width": 368,
+          "height": 640,
+          "animated": false
         }
       ],
       "replies": [
@@ -5098,9 +7435,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -5115,7 +7454,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 13,
       "date": "2025-03-01T09:23:24.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "256680396208",
+          "author": "咕咕咕玛丽",
+          "avatar": "https://i1.hdslb.com/bfs/face/dca540cdbaa3c5e6286cfb73b3e49a3c26c6effe.jpg",
+          "text": "有指令可以让猪灵跳舞",
+          "likes": 19,
+          "date": "2025-03-01T09:43:43.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "256459777617",
           "author": "颠佬大神亚山日火",
@@ -5126,18 +7476,91 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "256680396208",
-          "author": "咕咕咕玛丽",
-          "avatar": "https://i1.hdslb.com/bfs/face/dca540cdbaa3c5e6286cfb73b3e49a3c26c6effe.jpg",
-          "text": "有指令可以让猪灵跳舞",
-          "likes": 19,
-          "date": "2025-03-01T09:43:43.000Z",
-          "emojis": []
+          "id": "256759199073",
+          "author": "KDDQJSH",
+          "avatar": "https://i0.hdslb.com/bfs/face/efdabe95ac9128dcd77a6ba4607b3f6efe8fc742.jpg",
+          "text": "会，基岩版会",
+          "likes": 0,
+          "date": "2025-03-11T15:06:01.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256761014881",
+          "author": "玄武黑石SoBelow",
+          "avatar": "https://i1.hdslb.com/bfs/face/51a55275cd91b5fd7ccdce556e87ebe7bc925d4c.jpg",
+          "text": "回复 @开大的青金石 :不会，你看错了吧",
+          "likes": 3,
+          "date": "2025-03-11T15:26:37.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256767656609",
+          "author": "KDDQJSH",
+          "avatar": "https://i0.hdslb.com/bfs/face/efdabe95ac9128dcd77a6ba4607b3f6efe8fc742.jpg",
+          "text": "回复 @玄武黑石SoBelow :在基岩版中，猪灵在狩猎成功时有机率跳胜利之舞，我之前亲眼见到过",
+          "likes": 10,
+          "date": "2025-03-11T17:09:36.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256777115409",
+          "author": "玄武黑石SoBelow",
+          "avatar": "https://i1.hdslb.com/bfs/face/51a55275cd91b5fd7ccdce556e87ebe7bc925d4c.jpg",
+          "text": "回复 @开大的青金石 :猪灵蛮兵在基岩版确实偶尔跟猪灵一起打疣猪兽，这是基岩版特性，但无论哪个版本，猪灵蛮兵都不会跳舞",
+          "likes": 17,
+          "date": "2025-03-12T00:29:55.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256793425521",
+          "author": "KDDQJSH",
+          "avatar": "https://i0.hdslb.com/bfs/face/efdabe95ac9128dcd77a6ba4607b3f6efe8fc742.jpg",
+          "text": "回复 @玄武黑石SoBelow :在《我的世界》基岩版中，猪灵在狩猎成功时确实有机会跳胜利之舞。当猪灵击杀疣猪兽后，它们有1/7的概率跳“胜利之舞”，表现为摇动双耳并摆出类似T字形的姿势(源自Deepseek)",
+          "likes": 5,
+          "date": "2025-03-12T04:57:23.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256793696321",
+          "author": "玄武黑石SoBelow",
+          "avatar": "https://i1.hdslb.com/bfs/face/51a55275cd91b5fd7ccdce556e87ebe7bc925d4c.jpg",
+          "text": "回复 @开大的青金石 :那是猪灵，我说猪灵蛮兵不会跳舞，你杠啥呢？",
+          "likes": 8,
+          "date": "2025-03-12T04:59:02.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256817233697",
+          "author": "KDDQJSH",
+          "avatar": "https://i0.hdslb.com/bfs/face/efdabe95ac9128dcd77a6ba4607b3f6efe8fc742.jpg",
+          "text": "回复 @玄武黑石SoBelow :🙃",
+          "likes": 0,
+          "date": "2025-03-12T11:16:42.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "258455879600",
+          "author": "布洛欣official",
+          "avatar": "https://i0.hdslb.com/bfs/face/65ef1b5a76ab8ec5158341ed42ccadd902824b74.jpg",
+          "text": "回复 @开大的青金石 :minecraft维基百科中有明确的描写：猪灵蛮兵词条-行为-与猪灵不同的行为-猪灵蛮兵不会跳胜利之舞；你有时间问deepseek没有时间问他猪灵和猪灵蛮兵是不是一种东西？",
+          "likes": 11,
+          "date": "2025-03-22T20:49:10.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5150,6 +7573,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-03-01T11:58:38.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "256709794800",
@@ -5158,7 +7582,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "应为他打了猪灵",
           "likes": 9,
           "date": "2025-03-01T14:57:10.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5171,6 +7596,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-03-08T01:45:48.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "256499733297",
@@ -5182,9 +7608,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -5199,7 +7627,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 6,
       "date": "2025-02-14T08:52:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "255382005840",
+          "author": "学个习咋那么难嘞",
+          "avatar": "https://i0.hdslb.com/bfs/face/cfffae2eec725e6bc0a0aeb25afa8ea567a08319.jpg",
+          "text": "猫也会猎杀兔子",
+          "likes": 2,
+          "date": "2025-02-14T12:34:49.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "254699894065",
           "author": "AL高压锅",
@@ -5210,18 +7649,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "255382005840",
+          "id": "255393783248",
           "author": "学个习咋那么难嘞",
           "avatar": "https://i0.hdslb.com/bfs/face/cfffae2eec725e6bc0a0aeb25afa8ea567a08319.jpg",
-          "text": "猫也会猎杀兔子",
-          "likes": 2,
-          "date": "2025-02-14T12:34:49.000Z",
-          "emojis": []
+          "text": "回复 @贴地螺旋高压锅 :俺也一样[笑哭]",
+          "likes": 0,
+          "date": "2025-02-14T14:30:19.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "254700884097",
@@ -5230,7 +7678,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "树重新数了下，8格",
           "likes": 1,
           "date": "2025-02-14T14:39:06.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254734586049",
+          "author": "红针花君_AwA",
+          "avatar": "https://i2.hdslb.com/bfs/face/8d3812a30e49858188c043a1a4acc32fa2f69e1f.jpg",
+          "text": "回复 @学个习咋那么难嘞 :狼也会[doge]",
+          "likes": 0,
+          "date": "2025-02-15T02:43:48.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "255503439360",
+          "author": "卢崩乃音-TBC社",
+          "avatar": "https://i0.hdslb.com/bfs/face/42981b5c54a97c1ebe07dd13ee5b34182bb67f4f.jpg",
+          "text": "猫也会捕捉兔子",
+          "likes": 0,
+          "date": "2025-02-15T16:20:39.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5245,9 +7720,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -5261,9 +7738,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[蔚蓝档案表情包_做错了]",
-          "url": "https://i0.hdslb.com/bfs/garb/4d54335de0ff297e6850742696c7d441183edaa0.png"
+          "url": "https://i0.hdslb.com/bfs/garb/4d54335de0ff297e6850742696c7d441183edaa0.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "267125490512",
@@ -5275,9 +7754,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[蔚蓝档案表情包_做错了]",
-              "url": "https://i0.hdslb.com/bfs/garb/4d54335de0ff297e6850742696c7d441183edaa0.png"
+              "url": "https://i0.hdslb.com/bfs/garb/4d54335de0ff297e6850742696c7d441183edaa0.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -5294,10 +7775,60 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "256130699296",
+          "author": "欧了个泡泡",
+          "avatar": "https://i0.hdslb.com/bfs/face/d3d571c2538e0e2fd744cb4eaef1f04610453f6a.jpg",
+          "text": "蜂蜜能喝的啊[哦呼]",
+          "likes": 1,
+          "date": "2025-02-22T18:54:10.000Z",
+          "emojis": [
+            {
+              "token": "[哦呼]",
+              "url": "https://i0.hdslb.com/bfs/emote/362bded07ea5434886271d23fa25f5d85d8af06c.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "255845019745",
+          "author": "山隹郁",
+          "avatar": "https://i2.hdslb.com/bfs/face/478b1c82de87119dcc8e35481388ee0314bdd007.jpg",
+          "text": "回复 @-OoPao- :[笑哭]",
+          "likes": 1,
+          "date": "2025-02-28T09:38:24.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "259752588400",
+          "author": "InternetFinder",
+          "avatar": "https://i1.hdslb.com/bfs/face/ebd87405ac16bc0382b3ec74c27b54aae22d76dc.jpg",
+          "text": "回复 @-OoPao- :好久不玩新版本了，我还停留在1.13[doge]",
+          "likes": 0,
+          "date": "2025-04-07T01:17:45.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
         {
           "id": "265760059025",
           "author": "塔图鲁",
@@ -5308,18 +7839,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "267367669200",
-          "author": "重甲苍蝇",
-          "avatar": "https://i0.hdslb.com/bfs/face/e4fbe993bc79db9b380a03f03b8117bb16dcdc14.jpg",
-          "text": "回复 @Oo-Pao :祛除所有负面效果",
-          "likes": 1,
-          "date": "2025-07-02T05:40:23.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "267071720560",
@@ -5331,9 +7855,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "267367669200",
+          "author": "重甲苍蝇",
+          "avatar": "https://i0.hdslb.com/bfs/face/e4fbe993bc79db9b380a03f03b8117bb16dcdc14.jpg",
+          "text": "回复 @Oo-Pao :祛除所有负面效果",
+          "likes": 1,
+          "date": "2025-07-02T05:40:23.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5348,10 +7884,42 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "255391318336",
+          "author": "mc_石英",
+          "avatar": "https://i2.hdslb.com/bfs/face/6fbd39e0f6360066b26010573bb5c3dde9157940.jpg",
+          "text": "666开挂了",
+          "likes": 0,
+          "date": "2025-02-14T14:07:26.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "255407009088",
+          "author": "野生xy-t",
+          "avatar": "https://i0.hdslb.com/bfs/face/76148372019191d9fa85ed1a3d6583385eeb359c.jpg",
+          "text": "回复 @mc_石英 :这不对的基本都是云了",
+          "likes": 1,
+          "date": "2025-02-14T16:54:02.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254714127473",
+          "author": "粽子game",
+          "avatar": "https://i1.hdslb.com/bfs/face/825db1e5a74182dd15d4ce4cfe96bf65771a5ba1.jpg",
+          "text": "回复 @一只野生的xy_t :未必",
+          "likes": 2,
+          "date": "2025-02-14T17:15:46.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "255414063552",
           "author": "很菜的加农炮投手",
@@ -5362,37 +7930,101 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "254760127297",
+          "id": "255421750048",
+          "author": "mc_石英",
+          "avatar": "https://i2.hdslb.com/bfs/face/6fbd39e0f6360066b26010573bb5c3dde9157940.jpg",
+          "text": "回复 @一只野生的xy_t :有没有种可能玩游戏不开声呢",
+          "likes": 1,
+          "date": "2025-02-15T00:41:33.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "255425677376",
+          "author": "Slime_史莱姆",
+          "avatar": "https://i1.hdslb.com/bfs/face/c82035c553b0ad0df114fd6780e01fe52840f39d.jpg",
+          "text": "回复 @一只野生的xy_t :后两个都没记得[笑哭]",
+          "likes": 0,
+          "date": "2025-02-15T01:47:37.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "255436459136",
+          "author": "叶惠美JAR",
+          "avatar": "https://i2.hdslb.com/bfs/face/347031846425b64c0d421e634e3e796c8ee5d440.jpg",
+          "text": "老麦p[笑哭]",
+          "likes": 0,
+          "date": "2025-02-15T04:02:02.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "254751281153",
+          "author": "野生xy-t",
+          "avatar": "https://i0.hdslb.com/bfs/face/76148372019191d9fa85ed1a3d6583385eeb359c.jpg",
+          "text": "回复 @mc_石英 :都玩电脑了还不开声音[笑哭]",
+          "likes": 0,
+          "date": "2025-02-15T05:57:15.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "254751305745",
+          "author": "野生xy-t",
+          "avatar": "https://i0.hdslb.com/bfs/face/76148372019191d9fa85ed1a3d6583385eeb359c.jpg",
+          "text": "回复 @粽子game :所以我加了个基本[吃瓜]",
+          "likes": 0,
+          "date": "2025-02-15T05:58:10.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "254759939393",
           "author": "粽子game",
           "avatar": "https://i1.hdslb.com/bfs/face/825db1e5a74182dd15d4ce4cfe96bf65771a5ba1.jpg",
-          "text": "回复 @一只野生的xy_t :这是基本的问题吗，这是你说的云不云的问题，谁会经常喝蜂蜜啊[笑哭]声音听不听出来跟云有多大关系呢？",
-          "likes": 3,
-          "date": "2025-02-15T07:57:15.000Z",
+          "text": "回复 @一只野生的xy_t :[笑哭]",
+          "likes": 0,
+          "date": "2025-02-15T07:53:43.000Z",
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "255126149089",
-          "author": "难霜",
-          "avatar": "https://i2.hdslb.com/bfs/face/26e7b31734db66ce5174dcf8ef2be8c5436bc070.jpg",
-          "text": "最后一个还以为是幻翼，玩了这么久几乎没打过劫掠[笑哭]",
-          "likes": 2,
-          "date": "2025-02-19T12:51:57.000Z",
-          "emojis": [
-            {
-              "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
-            }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -5407,9 +8039,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "254671104161",
@@ -5418,7 +8052,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "注：音效名翻译未按原文翻译，而是采用minecraft wiki的音效板块译名",
           "likes": 1,
           "date": "2025-02-14T09:30:23.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -5435,7 +8070,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[吃瓜]",
-          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/6cf6fbcbd98002a7abbca0633b64982d486219859.png",
+          "width": 720,
+          "height": 450,
+          "animated": false
         }
       ],
       "replies": [
@@ -5446,7 +8090,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "最难蚌的一集",
           "likes": 0,
           "date": "2025-02-14T07:24:52.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5461,10 +8106,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[生气]",
-          "url": "https://i0.hdslb.com/bfs/emote/3195714219c4b582a4fb02033dd1519913d0246d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3195714219c4b582a4fb02033dd1519913d0246d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "255440013744",
+          "author": "小幽灵Quartz",
+          "avatar": "https://i2.hdslb.com/bfs/face/2f25aa366cb05182df9cfd68911456b88e2e1ae8.jpg",
+          "text": "因为这样会引起争议",
+          "likes": 0,
+          "date": "2025-02-15T04:39:32.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "255475469472",
           "author": "黄桃wonderhoy",
@@ -5475,9 +8132,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[生气]",
-              "url": "https://i0.hdslb.com/bfs/emote/3195714219c4b582a4fb02033dd1519913d0246d.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3195714219c4b582a4fb02033dd1519913d0246d.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "255691114625",
@@ -5486,7 +8145,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "mojang：我不要律师函",
           "likes": 2,
           "date": "2025-02-26T11:02:14.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "265662390224",
@@ -5495,7 +8155,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "寒带鸡长得还是比较像故人的",
           "likes": 1,
           "date": "2025-06-15T04:16:47.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5510,7 +8171,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[呲牙]",
-          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/1ad32f835b5d09760e86502320d6c1281202847351.png",
+          "width": 1053,
+          "height": 600,
+          "animated": false
         }
       ],
       "replies": []
@@ -5526,6 +8196,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-02-06T11:01:31.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -5537,6 +8208,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-02-06T16:53:10.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -5550,19 +8222,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "254034486545",
-          "author": "沧海水鱼",
-          "avatar": "/media/avatars/shuiyu.webp",
-          "text": "回复 @Papklp :我喜欢你",
-          "likes": 0,
-          "date": "2025-02-07T14:37:19.000Z",
-          "emojis": []
-        },
         {
           "id": "254006742353",
           "author": "Papklp",
@@ -5570,7 +8235,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "我喜欢你",
           "likes": 0,
           "date": "2025-02-07T09:48:10.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254034486545",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "回复 @Papklp :我喜欢你",
+          "likes": 0,
+          "date": "2025-02-07T14:37:19.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -5587,19 +8263,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "254615511632",
-          "author": "-晨白光-",
-          "avatar": "https://i2.hdslb.com/bfs/face/9d1930141ad20a1b250998a8f72ca996f2c6ba51.jpg",
-          "text": "冷热末影人，冷热潜影贝以及更多的紫颂果",
-          "likes": 20,
-          "date": "2025-02-06T16:37:45.000Z",
-          "emojis": []
-        },
         {
           "id": "253938280401",
           "author": "非会非常",
@@ -5610,9 +8279,41 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "254615511632",
+          "author": "-晨白光-",
+          "avatar": "https://i2.hdslb.com/bfs/face/9d1930141ad20a1b250998a8f72ca996f2c6ba51.jpg",
+          "text": "冷热末影人，冷热潜影贝以及更多的紫颂果",
+          "likes": 20,
+          "date": "2025-02-06T16:37:45.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254621793568",
+          "author": "奇怪叼猫",
+          "avatar": "https://i2.hdslb.com/bfs/face/bc242fd9ad617ded92cc521131b6241551190599.jpg",
+          "text": "回复 @-晨白光- :6",
+          "likes": 2,
+          "date": "2025-02-06T18:31:43.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253959923745",
+          "author": "゚゚゚゚账号已注销",
+          "avatar": "https://i2.hdslb.com/bfs/face/a83f2c2a5ab6ddbbc110aec909fc900ef281618d.jpg",
+          "text": "冷末影水晶和热末影水晶",
+          "likes": 1,
+          "date": "2025-02-06T20:52:02.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "254634737488",
@@ -5621,7 +8322,70 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "冷热黑末影龙现已更新，在末地你需要同时打三条龙才能通关",
           "likes": 8,
           "date": "2025-02-07T02:07:55.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254684517136",
+          "author": "奇怪叼猫",
+          "avatar": "https://i2.hdslb.com/bfs/face/bc242fd9ad617ded92cc521131b6241551190599.jpg",
+          "text": "回复 @杨子开板 :你怎么不说是三个阶段啊",
+          "likes": 0,
+          "date": "2025-02-07T11:33:07.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254696140352",
+          "author": "杨子开板",
+          "avatar": "https://i2.hdslb.com/bfs/face/42dab7c3c11e4bba24261c5c11fce459b7a42eb3.jpg",
+          "text": "回复 @祈愿猫Cat :额不道啊",
+          "likes": 0,
+          "date": "2025-02-07T13:31:53.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254703628384",
+          "author": "快快升到LV6",
+          "avatar": "https://i2.hdslb.com/bfs/face/b4bd707f891dfc0d6158acfd73353754917e0b21.jpg",
+          "text": "回复 @杨子开板 :戳了，现在有冷热温三带的三种末地传送门，分别可以到达三种主岛，要打败三种末影龙才能开启末地折越门[doge]",
+          "likes": 1,
+          "date": "2025-02-07T14:46:12.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "254740014128",
+          "author": "杨子开板",
+          "avatar": "https://i2.hdslb.com/bfs/face/42dab7c3c11e4bba24261c5c11fce459b7a42eb3.jpg",
+          "text": "回复 @快快升到LV6 :[辣眼睛]",
+          "likes": 0,
+          "date": "2025-02-08T03:31:52.000Z",
+          "emojis": [
+            {
+              "token": "[辣眼睛]",
+              "url": "https://i0.hdslb.com/bfs/emote/35d62c496d1e4ea9e091243fa812866f5fecc101.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "255739076496",
+          "author": "纯白厚牛乳",
+          "avatar": "https://i0.hdslb.com/bfs/face/e27da40856c0b8de493b3da57056986483a08a27.jpg",
+          "text": "不如加一个新纬度，比如远古城的那个传送门框架就能用上",
+          "likes": 0,
+          "date": "2025-02-18T10:54:58.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5636,9 +8400,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[喜欢]",
-          "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png"
+          "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -5650,6 +8416,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2025-02-07T05:22:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "254703877216",
@@ -5661,9 +8428,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "254099609441",
@@ -5675,9 +8444,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "254156066289",
@@ -5686,7 +8457,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "没有末影人的变种？\n（我很希望在更新变种的时候把地下城那几个搬过来）",
           "likes": 1,
           "date": "2025-02-09T01:27:03.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254610448993",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @上岸的芬兰神音 :“都市传说”有",
+          "likes": 0,
+          "date": "2025-02-13T15:14:40.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "258174910385",
+          "author": "E96Closed",
+          "avatar": "https://i0.hdslb.com/bfs/face/2f5557dafd125344852c42620be7211771f57c04.jpg",
+          "text": "《无数个鸡》[笑哭]",
+          "likes": 0,
+          "date": "2025-03-29T09:31:20.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -5701,6 +8499,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-03-03T04:52:02.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -5714,9 +8513,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "254813975057",
@@ -5725,7 +8526,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "地平线5",
           "likes": 0,
           "date": "2025-02-15T19:05:57.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5740,9 +8542,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -5758,9 +8562,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星空列车与白的旅行表情包_猫猫问号]",
-          "url": "https://i0.hdslb.com/bfs/garb/8d0a0ffc7567fcd528f07e8b5e6aac497fe4ec19.png"
+          "url": "https://i0.hdslb.com/bfs/garb/8d0a0ffc7567fcd528f07e8b5e6aac497fe4ec19.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -5774,9 +8580,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "254814332257",
@@ -5788,9 +8596,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -5805,9 +8615,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -5823,9 +8635,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[支持]",
-          "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "254160540785",
@@ -5837,9 +8651,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -5852,6 +8668,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 9,
       "date": "2025-02-08T19:35:32.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "254188328881",
@@ -5863,9 +8680,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[Mygo表情包_不会吧？]",
-              "url": "https://i0.hdslb.com/bfs/garb/item/b973f494793bf6e7362dbb9403277280b6a154b8.png"
+              "url": "https://i0.hdslb.com/bfs/garb/item/b973f494793bf6e7362dbb9403277280b6a154b8.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "254874117456",
@@ -5877,9 +8696,77 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "254874758048",
+          "author": "gexx_",
+          "avatar": "https://i2.hdslb.com/bfs/face/9af6757f93a394704a0d3b6e1357d3f4a090778e.jpg",
+          "text": "回复 @qewae :还真是",
+          "likes": 2,
+          "date": "2025-02-09T10:37:40.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254347312145",
+          "author": "GaleChannel_V4",
+          "avatar": "https://i0.hdslb.com/bfs/face/ca6477f1f08174a7177079c7c8178dc2d8887f12.jpg",
+          "text": "ESP",
+          "likes": 1,
+          "date": "2025-02-11T02:00:57.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254351503553",
+          "author": "白京玉烟花",
+          "avatar": "https://i2.hdslb.com/bfs/baselabs/f96b83066ff87c9b9b76bd67c370f13ba638f284.png",
+          "text": "记忆查查说得对",
+          "likes": 0,
+          "date": "2025-02-11T03:00:00.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254418552769",
+          "author": "神钻MC520",
+          "avatar": "https://i2.hdslb.com/bfs/face/cbfa0b17f08adeb5bcdffccc3142025481727fa3.jpg",
+          "text": "blockin进去了连床都找不到",
+          "likes": 2,
+          "date": "2025-02-11T15:05:21.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254424238497",
+          "author": "Bread_面包_",
+          "avatar": "https://i2.hdslb.com/bfs/face/41c0c35afa36bc267a4c9ab3be7ad87a1dab547c.jpg",
+          "text": "挖个坑进去就行了要什么blockin[笑哭]",
+          "likes": 2,
+          "date": "2025-02-11T16:04:14.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "255116911808",
+          "author": "gexx_",
+          "avatar": "https://i2.hdslb.com/bfs/face/9af6757f93a394704a0d3b6e1357d3f4a090778e.jpg",
+          "text": "回复 @Bread_面包_ :还真是，挖个坑敌人都找不到",
+          "likes": 1,
+          "date": "2025-02-11T18:35:49.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "255569418385",
@@ -5888,7 +8775,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "blockin进去这辈子都挖不到",
           "likes": 2,
           "date": "2025-02-24T18:59:25.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5903,9 +8791,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "254418728417",
@@ -5914,7 +8804,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "对手也找不到你床在哪",
           "likes": 1,
           "date": "2025-02-11T15:05:47.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "255114984160",
@@ -5923,7 +8814,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "主打一个互相折磨:D",
           "likes": 0,
           "date": "2025-02-11T17:52:19.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -5938,6 +8830,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 8,
       "date": "2025-02-04T14:58:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "253807120977",
@@ -5946,16 +8839,56 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "推理大师",
           "likes": 2,
           "date": "2025-02-05T07:02:58.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "254807915920",
-          "author": "纪念袁-隆-平-小号",
-          "avatar": "https://i1.hdslb.com/bfs/face/b81ae3ab28b83c584664547918d0a555a4684732.jpg",
-          "text": "预言家",
+          "id": "253836161921",
+          "author": "吃香蕉补钾_",
+          "avatar": "https://i2.hdslb.com/bfs/face/ffcee085c21f94eac7df0ef36320781bdfe5c1fb.jpg",
+          "text": "折戟把是什么戟把更新[笑哭]",
           "likes": 1,
-          "date": "2025-02-08T15:55:17.000Z",
-          "emojis": []
+          "date": "2025-02-05T12:34:39.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "253838858865",
+          "author": "迷离恍惚山师",
+          "avatar": "https://i1.hdslb.com/bfs/face/361495fafe61027d3da4c70464a320da89c90339.jpg",
+          "text": "别说,还真有可能,视频里的两个地形都是冷的雪地的热的陶瓦地[doge]",
+          "likes": 0,
+          "date": "2025-02-05T13:05:45.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "253861135185",
+          "author": "littlecreeper",
+          "avatar": "https://i2.hdslb.com/bfs/face/edcb77d6de948a8af423f7ecf0652fbfd57a8e8e.jpg",
+          "text": "我要苦力怕娘更新[doge]",
+          "likes": 0,
+          "date": "2025-02-05T17:22:15.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "254695937552",
@@ -5964,7 +8897,44 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "预言家",
           "likes": 1,
           "date": "2025-02-07T13:28:01.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254734434496",
+          "author": "gfftftftf",
+          "avatar": "https://i0.hdslb.com/bfs/face/e7c63d2eeec2152f0fffc4310e31ce7067300511.jpg",
+          "text": "骷髅也有变种，僵尸也有变种，那苦力怕会不会也有变种[doge]",
+          "likes": 0,
+          "date": "2025-02-08T02:22:23.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "254807915920",
+          "author": "纪念袁-隆-平-小号",
+          "avatar": "https://i1.hdslb.com/bfs/face/b81ae3ab28b83c584664547918d0a555a4684732.jpg",
+          "text": "预言家",
+          "likes": 1,
+          "date": "2025-02-08T15:55:17.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254888395008",
+          "author": "欢乐的坤豚",
+          "avatar": "https://i2.hdslb.com/bfs/face/c265ff0257fac140711a49e5a4eb2f35dd0ca4b2.jpg",
+          "text": "羊没有",
+          "likes": 0,
+          "date": "2025-02-09T13:02:10.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -5979,13 +8949,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         },
         {
           "token": "[惊讶]",
-          "url": "https://i0.hdslb.com/bfs/emote/f8e9a59cad52ae1a19622805696a35f0a0d853f3.png"
+          "url": "https://i0.hdslb.com/bfs/emote/f8e9a59cad52ae1a19622805696a35f0a0d853f3.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -5997,6 +8970,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-02-05T01:45:07.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -6012,9 +8986,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "253941282545",
@@ -6023,7 +8999,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "不知道诶，长知识了",
           "likes": 4,
           "date": "2025-02-06T14:48:12.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6038,9 +9015,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "253719489137",
@@ -6052,18 +9031,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "253737593889",
-          "author": "VIP-ID",
-          "avatar": "https://i2.hdslb.com/bfs/face/a3388ce737e4e850e18cfa33bdcb486b6d762429.jpg",
-          "text": "回复 @常勃兄 :操作机会很多，基本上要么为了不收回去点不上，要么点了又收回去了",
-          "likes": 21,
-          "date": "2025-02-04T11:30:51.000Z",
-          "emojis": []
+          "id": "254388876432",
+          "author": "常勃兄",
+          "avatar": "https://i1.hdslb.com/bfs/face/baf17a3bf4f4e0524bd4daefe0877654dffaff3f.jpg",
+          "text": "我计算过，落地距离超过117格之后有概率根本没有游戏刻放置水",
+          "likes": 12,
+          "date": "2025-02-04T10:44:32.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "254389306000",
@@ -6072,7 +9054,90 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @常勃兄 :落地水在距离地面超过25格后基本只有1游戏刻的操作机会，难度实际上是很大的",
           "likes": 15,
           "date": "2025-02-04T10:47:39.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253737593889",
+          "author": "VIP-ID",
+          "avatar": "https://i2.hdslb.com/bfs/face/a3388ce737e4e850e18cfa33bdcb486b6d762429.jpg",
+          "text": "回复 @常勃兄 :操作机会很多，基本上要么为了不收回去点不上，要么点了又收回去了",
+          "likes": 21,
+          "date": "2025-02-04T11:30:51.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253786437969",
+          "author": "漫画腐竹",
+          "avatar": "https://i1.hdslb.com/bfs/face/b2c478875445ad3bacc7aa26971531bdf451fabb.jpg",
+          "text": "落地粉雪[doge]",
+          "likes": 1,
+          "date": "2025-02-05T02:50:11.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "254468190848",
+          "author": "freeoranges",
+          "avatar": "https://i1.hdslb.com/bfs/face/772fa9eb1bc7a878f3d23f92b9d4372c622b39f1.jpg",
+          "text": "终于找到了《关注的人》《up觉得很赞》",
+          "likes": 1,
+          "date": "2025-02-05T07:33:23.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253809516241",
+          "author": "Neptune_in_space",
+          "avatar": "https://i0.hdslb.com/bfs/face/0cffc3f1f881b9e530bda2be4cb1cb81d4de1913.jpg",
+          "text": "回复 @freeoranges :不是 怎么是你呀",
+          "likes": 0,
+          "date": "2025-02-05T07:35:21.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254476948304",
+          "author": "正在打電動的寒辰",
+          "avatar": "https://i1.hdslb.com/bfs/face/21ab1a228a6ea37586dd5155c01a4f58ad29c576.jpg",
+          "text": "😭̔",
+          "likes": 0,
+          "date": "2025-02-05T09:19:39.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253860491873",
+          "author": "只是平凡的萝卜",
+          "avatar": "https://i0.hdslb.com/bfs/face/c75ec0e184bec1e28687c3a3f881275d6a12a139.jpg",
+          "text": "回复 @常勃兄 :开tweakeroo的FastRightClick[CEN_乐]以及我很好奇你是如何测试的",
+          "likes": 1,
+          "date": "2025-02-05T17:11:11.000Z",
+          "emojis": [
+            {
+              "token": "[CEN_乐]",
+              "url": "https://i0.hdslb.com/bfs/emote/9feb0e6dcd65377ebfdd2e3617141dbda253f6be.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "254538603776",
+          "author": "常勃兄",
+          "avatar": "https://i1.hdslb.com/bfs/face/baf17a3bf4f4e0524bd4daefe0877654dffaff3f.jpg",
+          "text": "回复 @只是平凡的萝卜 :https://www.zhihu.com/question/8873430144/answer/73694822827?utm_psn=1870777155073474560",
+          "likes": 0,
+          "date": "2025-02-06T02:13:59.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6087,9 +9152,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "254821631744",
@@ -6098,21 +9165,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "下个水j看不到溺尸真的有点瘆得慌",
           "likes": 10,
           "date": "2025-02-08T20:50:16.000Z",
-          "emojis": []
-        },
-        {
-          "id": "269734615616",
-          "author": "账号已注销",
-          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
-          "text": "真实，小时候玩1.7.10开和平经常脑补有him[笑哭]",
-          "likes": 2,
-          "date": "2025-07-23T03:03:06.000Z",
-          "emojis": [
-            {
-              "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
-            }
-          ]
+          "emojis": [],
+          "images": []
         },
         {
           "id": "256762927296",
@@ -6124,9 +9178,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "269734615616",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "真实，小时候玩1.7.10开和平经常脑补有him[笑哭]",
+          "likes": 2,
+          "date": "2025-07-23T03:03:06.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -6141,6 +9213,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-02-06T02:07:33.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "254585514608",
@@ -6149,7 +9222,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "说过竖板砖不会加入的",
           "likes": 8,
           "date": "2025-02-06T11:20:55.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6162,15 +9236,17 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-02-07T13:36:11.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
-          "id": "255070428865",
-          "author": "斯莱罗先生",
-          "avatar": "https://i2.hdslb.com/bfs/face/4f20c9f0147c5570a6382f0f594a3ba22af95469.jpg",
-          "text": "也正常了，之前的配色以新手角度来看确实有点违和，多更点也有感觉",
-          "likes": 3,
-          "date": "2025-02-18T22:32:41.000Z",
-          "emojis": []
+          "id": "254744436928",
+          "author": "雒旧",
+          "avatar": "https://i2.hdslb.com/bfs/face/c78cec205905f1a6b5f4bbc3e62a606c7f91b7a6.jpg",
+          "text": "哈哈哈哈哈(ಡωಡ)hiahiahia，笑死我了顶针可还行",
+          "likes": 1,
+          "date": "2025-02-08T04:20:34.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "254196677665",
@@ -6182,18 +9258,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "254744436928",
-          "author": "雒旧",
-          "avatar": "https://i2.hdslb.com/bfs/face/c78cec205905f1a6b5f4bbc3e62a606c7f91b7a6.jpg",
-          "text": "哈哈哈哈哈(ಡωಡ)hiahiahia，笑死我了顶针可还行",
-          "likes": 1,
-          "date": "2025-02-08T04:20:34.000Z",
-          "emojis": []
+          "id": "255070428865",
+          "author": "斯莱罗先生",
+          "avatar": "https://i2.hdslb.com/bfs/face/4f20c9f0147c5570a6382f0f594a3ba22af95469.jpg",
+          "text": "也正常了，之前的配色以新手角度来看确实有点违和，多更点也有感觉",
+          "likes": 3,
+          "date": "2025-02-18T22:32:41.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6206,16 +9285,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2025-02-05T15:38:21.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "253938535441",
-          "author": "Mr_Bender",
-          "avatar": "https://i1.hdslb.com/bfs/face/ace355819494fdedc9f337682e2bbb40e90a6138.jpg",
-          "text": "有这个劲真不如优化骆驼带箱子和山羊掉羊肉",
-          "likes": 7,
-          "date": "2025-02-06T14:21:04.000Z",
-          "emojis": []
-        },
         {
           "id": "253910294865",
           "author": "灵薄獄",
@@ -6223,7 +9294,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "已经有了",
           "likes": 4,
           "date": "2025-02-06T09:10:51.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253938535441",
+          "author": "Mr_Bender",
+          "avatar": "https://i1.hdslb.com/bfs/face/ace355819494fdedc9f337682e2bbb40e90a6138.jpg",
+          "text": "有这个劲真不如优化骆驼带箱子和山羊掉羊肉",
+          "likes": 7,
+          "date": "2025-02-06T14:21:04.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253943443329",
+          "author": "9099-",
+          "avatar": "https://i2.hdslb.com/bfs/face/0993f70c8695f5de2de59b27ad08d2d004a033f5.jpg",
+          "text": "回复 @Mr_Bender :对",
+          "likes": 0,
+          "date": "2025-02-06T15:10:47.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "254641449536",
@@ -6235,9 +9327,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "255216294465",
+          "author": "抽卡吗你",
+          "avatar": "https://i1.hdslb.com/bfs/face/3ae73adac645ab2ecc54a632b0d89ff75d1d41a4.jpg",
+          "text": "羊没有变种，只有染色羊了[笑哭]",
+          "likes": 0,
+          "date": "2025-02-20T14:07:17.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -6254,17 +9364,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[呲牙]",
-          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+          "animated": false
         },
         {
           "token": "[打call]",
-          "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png"
+          "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png",
+          "animated": false
         },
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -6280,9 +9394,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -6294,6 +9410,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-02-25T15:27:46.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -6305,6 +9422,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-01-29T07:49:13.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -6320,9 +9438,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -6336,9 +9456,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[大哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png"
+          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -6354,9 +9476,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[打call]",
-          "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png"
+          "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -6368,6 +9492,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 6,
       "date": "2025-01-29T11:33:34.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "253980414800",
@@ -6376,7 +9501,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "幻术师会把蓝色羊变成红色",
           "likes": 17,
           "date": "2025-01-31T04:50:50.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253376796449",
+          "author": "Chandler_Duwa",
+          "avatar": "https://i1.hdslb.com/bfs/face/2d9e6a87bac25dad137ffb615326faf092fbb2e6.jpg",
+          "text": "哪里冷门",
+          "likes": 1,
+          "date": "2025-01-31T12:44:19.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "253376965281",
@@ -6388,9 +9524,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "253597404481",
@@ -6402,9 +9540,31 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "254267915889",
+          "author": "一只闲散的究投",
+          "avatar": "https://i1.hdslb.com/bfs/face/f54688555ffd13bf9cbdb8bcfcfd39387229ce88.jpg",
+          "text": "回复 @aaa木工杨师傅 :对，太对了",
+          "likes": 0,
+          "date": "2025-02-10T05:10:49.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256343187296",
+          "author": "小猪猪国王00",
+          "avatar": "https://i2.hdslb.com/bfs/face/c8f7eea91166def8a67fb6544ce280f1a9d7fe5c.jpg",
+          "text": "回复 @外向的赤源 :不是幻术师，是唤魔者。00",
+          "likes": 0,
+          "date": "2025-02-25T10:31:57.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6417,6 +9577,56 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 8,
       "date": "2025-01-29T07:07:27.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/4d883108f744f7a2474febf3b2f9bdcb512824647.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/31f3cfe861b81706b37123a501af1c75512824647.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/c07a8dd6224312de5862bd35d647774d512824647.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/bd8f87eb85721ff7ad58ab5c8bac37b2512824647.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/7c428c68640dba8697a55375696b9a47512824647.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/1a835c06553890939dbc3eefba08dcf8512824647.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/ae31c0ee7549e45d36a8c6a83ae8da4d512824647.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/c13957438539a5ae6c8e38f68a336309512824647.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "253247548001",
@@ -6428,9 +9638,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "253364423393",
+          "author": "IL中o-豳",
+          "avatar": "https://i0.hdslb.com/bfs/face/8159cd2b362f7aa06a1327574c02d47e2d54342c.jpg",
+          "text": "漏了一个",
+          "likes": 0,
+          "date": "2025-01-31T10:23:21.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "253364373329",
@@ -6439,7 +9661,54 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "第二张图左边竹子后面有一只黄色的羊",
           "likes": 1,
           "date": "2025-01-31T10:23:48.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253368826561",
+          "author": "---_--___-_",
+          "avatar": "https://i2.hdslb.com/bfs/face/c781d8a939b77b59d6a009d7c69404a0bc24f83c.jpg",
+          "text": "回复 @我布吉岛取啥名字啊 :那个在第一幅图已经圈了",
+          "likes": 0,
+          "date": "2025-01-31T11:14:24.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253528218033",
+          "author": "苏北烈儿大迪",
+          "avatar": "https://i2.hdslb.com/bfs/face/07e44f3f38749fda0381d682053f40619b105641.jpg",
+          "text": "回复 @我布吉岛取啥名字啊 :那个在第一张就数过了[笑哭]",
+          "likes": 0,
+          "date": "2025-02-02T06:29:17.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "253561731457",
+          "author": "Abstract_Reality",
+          "avatar": "https://i1.hdslb.com/bfs/face/02a1ce3eb834363ddb5ee996b91c36eadb4755a9.jpg",
+          "text": "第二掌最后面是骷髅马",
+          "likes": 0,
+          "date": "2025-02-02T12:58:29.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254321752112",
+          "author": "太阳观察",
+          "avatar": "https://i0.hdslb.com/bfs/face/004e07f792f69d4d5579a590f474e53aedee669b.jpg",
+          "text": "回复 @ALJN183_small :骷髅马后面也有羊",
+          "likes": 0,
+          "date": "2025-02-03T15:41:56.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "255841983441",
@@ -6448,7 +9717,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "没看到owo",
           "likes": 0,
           "date": "2025-02-28T08:56:56.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -6465,9 +9735,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "253197323841",
@@ -6476,7 +9748,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "经典配色才做好",
           "likes": 10,
           "date": "2025-01-29T12:23:39.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253836005680",
+          "author": "ClearXII",
+          "avatar": "https://i2.hdslb.com/bfs/face/488b390139f76aa3ed03cbfaf66d390afd4834eb.jpg",
+          "text": "顺眼",
+          "likes": 2,
+          "date": "2025-01-29T12:51:17.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "253870764688",
@@ -6485,7 +9768,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "牢玩家",
           "likes": 3,
           "date": "2025-01-30T00:53:26.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253236568337",
+          "author": "谢景行A001",
+          "avatar": "https://i0.hdslb.com/bfs/face/74ea5e0c9e280cd9f699192ebfa9cd3f520f01de.jpg",
+          "text": "搭配老版本材质包更好😋😋\n想你了，当时材质粗糙牢床😭😭😭",
+          "likes": 1,
+          "date": "2025-01-30T01:53:20.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "253933037760",
@@ -6497,9 +9791,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -6514,10 +9810,32 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "253890422112",
+          "author": "蓝狼ddsd",
+          "avatar": "https://i2.hdslb.com/bfs/face/fffd6317a1c650f0050eecc304d7031f2c7679bd.jpg",
+          "text": "石英+原石，",
+          "likes": 2,
+          "date": "2025-01-30T05:16:42.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253891276896",
+          "author": "妖娆仙喵",
+          "avatar": "https://i0.hdslb.com/bfs/face/3681dc36e7a4b6aeea85d23dde7b5e1ec35ef5c3.jpg",
+          "text": "回复 @蓝狼ddsd :还能合成?",
+          "likes": 0,
+          "date": "2025-01-30T05:27:12.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "253906539632",
           "author": "王者荣耀电刀",
@@ -6525,7 +9843,60 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "安山岩可是机械动力的必须品",
           "likes": 4,
           "date": "2025-01-30T08:46:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253271452561",
+          "author": "AS7485",
+          "avatar": "https://i1.hdslb.com/bfs/face/92cbd5872c826c17778e4002324bf550c05aea8a.jpg",
+          "text": "回复 @妖娆仙喵 :没记错的话这个配方是合成闪长岩的[doge]",
+          "likes": 2,
+          "date": "2025-01-30T09:37:37.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "253273754657",
+          "author": "小彤ya_",
+          "avatar": "https://i0.hdslb.com/bfs/face/8d97a9598060e10d2b3724a9d99fd521acb137e1.jpg",
+          "text": "重生锚",
+          "likes": 1,
+          "date": "2025-01-30T10:06:02.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253274564017",
+          "author": "Dracaenei",
+          "avatar": "https://i0.hdslb.com/bfs/face/f373f75f02ed61e2ed608b9c0c5ba85f387732ff.jpg",
+          "text": "回复 @AS7485 :可以继续加石英",
+          "likes": 0,
+          "date": "2025-01-30T10:14:22.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253298315345",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "说得好，下次我自己做一套难的[吃瓜]",
+          "likes": 2,
+          "date": "2025-01-30T14:38:29.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "253301878305",
@@ -6534,16 +9905,40 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "安山岩是圆石加闪长岩",
           "likes": 3,
           "date": "2025-01-30T15:15:05.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "254540847984",
-          "author": "Shiny山泥若叶睦",
-          "avatar": "https://i1.hdslb.com/bfs/face/b957a2f796d7f99b980d6f595c084f91d512ea91.jpg",
-          "text": "it&#39;s diorite",
+          "id": "253324918801",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "[吃瓜]机械动力用的到",
           "likes": 2,
-          "date": "2025-02-06T02:45:12.000Z",
-          "emojis": []
+          "date": "2025-01-31T01:53:52.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "253528090785",
+          "author": "一块钱买不了手机",
+          "avatar": "https://i2.hdslb.com/bfs/face/10d6c94532918f87897760d1413f5a16a7c2f03d.jpg",
+          "text": "石英加原石闪长岩[笑哭]",
+          "likes": 2,
+          "date": "2025-02-02T06:25:56.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -6556,6 +9951,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 6,
       "date": "2025-01-29T15:28:26.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "253228550737",
@@ -6564,7 +9960,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "陶罐，花岗岩，侦测器，强化玻璃",
           "likes": 7,
           "date": "2025-01-29T21:24:03.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "253233128673",
@@ -6576,9 +9973,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "253240313073",
+          "author": "风尘-Wemsur",
+          "avatar": "https://i2.hdslb.com/bfs/face/9f54c52b01395408ce94ec55f86ce55532f72cdb.jpg",
+          "text": "教育版？（指3）",
+          "likes": 1,
+          "date": "2025-01-30T02:49:11.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253886315024",
+          "author": "若慵",
+          "avatar": "https://i1.hdslb.com/bfs/face/ff7451bde6fc18a96cf3d63857ef57008ffb2d22.jpg",
+          "text": "我合成红石原件一般直接用合成书了[笑哭]",
+          "likes": 0,
+          "date": "2025-01-30T04:29:33.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "254074971201",
@@ -6587,7 +10012,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @舞_天蝎 :强化玻璃，基岩版和教育版的玩意",
           "likes": 1,
           "date": "2025-02-08T04:18:21.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254794293729",
+          "author": "山压鬼",
+          "avatar": "https://i1.hdslb.com/bfs/face/b942767bb104cb34329cd54154aba360c4fc0bd5.jpg",
+          "text": "回复 @白垩寒螈Koolasuchus :只有教育班里有，基岩版里的是遮光玻璃[doge]",
+          "likes": 0,
+          "date": "2025-02-15T14:20:17.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -6602,6 +10044,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-01-24T06:14:24.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "252700296689",
@@ -6610,16 +10053,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "应该是国际基岩版专属了",
           "likes": 2,
           "date": "2025-01-24T06:16:49.000Z",
-          "emojis": []
-        },
-        {
-          "id": "253680729889",
-          "author": "别刷屏免重复",
-          "avatar": "https://i2.hdslb.com/bfs/face/14032096df58499d676a6834bc95bb626e3bb2c8.jpg",
-          "text": "苦力怕论坛可以下载国际",
-          "likes": 1,
-          "date": "2025-02-03T19:05:02.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "252706413233",
@@ -6628,7 +10063,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @夏支较 :No！",
           "likes": 1,
           "date": "2025-01-24T07:33:23.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253680729889",
+          "author": "别刷屏免重复",
+          "avatar": "https://i2.hdslb.com/bfs/face/14032096df58499d676a6834bc95bb626e3bb2c8.jpg",
+          "text": "苦力怕论坛可以下载国际",
+          "likes": 1,
+          "date": "2025-02-03T19:05:02.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6641,6 +10087,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-01-24T11:05:24.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "252742968593",
@@ -6649,7 +10096,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "市场售卖的dlc",
           "likes": 0,
           "date": "2025-01-24T14:15:42.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -6664,16 +10112,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 8,
       "date": "2025-01-20T16:07:45.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "252388971681",
-          "author": "沧海水鱼",
-          "avatar": "/media/avatars/shuiyu.webp",
-          "text": "太强了",
-          "likes": 8,
-          "date": "2025-01-21T04:10:44.000Z",
-          "emojis": []
-        },
         {
           "id": "252973799472",
           "author": "WzserJYNX",
@@ -6684,9 +10124,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "252388971681",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "太强了",
+          "likes": 8,
+          "date": "2025-01-21T04:10:44.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "253485636672",
@@ -6695,7 +10147,64 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "官方还没忘记呀",
           "likes": 1,
           "date": "2025-01-26T00:38:31.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253224635809",
+          "author": "Timmie233",
+          "avatar": "https://i2.hdslb.com/bfs/face/e1445b648de404236b4625a74061ce78568b08eb.jpg",
+          "text": "nb",
+          "likes": 0,
+          "date": "2025-01-29T18:15:23.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254810414465",
+          "author": "野生xy-t",
+          "avatar": "https://i0.hdslb.com/bfs/face/76148372019191d9fa85ed1a3d6583385eeb359c.jpg",
+          "text": "所以那个望远镜和弩怎么整[笑哭]",
+          "likes": 0,
+          "date": "2025-02-15T17:32:14.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "267125398064",
+          "author": "こもも_",
+          "avatar": "https://i0.hdslb.com/bfs/face/4d1a9491a26c5f47f6ac9cfdfe46b6f67b977b19.jpg",
+          "text": "b站评论还能变更？",
+          "likes": 0,
+          "date": "2025-06-29T19:32:27.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "266039387857",
+          "author": "Farewell_Death",
+          "avatar": "https://i2.hdslb.com/bfs/face/0b7bb2631861ee023747a33b800469350a7aac2b.png",
+          "text": "回复 @dhtdtcfy :是指bug修复情况，评论是无法变的",
+          "likes": 0,
+          "date": "2025-06-29T19:34:12.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "267110742897",
+          "author": "UIDrubia",
+          "avatar": "https://i2.hdslb.com/bfs/face/c53a66a9379180ac319118f7aaccf82ea8da3f21.jpg",
+          "text": "主要是镜子+弩的BUG还是很有用的\n超距离干死掠夺者",
+          "likes": 0,
+          "date": "2025-07-10T06:11:19.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6708,6 +10217,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2025-01-21T00:51:22.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "252391610449",
@@ -6716,7 +10226,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "基岩版的是摔落时重置摔落动量，并非和Java版的一样",
           "likes": 18,
           "date": "2025-01-21T04:38:10.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "252993298416",
@@ -6725,7 +10236,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @V-DMptySet :以前的吧",
           "likes": 2,
           "date": "2025-01-21T05:02:40.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "252394234577",
@@ -6734,7 +10246,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @梧田一中最帅之君 :嗯",
           "likes": 2,
           "date": "2025-01-21T05:09:39.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6749,9 +10262,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -6765,6 +10280,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-01-18T06:22:00.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -6778,9 +10294,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -6792,6 +10310,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-01-26T16:14:16.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -6805,7 +10324,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 7,
       "date": "2025-01-17T06:15:07.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "252063069137",
+          "author": "我的世界Edge-Games",
+          "avatar": "https://i2.hdslb.com/bfs/face/d2c68f66834f84e8e52efb7fecb1f1348392b2f1.jpg",
+          "text": "基岩版🤔",
+          "likes": 5,
+          "date": "2025-01-17T11:25:44.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "252099049393",
           "author": "剑翔o_O",
@@ -6816,18 +10346,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "252063069137",
-          "author": "我的世界Edge-Games",
-          "avatar": "https://i2.hdslb.com/bfs/face/d2c68f66834f84e8e52efb7fecb1f1348392b2f1.jpg",
-          "text": "基岩版🤔",
-          "likes": 5,
-          "date": "2025-01-17T11:25:44.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "252144532977",
@@ -6839,9 +10362,63 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "252283354225",
+          "author": "ietei電魚闪闪",
+          "avatar": "https://i0.hdslb.com/bfs/face/c49a18050b9aee6f4a85b20c51b3c6f477cda882.jpg",
+          "text": "冈易版：艹艹艹艹艹艹艹艹艹艹艹艹冈易，[生气][生气][生气][生气][生气][生气][生气][生气]",
+          "likes": 0,
+          "date": "2025-01-20T00:52:57.000Z",
+          "emojis": [
+            {
+              "token": "[生气]",
+              "url": "https://i0.hdslb.com/bfs/emote/3195714219c4b582a4fb02033dd1519913d0246d.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "252349155649",
+          "author": "゚゚゚゚゚゚゚科比",
+          "avatar": "https://i1.hdslb.com/bfs/face/24f34923689ae8533de4524f28d162cf868a4e3f.jpg",
+          "text": "回复 @作者外空人 :⁭？",
+          "likes": 0,
+          "date": "2025-01-20T14:20:41.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253145875088",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @Mc-剑翔 :基岩版就是会眨眼，人也会",
+          "likes": 2,
+          "date": "2025-01-22T13:02:49.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "252669420401",
+          "author": "剑翔o_O",
+          "avatar": "https://i1.hdslb.com/bfs/face/6f8d463c86b48432fa008736b6cd2127d48e1eb5.jpg",
+          "text": "回复 @----____-___- :我又不是不知道[doge]",
+          "likes": 0,
+          "date": "2025-01-23T20:52:14.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -6856,9 +10433,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "254675225776",
@@ -6870,9 +10449,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -6885,6 +10466,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-02-06T09:50:30.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "254484662657",
@@ -6896,9 +10478,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[呲牙]",
-              "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+              "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -6913,16 +10497,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2025-01-15T13:18:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "253275331536",
-          "author": "派分之二",
-          "avatar": "https://i2.hdslb.com/bfs/face/d1e90982f60111d752718184a57c484aa31526f8.jpg",
-          "text": "回复 @怀孕的芹香 :但是不得不说 mc的音效都很精致 而且声音字幕也很细节（java版）",
-          "likes": 8,
-          "date": "2025-01-23T17:30:44.000Z",
-          "emojis": []
-        },
         {
           "id": "252517278528",
           "author": "白色脑浆",
@@ -6930,7 +10506,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "对，我一个玩了七年的都没听出来",
           "likes": 7,
           "date": "2025-01-16T03:57:24.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "251947334289",
@@ -6942,9 +10519,41 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "253275331536",
+          "author": "派分之二",
+          "avatar": "https://i2.hdslb.com/bfs/face/d1e90982f60111d752718184a57c484aa31526f8.jpg",
+          "text": "回复 @怀孕的芹香 :但是不得不说 mc的音效都很精致 而且声音字幕也很细节（java版）",
+          "likes": 8,
+          "date": "2025-01-23T17:30:44.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254381760944",
+          "author": "Pluvia_Haven",
+          "avatar": "https://i2.hdslb.com/bfs/face/1c7ce5d46b7387863941b5f2ef18f40b78c838f3.jpg",
+          "text": "回复 @怀孕的芹香 :静音玩？",
+          "likes": 0,
+          "date": "2025-02-04T09:24:04.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253735884465",
+          "author": "晦朔辞",
+          "avatar": "https://i0.hdslb.com/bfs/face/eef828bc503841660c7b90d9ae65b592257475f1.jpg",
+          "text": "回复 @Vermis_Lead : 是欣赏啊，又不是正常去听",
+          "likes": 0,
+          "date": "2025-02-04T11:12:14.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -6959,9 +10568,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "251924479313",
@@ -6973,9 +10584,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "252544393088",
@@ -6987,9 +10600,47 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "251967047569",
+          "author": "Zyldris",
+          "avatar": "https://i0.hdslb.com/bfs/face/ee45395d162c5b9c0fde314291e489a0a8018c43.jpg",
+          "text": "回复 @-STTSA- :啊，还有这功能的",
+          "likes": 1,
+          "date": "2025-01-16T10:16:43.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "252547627328",
+          "author": "-STTSA-",
+          "avatar": "https://i2.hdslb.com/bfs/face/94c34162a148b37d0b5d65fb2c2088f9e6e64847.jpg",
+          "text": "回复 @撅醒小骷髅 :声音里找到环境，专门控制洞穴音效的，关了就行了",
+          "likes": 0,
+          "date": "2025-01-16T10:21:52.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "252894361472",
+          "author": "灵乌路脑袋空空",
+          "avatar": "https://i2.hdslb.com/bfs/face/30ca08a2c9ae71bc4bc7a5df80d2aafc3eb01c80.webp",
+          "text": "挖矿被苦力怕偷袭怎么办[笑哭]",
+          "likes": 0,
+          "date": "2025-01-20T04:35:32.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "252305973505",
@@ -6998,7 +10649,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @七号的阳光 :java版开字幕啊",
           "likes": 1,
           "date": "2025-01-20T05:59:20.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "253793180385",
+          "author": "正经的南瓜怪",
+          "avatar": "https://i2.hdslb.com/bfs/face/cd7e1fd1dc8459aaf1173364564482162c9ea774.jpg",
+          "text": "我是笔记本坏了被迫这么玩[doge][doge]",
+          "likes": 0,
+          "date": "2025-02-05T04:16:29.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "255019512080",
+          "author": "Bloxhelmet",
+          "avatar": "https://i2.hdslb.com/bfs/face/eecc85a02c3ef1a57b27807b721c43d357341037.jpg",
+          "text": "不是，还有静音玩游戏的？",
+          "likes": 0,
+          "date": "2025-02-10T22:59:16.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7011,6 +10689,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-01-17T06:54:07.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "252047905777",
@@ -7022,9 +10701,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -7039,16 +10720,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 35,
       "date": "2025-01-09T14:09:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "251986001504",
-          "author": "蛤比下下下",
-          "avatar": "https://i2.hdslb.com/bfs/face/d0ca2fc64cf63b75845f53dddd1216e43a5886df.jpg",
-          "text": "三日凌空",
-          "likes": 24,
-          "date": "2025-01-10T04:50:20.000Z",
-          "emojis": []
-        },
         {
           "id": "251947945360",
           "author": "望霂",
@@ -7056,7 +10729,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "百猪聚首队出动",
           "likes": 17,
           "date": "2025-01-09T15:00:16.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251402487137",
+          "author": "514的6",
+          "avatar": "https://i0.hdslb.com/bfs/face/e3c4621b7986109ab53e67a71a2d15969238e28e.jpg",
+          "text": "群猪聚首[doge]",
+          "likes": 3,
+          "date": "2025-01-09T15:32:06.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "251959375344",
@@ -7065,7 +10755,78 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "gg爆主角团",
           "likes": 15,
           "date": "2025-01-09T17:38:29.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251966013424",
+          "author": "henlanle-lijnyeu",
+          "avatar": "https://i0.hdslb.com/bfs/face/5e086370963efc4e010b935b46d3736c855b25f0.jpg",
+          "text": "哼哼猪群",
+          "likes": 8,
+          "date": "2025-01-09T22:47:31.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251981095712",
+          "author": "14史思",
+          "avatar": "https://i0.hdslb.com/bfs/face/4f5de62660899bfc98e3fbdf9b3e2f0b0a68b2ed.jpg",
+          "text": "三猪巨鼎",
+          "likes": 5,
+          "date": "2025-01-10T03:52:41.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251986001504",
+          "author": "蛤比下下下",
+          "avatar": "https://i2.hdslb.com/bfs/face/d0ca2fc64cf63b75845f53dddd1216e43a5886df.jpg",
+          "text": "三日凌空",
+          "likes": 24,
+          "date": "2025-01-10T04:50:20.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251988199040",
+          "author": "Kerbal123",
+          "avatar": "https://i0.hdslb.com/bfs/face/93590994a6c3bcb73c626371cb04d12361f5103b.jpg",
+          "text": "掌上明🐷",
+          "likes": 10,
+          "date": "2025-01-10T05:17:27.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "252009352528",
+          "author": "叶甫根尼Eugenia",
+          "avatar": "https://i0.hdslb.com/bfs/face/c3c1163aa088ccefdff1f93cd8b41dbdcc3e9513.jpg",
+          "text": "领导者，元帅与将军",
+          "likes": 10,
+          "date": "2025-01-10T10:18:18.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "252017630048",
+          "author": "_YuChein_",
+          "avatar": "https://i2.hdslb.com/bfs/face/c770fde951d7dfd889793b5db63b9de598265cad.jpg",
+          "text": "回复 @Kerbal123 :妙啊",
+          "likes": 1,
+          "date": "2025-01-10T11:50:04.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "252018538256",
+          "author": "一杯lr",
+          "avatar": "https://i1.hdslb.com/bfs/face/c6ad02e9b76cd11b4b1c24ee14a53458be716052.jpg",
+          "text": "土豆的恩赐",
+          "likes": 0,
+          "date": "2025-01-10T12:00:19.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7078,6 +10839,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2025-01-10T12:07:51.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "253194034512",
@@ -7089,9 +10851,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -7106,19 +10870,19 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[吃瓜]",
-          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/fbce59396b9bff120a4e6d7f5c034aae3546391412475951.jpg",
+          "width": 1024,
+          "height": 1024,
+          "animated": false
         }
       ],
       "replies": [
-        {
-          "id": "252004483280",
-          "author": "勇往直前的修勾君",
-          "avatar": "https://i0.hdslb.com/bfs/face/350b3b3104d7dd21690358d612ddbe8d18f37127.jpg",
-          "text": "我笑的起飞了都",
-          "likes": 1,
-          "date": "2025-01-10T09:20:20.000Z",
-          "emojis": []
-        },
         {
           "id": "251987740640",
           "author": "CM樱萌",
@@ -7129,9 +10893,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "252004483280",
+          "author": "勇往直前的修勾君",
+          "avatar": "https://i0.hdslb.com/bfs/face/350b3b3104d7dd21690358d612ddbe8d18f37127.jpg",
+          "text": "我笑的起飞了都",
+          "likes": 1,
+          "date": "2025-01-10T09:20:20.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -7148,9 +10924,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7166,9 +10944,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7184,9 +10964,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7203,9 +10985,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7219,6 +11003,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-01-07T03:36:38.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -7232,9 +11017,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7248,6 +11035,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 23,
       "date": "2025-01-08T04:24:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "251283467585",
@@ -7259,9 +11047,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "251880625072",
@@ -7273,9 +11063,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "251926852304",
@@ -7284,7 +11076,84 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "12.门",
           "likes": 4,
           "date": "2025-01-09T11:01:20.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251381322081",
+          "author": "九活宝9",
+          "avatar": "https://i0.hdslb.com/bfs/face/98de0db793ed31bcabae7512e34824d86b7cfa5e.jpg",
+          "text": "回复 @NotKnow-4516th :还真是，忘了把这个盘点上",
+          "likes": 1,
+          "date": "2025-01-09T11:22:14.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251463056577",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "第十一个不算，我跑图碰到过一个神殿四个箱子都有模板",
+          "likes": 0,
+          "date": "2025-01-10T11:14:22.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251463169969",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @月光下的深红玫瑰 :种子5587739698954106842，坐标x46213 z53336",
+          "likes": 0,
+          "date": "2025-01-10T11:17:08.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "252019455104",
+          "author": "Bug大战僵尸",
+          "avatar": "https://i0.hdslb.com/bfs/face/31d192554b9c5c86753d7a83582f1d5c75ebfc72.jpg",
+          "text": "骆驼血量没少一半啊？那是骆驼血条变饱食度吧",
+          "likes": 0,
+          "date": "2025-01-10T12:10:45.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "252076539024",
+          "author": "Mag-曼斯",
+          "avatar": "https://i0.hdslb.com/bfs/face/91079b9151e5f4c9362ac24b396582a777aa2562.jpg",
+          "text": "12.11[doge]",
+          "likes": 0,
+          "date": "2025-01-11T05:13:27.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "251557839137",
+          "author": "黑白无常生的黑白球",
+          "avatar": "https://i2.hdslb.com/bfs/face/1abf4150e7d0601d0b255750e983efe2d0e00ebd.jpg",
+          "text": "12.沙漠神殿门口的门",
+          "likes": 1,
+          "date": "2025-01-11T12:52:49.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251559160833",
+          "author": "苏北烈儿大迪",
+          "avatar": "https://i2.hdslb.com/bfs/face/07e44f3f38749fda0381d682053f40619b105641.jpg",
+          "text": "沙漠神殿室内中心的橙色陶瓦变成了红色",
+          "likes": 0,
+          "date": "2025-01-11T13:07:30.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7297,6 +11166,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 9,
       "date": "2025-01-06T01:56:04.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "251100601377",
@@ -7305,7 +11175,68 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "沙漠神殿里面图案的橙色陶瓦变成了红色陶瓦\n骆驼的叫声变成了羊驼\n第一个箱子里面出现了狼凯\n如果有狼凯的话说明是1.20但沙漠神殿并无可疑沙子",
           "likes": 7,
           "date": "2025-01-06T02:28:31.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251100833793",
+          "author": "苏北烈儿大迪",
+          "avatar": "https://i2.hdslb.com/bfs/face/07e44f3f38749fda0381d682053f40619b105641.jpg",
+          "text": "猪排的名字可能也有错",
+          "likes": 0,
+          "date": "2025-01-06T02:32:18.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251100978625",
+          "author": "苏北烈儿大迪",
+          "avatar": "https://i2.hdslb.com/bfs/face/07e44f3f38749fda0381d682053f40619b105641.jpg",
+          "text": "在挖掉蓝色陶瓦的时候能注意到物品栏里面有一个空位按理来说你收入的物品一般来说会先出现在空的物品栏里面但是那个蓝色陶瓦并没有出现在物品栏里甚至他最后打开背包里面也没有挖去的时候就听到了拾取声音",
+          "likes": 0,
+          "date": "2025-01-06T02:32:59.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251636486304",
+          "author": "Lucky_星辰光辉",
+          "avatar": "https://i2.hdslb.com/bfs/face/ca792e615a444e654cc1605a49a5bb1f8b480240.jpg",
+          "text": "回复 @_山河同悲Z科技 :啊？？？？？？？应该凑齐十个了吧",
+          "likes": 1,
+          "date": "2025-01-06T02:51:45.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251111514113",
+          "author": "苏北烈儿大迪",
+          "avatar": "https://i2.hdslb.com/bfs/face/07e44f3f38749fda0381d682053f40619b105641.jpg",
+          "text": "况且那个就是沙丘纹饰",
+          "likes": 0,
+          "date": "2025-01-06T05:04:21.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251646796800",
+          "author": "Lucky_星辰光辉",
+          "avatar": "https://i2.hdslb.com/bfs/face/ca792e615a444e654cc1605a49a5bb1f8b480240.jpg",
+          "text": "回复 @_山河同悲Z科技 :啊？不是眼眸？？",
+          "likes": 1,
+          "date": "2025-01-06T05:09:31.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251113460017",
+          "author": "苏北烈儿大迪",
+          "avatar": "https://i2.hdslb.com/bfs/face/07e44f3f38749fda0381d682053f40619b105641.jpg",
+          "text": "回复 @Lucky_星辰光辉 :眼眸上面没有两条痕况且颜色不一样是末地石的颜色",
+          "likes": 0,
+          "date": "2025-01-06T05:30:31.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "251735371056",
@@ -7317,18 +11248,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[大哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png"
+              "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "251646796800",
-          "author": "Lucky_星辰光辉",
-          "avatar": "https://i2.hdslb.com/bfs/face/ca792e615a444e654cc1605a49a5bb1f8b480240.jpg",
-          "text": "回复 @_山河同悲Z科技 :啊？不是眼眸？？",
-          "likes": 1,
-          "date": "2025-01-06T05:09:31.000Z",
-          "emojis": []
+          "id": "251621488241",
+          "author": "阿空The_Air",
+          "avatar": "https://i1.hdslb.com/bfs/face/c75ada0885eb66481186276cf9d69a8f9f81b98a.jpg",
+          "text": "那个不是眼眸纹饰，是沙丘纹饰",
+          "likes": 0,
+          "date": "2025-01-12T07:36:14.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7341,6 +11275,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 4,
       "date": "2025-01-06T03:27:57.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/cf73051bbf98314182f2d596592a8b573546674788043367.png",
+          "width": 500,
+          "height": 303,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "251105178177",
@@ -7349,7 +11291,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "添加\n9.陶瓦没有进入物品栏\n10.骆驼有17颗心",
           "likes": 18,
           "date": "2025-01-06T03:45:23.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251522794785",
+          "author": "BluffY",
+          "avatar": "https://i2.hdslb.com/bfs/face/73d4c7dc490ca2539231fa13651e8d1b383f1280.jpg",
+          "text": "回复 @充气河豚awa :陶瓦可能是应为他背包里已经有陶瓦了[吃瓜]",
+          "likes": 0,
+          "date": "2025-01-11T05:22:20.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "251540865681",
@@ -7358,7 +11317,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @Doctor--K :00:11打开箱子时没有陶瓦",
           "likes": 1,
           "date": "2025-01-11T09:32:20.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "251639056881",
@@ -7367,7 +11327,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "沙漠神殿里头是红色陶瓦，应该是橙色的",
           "likes": 0,
           "date": "2025-01-12T11:22:58.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -7384,9 +11345,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "251669011712",
@@ -7395,7 +11358,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "当时还不会做火把 怪都不敢打",
           "likes": 0,
           "date": "2025-01-06T10:29:02.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7410,9 +11374,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -7424,6 +11390,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-01-04T05:13:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -7437,6 +11404,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2024-12-28T16:52:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "250915636880",
@@ -7445,7 +11413,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "卫道士在不命名为“Johnny”的情况下只会对玩家和村民动斧子，在命名为“Johnny”后会砍死周围一切生物",
           "likes": 26,
           "date": "2024-12-28T17:37:02.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "250915669584",
@@ -7454,7 +11423,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @情绪魔方 :这个我知道，我的意思是无论如何卫道士都会砍玩家但数值无意那对于玩家而言不就跟普通卫道士没区别吗()",
           "likes": 11,
           "date": "2024-12-28T17:39:03.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "250915746000",
@@ -7466,9 +11436,31 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "250640747025",
+          "author": "深夜廻-呼啸小遥",
+          "avatar": "https://i0.hdslb.com/bfs/face/fe1f049c22bae0de129228d6ffddbc1aa346df09.jpg",
+          "text": "回复 @情绪魔方 :和嘎吱会有好玩的特性，johnny卫道士特性会攻击都分生物，而卫道士又害怕嘎吱，又会逃离",
+          "likes": 6,
+          "date": "2024-12-31T13:13:44.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "250640759745",
+          "author": "深夜廻-呼啸小遥",
+          "avatar": "https://i0.hdslb.com/bfs/face/fe1f049c22bae0de129228d6ffddbc1aa346df09.jpg",
+          "text": "回复 @情绪魔方 :还有一件事(敲头):如果一个卫道士被命名为“Johnny”（使用命名牌、已被命名的刷怪蛋等），或者卫道士的实体数据Johnny被设为1b，它会攻击除了灾厄村民、恶魂、盔甲架【3】、幼年村民【4】【5】【仅Java版】和智能体【仅教育版和基岩版】以外的所有生物。",
+          "likes": 4,
+          "date": "2024-12-31T13:14:10.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7481,6 +11473,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-29T13:04:25.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -7494,9 +11487,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7510,6 +11505,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-31T03:58:11.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -7523,9 +11519,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7541,7 +11539,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[原神_鸽子]",
-          "url": "https://i0.hdslb.com/bfs/emote/d03a8f9f490eb007aae2d826f9143e3a29a3be5a.png"
+          "url": "https://i0.hdslb.com/bfs/emote/d03a8f9f490eb007aae2d826f9143e3a29a3be5a.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/31941094a8407b3eda8b511939256d6f392073490.jpg",
+          "width": 2414,
+          "height": 1080,
+          "animated": false
         }
       ],
       "replies": [
@@ -7555,9 +11562,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "251682870768",
@@ -7566,7 +11575,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @滄海水魚 : 啊？那他是怎么搞的连jion也没有吗",
           "likes": 1,
           "date": "2025-01-06T13:07:19.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7579,6 +11589,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-01-18T03:17:53.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/418697237fa149a52a8c962ec36cadb7525961457.jpg",
+          "width": 680,
+          "height": 574,
+          "animated": false
+        }
+      ],
       "replies": []
     },
     {
@@ -7590,6 +11608,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-12-29T19:23:39.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "252719661280",
@@ -7598,7 +11617,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "就是那个",
           "likes": 0,
           "date": "2025-01-18T06:44:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -7615,13 +11635,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         },
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "250407876977",
@@ -7633,9 +11656,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "250459212273",
+          "author": "XCDHCX",
+          "avatar": "https://i0.hdslb.com/bfs/face/e305252261235e3f5cad8640876b0c8ca5975dbf.jpg",
+          "text": "只给四块像素就不一定了",
+          "likes": 0,
+          "date": "2024-12-29T09:28:08.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "250988395088",
@@ -7644,7 +11679,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @海辰星HC :如果是流浪拴绳的话应该也可以辨识出来",
           "likes": 1,
           "date": "2024-12-29T14:03:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "252710825041",
@@ -7653,7 +11689,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "是拴绳、铁锭和发光墨囊",
           "likes": 0,
           "date": "2025-01-24T08:31:27.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7666,6 +11703,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-28T18:43:21.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -7679,9 +11717,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "250501929761",
@@ -7690,7 +11730,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "压缩成1个像素点",
           "likes": 1,
           "date": "2024-12-29T20:19:41.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -7705,16 +11746,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-12-25T09:25:23.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "253275234241",
-          "author": "AOi_7258",
-          "avatar": "https://i0.hdslb.com/bfs/face/c75c6b1ddd77b2f88e34dfcd9f41078ed0df6729.jpg",
-          "text": "回复 @币币爱慕C :有些基岩版也有的",
-          "likes": 0,
-          "date": "2025-01-30T10:21:42.000Z",
-          "emojis": []
-        },
         {
           "id": "251230341393",
           "author": "币币爱慕C",
@@ -7725,9 +11758,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "253275234241",
+          "author": "AOi_7258",
+          "avatar": "https://i0.hdslb.com/bfs/face/c75c6b1ddd77b2f88e34dfcd9f41078ed0df6729.jpg",
+          "text": "回复 @币币爱慕C :有些基岩版也有的",
+          "likes": 0,
+          "date": "2025-01-30T10:21:42.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7742,7 +11787,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/14e9ccdafcdf70dc4e2fd7e00f82cb6611509188.jpg",
+          "width": 1080,
+          "height": 2400,
+          "animated": false
         }
       ],
       "replies": []
@@ -7758,9 +11812,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[吃瓜]",
-          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "250135659905",
@@ -7769,7 +11825,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "玩家1摔下梯子\n玩家2浴火焚身\n玩家3在试图逃离（尸壳）时撞上了仙人掌\n玩家4被甜浆果丛刺死了\n玩家5被饿死了\n玩家6因被过度挤压而死\n玩家8被魔法杀死了\n玩家9从藤蔓上摔了下来\n玩家10被羊驼杀死了\n玩家11被玩家9杀死了\n玩家12掉出了这个世界\n玩家13注定要摔死\n玩家14被玩家1一锤毙命\n玩家14被苦力怕炸死了\n玩家15被闪电击中\n玩家16被蛰死了\n玩家17随着一声巨响消失了\n玩家7被【刻意的游戏设计】杀死了",
           "likes": 7,
           "date": "2024-12-25T09:25:33.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -7784,6 +11841,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-15T10:21:13.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -7797,9 +11855,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7815,9 +11875,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7833,9 +11895,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -7849,19 +11913,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "251135094080",
-          "author": "水煮蛋是个无名蛋",
-          "avatar": "https://i0.hdslb.com/bfs/face/46e29f5c47a5ec9e491850bcb512f906ed861dc6.jpg",
-          "text": "还是酸雨加洪水最恶心，上下都去不了",
-          "likes": 1,
-          "date": "2024-12-31T09:26:49.000Z",
-          "emojis": []
-        },
         {
           "id": "250702850352",
           "author": "鸡排五分熟",
@@ -7869,7 +11926,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "海啸最主要是卡，配上陨石更是一坨",
           "likes": 1,
           "date": "2024-12-26T08:13:11.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251135094080",
+          "author": "水煮蛋是个无名蛋",
+          "avatar": "https://i0.hdslb.com/bfs/face/46e29f5c47a5ec9e491850bcb512f906ed861dc6.jpg",
+          "text": "还是酸雨加洪水最恶心，上下都去不了",
+          "likes": 1,
+          "date": "2024-12-31T09:26:49.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7884,9 +11952,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7900,6 +11970,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-15T15:50:07.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -7911,6 +11982,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-17T17:02:02.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -7924,9 +11996,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -7942,9 +12016,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "249550459105",
@@ -7956,9 +12032,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "250640830481",
@@ -7967,7 +12045,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "其实不复杂，大多数都是利用机制",
           "likes": 0,
           "date": "2024-12-31T13:14:03.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -7980,6 +12059,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-15T08:18:43.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -7991,6 +12071,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-12-17T19:39:04.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "252106030272",
@@ -7999,7 +12080,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "恰恰相反",
           "likes": 0,
           "date": "2025-01-11T11:20:47.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -8014,7 +12096,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 8,
       "date": "2024-12-16T16:10:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "249901482368",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "正确的",
+          "likes": 10,
+          "date": "2024-12-17T00:51:18.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "249452000849",
           "author": "海棱晶_Hyprism",
@@ -8025,18 +12118,41 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "249901482368",
-          "author": "账号已注销",
-          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
-          "text": "正确的",
-          "likes": 10,
-          "date": "2024-12-17T00:51:18.000Z",
-          "emojis": []
+          "id": "249461124897",
+          "author": "_小严同学_",
+          "avatar": "https://i1.hdslb.com/bfs/face/1557a7ae20181f078eace9e540888999908c69d4.jpg",
+          "text": "抗火药水：",
+          "likes": 4,
+          "date": "2024-12-17T03:33:12.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "250251708352",
+          "author": "Uarew_Gladiolus",
+          "avatar": "https://i2.hdslb.com/bfs/face/8e8064d3ca7f3afc2c5eef8bb7d5fdab4fd8c3ec.jpg",
+          "text": "太真实了",
+          "likes": 3,
+          "date": "2024-12-21T01:30:42.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "250801452624",
+          "author": "爬行者末影",
+          "avatar": "https://i2.hdslb.com/bfs/face/ced1273db7fa8a292862790e2365e3573657ab41.jpg",
+          "text": "给一件装备敲火焰保护4，就这样，有饱食㇏度的情况下几乎没有任何伤害",
+          "likes": 3,
+          "date": "2024-12-27T11:21:55.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "250941752848",
@@ -8045,7 +12161,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @爬行者末影 :我c你多打的那个捺我看成头发了",
           "likes": 4,
           "date": "2024-12-29T04:33:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251335311233",
+          "author": "Zombie_CHEN",
+          "avatar": "https://i2.hdslb.com/bfs/face/3ee6f84d719710d8adc9c15bcd9f80a265d5b363.jpg",
+          "text": "耐烧王",
+          "likes": 1,
+          "date": "2025-01-08T22:51:16.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251966824449",
+          "author": "天空没有极限_Sky",
+          "avatar": "https://i2.hdslb.com/bfs/face/d8a535931f11d6cfe77cb7ee7f9a56c9fd65d595.jpg",
+          "text": "今天刚被这玩意坑死[笑哭]",
+          "likes": 0,
+          "date": "2025-01-16T10:14:43.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -8060,24 +12203,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "251106711792",
-          "author": "低端-玩家",
-          "avatar": "https://i0.hdslb.com/bfs/face/e89ab14002e953caa098ed113956cbd1848377d2.jpg",
-          "text": "好笑的是，给狗子传犰狳甲之后你炸死了狗子可能还活着[2024明日方舟音律联觉_prpr]",
-          "likes": 74,
-          "date": "2024-12-31T02:53:29.000Z",
-          "emojis": [
-            {
-              "token": "[2024明日方舟音律联觉_prpr]",
-              "url": "https://i0.hdslb.com/bfs/garb/edb6cea2b53d4dbf369233ef68d709f760eaae69.png"
-            }
-          ]
-        },
         {
           "id": "250941880144",
           "author": "野生xy-t",
@@ -8088,9 +12219,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "251106711792",
+          "author": "低端-玩家",
+          "avatar": "https://i0.hdslb.com/bfs/face/e89ab14002e953caa098ed113956cbd1848377d2.jpg",
+          "text": "好笑的是，给狗子传犰狳甲之后你炸死了狗子可能还活着[2024明日方舟音律联觉_prpr]",
+          "likes": 74,
+          "date": "2024-12-31T02:53:29.000Z",
+          "emojis": [
+            {
+              "token": "[2024明日方舟音律联觉_prpr]",
+              "url": "https://i0.hdslb.com/bfs/garb/edb6cea2b53d4dbf369233ef68d709f760eaae69.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "250634874497",
@@ -8102,9 +12251,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "259840842977",
+          "author": "OGA官方",
+          "avatar": "https://i2.hdslb.com/bfs/face/bfe4fe9e9eb8a87d5d0b7549199943b47cf9cc81.jpg",
+          "text": "金字塔的炸弹更鸡肋 估计萌新都不会有几个被坑的",
+          "likes": 0,
+          "date": "2025-04-19T03:22:31.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -8117,6 +12278,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-12-17T05:06:36.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "254410561153",
@@ -8128,9 +12290,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -8147,19 +12311,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[墨镜]",
-          "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "250774520977",
-          "author": "要玩一辈子ow哦",
-          "avatar": "https://i2.hdslb.com/bfs/face/3e49715d7d2f651e8be13ca532290fc7da3bb8a6.jpg",
-          "text": "回复 @96464848494 :这就是为什么没人陪你玩",
-          "likes": 4,
-          "date": "2025-01-02T03:55:12.000Z",
-          "emojis": []
-        },
         {
           "id": "249870220977",
           "author": "A52O",
@@ -8167,7 +12324,76 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "我也是",
           "likes": 2,
           "date": "2024-12-22T02:53:15.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251116440400",
+          "author": "睡觉的扫地机器人",
+          "avatar": "https://i2.hdslb.com/bfs/face/09254d48afce2f9c658cd47690085c998f998fd6.jpg",
+          "text": "回复 @x_A520_x :也是",
+          "likes": 0,
+          "date": "2024-12-31T04:57:55.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251136943056",
+          "author": "你的父爱来了",
+          "avatar": "https://i2.hdslb.com/bfs/face/b84ca0ca43c99c94ce61758981e2484d565c64e3.jpg",
+          "text": "我跟你玩[OK]",
+          "likes": 1,
+          "date": "2024-12-31T09:48:53.000Z",
+          "emojis": [
+            {
+              "token": "[OK]",
+              "url": "https://i0.hdslb.com/bfs/emote/4683fd9ffc925fa6423110979d7dcac5eda297f4.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "251138920368",
+          "author": "96464848494",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @平狗apple :不用谢谢[笑哭](害怕)",
+          "likes": 0,
+          "date": "2024-12-31T10:09:51.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "250774520977",
+          "author": "要玩一辈子ow哦",
+          "avatar": "https://i2.hdslb.com/bfs/face/3e49715d7d2f651e8be13ca532290fc7da3bb8a6.jpg",
+          "text": "回复 @96464848494 :这就是为什么没人陪你玩",
+          "likes": 4,
+          "date": "2025-01-02T03:55:12.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "251297410560",
+          "author": "96464848494",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @要玩一辈子ow哦 :是的[笑哭]",
+          "likes": 0,
+          "date": "2025-01-02T04:29:29.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "251417892017",
@@ -8176,7 +12402,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "我也没有",
           "likes": 1,
           "date": "2025-01-09T23:40:39.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -8191,9 +12418,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8205,6 +12434,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-01-01T05:24:15.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -8220,9 +12450,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8234,16 +12466,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-12-16T03:55:28.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "249958429248",
-          "author": "_魔方少年_",
-          "avatar": "https://i0.hdslb.com/bfs/face/f8bbb3dd2ff21bb8883b2ccfd74690e0a5952c2c.jpg",
-          "text": "回复 @纸片Kinopico :OK感谢你，这就去试试",
-          "likes": 0,
-          "date": "2024-12-17T13:41:03.000Z",
-          "emojis": []
-        },
         {
           "id": "249932051872",
           "author": "_魔方少年_",
@@ -8254,9 +12478,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "249505464257",
@@ -8265,7 +12491,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @_魔方少年_ :BV1Fz4y1g7gY",
           "likes": 0,
           "date": "2024-12-17T13:32:04.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "249958429248",
+          "author": "_魔方少年_",
+          "avatar": "https://i0.hdslb.com/bfs/face/f8bbb3dd2ff21bb8883b2ccfd74690e0a5952c2c.jpg",
+          "text": "回复 @纸片Kinopico :OK感谢你，这就去试试",
+          "likes": 0,
+          "date": "2024-12-17T13:41:03.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -8280,23 +12517,31 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[吃瓜]",
-          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
-          "id": "259033430144",
-          "author": "12345h哈",
-          "avatar": "https://i2.hdslb.com/bfs/face/2f51ca071f605247403880b83dbc73694bcb79ac.jpg",
-          "text": "可以，我试过[doge]",
+          "id": "248280491473",
+          "author": "九活宝9",
+          "avatar": "https://i0.hdslb.com/bfs/face/98de0db793ed31bcabae7512e34824d86b7cfa5e.jpg",
+          "text": "应该是可以的，但是没人去刷，因为一个就够了",
           "likes": 1,
-          "date": "2025-03-29T16:10:57.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
-            }
-          ]
+          "date": "2024-12-02T14:53:50.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "248453106785",
+          "author": "noa-fein",
+          "avatar": "https://i2.hdslb.com/bfs/face/980b0a5a5c9e929a24c3e7751f0cc052e3f1dae2.jpg",
+          "text": "推不了",
+          "likes": 1,
+          "date": "2024-12-04T23:50:38.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "249864916704",
@@ -8308,18 +12553,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "248453106785",
-          "author": "noa-fein",
-          "avatar": "https://i2.hdslb.com/bfs/face/980b0a5a5c9e929a24c3e7751f0cc052e3f1dae2.jpg",
-          "text": "推不了",
+          "id": "259033430144",
+          "author": "12345h哈",
+          "avatar": "https://i2.hdslb.com/bfs/face/2f51ca071f605247403880b83dbc73694bcb79ac.jpg",
+          "text": "可以，我试过[doge]",
           "likes": 1,
-          "date": "2024-12-04T23:50:38.000Z",
-          "emojis": []
+          "date": "2025-03-29T16:10:57.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -8334,6 +12588,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2025-01-07T01:36:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -8347,9 +12602,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8361,6 +12618,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-11-30T10:56:41.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "248111823889",
@@ -8372,9 +12630,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "248520848416",
@@ -8383,7 +12643,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "@hx_hej 12月3不晚",
           "likes": 0,
           "date": "2024-12-01T02:47:25.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "248144997313",
@@ -8392,7 +12653,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "官方说过会在圣诞节前(12月25日)更新冬季小更新，这不算晚",
           "likes": 0,
           "date": "2024-12-01T03:08:52.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -8409,9 +12671,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8423,6 +12687,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-25T07:11:51.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -8434,6 +12699,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-30T21:48:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -8449,9 +12715,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -8467,9 +12735,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -8483,6 +12753,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-29T13:35:31.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -8496,9 +12767,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -8512,7 +12785,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 6,
       "date": "2024-11-23T06:04:20.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "247507228433",
+          "author": "bro甚至不存在",
+          "avatar": "https://i2.hdslb.com/bfs/face/066d0b81ac5fd9b311d744301a18a3aeddcc351b.jpg",
+          "text": "本人？",
+          "likes": 2,
+          "date": "2024-11-23T07:14:36.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "247507579505",
           "author": "NewUser-Ending",
@@ -8520,7 +12804,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @就是花月遥 :Herobrine这个账号本人",
           "likes": 8,
           "date": "2024-11-23T07:21:50.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "247926774992",
@@ -8529,7 +12814,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @NewUser-Ending :好奇用这个账号的人是谁",
           "likes": 4,
           "date": "2024-11-24T02:47:09.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "247575495697",
@@ -8538,7 +12824,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @尊霓获加 :Herobrine啊",
           "likes": 4,
           "date": "2024-11-24T03:04:32.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "248037398929",
+          "author": "瑗苒",
+          "avatar": "https://i2.hdslb.com/bfs/face/bed45b0fd61d0e4d2941bf0c1a87075c31c4cf97.jpg",
+          "text": "回复 @尊霓获加 :官方的号[吃瓜]",
+          "likes": 2,
+          "date": "2024-11-29T17:43:41.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "249217183968",
+          "author": "小单先生OwO",
+          "avatar": "https://i0.hdslb.com/bfs/face/b829f3ba85e789a680d97d9cf77235a85fcca6b4.jpg",
+          "text": "回复 @尊霓获加 :steve和herobrine这个账号应该是同一个人的号，皮肤款式都一样",
+          "likes": 0,
+          "date": "2024-12-09T03:40:15.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -8553,9 +12866,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[tv_doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png"
+          "url": "https://i0.hdslb.com/bfs/emote/302d6c88c63ed162c81a49cafe7ed2709e6fb955.gif",
+          "animated": true
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8567,6 +12882,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-23T07:44:36.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -8580,6 +12896,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-01T02:57:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -8593,6 +12910,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-23T11:39:38.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -8604,6 +12922,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-11-22T16:56:03.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "247480953313",
@@ -8612,7 +12931,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "感谢指正",
           "likes": 0,
           "date": "2024-11-23T00:51:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -8625,6 +12945,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-11-22T23:37:01.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "247480955649",
@@ -8633,7 +12954,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "感谢指正",
           "likes": 0,
           "date": "2024-11-23T00:51:13.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -8650,9 +12972,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8664,6 +12988,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-27T14:39:45.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -8677,9 +13002,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -8693,6 +13020,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-11-28T12:56:43.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/4d74638c406aea8eb01192108034d6481202267118.jpg",
+          "width": 636,
+          "height": 951,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "247938030849",
@@ -8701,7 +13036,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "由于这个视频主要的是上面的内容，而非每次出现的guilty，且guilty的突然出现不方便做到cc字幕里，所以我没有翻译",
           "likes": 0,
           "date": "2024-11-28T13:21:57.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -8716,9 +13052,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8730,6 +13068,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-29T01:20:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -8745,9 +13084,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -8761,6 +13102,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-08T02:09:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -8774,9 +13116,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8790,9 +13134,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -8808,9 +13154,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "247977704304",
@@ -8819,7 +13167,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "谁家小孩",
           "likes": 1,
           "date": "2024-11-24T13:26:21.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "249337995952",
@@ -8828,7 +13177,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "我的世界为什么没有声音",
           "likes": 0,
           "date": "2024-12-10T12:13:38.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -8843,9 +13193,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8859,9 +13211,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[藏狐]",
-          "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png"
+          "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -8875,6 +13229,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-11-22T16:15:05.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "248130199041",
@@ -8886,9 +13241,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "248509419904",
@@ -8900,9 +13257,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[滑稽]",
-              "url": "https://i0.hdslb.com/bfs/emote/d15121545a99ac46774f1f4465b895fe2d1411c3.png"
+              "url": "https://i0.hdslb.com/bfs/emote/d15121545a99ac46774f1f4465b895fe2d1411c3.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -8917,9 +13276,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -8931,6 +13292,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-29T18:59:05.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -8944,6 +13306,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 15,
       "date": "2024-11-23T08:43:42.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "247863875264",
@@ -8955,9 +13318,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "247939335984",
+          "author": "善良的邪恶戴夫",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "瓶子的伤害我没记的话，好像是2.5颗心吧，这一瓶子应该可以把玩家砸死[笑哭]",
+          "likes": 0,
+          "date": "2024-11-24T05:21:59.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "247977778832",
+          "author": "n0nbody_alvr",
+          "avatar": "https://i1.hdslb.com/bfs/face/9a2672b6ddde6b7396b7c100289fe72be7e904c1.jpg",
+          "text": "回复 @善良的邪恶戴夫 :瓶子本身没伤害",
+          "likes": 0,
+          "date": "2024-11-24T13:27:08.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "247629383505",
@@ -8966,7 +13357,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "女巫会丢瞬间伤害的",
           "likes": 24,
           "date": "2024-11-24T14:40:02.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247648064017",
+          "author": "结霜寒螈Koolasuchus",
+          "avatar": "https://i0.hdslb.com/bfs/face/0b7b2eb8bd02674aa31df159b8ed2bcfe71a78c2.jpg",
+          "text": "极限模式的难度锁死在困难，是可以毒死的",
+          "likes": 2,
+          "date": "2024-11-24T23:20:24.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "247653871809",
@@ -8975,7 +13377,48 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @白垩寒螈Koolasuchus :？困难毒不似人",
           "likes": 4,
           "date": "2024-11-25T01:47:55.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "248014590976",
+          "author": "゙゚゚小鳥遊ホシノ",
+          "avatar": "https://i1.hdslb.com/bfs/face/7ef987638851a8731e50db527accebb839850691.jpg",
+          "text": "回复 @白垩寒螈Koolasuchus :啥难度都毒不死人",
+          "likes": 2,
+          "date": "2024-11-25T03:14:04.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247670620865",
+          "author": "CTB被炉",
+          "avatar": "https://i2.hdslb.com/bfs/face/b407632e43c322aac5d9a3ee6437949fd40f808b.jpg",
+          "text": "回复 @白垩寒螈Koolasuchus :没这回事",
+          "likes": 0,
+          "date": "2024-11-25T05:57:32.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "248031567536",
+          "author": "DX3096-e",
+          "avatar": "https://i1.hdslb.com/bfs/face/62a33962d6beb71c22e67d19df70fd33e685828e.jpg",
+          "text": "回复 @善良的邪恶戴夫 :是丢的瞬间伤害瓶子，3颗心",
+          "likes": 0,
+          "date": "2024-11-25T07:17:07.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247683728081",
+          "author": "雪丨落",
+          "avatar": "https://i1.hdslb.com/bfs/face/ccb5a73775665131b27375ffaa91b5b2b4ce40d5.jpg",
+          "text": "回复 @DX3096-e :?瞬间伤害不是黑色的?还是我记错了",
+          "likes": 0,
+          "date": "2024-11-25T09:39:40.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -8988,7 +13431,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2024-11-24T13:28:54.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "248023995600",
+          "author": "HJW_WJ",
+          "avatar": "https://i0.hdslb.com/bfs/face/84583ebad0a54383353600c13b2bbefa4189c087.webp",
+          "text": "钻石做盾？",
+          "likes": 0,
+          "date": "2024-11-25T05:14:23.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "248024078576",
+          "author": "HJW_WJ",
+          "avatar": "https://i0.hdslb.com/bfs/face/84583ebad0a54383353600c13b2bbefa4189c087.webp",
+          "text": "不劳克硬是什么",
+          "likes": 0,
+          "date": "2024-11-25T05:15:21.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "248031141536",
           "author": "很团的饭米",
@@ -8999,9 +13463,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "248031176784",
@@ -9013,9 +13479,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "248031329200",
@@ -9024,7 +13492,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "【全网最详细的Blockin教学!4分钟教你学会blockin!-哔哩哔哩】 https://b23.tv/AQvVuvZ",
           "likes": 0,
           "date": "2024-11-25T07:14:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9037,15 +13506,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2024-11-23T08:18:38.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
-          "id": "247902302128",
-          "author": "废兎",
-          "avatar": "https://i2.hdslb.com/bfs/face/93b138d7ca9d5424c7d1a167133f5cc98c85630c.jpg",
-          "text": "回复 @T维斯 :新版本要没哩",
-          "likes": 4,
-          "date": "2024-11-23T16:06:38.000Z",
-          "emojis": []
+          "id": "247868710000",
+          "author": "风艺ovo",
+          "avatar": "https://i1.hdslb.com/bfs/face/0c5df3117827f6ca732853c95ec35fa7348bd88c.jpg",
+          "text": "可是僵尸还在后面追着",
+          "likes": 0,
+          "date": "2024-11-23T09:51:18.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247534850097",
+          "author": "Fire_bee火蜂",
+          "avatar": "https://i0.hdslb.com/bfs/face/9e59ab767a3182dbc769da8770c817d734a4c8ff.jpg",
+          "text": "回复 @枫闪 :物品栏里有泥土",
+          "likes": 0,
+          "date": "2024-11-23T13:02:25.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "247899745568",
@@ -9054,16 +13535,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "退了重新进会有2~3秒的无敌时间，",
           "likes": 3,
           "date": "2024-11-23T15:36:13.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "247868710000",
-          "author": "风艺ovo",
-          "avatar": "https://i1.hdslb.com/bfs/face/0c5df3117827f6ca732853c95ec35fa7348bd88c.jpg",
-          "text": "可是僵尸还在后面追着",
+          "id": "247902302128",
+          "author": "废兎",
+          "avatar": "https://i2.hdslb.com/bfs/face/93b138d7ca9d5424c7d1a167133f5cc98c85630c.jpg",
+          "text": "回复 @T维斯 :新版本要没哩",
+          "likes": 4,
+          "date": "2024-11-23T16:06:38.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247570959569",
+          "author": "危险委员",
+          "avatar": "https://i0.hdslb.com/bfs/face/aa6ae7208bf60fb05b3c50065cfce9de9aaa9e7d.jpg",
+          "text": "回复 @T维斯 :这特性最新快照修了",
           "likes": 0,
-          "date": "2024-11-23T09:51:18.000Z",
-          "emojis": []
+          "date": "2024-11-24T01:57:55.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -9080,9 +13573,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -9094,6 +13589,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-11-10T04:42:32.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "246754292912",
@@ -9105,9 +13601,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[tv_无奈]",
-              "url": "https://i0.hdslb.com/bfs/emote/ea8ed89ee9878f2fece2dda0ea8a5dbfe21b5751.png"
+              "url": "https://i0.hdslb.com/bfs/emote/eb4cb5f07cfd177c7e6a7914316717e56d9cc1d0.gif",
+              "animated": true
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -9120,6 +13618,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-10T15:06:49.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -9133,16 +13632,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 4,
       "date": "2024-11-09T22:36:16.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "247890220753",
-          "author": "爱玩游戏的剁手",
-          "avatar": "https://i0.hdslb.com/bfs/face/63460deff731d3b31b504d09961f6cb67135cb93.jpg",
-          "text": "甜菜",
-          "likes": 1,
-          "date": "2024-11-28T01:46:01.000Z",
-          "emojis": []
-        },
         {
           "id": "246737276720",
           "author": "看见视频就三连的白亿",
@@ -9153,9 +13644,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "246502575777",
@@ -9164,7 +13657,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "这就是甜菜",
           "likes": 1,
           "date": "2024-11-10T17:13:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247890220753",
+          "author": "爱玩游戏的剁手",
+          "avatar": "https://i0.hdslb.com/bfs/face/63460deff731d3b31b504d09961f6cb67135cb93.jpg",
+          "text": "甜菜",
+          "likes": 1,
+          "date": "2024-11-28T01:46:01.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "249491654608",
+          "author": "CFit媳妇媳妇腹股沟",
+          "avatar": "https://i1.hdslb.com/bfs/face/c5b8984c289222775746472cc7b77d83cb5bed34.jpg",
+          "text": "但是如果是玩家，那第一个，那个玩家给玩家喂种子，还冒小爱心了，你说巧不巧",
+          "likes": 0,
+          "date": "2024-12-12T09:29:27.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9177,7 +13691,58 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 17,
       "date": "2024-11-09T06:46:14.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "246730734144",
+          "author": "僵尸是萌新",
+          "avatar": "https://i0.hdslb.com/bfs/face/63f768df1aa68568f0fec66b89987a5f432c1c15.jpg",
+          "text": "是潜影贝的视角",
+          "likes": 1,
+          "date": "2024-11-09T23:30:12.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246737059840",
+          "author": "啊杀戮光环",
+          "avatar": "https://i1.hdslb.com/bfs/face/c5377c87b5ebd6b06ee571e2deab2b065d8e3689.jpg",
+          "text": "回复 @僵尸是萌新 :末影人不会打潜影贝",
+          "likes": 2,
+          "date": "2024-11-10T01:46:43.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246434352705",
+          "author": "努力生活的迷航",
+          "avatar": "https://i1.hdslb.com/bfs/face/eca1c592639690466d757650ecdbd63ea054f7c3.jpg",
+          "text": "回复 @僵尸是萌新 :潜影贝也动不了",
+          "likes": 1,
+          "date": "2024-11-10T02:01:48.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246738183280",
+          "author": "僵尸是萌新",
+          "avatar": "https://i0.hdslb.com/bfs/face/63f768df1aa68568f0fec66b89987a5f432c1c15.jpg",
+          "text": "回复 @啊杀戮光环 :知道了，知道了",
+          "likes": 0,
+          "date": "2024-11-10T02:03:31.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246738185616",
+          "author": "僵尸是萌新",
+          "avatar": "https://i0.hdslb.com/bfs/face/63f768df1aa68568f0fec66b89987a5f432c1c15.jpg",
+          "text": "回复 @努力生活的迷航 :知道了，对不起",
+          "likes": 0,
+          "date": "2024-11-10T02:03:36.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "246438682465",
           "author": "玄风不是旋风",
@@ -9185,7 +13750,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "最后一个不是巨人僵尸，是装上鞍坐在矿车里的猪，上面是玩家坐在猪上",
           "likes": 19,
           "date": "2024-11-10T03:04:29.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246760659792",
+          "author": "啊杀戮光环",
+          "avatar": "https://i1.hdslb.com/bfs/face/c5377c87b5ebd6b06ee571e2deab2b065d8e3689.jpg",
+          "text": "回复 @老鸡没吃饭 : 可能是因为巨人坐矿车就是悬空的",
+          "likes": 0,
+          "date": "2024-11-10T06:49:59.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "246457359921",
@@ -9194,21 +13770,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @啊杀戮光环 :巨大僵尸被删了，不可能在官方频道上出现",
           "likes": 4,
           "date": "2024-11-10T07:09:38.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "246717259009",
-          "author": "CscK_",
-          "avatar": "https://i2.hdslb.com/bfs/face/a3abbae991bfab3894d80a28f92488021e750d7a.jpg",
-          "text": "回复 @王庆龙和王庆彤游号 :你是真云玩，小屁孩[笑哭]",
-          "likes": 3,
-          "date": "2024-11-13T13:44:37.000Z",
-          "emojis": [
-            {
-              "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
-            }
-          ]
+          "id": "246515816657",
+          "author": "OU白虎",
+          "avatar": "https://i1.hdslb.com/bfs/face/22c8d98d734011d223a749b69da3f243373c1c72.jpg",
+          "text": "回复 @老鸡没吃饭 :河里",
+          "likes": 1,
+          "date": "2024-11-11T02:02:45.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246576812865",
+          "author": "ghq7-roblox",
+          "avatar": "https://i2.hdslb.com/bfs/face/1c49eafc465053999c14ba796385665fb493c24f.jpg",
+          "text": "回复 @老鸡没吃饭 :云玩家加一。",
+          "likes": 0,
+          "date": "2024-11-11T16:59:32.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9223,9 +13806,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "246767812576",
@@ -9234,7 +13819,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "看到那个巨人僵尸我当时就疑惑了\n（一开始就觉得是猪）",
           "likes": 4,
           "date": "2024-11-10T08:31:14.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "246786518272",
@@ -9243,7 +13829,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "也有可能是僵尸鸡做的那个鸡呀",
           "likes": 1,
           "date": "2024-11-10T12:24:18.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "246637758593",
@@ -9252,7 +13839,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @开瓜泉佳丝 :信息不全，谁知道小僵尸有没有带头盔",
           "likes": 0,
           "date": "2024-11-12T13:40:14.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -9269,9 +13857,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "246429495505",
@@ -9283,9 +13873,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -9300,10 +13892,62 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "246413231009",
+          "author": "事已至此_先吃草吧",
+          "avatar": "https://i2.hdslb.com/bfs/face/6337839f9c003d255135697d10fc3b7eb216261f.jpg",
+          "text": "高版本能/gamemode 1是吧",
+          "likes": 0,
+          "date": "2024-11-09T15:51:11.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246469289025",
+          "author": "OneMaoqiu",
+          "avatar": "https://i2.hdslb.com/bfs/face/98e124c52838b5131f903922f2400d28c1d86b80.jpg",
+          "text": "回复 @Da2knessWasHere :他也没说什么版本啊",
+          "likes": 0,
+          "date": "2024-11-10T09:57:13.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246516708881",
+          "author": "路过的骑士厨陈某",
+          "avatar": "https://i2.hdslb.com/bfs/face/37d4ff18189fd2a22460b641c3b3d4798548ca9f.jpg",
+          "text": "回复 @Da2knessWasHere :把1改成Creative就行了",
+          "likes": 0,
+          "date": "2024-11-11T02:22:22.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246563561057",
+          "author": "事已至此_先吃草吧",
+          "avatar": "https://i2.hdslb.com/bfs/face/6337839f9c003d255135697d10fc3b7eb216261f.jpg",
+          "text": "回复 @毛球第一One_Mao_qiu :关键视频就是高版本啊",
+          "likes": 1,
+          "date": "2024-11-11T13:59:05.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246571163953",
+          "author": "OneMaoqiu",
+          "avatar": "https://i2.hdslb.com/bfs/face/98e124c52838b5131f903922f2400d28c1d86b80.jpg",
+          "text": "回复 @Da2knessWasHere :6",
+          "likes": 0,
+          "date": "2024-11-11T15:33:27.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "248898595680",
           "author": "qcawa",
@@ -9314,22 +13958,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge_金箍]",
-              "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png"
+              "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png",
+              "animated": false
             },
             {
               "token": "[大笑]",
-              "url": "https://i0.hdslb.com/bfs/emote/ca94ad1c7e6dac895eb5b33b7836b634c614d1c0.png"
+              "url": "https://i0.hdslb.com/bfs/emote/ca94ad1c7e6dac895eb5b33b7836b634c614d1c0.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "246563561057",
-          "author": "事已至此_先吃草吧",
-          "avatar": "https://i2.hdslb.com/bfs/face/6337839f9c003d255135697d10fc3b7eb216261f.jpg",
-          "text": "回复 @毛球第一One_Mao_qiu :关键视频就是高版本啊",
-          "likes": 1,
-          "date": "2024-11-11T13:59:05.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "248491222113",
@@ -9338,7 +13976,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @一只qcawa :6",
           "likes": 0,
           "date": "2024-12-05T10:14:41.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9351,6 +13990,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2024-11-10T12:11:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "247332182960",
@@ -9362,9 +14002,31 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[哦呼]",
-              "url": "https://i0.hdslb.com/bfs/emote/362bded07ea5434886271d23fa25f5d85d8af06c.png"
+              "url": "https://i0.hdslb.com/bfs/emote/362bded07ea5434886271d23fa25f5d85d8af06c.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "247008360641",
+          "author": "26526552",
+          "avatar": "https://i1.hdslb.com/bfs/face/1ef023883958a5b37c31d94983d5f64a4941df41.jpg",
+          "text": "回复 @看风的旅人 :潜影盒",
+          "likes": 0,
+          "date": "2024-11-17T04:14:37.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247008514017",
+          "author": "26526552",
+          "avatar": "https://i1.hdslb.com/bfs/face/1ef023883958a5b37c31d94983d5f64a4941df41.jpg",
+          "text": "还有我需要的东西，只是够用就行，如果太多，我会把性价比高一点的留下性价比低的扔了，实用性高的留下，实用性低的扔了",
+          "likes": 0,
+          "date": "2024-11-17T04:17:06.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "247347367360",
@@ -9376,9 +14038,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[脱单doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png"
+              "url": "https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "257553985361",
@@ -9387,7 +14051,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "@玛卡巴卡情感搞笑",
           "likes": 0,
           "date": "2025-03-21T15:36:02.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -9402,6 +14067,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-05T10:06:26.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -9415,9 +14081,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -9431,6 +14099,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-02T08:37:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -9442,6 +14111,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-05T10:06:34.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -9455,9 +14125,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -9473,9 +14145,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[tv_流泪]",
-          "url": "https://i0.hdslb.com/bfs/emote/7e71cde7858f0cd50d74b0264aa26db612a8a167.png"
+          "url": "https://i0.hdslb.com/bfs/emote/7e71cde7858f0cd50d74b0264aa26db612a8a167.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "246066799488",
@@ -9487,18 +14161,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "247166205457",
-          "author": "氧化钠水化物",
-          "avatar": "https://i0.hdslb.com/bfs/face/440412e92f6c1d50a242c314b0f3a72d4100c75b.jpg",
-          "text": "带幼崽的北极熊是敌对的",
-          "likes": 2,
-          "date": "2024-11-19T03:17:17.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "246179551616",
@@ -9510,9 +14177,31 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "247166205457",
+          "author": "氧化钠水化物",
+          "avatar": "https://i0.hdslb.com/bfs/face/440412e92f6c1d50a242c314b0f3a72d4100c75b.jpg",
+          "text": "带幼崽的北极熊是敌对的",
+          "likes": 2,
+          "date": "2024-11-19T03:17:17.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247964519568",
+          "author": "小凌店长",
+          "avatar": "https://i1.hdslb.com/bfs/face/e6ace627d0200ec0467375733913f8c0434539ba.jpg",
+          "text": "对",
+          "likes": 1,
+          "date": "2024-11-24T10:50:53.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9525,6 +14214,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-11-01T10:14:35.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -9538,9 +14228,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -9556,9 +14248,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "245732386224",
@@ -9567,7 +14261,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "@迷途的金丝雀 因为大版本被拆分成小版本了",
           "likes": 5,
           "date": "2024-10-28T23:38:57.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "245865206064",
@@ -9576,7 +14271,44 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "越来越懒了，你看这都几个版本了，还不增加游戏进程，不增加点新进程的boss和装备",
           "likes": 4,
           "date": "2024-10-30T11:55:19.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247065145728",
+          "author": "Matcha-Buffy",
+          "avatar": "https://i0.hdslb.com/bfs/face/783ee6d603610c9679c8a4d1ba02cf567fb63a47.jpg",
+          "text": "因为去做开发者api了，内容交给社区",
+          "likes": 0,
+          "date": "2024-11-14T02:03:30.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247065223408",
+          "author": "Matcha-Buffy",
+          "avatar": "https://i0.hdslb.com/bfs/face/783ee6d603610c9679c8a4d1ba02cf567fb63a47.jpg",
+          "text": "回复 @用户1342564356733 :因为去做开发者api了，内容交给社区",
+          "likes": 0,
+          "date": "2024-11-14T02:03:35.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246918461297",
+          "author": "斯莱罗先生",
+          "avatar": "https://i2.hdslb.com/bfs/face/4f20c9f0147c5570a6382f0f594a3ba22af95469.jpg",
+          "text": "以前不也是吗？[吃瓜]",
+          "likes": 0,
+          "date": "2024-11-16T03:56:52.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "246918645377",
@@ -9585,7 +14317,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @用户1342564356733 :？？？？？你自己加吧，那圈子里又有人骂模组化，又有人骂改MC风格的，你又来挑毛病",
           "likes": 2,
           "date": "2024-11-16T03:57:49.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "247672373056",
+          "author": "Timmie233",
+          "avatar": "https://i2.hdslb.com/bfs/face/e1445b648de404236b4625a74061ce78568b08eb.jpg",
+          "text": "回复 @用户1342564356733 :你说的这些全都在mod里爱咋玩咋玩。官方做好兼容就行，你也不看看隔壁星露谷因为作者小更新没商量好让mod崩溃了有多少傻湢喷他的",
+          "likes": 1,
+          "date": "2024-11-21T04:18:05.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9598,6 +14341,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-10-29T15:48:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "245837034592",
@@ -9609,9 +14353,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -9624,6 +14370,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-28T12:33:13.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -9637,6 +14384,32 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 6,
       "date": "2024-10-25T11:05:10.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/8ba02d40d936ae0818a28b605bed3b901589820913.jpg",
+          "width": 1600,
+          "height": 720,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/b4f555084d692ca31ee27fda4472916a1589820913.jpg",
+          "width": 1600,
+          "height": 720,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/ff565216a2813655d1f2f6796dbff88b1589820913.jpg",
+          "width": 1600,
+          "height": 720,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/fb7ec4c1361a1a280fb436be38f8bc9d1589820913.jpg",
+          "width": 1600,
+          "height": 720,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "245450337088",
@@ -9645,7 +14418,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "应该是教育版的黑板，翻译的问题吧",
           "likes": 13,
           "date": "2024-10-25T11:56:48.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "245234368465",
@@ -9654,7 +14428,38 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "估计是教育版的黑板，不小心放进来，忘删干净了估计是",
           "likes": 9,
           "date": "2024-10-25T22:33:13.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245484164208",
+          "author": "云风_bili",
+          "avatar": "https://i0.hdslb.com/bfs/face/f840c911891873835621d4931482adaf931e5757.jpg",
+          "text": "@百狗众 这是教育版的东西",
+          "likes": 0,
+          "date": "2024-10-25T23:59:51.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245483987920",
+          "author": "云风_bili",
+          "avatar": "https://i0.hdslb.com/bfs/face/f840c911891873835621d4931482adaf931e5757.jpg",
+          "text": "@百狗众 应该是不小心放进来的",
+          "likes": 0,
+          "date": "2024-10-26T00:00:45.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245485465392",
+          "author": "夜鹭是傻子",
+          "avatar": "https://i2.hdslb.com/bfs/face/13640dc27ce6af62455720f76a8034fc98339d80.jpg",
+          "text": "是手机基岩版还是Java版怎么下想玩",
+          "likes": 0,
+          "date": "2024-10-26T00:32:59.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "245843163840",
@@ -9663,7 +14468,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @内陆老黑头 :基岩版最新版",
           "likes": 0,
           "date": "2024-10-30T07:07:52.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9676,6 +14482,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 26,
       "date": "2024-10-25T14:50:27.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "245234365649",
@@ -9684,21 +14491,66 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "就朵花而已，有个随时间开闭的功能很够了，除凋灵花以外也没别的花有啥特殊功能了。\n而且视频里只是单独展示这一特性，这花还有些别的特性，比如蜜蜂碰到会中毒之类的",
           "likes": 29,
           "date": "2024-10-25T22:32:06.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "245516780080",
-          "author": "Pluvia_Haven",
-          "avatar": "https://i2.hdslb.com/bfs/face/1c7ce5d46b7387863941b5f2ef18f40b78c838f3.jpg",
-          "text": "可以和红石联动，已经很不错了，怎么，难道你想要植物魔法吗[笑哭]",
+          "id": "245482740224",
+          "author": "正天旅",
+          "avatar": "https://i2.hdslb.com/bfs/face/c8c08cd8ea7aa851d788c143478dab6048a1de5f.jpg",
+          "text": "回复 @寒鸦于拂晓时分哀鸣 :希望这个花能限制特殊刷怪，这样还有用一点",
+          "likes": 3,
+          "date": "2024-10-25T23:09:17.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245484383968",
+          "author": "竟活着",
+          "avatar": "https://i1.hdslb.com/bfs/face/e6bc96c5337e4d2916762bf9b050df45de82ff50.jpg",
+          "text": "这花能制作负面效果的迷之炖菜，可以用来坑好友[笑哭]",
           "likes": 4,
-          "date": "2024-10-26T08:21:58.000Z",
+          "date": "2024-10-26T00:10:49.000Z",
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "245241476209",
+          "author": "野生xy-t",
+          "avatar": "https://i0.hdslb.com/bfs/face/76148372019191d9fa85ed1a3d6583385eeb359c.jpg",
+          "text": "回复 @哦_又活了一天 :迷之炖菜确实挺迷的[笑哭]",
+          "likes": 3,
+          "date": "2024-10-26T01:48:15.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245242354817",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "想要植物大战僵尸是吧[笑哭]",
+          "likes": 4,
+          "date": "2024-10-26T02:03:16.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "245490344896",
@@ -9710,9 +14562,63 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "245492147552",
+          "author": "blender菜鸡",
+          "avatar": "https://i0.hdslb.com/bfs/face/438a138daf6fa7ae229d205380a10f541457f46a.jpg",
+          "text": "这个应该是可以加红石的",
+          "likes": 2,
+          "date": "2024-10-26T02:35:04.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245516780080",
+          "author": "Pluvia_Haven",
+          "avatar": "https://i2.hdslb.com/bfs/face/1c7ce5d46b7387863941b5f2ef18f40b78c838f3.jpg",
+          "text": "可以和红石联动，已经很不错了，怎么，难道你想要植物魔法吗[笑哭]",
+          "likes": 4,
+          "date": "2024-10-26T08:21:58.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245517378688",
+          "author": "正天旅",
+          "avatar": "https://i2.hdslb.com/bfs/face/c8c08cd8ea7aa851d788c143478dab6048a1de5f.jpg",
+          "text": "回复 @Vermis_Lead :怎么利用[doge]",
+          "likes": 0,
+          "date": "2024-10-26T08:29:47.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245517845040",
+          "author": "Pluvia_Haven",
+          "avatar": "https://i2.hdslb.com/bfs/face/1c7ce5d46b7387863941b5f2ef18f40b78c838f3.jpg",
+          "text": "回复 @人不是人是人不是 :侦测器可以侦测花的状态变化",
+          "likes": 0,
+          "date": "2024-10-26T08:36:16.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9725,6 +14631,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-11-10T08:15:56.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "247261182977",
@@ -9733,7 +14640,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "阳光探测器…？",
           "likes": 2,
           "date": "2024-11-20T06:49:06.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -9748,6 +14656,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-24T11:37:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -9759,6 +14668,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-24T10:33:14.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -9772,9 +14682,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -9790,9 +14702,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -9808,9 +14722,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "245585253808",
@@ -9819,7 +14735,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "女巫：干嘛",
           "likes": 3,
           "date": "2024-10-27T04:01:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -9834,9 +14751,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -9850,9 +14769,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -9868,9 +14789,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -9886,9 +14809,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -9900,6 +14825,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-10-18T12:44:07.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244696903713",
@@ -9908,7 +14834,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "请关注我的动态",
           "likes": 0,
           "date": "2024-10-18T15:33:54.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -9925,9 +14852,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -9941,25 +14870,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 7,
       "date": "2024-10-19T05:31:40.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "244941611921",
-          "author": "Arkasua",
-          "avatar": "https://i1.hdslb.com/bfs/face/d720c1fde0692d1c0612c2e775b239da4814bc68.jpg",
-          "text": "兔子腿成本很低，难的是启动资金，到哪抓第一对兔子",
-          "likes": 12,
-          "date": "2024-10-21T17:15:52.000Z",
-          "emojis": []
-        },
-        {
-          "id": "245027380193",
-          "author": "OU白虎",
-          "avatar": "https://i1.hdslb.com/bfs/face/22c8d98d734011d223a749b69da3f243373c1c72.jpg",
-          "text": "不是很难，你只需要养一堆猫就行了（）",
-          "likes": 6,
-          "date": "2024-10-23T02:36:32.000Z",
-          "emojis": []
-        },
         {
           "id": "244837810081",
           "author": "肝硬化的小黑子",
@@ -9970,9 +14882,83 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "244941611921",
+          "author": "Arkasua",
+          "avatar": "https://i1.hdslb.com/bfs/face/d720c1fde0692d1c0612c2e775b239da4814bc68.jpg",
+          "text": "兔子腿成本很低，难的是启动资金，到哪抓第一对兔子",
+          "likes": 12,
+          "date": "2024-10-21T17:15:52.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245027380193",
+          "author": "OU白虎",
+          "avatar": "https://i1.hdslb.com/bfs/face/22c8d98d734011d223a749b69da3f243373c1c72.jpg",
+          "text": "不是很难，你只需要养一堆猫就行了（）",
+          "likes": 6,
+          "date": "2024-10-23T02:36:32.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245432491024",
+          "author": "Citron充能柚子",
+          "avatar": "https://i0.hdslb.com/bfs/face/3c529667d5a4c53c84484d03c67fce71b6f3fa66.jpg",
+          "text": "潘马斯农场，地面陷阱，扔水果诱饵进去",
+          "likes": 1,
+          "date": "2024-10-25T07:57:56.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245545289536",
+          "author": "AAAAACob-Cannon",
+          "avatar": "https://i2.hdslb.com/bfs/face/afcbdd670119e54bd427c4b4eb068328e09a8a62.jpg",
+          "text": "生电玩家表示能再生=能量产",
+          "likes": 0,
+          "date": "2024-10-26T14:14:36.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246150907169",
+          "author": "祺sama睡不醒_Zzz",
+          "avatar": "https://i0.hdslb.com/bfs/face/d5a076e50cc88a389bf77d5423736db7e022e8ce.jpg",
+          "text": "回复 @Arkasua :草甸和樱花林生成概率较大，沙漠里只刷兔子[脱单doge]\n简单来说看兔子在该群系动物中的占比就行了",
+          "likes": 0,
+          "date": "2024-11-06T10:45:01.000Z",
+          "emojis": [
+            {
+              "token": "[脱单doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "246856831505",
+          "author": "Limits_CN极限",
+          "avatar": "https://i2.hdslb.com/bfs/face/b81eb4aa741e98ac19c3467c76bd899b63ac0002.jpg",
+          "text": "兔子机了解一下[doge]保证你和你朋友的消耗完全没问题",
+          "likes": 1,
+          "date": "2024-11-15T09:09:08.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -9985,6 +14971,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 6,
       "date": "2024-10-19T14:01:11.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244775828305",
@@ -9993,16 +14980,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "1.21版本更改了大多数药水颜色，并加入了好几种新效果",
           "likes": 4,
           "date": "2024-10-19T14:43:46.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "253274277600",
-          "author": "派分之二",
-          "avatar": "https://i2.hdslb.com/bfs/face/d1e90982f60111d752718184a57c484aa31526f8.jpg",
-          "text": "1.19.4改的 还把附魔光效删了",
+          "id": "245010633936",
+          "author": "EarnToDie520",
+          "avatar": "https://i2.hdslb.com/bfs/face/dce7ff114720dbf3fa3b3d6bc4c289ae31ae4498.jpg",
+          "text": "详情见籽岷新版本介绍[doge]",
           "likes": 1,
-          "date": "2025-01-23T17:15:07.000Z",
-          "emojis": []
+          "date": "2024-10-19T16:50:45.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "245671638080",
+          "author": "喵娘Meal",
+          "avatar": "https://i0.hdslb.com/bfs/face/03fc112ba52cf58a10747f8300585fc97726767f.jpg",
+          "text": "确实是云玩，七年不玩也该成云玩了",
+          "likes": 0,
+          "date": "2024-10-28T04:52:59.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "245597351681",
@@ -10011,7 +15016,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "1.21加了四种新的药水效果：盘丝，蓄风，渗浆，虫蚀",
           "likes": 1,
           "date": "2024-10-30T11:25:41.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245882275617",
+          "author": "罗辑2号",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @WeatherVaneAlice :他是先玩了7年然后不玩1年，不是不玩7年[笑哭]",
+          "likes": 0,
+          "date": "2024-11-03T01:21:24.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "253274277600",
+          "author": "派分之二",
+          "avatar": "https://i2.hdslb.com/bfs/face/d1e90982f60111d752718184a57c484aa31526f8.jpg",
+          "text": "1.19.4改的 还把附魔光效删了",
+          "likes": 1,
+          "date": "2025-01-23T17:15:07.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10024,7 +15056,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 7,
       "date": "2024-10-19T09:51:21.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "245287865216",
+          "author": "托马斯基克钻石",
+          "avatar": "https://i1.hdslb.com/bfs/face/576721e38ff5eb7f645430a850637a470a786621.jpg",
+          "text": "不算剧透吧，视频本来就是让猜，而且大家都知道",
+          "likes": 2,
+          "date": "2024-10-23T09:22:19.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245391746560",
+          "author": "快乐吃脚脚_",
+          "avatar": "https://i1.hdslb.com/bfs/face/2ef04b7167cedd39d55b37ca913ebf8e8e5ec2c4.jpg",
+          "text": "材料都标出来了也算剧透吗",
+          "likes": 0,
+          "date": "2024-10-24T15:36:50.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "245392787616",
           "author": "快乐吃脚脚_",
@@ -10035,18 +15088,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "245287865216",
-          "author": "托马斯基克钻石",
-          "avatar": "https://i1.hdslb.com/bfs/face/576721e38ff5eb7f645430a850637a470a786621.jpg",
-          "text": "不算剧透吧，视频本来就是让猜，而且大家都知道",
-          "likes": 2,
-          "date": "2024-10-23T09:22:19.000Z",
-          "emojis": []
+          "id": "245393064848",
+          "author": "快乐吃脚脚_",
+          "avatar": "https://i1.hdslb.com/bfs/face/2ef04b7167cedd39d55b37ca913ebf8e8e5ec2c4.jpg",
+          "text": "回复 @゙゙゙゚kat :况且剧透那是你看前面不知道后面，有人把后面的东西给你发出来\n这种你一看前面就知道后面，然后有人把可以知道的东西给你描述出来算啥剧透啊…",
+          "likes": 0,
+          "date": "2024-10-24T15:55:30.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245162155249",
+          "author": "゙゙゙゚kat",
+          "avatar": "https://i0.hdslb.com/bfs/face/f3f8a41b55a35eb6c38ab8beb0a97f743f4485e4.jpg",
+          "text": "回复 @快乐吃脚脚_ :本来就是猜，不允许别人猜是吧，别人还想着呢你就说出来[星星眼]",
+          "likes": 0,
+          "date": "2024-10-25T00:21:21.000Z",
+          "emojis": [
+            {
+              "token": "[星星眼]",
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "246904900480",
@@ -10055,7 +15127,29 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @゙゙゙゚kat :菜就多练🥰要是对枪瞄不过是不是又要怪对面开挂不让你对枪了",
           "likes": 0,
           "date": "2024-11-12T03:03:50.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246594916689",
+          "author": "゙゙゙゚kat",
+          "avatar": "https://i0.hdslb.com/bfs/face/f3f8a41b55a35eb6c38ab8beb0a97f743f4485e4.jpg",
+          "text": "回复 @BemerkenIsLay :和菜有够吧关系🤣举得例子都不对[打call]这又不是比赛竞技，你考试也大声喊出答案吗[星星眼]",
+          "likes": 0,
+          "date": "2024-11-12T03:14:03.000Z",
+          "emojis": [
+            {
+              "token": "[打call]",
+              "url": "https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png",
+              "animated": false
+            },
+            {
+              "token": "[星星眼]",
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -10070,7 +15164,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 19,
       "date": "2024-10-18T14:39:33.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "244915023536",
+          "author": "壬寅制作者",
+          "avatar": "https://i0.hdslb.com/bfs/face/d69527c17a349c337f8b47ef8de3bd21f5f43a8b.jpg",
+          "text": "铁门",
+          "likes": 0,
+          "date": "2024-10-18T15:16:07.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "244927319488",
           "author": "是Wool呐",
@@ -10078,7 +15183,54 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "还有个饱食度",
           "likes": 9,
           "date": "2024-10-18T18:18:13.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244708464241",
+          "author": "结霜寒螈Koolasuchus",
+          "avatar": "https://i0.hdslb.com/bfs/face/0b7b2eb8bd02674aa31df159b8ed2bcfe71a78c2.jpg",
+          "text": "回复 @Kai_BrickStudio :Java版要塞有铁门的",
+          "likes": 1,
+          "date": "2024-10-18T19:16:56.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244938090272",
+          "author": "柠檬特调鸡尾酒",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @白垩寒螈koolasuchus :铁门旁边有个木门",
+          "likes": 0,
+          "date": "2024-10-19T01:27:01.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244942385328",
+          "author": "绳匠zhj",
+          "avatar": "https://i2.hdslb.com/bfs/face/8a6e2d46b838864ee23ff4d3e58d16b41824cfbe.jpg",
+          "text": "回复 @柠檬特调鸡尾酒 :木门也有[笑哭]",
+          "likes": 0,
+          "date": "2024-10-19T02:36:36.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "244956098848",
+          "author": "世外贪刀",
+          "avatar": "https://i1.hdslb.com/bfs/face/6fdc263967cac6747fabcf4b7fc62726723dbd08.png",
+          "text": "放末影之眼的方式有问题，都是从内往外放，从外往内放的，激活不了",
+          "likes": 0,
+          "date": "2024-10-19T05:31:11.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "244956572400",
@@ -10087,7 +15239,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @让我贪亿刀 :主要看传送门框架是怎么摆放的，末影之眼的摆放方向是和传送门框架同步的",
           "likes": 6,
           "date": "2024-10-19T05:37:11.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "244956584032",
@@ -10096,7 +15249,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @让我贪亿刀 :当然，自然生成的一般不会有摆放错误的问题",
           "likes": 2,
           "date": "2024-10-19T05:37:38.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244958726672",
+          "author": "hyabngiagbg",
+          "avatar": "https://i1.hdslb.com/bfs/face/44c358aee2e02e3f5d6a1e12ffa106d73c4a748f.jpg",
+          "text": "其实没有任何错误，那怕开生存没法作弊的，我都能作弊",
+          "likes": 0,
+          "date": "2024-10-19T06:06:53.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244792173745",
+          "author": "看海max",
+          "avatar": "https://i1.hdslb.com/bfs/face/69fddd369804b3c763a384929c49699ea3588dd7.jpg",
+          "text": "回复 @让我贪亿刀 :新版本早就改了，已经是随便放的时代了\n你怕不是还活在1.7.10[doge]",
+          "likes": 0,
+          "date": "2024-10-19T18:59:04.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -10109,7 +15289,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 14,
       "date": "2024-10-18T22:40:03.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "244931885856",
+          "author": "苦力_Creeper",
+          "avatar": "https://i0.hdslb.com/bfs/face/29b03516588974d5f689cda6044992df05c8afbd.jpg",
+          "text": "补充一下，还有两个凝灰岩石砖",
+          "likes": 2,
+          "date": "2024-10-18T22:41:40.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "244715623025",
           "author": "CoolJam79417700",
@@ -10117,7 +15308,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "再补充一下，bro有11个小鸡腿",
           "likes": 17,
           "date": "2024-10-19T00:53:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "244943129968",
@@ -10126,16 +15318,84 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @苦力_Creeper :没注意饱食度多了一格吗？",
           "likes": 2,
           "date": "2024-10-19T02:46:04.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "244931885856",
+          "id": "244945677648",
           "author": "苦力_Creeper",
           "avatar": "https://i0.hdslb.com/bfs/face/29b03516588974d5f689cda6044992df05c8afbd.jpg",
-          "text": "补充一下，还有两个凝灰岩石砖",
+          "text": "回复 @一只拖更的17天 :！ ！ ！",
+          "likes": 0,
+          "date": "2024-10-19T03:25:51.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244989220368",
+          "author": "队友进点我开席",
+          "avatar": "https://i2.hdslb.com/bfs/face/93100261d2cbeeb0d5f23e0ba95bfed019c7f8c3.jpg",
+          "text": "那地狱视角里墙里镶上的那个萤石块算不算[doge]",
+          "likes": 0,
+          "date": "2024-10-19T12:47:23.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "244994915280",
+          "author": "苦力_Creeper",
+          "avatar": "https://i0.hdslb.com/bfs/face/29b03516588974d5f689cda6044992df05c8afbd.jpg",
+          "text": "回复 @17oehdjdus :哪有?",
+          "likes": 0,
+          "date": "2024-10-19T13:53:18.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244994785184",
+          "author": "苦力_Creeper",
+          "avatar": "https://i0.hdslb.com/bfs/face/29b03516588974d5f689cda6044992df05c8afbd.jpg",
+          "text": "回复 @17oehdjdus :你说的是金粒?",
+          "likes": 0,
+          "date": "2024-10-19T13:53:33.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244841005713",
+          "author": "一只牙牙_",
+          "avatar": "https://i1.hdslb.com/bfs/face/3fd5e889bb7b946174750d79551559d3a7703b5f.jpg",
+          "text": "仔细看末影之眼，那个门的方向是都是面对的玩家，而不是从中间向外摆放的顺序",
+          "likes": 1,
+          "date": "2024-10-20T10:46:25.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244857820833",
+          "author": "钾盐留不住",
+          "avatar": "https://i1.hdslb.com/bfs/face/81ffc87e9c965b466a93616432295c2220538038.jpg",
+          "text": "回复 @粉红色糖果 :玩家传送到下界生成的传送门是不会缺角的",
           "likes": 2,
-          "date": "2024-10-18T22:41:40.000Z",
-          "emojis": []
+          "date": "2024-10-20T14:25:55.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244858376929",
+          "author": "天文馆的冷鸟",
+          "avatar": "https://i2.hdslb.com/bfs/face/bf85abcb7de1d14e9a2d4888615c2bc13f241597.jpg",
+          "text": "回复 @粉红色糖果 :生成的门不缺角",
+          "likes": 2,
+          "date": "2024-10-20T14:33:20.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10148,6 +15408,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2024-10-18T12:42:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244932871776",
@@ -10156,7 +15417,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "给你补充一下：\n《凝灰岩：请问这石头是刚形成的吗？》\n《你家饱食度有22？》",
           "likes": 8,
           "date": "2024-10-18T23:25:34.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "245148911488",
@@ -10165,7 +15427,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "还有饥饿值",
           "likes": 1,
           "date": "2024-10-21T11:42:11.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244943292945",
+          "author": "还不恰饭",
+          "avatar": "https://i1.hdslb.com/bfs/face/771816b44f920948fcce3777fdb2a8c14c99576c.webp",
+          "text": "回复 @Th3_m4n :还有一个，他手里面抓的是末影珍珠不是末影之眼",
+          "likes": 0,
+          "date": "2024-10-21T18:03:45.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "246303103024",
+          "author": "MC-Windows1145",
+          "avatar": "https://i2.hdslb.com/bfs/face/df18ac587483e00cc62b35c73c5c8b134ed63865.jpg",
+          "text": "回复 @Th3_m4n :还有一个，就是刚开始进入时的那个地形不对",
+          "likes": 0,
+          "date": "2024-11-04T14:47:25.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "246303210672",
@@ -10174,7 +15457,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @甘蔗的世界 :上面说了",
           "likes": 0,
           "date": "2024-11-04T14:47:40.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -10191,9 +15475,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "244963434496",
@@ -10205,9 +15491,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -10220,6 +15508,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-21T10:39:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -10233,9 +15522,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[鼓掌]",
-          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png"
+          "url": "https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -10249,6 +15540,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-11T23:52:14.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -10260,6 +15552,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-10-10T14:39:17.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244475232032",
@@ -10268,7 +15561,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "这下不得不回坑了",
           "likes": 0,
           "date": "2024-10-13T02:56:41.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10281,6 +15575,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-14T14:31:00.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -10296,10 +15591,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[崩坏：星穹铁道_打招呼]",
-          "url": "https://i0.hdslb.com/bfs/garb/item/a2d7a241553e0cc644389fb1c4dc647f98ec3eec.png"
+          "url": "https://i0.hdslb.com/bfs/garb/item/a2d7a241553e0cc644389fb1c4dc647f98ec3eec.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "244235338048",
+          "author": "废洋洋倒大霉",
+          "avatar": "https://i1.hdslb.com/bfs/face/b2cfff3a21c5968fbeb7d735d7b2fb52e85d8af8.jpg",
+          "text": "真实",
+          "likes": 8,
+          "date": "2024-10-09T22:42:39.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "244288521872",
           "author": "Slime_史莱姆",
@@ -10310,18 +15617,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "244235338048",
-          "author": "废洋洋倒大霉",
-          "avatar": "https://i1.hdslb.com/bfs/face/b2cfff3a21c5968fbeb7d735d7b2fb52e85d8af8.jpg",
-          "text": "真实",
-          "likes": 8,
-          "date": "2024-10-09T22:42:39.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "244305033552",
@@ -10333,9 +15633,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "244307302448",
+          "author": "小懒syqs",
+          "avatar": "https://i1.hdslb.com/bfs/face/d8e3291c05deec230151e30f31c46ec27638ab92.jpg",
+          "text": "真实，搞得我想去联机了",
+          "likes": 1,
+          "date": "2024-10-10T21:25:44.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "245877837409",
+          "author": "一块稽岩",
+          "avatar": "https://i0.hdslb.com/bfs/face/0dd900770f0c307f6ef1c715c72dc3c0199960e7.jpg",
+          "text": "以前在服务器就用这个[doge]",
+          "likes": 1,
+          "date": "2024-11-02T23:42:15.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -10348,6 +15676,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-10-10T07:57:21.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244305764576",
@@ -10359,9 +15688,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "244364609728",
@@ -10373,9 +15704,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -10390,9 +15723,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "244253574176",
@@ -10404,18 +15739,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[藏狐]",
-              "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png"
+              "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "244633032384",
-          "author": "TaskingAero",
-          "avatar": "https://i1.hdslb.com/bfs/face/da837026630ce666a594112e3048fb3fd5f42172.jpg",
-          "text": "回复 @无名三十号 :服务器大部分都开了摸一下床就不会被幻翼打的规则，因为一般情况下不可能正常的睡过一天",
-          "likes": 7,
-          "date": "2024-10-15T01:59:52.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "244508490240",
@@ -10427,9 +15755,47 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "244511500160",
+          "author": "无名的玖",
+          "avatar": "https://i1.hdslb.com/bfs/face/e2361878030551964a510718fed1b1d54e51c58e.jpg",
+          "text": "回复 @EricaZehnt_水口钳 :是吗？我之前玩服务器的时候躺了一会儿就行啊[笑哭](java服)在床上躺着到那个动画固定不动的时候幻翼就不下来打人了",
+          "likes": 1,
+          "date": "2024-10-13T11:00:56.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "244633032384",
+          "author": "TaskingAero",
+          "avatar": "https://i1.hdslb.com/bfs/face/da837026630ce666a594112e3048fb3fd5f42172.jpg",
+          "text": "回复 @无名三十号 :服务器大部分都开了摸一下床就不会被幻翼打的规则，因为一般情况下不可能正常的睡过一天",
+          "likes": 7,
+          "date": "2024-10-15T01:59:52.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244643681200",
+          "author": "无名的玖",
+          "avatar": "https://i1.hdslb.com/bfs/face/e2361878030551964a510718fed1b1d54e51c58e.jpg",
+          "text": "回复 @tasking_hajimi :懂了",
+          "likes": 0,
+          "date": "2024-10-15T04:47:55.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -10446,9 +15812,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[呲牙]",
-          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -10460,6 +15828,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-18T17:52:15.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -10471,6 +15840,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-17T08:36:56.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -10484,6 +15854,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-06T02:30:29.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -10495,6 +15866,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-06T02:19:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -10508,6 +15880,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-10-05T09:47:10.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "243718576689",
@@ -10519,9 +15892,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -10534,6 +15909,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-03T05:04:21.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -10547,16 +15923,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-10-03T06:47:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "244313080368",
-          "author": "耳廓狐开车创人事件",
-          "avatar": "https://i1.hdslb.com/bfs/face/3af58abdd3e4f5facfb76af1927916b0a26b7abc.webp",
-          "text": "回复 @拟甚至不叫我一声教父 :BBC纪录片/影视剧很喜欢用阴暗的滤镜制作视频的梗",
-          "likes": 5,
-          "date": "2024-10-11T01:16:25.000Z",
-          "emojis": []
-        },
         {
           "id": "244288568416",
           "author": "拟甚至不叫我一声教父",
@@ -10564,7 +15932,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "什么意思，英国老是阴天吗？",
           "likes": 0,
           "date": "2024-10-10T13:57:56.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "244313080368",
+          "author": "耳廓狐开车创人事件",
+          "avatar": "https://i1.hdslb.com/bfs/face/3af58abdd3e4f5facfb76af1927916b0a26b7abc.webp",
+          "text": "回复 @拟甚至不叫我一声教父 :BBC纪录片/影视剧很喜欢用阴暗的滤镜制作视频的梗",
+          "likes": 5,
+          "date": "2024-10-11T01:16:25.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10577,7 +15956,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-10-03T04:53:32.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "243546989937",
+          "author": "hxhej",
+          "avatar": "/media/avatars/hxhej.webp",
+          "text": "不是哥们你在美国啊",
+          "likes": 0,
+          "date": "2024-10-03T05:24:39.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "243702300272",
           "author": "海绵宝宝梦梦儿",
@@ -10585,7 +15975,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @hx_hej :梯子",
           "likes": 1,
           "date": "2024-10-03T05:52:38.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "243559155153",
@@ -10594,16 +15985,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @iLazz7 :知道，我俩用的一个",
           "likes": 0,
           "date": "2024-10-03T08:40:28.000Z",
-          "emojis": []
-        },
-        {
-          "id": "243546989937",
-          "author": "hxhej",
-          "avatar": "/media/avatars/hxhej.webp",
-          "text": "不是哥们你在美国啊",
-          "likes": 0,
-          "date": "2024-10-03T05:24:39.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10616,6 +15999,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-10-03T06:52:27.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "244467562032",
@@ -10624,7 +16008,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "有保护4钻石套这玩意其实就跟飞舞一样，但是这玩意儿数量多",
           "likes": 0,
           "date": "2024-10-13T00:50:40.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -10639,6 +16024,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-10-02T09:04:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "243766737953",
@@ -10647,7 +16033,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "后续：https://b23.tv/MtCluYz",
           "likes": 0,
           "date": "2024-10-06T02:30:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10660,6 +16047,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-02T20:46:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -10673,9 +16061,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -10691,9 +16081,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "243771279841",
@@ -10702,7 +16094,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "那好像是用一堆兔子杀了末影龙",
           "likes": 0,
           "date": "2024-10-06T03:40:31.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10715,6 +16108,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-09-29T09:41:31.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "243423198608",
@@ -10723,7 +16117,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "13年前的notch：我们制作了boss末影龙，未来的玩家们会怎么对付末影龙呢？\n现在的mojang：100w只鸡🐔VS一只末影龙\n呜沃哦~~\n呜沃哦哦~~~\n呜沃哦！\neverybody&#39;s Kung Fu fighting~\n等等等等等等等",
           "likes": 2,
           "date": "2024-09-29T13:40:15.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10738,37 +16133,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
-          "id": "243596818832",
-          "author": "只是想起个好听的名字",
-          "avatar": "https://i1.hdslb.com/bfs/face/2ecca32dd23f9dd81253a5ff2d56ba00bc3138e1.jpg",
-          "text": "回复 @cbbvh-凉拌见手青 :飞起来！[doge]\n鸡：发烧了，睡一觉吧（已宏文）[doge]",
-          "likes": 0,
-          "date": "2024-10-01T19:16:28.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
-            }
-          ]
-        },
-        {
-          "id": "243556239312",
+          "id": "243453588080",
           "author": "cbbvh-凉拌见手青",
           "avatar": "https://i2.hdslb.com/bfs/face/0dd9bd5becb00f69823a81e74f31d13e97239e2a.webp",
-          "text": "回复 @只是想起个好听的名字 :鸡：让我们把末影龙挤死\n末影龙：装逼我让你飞起来（物理）[doge]",
+          "text": "末影龙要怎么被实体挤压啊？[笑哭]",
           "likes": 0,
-          "date": "2024-10-01T08:57:16.000Z",
+          "date": "2024-09-30T02:38:19.000Z",
           "emojis": [
             {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "243551434448",
@@ -10780,9 +16165,43 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "243556239312",
+          "author": "cbbvh-凉拌见手青",
+          "avatar": "https://i2.hdslb.com/bfs/face/0dd9bd5becb00f69823a81e74f31d13e97239e2a.webp",
+          "text": "回复 @只是想起个好听的名字 :鸡：让我们把末影龙挤死\n末影龙：装逼我让你飞起来（物理）[doge]",
+          "likes": 0,
+          "date": "2024-10-01T08:57:16.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "243596818832",
+          "author": "只是想起个好听的名字",
+          "avatar": "https://i1.hdslb.com/bfs/face/2ecca32dd23f9dd81253a5ff2d56ba00bc3138e1.jpg",
+          "text": "回复 @cbbvh-凉拌见手青 :飞起来！[doge]\n鸡：发烧了，睡一觉吧（已宏文）[doge]",
+          "likes": 0,
+          "date": "2024-10-01T19:16:28.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -10799,9 +16218,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "243152433041",
@@ -10813,9 +16234,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -10828,6 +16251,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-27T13:37:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -10841,6 +16265,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-10-01T05:23:51.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/9c895de675913a8ec1e6e64faa5111b43546391605414716.jpg",
+          "width": 1080,
+          "height": 2160,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "244291416176",
@@ -10849,7 +16281,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "( °︗。)",
           "likes": 4,
           "date": "2024-10-10T14:32:48.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "245410180000",
@@ -10858,7 +16291,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "( °︗。)",
           "likes": 0,
           "date": "2024-10-25T01:53:43.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10871,6 +16305,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-01T11:37:24.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -10882,6 +16317,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-23T10:03:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -10895,6 +16331,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-09-30T09:53:23.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "243673092865",
@@ -10903,7 +16340,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "太真实了，建议删掉，让我发",
           "likes": 1,
           "date": "2024-10-04T17:15:26.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "243697000641",
@@ -10915,9 +16353,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -10930,16 +16370,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-10-01T06:36:39.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "243716269616",
-          "author": "态芙北思特",
-          "avatar": "https://i1.hdslb.com/bfs/face/f5c54f9ee2e89b5654bfb92b21e8d7bd970feda6.jpg",
-          "text": "blink on",
-          "likes": 3,
-          "date": "2024-10-03T09:22:37.000Z",
-          "emojis": []
-        },
         {
           "id": "243656108064",
           "author": "Shakedown_",
@@ -10947,7 +16379,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "调参数呢？",
           "likes": 2,
           "date": "2024-10-02T13:30:49.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "243716269616",
+          "author": "态芙北思特",
+          "avatar": "https://i1.hdslb.com/bfs/face/f5c54f9ee2e89b5654bfb92b21e8d7bd970feda6.jpg",
+          "text": "blink on",
+          "likes": 3,
+          "date": "2024-10-03T09:22:37.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "243730708193",
@@ -10956,7 +16399,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "准备瞬移了",
           "likes": 1,
           "date": "2024-10-05T12:41:30.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -10971,9 +16415,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -10987,6 +16433,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-02T13:20:54.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11000,10 +16447,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "243703580497",
+          "author": "chenzhen3775",
+          "avatar": "https://i2.hdslb.com/bfs/face/d0e4f976d49d6fa0ef59c3bb8d25cbe08c9e350a.jpg",
+          "text": "我问一下这是什么服务器嗨皮咳嗽吗?",
+          "likes": 0,
+          "date": "2024-10-05T06:16:03.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "244068766368",
           "author": "是Wool呐",
@@ -11011,7 +16470,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "你个入机，会不会玩啊，血压起来了",
           "likes": 1,
           "date": "2024-10-07T13:10:51.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "244463929344",
@@ -11020,16 +16480,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @chenzhen3775 :是的，在hypixel的街机游戏里可以找的叫羊毛大作战",
           "likes": 0,
           "date": "2024-10-12T23:01:37.000Z",
-          "emojis": []
-        },
-        {
-          "id": "243703580497",
-          "author": "chenzhen3775",
-          "avatar": "https://i2.hdslb.com/bfs/face/d0e4f976d49d6fa0ef59c3bb8d25cbe08c9e350a.jpg",
-          "text": "我问一下这是什么服务器嗨皮咳嗽吗?",
-          "likes": 0,
-          "date": "2024-10-05T06:16:03.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -11042,6 +16494,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-27T13:22:43.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -11055,16 +16508,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-09-27T13:14:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "243138398369",
-          "author": "沧海水鱼",
-          "avatar": "/media/avatars/shuiyu.webp",
-          "text": "回复 @hx-hej : 下次一定",
-          "likes": 0,
-          "date": "2024-09-27T13:38:26.000Z",
-          "emojis": []
-        },
         {
           "id": "243137079649",
           "author": "hxhej",
@@ -11072,7 +16517,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "skyblock还是写英文比较好",
           "likes": 0,
           "date": "2024-09-27T13:18:12.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "243138398369",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "回复 @hx-hej : 下次一定",
+          "likes": 0,
+          "date": "2024-09-27T13:38:26.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -11087,6 +16543,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-27T10:16:24.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11100,9 +16557,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[阴险]",
-          "url": "https://i0.hdslb.com/bfs/emote/ba8d5f8e7d136d59aab52c40fd3b8a43419eb03c.png"
+          "url": "https://i0.hdslb.com/bfs/emote/ba8d5f8e7d136d59aab52c40fd3b8a43419eb03c.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -11116,9 +16575,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -11134,24 +16595,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "243339131216",
-          "author": "钻石阿强",
-          "avatar": "https://i0.hdslb.com/bfs/face/9184366f4a25b838a86969fb98c48367dcb8d51b.jpg",
-          "text": "和平模式再加上禁止生物生成[doge]",
-          "likes": 5,
-          "date": "2024-09-28T11:39:45.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
-            }
-          ]
-        },
         {
           "id": "243292674992",
           "author": "探究者阿莫斯",
@@ -11162,9 +16611,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "243164237681",
@@ -11176,9 +16627,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "243339131216",
+          "author": "钻石阿强",
+          "avatar": "https://i0.hdslb.com/bfs/face/9184366f4a25b838a86969fb98c48367dcb8d51b.jpg",
+          "text": "和平模式再加上禁止生物生成[doge]",
+          "likes": 5,
+          "date": "2024-09-28T11:39:45.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -11191,6 +16660,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-09-30T04:27:18.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "243478350688",
@@ -11199,7 +16669,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "你是？",
           "likes": 2,
           "date": "2024-09-30T09:17:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -11214,9 +16685,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -11230,7 +16703,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-09-25T22:40:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "243647051729",
+          "author": "伊斯特_极光-极光狐",
+          "avatar": "https://i2.hdslb.com/bfs/face/4fad17761869f3862818e33eb1650a50d5ce8ec1.jpg",
+          "text": "誒🤓☝\n这我得说说普通钓鱼竿钓上来一个海之眷顾II的鱼竿\n拿海之眷顾III钓上来了一个饵钓III一个经验修补的附魔书\n最终合成满配鱼竿的故事了",
+          "likes": 1,
+          "date": "2024-10-04T11:20:10.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "243647071873",
+          "author": "伊斯特_极光-极光狐",
+          "avatar": "https://i2.hdslb.com/bfs/face/4fad17761869f3862818e33eb1650a50d5ce8ec1.jpg",
+          "text": "其实还钓上来过很多东西（消失诅咒的鱼竿和最高纪录河豚9连钓）",
+          "likes": 1,
+          "date": "2024-10-04T11:20:58.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "244616474241",
           "author": "笨笨小喵qwq",
@@ -11241,27 +16735,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "243647071873",
-          "author": "伊斯特_极光-极光狐",
-          "avatar": "https://i2.hdslb.com/bfs/face/4fad17761869f3862818e33eb1650a50d5ce8ec1.jpg",
-          "text": "其实还钓上来过很多东西（消失诅咒的鱼竿和最高纪录河豚9连钓）",
-          "likes": 1,
-          "date": "2024-10-04T11:20:58.000Z",
-          "emojis": []
-        },
-        {
-          "id": "243647051729",
-          "author": "伊斯特_极光-极光狐",
-          "avatar": "https://i2.hdslb.com/bfs/face/4fad17761869f3862818e33eb1650a50d5ce8ec1.jpg",
-          "text": "誒🤓☝\n这我得说说普通钓鱼竿钓上来一个海之眷顾II的鱼竿\n拿海之眷顾III钓上来了一个饵钓III一个经验修补的附魔书\n最终合成满配鱼竿的故事了",
-          "likes": 1,
-          "date": "2024-10-04T11:20:10.000Z",
-          "emojis": []
+          ],
+          "images": []
         }
       ]
     },
@@ -11274,6 +16752,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-09-23T10:07:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "248112540865",
@@ -11282,7 +16761,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "这里引个流，由皮革和铁锭制作鞍可以在我的数据包whwdzg&#39;s recipe中实现",
           "likes": 0,
           "date": "2024-11-30T14:44:50.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -11295,6 +16775,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-10-01T02:10:57.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -11310,9 +16791,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "242929891472",
@@ -11321,7 +16804,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "天才",
           "likes": 0,
           "date": "2024-09-23T04:32:45.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "242871472945",
@@ -11333,9 +16817,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -11348,6 +16834,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-21T01:58:06.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11359,6 +16846,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-21T13:47:21.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -11374,9 +16862,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -11392,10 +16882,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[呲牙]",
-          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png"
+          "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "242495299936",
+          "author": "zomber01",
+          "avatar": "https://i2.hdslb.com/bfs/face/b425b82e1606b804ada8c88ecd13b6ce44f0062e.jpg",
+          "text": "房子里的地毯本来就有吧",
+          "likes": 0,
+          "date": "2024-09-17T16:36:04.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "242497117616",
           "author": "没什么好名字233333333",
@@ -11406,18 +16908,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "242472334833",
-          "author": "某傲嬌的御坂美琴",
-          "avatar": "https://i1.hdslb.com/bfs/face/36655aacff02fb5862c35de2d46c5aa553447a9e.jpg",
-          "text": "铁匠铺没岩浆，这才是第一下就看到的，牛都是第二下",
-          "likes": 2,
-          "date": "2024-09-18T15:12:37.000Z",
-          "emojis": []
+          ],
+          "images": []
         },
         {
           "id": "242453032161",
@@ -11426,7 +16921,74 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "11.开头的田",
           "likes": 1,
           "date": "2024-09-18T11:02:56.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242454483537",
+          "author": "QfdsN",
+          "avatar": "https://i1.hdslb.com/bfs/face/4104edd9697bf21d345963a36319135a6f610cdb.jpg",
+          "text": "我甚至都不会注意村庄里的火把。",
+          "likes": 0,
+          "date": "2024-09-18T11:20:13.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242460051905",
+          "author": "茉莉事车迷",
+          "avatar": "https://i2.hdslb.com/bfs/face/e654e26e3f6def084fdf52779bfe37856710573b.jpg",
+          "text": "回复 @zomber01 :变成苔藓了",
+          "likes": 0,
+          "date": "2024-09-18T12:36:06.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242472334833",
+          "author": "某傲嬌的御坂美琴",
+          "avatar": "https://i1.hdslb.com/bfs/face/36655aacff02fb5862c35de2d46c5aa553447a9e.jpg",
+          "text": "铁匠铺没岩浆，这才是第一下就看到的，牛都是第二下",
+          "likes": 2,
+          "date": "2024-09-18T15:12:37.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242485344897",
+          "author": "我不会起名仄",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "开木门发出铁门声",
+          "likes": 0,
+          "date": "2024-09-18T22:36:47.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242623192880",
+          "author": "zomber01",
+          "avatar": "https://i2.hdslb.com/bfs/face/b425b82e1606b804ada8c88ecd13b6ce44f0062e.jpg",
+          "text": "回复 @茉莉事车迷 :懂了，骨粉机用羊毛地毯[doge]",
+          "likes": 0,
+          "date": "2024-09-19T10:40:43.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "243055852624",
+          "author": "Dien0529",
+          "avatar": "https://i2.hdslb.com/bfs/face/a39fca98c0634efeba41a3cecc790b2b94fc1261.jpg",
+          "text": "门是铁门的声音",
+          "likes": 0,
+          "date": "2024-09-24T15:49:30.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -11439,15 +17001,75 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 14,
       "date": "2024-09-17T16:35:08.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
-          "id": "243611248512",
-          "author": "史师z",
-          "avatar": "https://i1.hdslb.com/bfs/face/0dc698717d958e8377e9057b5ee3fc5d34e677cb.jpg",
-          "text": "19秒处栅栏之间的缝隙本来是过不去的",
-          "likes": 2,
-          "date": "2024-10-02T03:01:26.000Z",
-          "emojis": []
+          "id": "242587376336",
+          "author": "小水懒八奈见",
+          "avatar": "https://i2.hdslb.com/bfs/face/289f1877ca7c152a3a68800badf2b88a7b43ca8a.webp",
+          "text": "开头的田是小麦胡萝卜混种[吃瓜][吃瓜]",
+          "likes": 0,
+          "date": "2024-09-19T01:42:44.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "242617794545",
+          "author": "我本来叫啥来着",
+          "avatar": "https://i0.hdslb.com/bfs/face/c8838b917a86e5e62f3ca0daf6002b6a781bbc38.jpg",
+          "text": "开门的声音是铁门[吃瓜]",
+          "likes": 0,
+          "date": "2024-09-20T13:54:51.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "242624313457",
+          "author": "Default_AFu",
+          "avatar": "https://i2.hdslb.com/bfs/face/db1666f4b5320d9dd9b90f2fa782f1dac4783f5d.jpg",
+          "text": "回复 @11岁会压03式 :村庄更新以后的确有混种，但是我在针叶林和雪地见得比较多[笑哭]",
+          "likes": 0,
+          "date": "2024-09-20T15:14:09.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "242631908561",
+          "author": "Sterze87",
+          "avatar": "https://i0.hdslb.com/bfs/face/605edd17e71a5788af688c539c0251ce97a5ab4a.jpg",
+          "text": "最细节的一集",
+          "likes": 0,
+          "date": "2024-09-20T17:05:34.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242761655424",
+          "author": "飞奔枫叶叫雷疯阳",
+          "avatar": "https://i1.hdslb.com/bfs/face/aa091ac44f5bbd9d4b816a0970a61f2160ccc5eb.jpg",
+          "text": "课代表来了",
+          "likes": 0,
+          "date": "2024-09-21T04:30:49.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "242840316576",
@@ -11456,7 +17078,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "铁匠铺岩浆变成了水",
           "likes": 2,
           "date": "2024-09-22T02:48:05.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242884886593",
+          "author": "夙汐子月",
+          "avatar": "https://i2.hdslb.com/bfs/face/d082d9888455c057d894454794bd1168542fbf99.jpg",
+          "text": "不是，没有摔落哪来的伤害[笑哭]",
+          "likes": 0,
+          "date": "2024-09-24T02:57:55.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "243009378096",
@@ -11465,7 +17104,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @夙汐子月 :他踩到船上没受到伤害",
           "likes": 1,
           "date": "2024-09-24T04:53:55.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "243611248512",
+          "author": "史师z",
+          "avatar": "https://i1.hdslb.com/bfs/face/0dc698717d958e8377e9057b5ee3fc5d34e677cb.jpg",
+          "text": "19秒处栅栏之间的缝隙本来是过不去的",
+          "likes": 2,
+          "date": "2024-10-02T03:01:26.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "243654944224",
+          "author": "lucazo",
+          "avatar": "https://i2.hdslb.com/bfs/face/39bb29ed6a0479d45829968d2e2c356efb3e92c4.jpg",
+          "text": "很多都没有门",
+          "likes": 0,
+          "date": "2024-10-02T13:17:11.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -11478,16 +17138,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-09-18T18:28:50.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "243784733872",
-          "author": "请输入新的昵你",
-          "avatar": "https://i2.hdslb.com/bfs/face/eb101ef90ebc4e9bf79f65312a22ebac84946700.jpg",
-          "text": "铁匠铺房顶右上角缺个半砖",
-          "likes": 1,
-          "date": "2024-10-04T06:29:41.000Z",
-          "emojis": []
-        },
         {
           "id": "243055736368",
           "author": "Dien0529",
@@ -11495,7 +17147,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "木门声音错误",
           "likes": 1,
           "date": "2024-09-24T15:49:57.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "243784733872",
+          "author": "请输入新的昵你",
+          "avatar": "https://i2.hdslb.com/bfs/face/eb101ef90ebc4e9bf79f65312a22ebac84946700.jpg",
+          "text": "铁匠铺房顶右上角缺个半砖",
+          "likes": 1,
+          "date": "2024-10-04T06:29:41.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "243917241008",
@@ -11504,7 +17167,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "跳水的声音是游泳的声音",
           "likes": 0,
           "date": "2024-10-05T18:29:13.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -11519,6 +17183,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-15T05:42:09.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11530,25 +17195,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-09-15T06:20:50.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "242694697360",
-          "author": "鸡排五分熟",
-          "avatar": "https://i2.hdslb.com/bfs/face/f1834a832e4b131c0bc6dc666074376f86b9d97e.jpg",
-          "text": "回复 @小能赤蜂蜜 :而且有时候还有迪克和满地图信标",
-          "likes": 0,
-          "date": "2024-09-20T08:39:36.000Z",
-          "emojis": []
-        },
-        {
-          "id": "242694689072",
-          "author": "鸡排五分熟",
-          "avatar": "https://i2.hdslb.com/bfs/face/f1834a832e4b131c0bc6dc666074376f86b9d97e.jpg",
-          "text": "回复 @小能赤蜂蜜 :hyp建筑大师有刷怪蛋",
-          "likes": 0,
-          "date": "2024-09-20T08:39:13.000Z",
-          "emojis": []
-        },
         {
           "id": "242324661344",
           "author": "账号已注销",
@@ -11559,9 +17207,31 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "242694689072",
+          "author": "鸡排五分熟",
+          "avatar": "https://i2.hdslb.com/bfs/face/f1834a832e4b131c0bc6dc666074376f86b9d97e.jpg",
+          "text": "回复 @小能赤蜂蜜 :hyp建筑大师有刷怪蛋",
+          "likes": 0,
+          "date": "2024-09-20T08:39:13.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242694697360",
+          "author": "鸡排五分熟",
+          "avatar": "https://i2.hdslb.com/bfs/face/f1834a832e4b131c0bc6dc666074376f86b9d97e.jpg",
+          "text": "回复 @小能赤蜂蜜 :而且有时候还有迪克和满地图信标",
+          "likes": 0,
+          "date": "2024-09-20T08:39:36.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -11576,6 +17246,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-14T13:55:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11587,6 +17258,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-14T11:45:04.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11598,6 +17270,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-13T11:13:27.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -11611,6 +17284,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-12T13:15:43.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11624,9 +17298,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -11638,7 +17314,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-09-11T11:22:20.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "241890922097",
+          "author": "hxhej",
+          "avatar": "/media/avatars/hxhej.webp",
+          "text": "byd换头像了",
+          "likes": 0,
+          "date": "2024-09-11T11:41:15.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "241894339649",
           "author": "沧海水鱼",
@@ -11649,18 +17336,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "241890922097",
-          "author": "hxhej",
-          "avatar": "/media/avatars/hxhej.webp",
-          "text": "byd换头像了",
-          "likes": 0,
-          "date": "2024-09-11T11:41:15.000Z",
-          "emojis": []
+          ],
+          "images": []
         }
       ]
     }
@@ -11675,6 +17355,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-08T17:54:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11686,6 +17367,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-14T09:18:18.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -11697,6 +17379,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-08T13:43:27.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -11710,6 +17393,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 8,
       "date": "2024-09-08T00:32:54.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "241670349280",
@@ -11721,23 +17405,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "241700464720",
-          "author": "MTT节目频道",
-          "avatar": "https://i1.hdslb.com/bfs/face/366bd0755a812129251f60f223458cf193e731d8.jpg",
-          "text": "国际版经典bug[doge]地狱也能触发",
-          "likes": 7,
-          "date": "2024-09-08T07:24:34.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
-            }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "241621148673",
@@ -11749,9 +17421,101 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "241700464720",
+          "author": "MTT节目频道",
+          "avatar": "https://i1.hdslb.com/bfs/face/366bd0755a812129251f60f223458cf193e731d8.jpg",
+          "text": "国际版经典bug[doge]地狱也能触发",
+          "likes": 7,
+          "date": "2024-09-08T07:24:34.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "241703285952",
+          "author": "鸡排五分熟",
+          "avatar": "https://i2.hdslb.com/bfs/face/f1834a832e4b131c0bc6dc666074376f86b9d97e.jpg",
+          "text": "延迟，我玩mcci延迟给我吞方块了[笑哭]",
+          "likes": 1,
+          "date": "2024-09-08T08:01:55.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "241707653088",
+          "author": "自行车坏了23333",
+          "avatar": "https://i2.hdslb.com/bfs/face/4efe8a0b3aac8353dd5b74e6199177dfbbbec69c.webp",
+          "text": "可能不小心松shfit了[笑哭]",
+          "likes": 1,
+          "date": "2024-09-08T09:04:09.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "241874149760",
+          "author": "华灿c",
+          "avatar": "https://i1.hdslb.com/bfs/face/d01e18189341ff98a2ebb52bedb6ad81df20ea1e.jpg",
+          "text": "剧情需要",
+          "likes": 0,
+          "date": "2024-09-10T11:14:12.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242148014993",
+          "author": "伞-斌",
+          "avatar": "https://i2.hdslb.com/bfs/face/d2922a57fce1fc8bc8469d56783f8978cb61ea68.jpg",
+          "text": "shift卡断了[笑哭]",
+          "likes": 0,
+          "date": "2024-09-14T20:02:32.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "242385984816",
+          "author": "湘江宁子",
+          "avatar": "https://i0.hdslb.com/bfs/face/5d05771e3e667d8774eb4accda494504b02cdde6.jpg",
+          "text": "没有按住shift[doge]",
+          "likes": 0,
+          "date": "2024-09-16T14:00:23.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -11764,6 +17528,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-09-08T03:48:22.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "241755027409",
@@ -11775,9 +17540,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "241812366560",
@@ -11786,7 +17553,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @De_AFu :装备没有耐久（\n圆石48个像是分出来的\n和国内外没关系\n看的是玩家习惯啦（",
           "likes": 4,
           "date": "2024-09-09T14:32:03.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "241803587137",
@@ -11795,7 +17563,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @投币浪费时间Coins :我装备耐久附魔经验修补以后耐久天天都是满的。再说了就一个短视频而已",
           "likes": 3,
           "date": "2024-09-10T08:56:26.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -11810,13 +17579,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         },
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "241654519937",
@@ -11825,16 +17597,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "死亡不掉落不开就是极限了",
           "likes": 4,
           "date": "2024-09-08T08:49:28.000Z",
-          "emojis": []
-        },
-        {
-          "id": "243661429633",
-          "author": "悠喻official",
-          "avatar": "https://i1.hdslb.com/bfs/face/52080f51e08d3b9cc66b35e68a9c027f8ebc2013.jpg",
-          "text": "这次我一定玩一个没有模组，不开创造，原汁原味的生存！",
-          "likes": 1,
-          "date": "2024-10-04T14:22:22.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "241970980113",
@@ -11846,9 +17610,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "243661429633",
+          "author": "悠喻official",
+          "avatar": "https://i1.hdslb.com/bfs/face/52080f51e08d3b9cc66b35e68a9c027f8ebc2013.jpg",
+          "text": "这次我一定玩一个没有模组，不开创造，原汁原味的生存！",
+          "likes": 1,
+          "date": "2024-10-04T14:22:22.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -11863,7 +17639,104 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 12,
       "date": "2024-09-06T04:55:24.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "241534361472",
+          "author": "紫色的公牛",
+          "avatar": "https://i2.hdslb.com/bfs/face/2b341e353bab0c9f45f20669311439dd6c595061.jpg",
+          "text": "弩算弓的升级版，所以不算",
+          "likes": 8,
+          "date": "2024-09-06T10:15:46.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "241552842544",
+          "author": "基金会打杂的硝横刑_",
+          "avatar": "https://i0.hdslb.com/bfs/face/ee9fa0833311b9060567b4bc3d381e2b63714ea6.jpg",
+          "text": "回复 @蛋小黑的粉丝 :《升级》",
+          "likes": 9,
+          "date": "2024-09-06T13:48:07.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "241554886448",
+          "author": "紫色的公牛",
+          "avatar": "https://i2.hdslb.com/bfs/face/2b341e353bab0c9f45f20669311439dd6c595061.jpg",
+          "text": "回复 @硝横刑2333 :快速填充:那我走",
+          "likes": 5,
+          "date": "2024-09-06T14:09:16.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "241556616096",
+          "author": "LeavesFal1",
+          "avatar": "https://i1.hdslb.com/bfs/face/073145f963c9f596f3e30696368d621817e9ab43.jpg",
+          "text": "回复 @硝横刑2333 :弩还可以装填烟火，还能待机，一秒三发直接秒。弩还有多重射击，切三把弩就是一秒九发，而且还有穿透，怎么不是升级版了[吃瓜]",
+          "likes": 7,
+          "date": "2024-09-06T14:29:59.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "241557089824",
+          "author": "基金会打杂的硝横刑_",
+          "avatar": "https://i0.hdslb.com/bfs/face/ee9fa0833311b9060567b4bc3d381e2b63714ea6.jpg",
+          "text": "回复 @蛋小黑的粉丝 :前期搞不到附魔书肯定是弓强",
+          "likes": 0,
+          "date": "2024-09-06T14:35:08.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "241557375536",
+          "author": "基金会打杂的硝横刑_",
+          "avatar": "https://i0.hdslb.com/bfs/face/ee9fa0833311b9060567b4bc3d381e2b63714ea6.jpg",
+          "text": "回复 @蛋小黑的粉丝 :便携版手感还贼差",
+          "likes": 2,
+          "date": "2024-09-06T14:37:24.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "241583199568",
+          "author": "超级酷炫先生",
+          "avatar": "https://i2.hdslb.com/bfs/face/c5753f850b060d4716004015d6d6089f5f5e6679.jpg",
+          "text": "回复 @Resrem-Xela :新版弓可以附弩的附魔了",
+          "likes": 0,
+          "date": "2024-09-07T01:26:33.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "241597124864",
+          "author": "乐子_FVV",
+          "avatar": "https://i1.hdslb.com/bfs/face/2a05ae501c0f5ddf9e0431fa9a73f2d21da0b050.jpg",
+          "text": "回复 @超级酷炫先生 :只能创造",
+          "likes": 3,
+          "date": "2024-09-07T04:34:01.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "241623352417",
+          "author": "ITZ_REAL_ME",
+          "avatar": "https://i1.hdslb.com/bfs/face/cddf3ecb76ce65d816715c5473602bf1270e6595.jpg",
+          "text": "官方也知道没多少人用弩",
+          "likes": 2,
+          "date": "2024-09-08T01:42:47.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "241866534080",
           "author": "一只小小盾山",
@@ -11874,27 +17747,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "241552842544",
-          "author": "基金会打杂的硝横刑_",
-          "avatar": "https://i0.hdslb.com/bfs/face/ee9fa0833311b9060567b4bc3d381e2b63714ea6.jpg",
-          "text": "回复 @蛋小黑的粉丝 :《升级》",
-          "likes": 9,
-          "date": "2024-09-06T13:48:07.000Z",
-          "emojis": []
-        },
-        {
-          "id": "241534361472",
-          "author": "紫色的公牛",
-          "avatar": "https://i2.hdslb.com/bfs/face/2b341e353bab0c9f45f20669311439dd6c595061.jpg",
-          "text": "弩算弓的升级版，所以不算",
-          "likes": 8,
-          "date": "2024-09-06T10:15:46.000Z",
-          "emojis": []
+          ],
+          "images": []
         }
       ]
     },
@@ -11909,9 +17766,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "241624505792",
@@ -11923,9 +17782,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "241583594481",
+          "author": "呕猫",
+          "avatar": "https://i2.hdslb.com/bfs/face/e8da057d2bfb2a48c87153a0c65e7ae002f8f0c4.jpg",
+          "text": "回复 @阜南战争雷霆 :java剑也比斧头强啊，斧头攻击间隔太长了",
+          "likes": 6,
+          "date": "2024-09-07T11:58:24.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "241978700496",
@@ -11937,18 +17808,93 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "241583594481",
-          "author": "呕猫",
-          "avatar": "https://i2.hdslb.com/bfs/face/e8da057d2bfb2a48c87153a0c65e7ae002f8f0c4.jpg",
-          "text": "回复 @阜南战争雷霆 :java剑也比斧头强啊，斧头攻击间隔太长了",
-          "likes": 6,
-          "date": "2024-09-07T11:58:24.000Z",
-          "emojis": []
+          "id": "241996971841",
+          "author": "黄权不点虎",
+          "avatar": "https://i2.hdslb.com/bfs/face/a0c17affabaed4e864f3dafca32afe987aab2ba5.jpg",
+          "text": "回复 @阿晨yan :[藏狐]但是斧攻速慢",
+          "likes": 1,
+          "date": "2024-09-12T23:46:53.000Z",
+          "emojis": [
+            {
+              "token": "[藏狐]",
+              "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "242195951952",
+          "author": "小小的红石头",
+          "avatar": "https://i1.hdslb.com/bfs/face/d162bd29337f118c48e31a20e79bc282932a6616.jpg",
+          "text": "弩：我呢",
+          "likes": 0,
+          "date": "2024-09-14T12:09:18.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242181216177",
+          "author": "0181828918272782",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @小小的红石头 :1.21之前因为没有无限所以并没有人愿意用",
+          "likes": 0,
+          "date": "2024-09-15T07:24:32.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242353928672",
+          "author": "璃月狐宫",
+          "avatar": "https://i1.hdslb.com/bfs/face/b9f017c8a30debf1a9f7b9189770b7bf5c9b41f2.jpg",
+          "text": "如果我拿出重生锚和水晶呢？🤔",
+          "likes": 1,
+          "date": "2024-09-16T07:57:50.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242567982544",
+          "author": "安普反物质",
+          "avatar": "https://i2.hdslb.com/bfs/face/46753d05bb46da8412b120a6765ca3c3b34fae0f.jpg",
+          "text": "三叉戟的话扔出去就就相当于进cd了，没法攻击，弓箭可以连发并且满附魔弓的杀伤力是很强的",
+          "likes": 0,
+          "date": "2024-09-18T15:27:01.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242692094896",
+          "author": "龓睊鶵",
+          "avatar": "https://i2.hdslb.com/bfs/face/fd8c11a9c095cc1e550ca0b0deda61caa591dd00.jpg",
+          "text": "回复 @我是一只小墨水 :用的好是真神，用不好是我叫磁力棒[笑哭]",
+          "likes": 2,
+          "date": "2024-09-20T07:56:16.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "242929344288",
+          "author": "゚MrSir",
+          "avatar": "https://i1.hdslb.com/bfs/face/3e237758ba50f8b9f66c1533715d71d33b776cef.jpg",
+          "text": "弩：连官方都把我忘了",
+          "likes": 0,
+          "date": "2024-09-23T04:26:10.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -11963,10 +17909,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "241485640289",
+          "author": "siheike",
+          "avatar": "https://i1.hdslb.com/bfs/face/f75f6f1c8b8c07e2499d0d5396ba859114f94bab.jpg",
+          "text": "太冷门了。",
+          "likes": 3,
+          "date": "2024-09-06T09:15:26.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "241488629025",
           "author": "QBJJIUI",
@@ -11977,9 +17935,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "241510292641",
@@ -11991,18 +17951,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "241485640289",
-          "author": "siheike",
-          "avatar": "https://i1.hdslb.com/bfs/face/f75f6f1c8b8c07e2499d0d5396ba859114f94bab.jpg",
-          "text": "太冷门了。",
-          "likes": 3,
-          "date": "2024-09-06T09:15:26.000Z",
-          "emojis": []
+          "id": "241511390785",
+          "author": "Default_AFu",
+          "avatar": "https://i2.hdslb.com/bfs/face/db1666f4b5320d9dd9b90f2fa782f1dac4783f5d.jpg",
+          "text": "我就知道有人发vcpvp[doge]",
+          "likes": 2,
+          "date": "2024-09-06T14:27:44.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -12017,16 +17986,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-08-31T10:50:36.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "250794814849",
-          "author": "GardenGG14_",
-          "avatar": "https://i2.hdslb.com/bfs/face/1e03a9cc02e24f0c6dddf482ef36e4c6987f10e1.jpg",
-          "text": "回复 @小小梦梦吖 : 1.21.4已修复",
-          "likes": 1,
-          "date": "2025-01-02T08:56:46.000Z",
-          "emojis": []
-        },
         {
           "id": "241849419536",
           "author": "小小梦梦吖",
@@ -12037,13 +17998,26 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             },
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "250794814849",
+          "author": "GardenGG14_",
+          "avatar": "https://i2.hdslb.com/bfs/face/1e03a9cc02e24f0c6dddf482ef36e4c6987f10e1.jpg",
+          "text": "回复 @小小梦梦吖 : 1.21.4已修复",
+          "likes": 1,
+          "date": "2025-01-02T08:56:46.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12058,9 +18032,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "241092942913",
@@ -12069,7 +18045,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "同款打法",
           "likes": 2,
           "date": "2024-09-01T10:20:07.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "241230575905",
@@ -12081,13 +18058,52 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge_金箍]",
-              "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png"
+              "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png",
+              "animated": false
             },
             {
               "token": "[无语]",
-              "url": "https://i0.hdslb.com/bfs/emote/44667b7d9349957e903b1b62cb91fb9b13720f04.png"
+              "url": "https://i0.hdslb.com/bfs/emote/44667b7d9349957e903b1b62cb91fb9b13720f04.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "241532865488",
+          "author": "好大的pp丶",
+          "avatar": "https://i1.hdslb.com/bfs/face/888f8462354e68f26e932955798ef91ad1db7a6c.jpg",
+          "text": "是这样的",
+          "likes": 0,
+          "date": "2024-09-06T10:00:00.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "241896793313",
+          "author": "北极的南极qwq",
+          "avatar": "https://i1.hdslb.com/bfs/face/564912b9cac41a7554ac9c73443dd0046a52f95e.jpg",
+          "text": "same",
+          "likes": 0,
+          "date": "2024-09-11T13:01:42.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "242968011216",
+          "author": "Kagami_my_wife",
+          "avatar": "https://i0.hdslb.com/bfs/face/6b5563862faa99e31ad0206b014bdc2d52b41d41.jpg",
+          "text": "还真是，第一次进古城的策略就是看到一个尖啸体无视自己的声音直接冲过去，回补给点清空背包后看到箱子过去挖了就跑[doge]",
+          "likes": 0,
+          "date": "2024-09-23T13:46:09.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "243165684049",
@@ -12099,9 +18115,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -12114,6 +18132,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-31T12:39:51.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -12129,33 +18148,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "240728311792",
-          "author": "账号已注销",
-          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
-          "text": "真实，铁都存一组多了挖矿还用石镐[笑哭]",
-          "likes": 14,
-          "date": "2024-08-28T15:34:29.000Z",
-          "emojis": [
-            {
-              "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
-            }
-          ]
-        },
-        {
-          "id": "240729225648",
-          "author": "乔克莱依特迪斯科",
-          "avatar": "https://i1.hdslb.com/bfs/face/cc067fc9a071a959ff0fa18b8a7f26a2354613f5.jpg",
-          "text": "木稿都舍不得用，用木棍撸树，现在木镐耐久就剩三了",
-          "likes": 3,
-          "date": "2024-08-28T15:42:32.000Z",
-          "emojis": []
-        },
         {
           "id": "240720964480",
           "author": "账号已注销",
@@ -12166,9 +18164,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "240728311792",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "真实，铁都存一组多了挖矿还用石镐[笑哭]",
+          "likes": 14,
+          "date": "2024-08-28T15:34:29.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "240729225648",
+          "author": "乔克莱依特迪斯科",
+          "avatar": "https://i1.hdslb.com/bfs/face/cc067fc9a071a959ff0fa18b8a7f26a2354613f5.jpg",
+          "text": "木稿都舍不得用，用木棍撸树，现在木镐耐久就剩三了",
+          "likes": 3,
+          "date": "2024-08-28T15:42:32.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12181,6 +18207,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-08-28T16:07:30.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "241244634977",
@@ -12189,7 +18216,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "你怕不怕！",
           "likes": 1,
           "date": "2024-09-03T08:27:29.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "241375303904",
@@ -12198,7 +18226,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "远古老梗",
           "likes": 0,
           "date": "2024-09-04T12:06:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12211,6 +18240,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-28T03:02:01.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -12224,6 +18254,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-08-27T01:20:00.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "240619143392",
@@ -12232,7 +18263,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "“啵”",
           "likes": 1,
           "date": "2024-08-28T03:19:14.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "241005981777",
@@ -12244,9 +18276,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -12259,6 +18293,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-09-20T04:43:20.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -12270,6 +18305,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-31T11:34:59.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -12285,10 +18321,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "239594237184",
+          "author": "斯莱罗先生",
+          "avatar": "https://i2.hdslb.com/bfs/face/4f20c9f0147c5570a6382f0f594a3ba22af95469.jpg",
+          "text": "这个做农场没啥用",
+          "likes": 3,
+          "date": "2024-08-23T05:14:12.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "239690309632",
           "author": "hsfg1",
@@ -12296,16 +18344,40 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @SLELLO :装个carpet量产重锤钻石附魔金等稀有产物",
           "likes": 10,
           "date": "2024-08-23T13:30:02.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
-          "id": "239741020704",
-          "author": "ChestnutKCN",
-          "avatar": "https://i2.hdslb.com/bfs/face/669ede51d5b50f35cab8a17e13886a72f321d246.jpg",
-          "text": "回复 @SLELLO :那就局域网开小号，不用mod也是有办法达成类似于假人效果的",
-          "likes": 6,
-          "date": "2024-08-23T18:29:17.000Z",
-          "emojis": []
+          "id": "239698426000",
+          "author": "斯莱罗先生",
+          "avatar": "https://i2.hdslb.com/bfs/face/4f20c9f0147c5570a6382f0f594a3ba22af95469.jpg",
+          "text": "回复 @fbqbfwvab :作弊有什么好说的[吃瓜]",
+          "likes": 2,
+          "date": "2024-08-23T14:07:21.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "239704047616",
+          "author": "Default_AFu",
+          "avatar": "https://i2.hdslb.com/bfs/face/db1666f4b5320d9dd9b90f2fa782f1dac4783f5d.jpg",
+          "text": "回复 @SLELLO :carpet是作弊?\n6[笑哭]",
+          "likes": 3,
+          "date": "2024-08-23T14:32:58.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "239704558848",
@@ -12317,9 +18389,73 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "239719840448",
+          "author": "维和的希依姬",
+          "avatar": "https://i1.hdslb.com/bfs/face/b63b64e55ab751a052c9935ffae2702d064e8b1b.jpg",
+          "text": "回复 @De_AFu :对于官方来说，地毯肯定算作弊呀",
+          "likes": 5,
+          "date": "2024-08-23T15:49:39.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239741020704",
+          "author": "ChestnutKCN",
+          "avatar": "https://i2.hdslb.com/bfs/face/669ede51d5b50f35cab8a17e13886a72f321d246.jpg",
+          "text": "回复 @SLELLO :那就局域网开小号，不用mod也是有办法达成类似于假人效果的",
+          "likes": 6,
+          "date": "2024-08-23T18:29:17.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239956576336",
+          "author": "LYQL_A",
+          "avatar": "https://i0.hdslb.com/bfs/face/fc17e750554bd6087b8b5880750cae76617764ed.jpg",
+          "text": "回复 @SLELLO :开小号也是一样的[doge]",
+          "likes": 1,
+          "date": "2024-08-24T19:46:03.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "240194752656",
+          "author": "欧姆弥赛亚_祁然",
+          "avatar": "https://i2.hdslb.com/bfs/face/7b6ff0a5b1a42ff862bc9400915396b4ca18c1c9.jpg",
+          "text": "回复 @SLELLO :挂个bot并且给他刷怪笼里面产出的钥匙，让它去开宝库无限量产钻石",
+          "likes": 0,
+          "date": "2024-08-26T02:23:54.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "240994122113",
+          "author": "Ksy丶玖忆",
+          "avatar": "https://i0.hdslb.com/bfs/face/1eae87c4809ce9b01100c6b78a1e08197d1b7482.jpg",
+          "text": "【【我的世界1.21】全自动试炼一体化（双重钥匙农场+单人无限宝库）附教程-哔哩哔哩】 https://b23.tv/FgFlQMK[doge][doge]",
+          "likes": 0,
+          "date": "2024-08-31T09:24:48.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -12332,21 +18468,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 5,
       "date": "2024-08-23T10:00:34.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "239723210960",
-          "author": "jbcs名字被抢",
-          "avatar": "https://i0.hdslb.com/bfs/face/d417205a6c8bc1c1f9b384d9632ed29f801a7a94.jpg",
-          "text": "or red store BOSS[星星眼]",
-          "likes": 7,
-          "date": "2024-08-23T16:08:04.000Z",
-          "emojis": [
-            {
-              "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
-            }
-          ]
-        },
         {
           "id": "239690395376",
           "author": "hsfg1",
@@ -12357,9 +18480,53 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "239723210960",
+          "author": "jbcs名字被抢",
+          "avatar": "https://i0.hdslb.com/bfs/face/d417205a6c8bc1c1f9b384d9632ed29f801a7a94.jpg",
+          "text": "or red store BOSS[星星眼]",
+          "likes": 7,
+          "date": "2024-08-23T16:08:04.000Z",
+          "emojis": [
+            {
+              "token": "[星星眼]",
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "239749438928",
+          "author": "是摩棍哥",
+          "avatar": "https://i1.hdslb.com/bfs/face/82ad840980a11f0e34e251f57249860cf0d8f21c.jpg",
+          "text": "我是单人大佬[墨镜]",
+          "likes": 0,
+          "date": "2024-08-23T21:22:26.000Z",
+          "emojis": [
+            {
+              "token": "[墨镜]",
+              "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "240745861200",
+          "author": "dsb_aghhh",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "没绷住",
+          "likes": 0,
+          "date": "2024-08-28T22:39:20.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "241541361600",
@@ -12368,7 +18535,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "or PVP boss",
           "likes": 0,
           "date": "2024-09-06T11:33:41.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12381,7 +18549,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 7,
       "date": "2024-08-23T11:40:46.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "239667525024",
+          "author": "summericedrink",
+          "avatar": "https://i0.hdslb.com/bfs/face/d5bd6be1f62b244d61c1f541a4b284f0d62bf98e.jpg",
+          "text": "谁能告诉我一般生成在哪里",
+          "likes": 0,
+          "date": "2024-08-23T11:41:13.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239687277616",
+          "author": "墨雪inyuki",
+          "avatar": "https://i1.hdslb.com/bfs/face/c471377052d7057aba7fd81f98509a3d0336dafc.jpg",
+          "text": "回复 @summericedrink :freecamera[吃瓜]",
+          "likes": 1,
+          "date": "2024-08-23T13:16:00.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
         {
           "id": "239731485744",
           "author": "珍惜矿物",
@@ -12392,23 +18587,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[新科娘_花手]",
-              "url": "https://i0.hdslb.com/bfs/emote/4e023ba73a9da2d71a5df3e117e83eca13332b65.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4e023ba73a9da2d71a5df3e117e83eca13332b65.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "239975685280",
-          "author": "sasakureUK",
-          "avatar": "https://i2.hdslb.com/bfs/face/cf218c8a41df3f0568e450eb0288b52bed1cdd2d.jpg",
-          "text": "回复 @summericedrink :目前最实用的方法是复制地图在在复制的地图上作弊开旁观者模式，损友教我的，后面改不掉了[笑哭]",
-          "likes": 3,
-          "date": "2024-08-25T01:07:00.000Z",
+          "id": "239921541472",
+          "author": "奈菲利贝特",
+          "avatar": "https://i0.hdslb.com/bfs/face/9223e5228059e2e428d0fbc7170194cb00125fe7.jpg",
+          "text": "回复 @summericedrink :地底下[doge]",
+          "likes": 1,
+          "date": "2024-08-24T15:04:27.000Z",
           "emojis": [
             {
-              "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "239962993872",
@@ -12420,9 +18619,37 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "239975685280",
+          "author": "sasakureUK",
+          "avatar": "https://i2.hdslb.com/bfs/face/cf218c8a41df3f0568e450eb0288b52bed1cdd2d.jpg",
+          "text": "回复 @summericedrink :目前最实用的方法是复制地图在在复制的地图上作弊开旁观者模式，损友教我的，后面改不掉了[笑哭]",
+          "likes": 3,
+          "date": "2024-08-25T01:07:00.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "239984344816",
+          "author": "墨雪inyuki",
+          "avatar": "https://i1.hdslb.com/bfs/face/c471377052d7057aba7fd81f98509a3d0336dafc.jpg",
+          "text": "回复 @菜鸟的狙击梦 :海洋神殿先把三个远古守卫者打了会好很多",
+          "likes": 0,
+          "date": "2024-08-25T02:06:51.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -12437,6 +18664,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-25T11:11:44.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -12448,6 +18676,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-08-22T20:20:24.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "239983468832",
@@ -12456,7 +18685,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "第一个是苦力怕，有爆炸声",
           "likes": 2,
           "date": "2024-08-25T02:01:35.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12471,9 +18701,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -12487,7 +18719,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-08-18T08:08:05.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "239801091328",
+          "author": "魂4不出不改名",
+          "avatar": "https://i2.hdslb.com/bfs/face/8217a82039c6162ed8dccb307ac7be7f4ae6f618.jpg",
+          "text": "不能啊",
+          "likes": 0,
+          "date": "2024-08-24T04:33:37.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "239983293088",
           "author": "墨雪inyuki",
@@ -12498,18 +18741,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "239801091328",
-          "author": "魂4不出不改名",
-          "avatar": "https://i2.hdslb.com/bfs/face/8217a82039c6162ed8dccb307ac7be7f4ae6f618.jpg",
-          "text": "不能啊",
-          "likes": 0,
-          "date": "2024-08-24T04:33:37.000Z",
-          "emojis": []
+          ],
+          "images": []
         }
       ]
     },
@@ -12522,15 +18758,67 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 8,
       "date": "2024-08-17T03:36:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
-          "id": "246430277745",
-          "author": "百科记事本",
-          "avatar": "https://i2.hdslb.com/bfs/face/22f47f3c95e393d9e1c3a27e0f6557579adfb804.jpg",
-          "text": "可以翻译为：\n这是一个收纳袋\n这是一个装着袋的袋\n这是一个洞中装中袋\n这是一个丛中洞中袋中袋\n这是一个电中丛中洞中打中袋中袋\n这是一直熊猫\n在这些袋中！",
-          "likes": 2,
-          "date": "2024-11-10T00:48:48.000Z",
-          "emojis": []
+          "id": "238293023680",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "（此视频大量押韵，我没翻译出来，请见谅）",
+          "likes": 1,
+          "date": "2024-08-17T03:37:43.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "238343117664",
+          "author": "hxhej",
+          "avatar": "/media/avatars/hxhej.webp",
+          "text": "回复 @滄海水魚 :LLLLLLLLLLLLLLLLLLLL",
+          "likes": 0,
+          "date": "2024-08-17T08:05:27.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "238343306976",
+          "author": "hxhej",
+          "avatar": "/media/avatars/hxhej.webp",
+          "text": "回复 @滄海水魚 :你在4年前说的东西可算有了",
+          "likes": 0,
+          "date": "2024-08-17T08:05:53.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "238353731104",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "回复 @hx-hej :有字幕投稿入口，你来",
+          "likes": 0,
+          "date": "2024-08-17T09:03:49.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239014865840",
+          "author": "hxhej",
+          "avatar": "/media/avatars/hxhej.webp",
+          "text": "回复 @滄海水魚 :哦",
+          "likes": 0,
+          "date": "2024-08-20T10:41:50.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239015079376",
+          "author": "hxhej",
+          "avatar": "/media/avatars/hxhej.webp",
+          "text": "回复 @滄海水魚 :fw就只有一个韵脚",
+          "likes": 0,
+          "date": "2024-08-20T10:42:38.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "239023916592",
@@ -12542,18 +18830,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "238293023680",
-          "author": "沧海水鱼",
-          "avatar": "/media/avatars/shuiyu.webp",
-          "text": "（此视频大量押韵，我没翻译出来，请见谅）",
-          "likes": 1,
-          "date": "2024-08-17T03:37:43.000Z",
-          "emojis": []
+          "id": "246430277745",
+          "author": "百科记事本",
+          "avatar": "https://i2.hdslb.com/bfs/face/22f47f3c95e393d9e1c3a27e0f6557579adfb804.jpg",
+          "text": "可以翻译为：\n这是一个收纳袋\n这是一个装着袋的袋\n这是一个洞中装中袋\n这是一个丛中洞中袋中袋\n这是一个电中丛中洞中打中袋中袋\n这是一直熊猫\n在这些袋中！",
+          "likes": 2,
+          "date": "2024-11-10T00:48:48.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12568,9 +18859,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[吃瓜]",
-          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+          "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     }
   ],
@@ -12586,9 +18879,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[藏狐]",
-          "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png"
+          "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "237590858528",
@@ -12597,7 +18892,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "所以我选择白桦树 永远是直的 也不会特别高",
           "likes": 16,
           "date": "2024-08-13T18:55:53.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "237599817792",
+          "author": "gaster6305",
+          "avatar": "https://i1.hdslb.com/bfs/face/ade5939ff93d9d7f987a96685853bedfcc684674.jpg",
+          "text": "所以我挖不掉的都烧了[doge]",
+          "likes": 1,
+          "date": "2024-08-13T22:51:28.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "237602498944",
+          "author": "ggdjdjdndn",
+          "avatar": "https://i2.hdslb.com/bfs/face/5abe51c2f03c5cfc11247ab46baa0c1b593067d4.jpg",
+          "text": "回复 @传奇泰拉刃 :我记得可以长好高啊，好像有高白桦木林",
+          "likes": 6,
+          "date": "2024-08-13T23:36:43.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "237602511616",
@@ -12609,18 +18931,89 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "237602498944",
-          "author": "ggdjdjdndn",
-          "avatar": "https://i2.hdslb.com/bfs/face/5abe51c2f03c5cfc11247ab46baa0c1b593067d4.jpg",
-          "text": "回复 @传奇泰拉刃 :我记得可以长好高啊，好像有高白桦木林",
-          "likes": 6,
-          "date": "2024-08-13T23:36:43.000Z",
-          "emojis": []
+          "id": "237603515952",
+          "author": "章丘草",
+          "avatar": "https://i1.hdslb.com/bfs/face/f2a27ccb6fa0e45541ffee7e8fbbe2111b7c6ca2.webp",
+          "text": "回复 @琴星新秀 :高也不会有残留",
+          "likes": 2,
+          "date": "2024-08-13T23:52:14.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "237604088896",
+          "author": "银金合金锭-zip",
+          "avatar": "https://i0.hdslb.com/bfs/face/1195bd521859ed9e54e70e347166bbe3a87ff8aa.jpg",
+          "text": "所以我选择用连锁[doge]",
+          "likes": 4,
+          "date": "2024-08-13T23:55:47.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "237606544496",
+          "author": "chuyue_136",
+          "avatar": "https://i0.hdslb.com/bfs/face/9acfa472567720fabf68ea2bac085a138d11bef1.jpg",
+          "text": "我记得hkre材质包可以将即将掉落的树叶显示为灰色，挺好用的。",
+          "likes": 0,
+          "date": "2024-08-14T00:22:01.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "237610238496",
+          "author": "探究者阿莫斯",
+          "avatar": "https://i0.hdslb.com/bfs/face/c0e87b0d1ec314803440f3ca88477683464bac3a.jpg",
+          "text": "大的像树木多，尽管云山也多但是如果出生在平原或者森林找到云山又是一回事了，我平时比较喜欢砍大型像树[笑哭]",
+          "likes": 1,
+          "date": "2024-08-14T00:53:54.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "237614857536",
+          "author": "Romlk",
+          "avatar": "https://i1.hdslb.com/bfs/face/2d2c62e616d5cc5c3fb8f742761fc409cc493a09.jpg",
+          "text": "种橡树我一般做个限高[脱单doge]，虽然麻烦",
+          "likes": 1,
+          "date": "2024-08-14T01:28:16.000Z",
+          "emojis": [
+            {
+              "token": "[脱单doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "237620289344",
+          "author": "fenguik",
+          "avatar": "https://i0.hdslb.com/bfs/face/e24e2c28ee13c563c61deb03a0086530ae39aa83.jpg",
+          "text": "这种我一般把直的部分挖了剩下的点了",
+          "likes": 0,
+          "date": "2024-08-14T02:06:17.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12633,6 +19026,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 7,
       "date": "2024-08-14T01:23:45.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "237642696160",
@@ -12644,9 +19038,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "237665500560",
+          "author": "FKURAGONY",
+          "avatar": "https://i1.hdslb.com/bfs/face/eaadad5f0a2a539641de56831e722d67118079bb.jpg",
+          "text": "@exillllllllle",
+          "likes": 0,
+          "date": "2024-08-14T06:11:22.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "237711993344",
@@ -12658,9 +19064,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "237781209040",
@@ -12669,7 +19077,44 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "这次是树完了下次就不知道是什么完了😇",
           "likes": 17,
           "date": "2024-08-14T15:53:01.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "237950543520",
+          "author": "Taga_",
+          "avatar": "https://i1.hdslb.com/bfs/face/e4815f90e9c54c52fa8dce2bc548285beeee4be8.jpg",
+          "text": "打火石：你好[呲牙]",
+          "likes": 0,
+          "date": "2024-08-15T12:26:24.000Z",
+          "emojis": [
+            {
+              "token": "[呲牙]",
+              "url": "https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "240011060752",
+          "author": "Rasiel-QAQ",
+          "avatar": "https://i0.hdslb.com/bfs/face/9c873d132e5027d3e0314395280dc34174629af9.jpg",
+          "text": "一般看见砍不干净树的会把不砍干净的人砍干净",
+          "likes": 0,
+          "date": "2024-08-25T04:33:44.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "240537576112",
+          "author": "午夜高速路的霓虹灯",
+          "avatar": "https://i0.hdslb.com/bfs/face/a8663cb5356bda8be253a713e4bcf8afd64a42cd.jpg",
+          "text": "所以在服务器里你这种我都不敢接tp，指不定我家附近被你到处探索弄得坑坑洼洼",
+          "likes": 1,
+          "date": "2024-08-27T14:24:50.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12684,9 +19129,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "237714002528",
@@ -12695,7 +19142,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "因为樱花树长的歪七扭八的比金合欢还抽象，和大橡树一个级别，完全挖完效率太低了",
           "likes": 17,
           "date": "2024-08-14T10:39:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "237719915904",
@@ -12707,9 +19155,47 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[脱单doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png"
+              "url": "https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "239036491488",
+          "author": "晓律cw",
+          "avatar": "https://i2.hdslb.com/bfs/face/f44f2b86b1998422dc88b1c39def129104dd9de7.jpg",
+          "text": "回复 @GSOMO :我怎么感觉比大橡树好挖（",
+          "likes": 0,
+          "date": "2024-08-20T12:23:09.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239441918112",
+          "author": "冬日寒风于此处消逝",
+          "avatar": "https://i0.hdslb.com/bfs/face/3e8e5f91818281cf38867514a6b96e49539b399a.jpg",
+          "text": "想起我和我同学联机的时候找到了樱花树林，我同学作死往地上放了一桶水，然后\noh my pccccccccccccccccccc\n[笑哭]",
+          "likes": 0,
+          "date": "2024-08-22T10:50:12.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "240206316528",
+          "author": "绿染蓝_",
+          "avatar": "https://i2.hdslb.com/bfs/face/1a7f2d31d2d0620e46977c47c93831ecd1460cef.jpg",
+          "text": "回复 @GSOMO :不如金合欢阴间",
+          "likes": 0,
+          "date": "2024-08-26T03:34:06.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "241320790880",
@@ -12718,7 +19204,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "这样吗，我是拿弓箭手悖论的爆炸箭解决的",
           "likes": 0,
           "date": "2024-09-03T18:53:46.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -12733,6 +19220,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-08T09:14:12.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -12744,6 +19232,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-27T01:17:03.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -12755,6 +19244,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-12-02T01:00:27.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -12770,13 +19260,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[星星眼]",
-          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+          "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+          "animated": false
         },
         {
           "token": "[阴险]",
-          "url": "https://i0.hdslb.com/bfs/emote/ba8d5f8e7d136d59aab52c40fd3b8a43419eb03c.png"
+          "url": "https://i0.hdslb.com/bfs/emote/ba8d5f8e7d136d59aab52c40fd3b8a43419eb03c.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -12788,6 +19281,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-14T23:17:21.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -12799,6 +19293,14 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-08-25T08:09:57.000Z",
       "emojis": [],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/db419cf419a432d0bf25e0308b806d7e3537110116076153.jpg",
+          "width": 1920,
+          "height": 1080,
+          "animated": false
+        }
+      ],
       "replies": [
         {
           "id": "240049067312",
@@ -12807,7 +19309,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "你能数出这里有多少只鸡吗",
           "likes": 0,
           "date": "2024-08-25T08:11:03.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -12824,10 +19327,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[墨镜]",
-          "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "236075574848",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "幽默wy",
+          "likes": 2,
+          "date": "2024-08-06T10:13:09.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "236294594912",
           "author": "成分复杂的西瓜",
@@ -12838,22 +19353,32 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[墨镜]",
-              "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png",
+              "animated": false
             },
             {
               "token": "[大哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png"
+              "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "236075574848",
-          "author": "账号已注销",
+          "id": "236295345664",
+          "author": "96464848494",
           "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
-          "text": "幽默wy",
-          "likes": 2,
-          "date": "2024-08-06T10:13:09.000Z",
-          "emojis": []
+          "text": "回复 @成分很杂的屑瓜侄 :[大哭]",
+          "likes": 0,
+          "date": "2024-08-07T10:46:38.000Z",
+          "emojis": [
+            {
+              "token": "[大哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "237688858224",
@@ -12862,7 +19387,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "wy:落地 锤 挂了 尸体飞起来",
           "likes": 1,
           "date": "2024-08-14T08:32:26.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12877,9 +19403,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "238463160304",
@@ -12888,7 +19416,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "天赐良击好像",
           "likes": 0,
           "date": "2024-08-17T19:18:51.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12901,6 +19430,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-08-07T17:43:47.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "236472577712",
@@ -12912,9 +19442,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -12931,18 +19463,83 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[生病]",
-          "url": "https://i0.hdslb.com/bfs/emote/0f25ce04ae1d7baf98650986454c634f6612cb76.png"
+          "url": "https://i0.hdslb.com/bfs/emote/0f25ce04ae1d7baf98650986454c634f6612cb76.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
-          "id": "237339911760",
-          "author": "得到了铁锭的铁定",
-          "avatar": "https://i0.hdslb.com/bfs/face/b1f5ce4d4768c092278771ca0e6b7a9994d53bd2.jpg",
-          "text": "回复 @ElfballElfball :支持",
+          "id": "235625151776",
+          "author": "豆精大玉",
+          "avatar": "https://i0.hdslb.com/bfs/face/abbb6f47fff0cce47eec478083f18f926894742e.jpg",
+          "text": "what hard[doge]",
           "likes": 0,
-          "date": "2024-08-12T13:48:06.000Z",
-          "emojis": []
+          "date": "2024-08-04T07:02:24.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "235664642784",
+          "author": "矿泉水3",
+          "avatar": "https://i2.hdslb.com/bfs/face/ae2be9bb87b9f53e1a00b1dd788a0d609738c59d.jpg",
+          "text": "UP主是搬运的",
+          "likes": 0,
+          "date": "2024-08-04T10:46:39.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235710184672",
+          "author": "超能曼巴",
+          "avatar": "https://i1.hdslb.com/bfs/face/2aeadf3aa0fde3043902c4c7b11f82f9a6cddb69.jpg",
+          "text": "bro assumed that he is playing TikTok💀",
+          "likes": 0,
+          "date": "2024-08-04T14:34:51.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236068135488",
+          "author": "楚叶鸭",
+          "avatar": "https://i0.hdslb.com/bfs/face/60d007d3714c5ad1de114727130ab81488146df4.jpg",
+          "text": "🤡",
+          "likes": 0,
+          "date": "2024-08-06T09:38:51.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236189663184",
+          "author": "空工白米饭",
+          "avatar": "https://i0.hdslb.com/bfs/face/e749fe4ccecbe9d15510a769c6e84bebe8aa5084.jpg",
+          "text": "回复 @铁环gb :[笑哭]It&#39;s not that I&#39;m playing abstraction. Can&#39;t you understand?",
+          "likes": 0,
+          "date": "2024-08-07T00:51:58.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "236679539824",
+          "author": "还要努力啊",
+          "avatar": "https://i0.hdslb.com/bfs/face/61550172a00ab7ecb0a88d195da8dafd0e1b009f.jpg",
+          "text": "快捷翻译删了就老实了",
+          "likes": 0,
+          "date": "2024-08-09T08:31:59.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "236722856512",
@@ -12954,18 +19551,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "236679539824",
-          "author": "还要努力啊",
-          "avatar": "https://i0.hdslb.com/bfs/face/61550172a00ab7ecb0a88d195da8dafd0e1b009f.jpg",
-          "text": "快捷翻译删了就老实了",
+          "id": "237339911760",
+          "author": "得到了铁锭的铁定",
+          "avatar": "https://i0.hdslb.com/bfs/face/b1f5ce4d4768c092278771ca0e6b7a9994d53bd2.jpg",
+          "text": "回复 @ElfballElfball :支持",
           "likes": 0,
-          "date": "2024-08-09T08:31:59.000Z",
-          "emojis": []
+          "date": "2024-08-12T13:48:06.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -12980,9 +19580,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "235677021568",
@@ -12994,13 +19596,16 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             },
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "236645484912",
@@ -13009,7 +19614,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @付个运费吧 :不能",
           "likes": 0,
           "date": "2024-08-09T05:07:40.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -13022,6 +19628,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-03T11:27:15.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -13035,6 +19642,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-01T05:36:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -13048,6 +19656,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-01T05:09:19.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -13059,6 +19668,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-24T13:55:57.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -13070,6 +19680,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-08-16T07:05:23.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "239225070720",
@@ -13078,7 +19689,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "关于我开了5次宝库都是风暴一。",
           "likes": 0,
           "date": "2024-08-21T10:33:38.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -13093,6 +19705,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-10T01:34:29.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -13104,6 +19717,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-08T00:52:33.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -13115,6 +19729,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-08-04T15:49:59.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "235832090528",
@@ -13123,7 +19738,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "就是模拟我们玩家和朋友一起玩准备出发去冒险的场景，一到这种时候朋友都要准备这个准备那个很墨迹",
           "likes": 21,
           "date": "2024-08-05T07:09:03.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236103935088",
+          "author": "奕向晚菊呀",
+          "avatar": "https://i1.hdslb.com/bfs/face/25f540d7c99d7dbff15262c0ffb5cbbd2c5f024b.jpg",
+          "text": "回复 @MiaoXiaoO :奥～",
+          "likes": 0,
+          "date": "2024-08-06T12:23:06.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "236880297312",
@@ -13135,18 +19761,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
-        },
-        {
-          "id": "236103935088",
-          "author": "奕向晚菊呀",
-          "avatar": "https://i1.hdslb.com/bfs/face/25f540d7c99d7dbff15262c0ffb5cbbd2c5f024b.jpg",
-          "text": "回复 @MiaoXiaoO :奥～",
-          "likes": 0,
-          "date": "2024-08-06T12:23:06.000Z",
-          "emojis": []
+          ],
+          "images": []
         }
       ]
     }
@@ -13163,9 +19782,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -13177,6 +19798,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-05T14:57:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -13188,6 +19810,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-04T12:10:41.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -13203,9 +19826,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[墨镜]",
-          "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "236033942800",
@@ -13214,7 +19839,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "玩你樱花树去",
           "likes": 3,
           "date": "2024-08-06T06:20:43.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236039242240",
+          "author": "96464848494",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @bili16396078751 :[大哭]",
+          "likes": 0,
+          "date": "2024-08-06T06:53:47.000Z",
+          "emojis": [
+            {
+              "token": "[大哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "239336521680",
@@ -13226,9 +19868,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "239338213680",
@@ -13240,9 +19884,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[OK]",
-              "url": "https://i0.hdslb.com/bfs/emote/4683fd9ffc925fa6423110979d7dcac5eda297f4.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4683fd9ffc925fa6423110979d7dcac5eda297f4.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -13255,6 +19901,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-08-21T00:00:56.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "239146779152",
@@ -13266,9 +19913,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -13281,6 +19930,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-07-30T13:09:41.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -13294,6 +19944,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 10,
       "date": "2024-07-30T12:45:50.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "235778806032",
@@ -13302,7 +19953,38 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "对了，地狱门还得感谢基岩版猪人塔( ゜- ゜)つロ",
           "likes": 4,
           "date": "2024-08-05T02:16:50.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235822811008",
+          "author": "紫色的公牛",
+          "avatar": "https://i2.hdslb.com/bfs/face/2b341e353bab0c9f45f20669311439dd6c595061.jpg",
+          "text": "Up主请您说中文行不行",
+          "likes": 0,
+          "date": "2024-08-05T06:12:02.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235824887904",
+          "author": "锌部尚书",
+          "avatar": "https://i2.hdslb.com/bfs/face/3034db9752ef5392774101602c1d2e0cce5a55d5.jpg",
+          "text": "回复 @蛋小黑的粉丝 :展开",
+          "likes": 1,
+          "date": "2024-08-05T06:24:41.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235825274896",
+          "author": "紫色的公牛",
+          "avatar": "https://i2.hdslb.com/bfs/face/2b341e353bab0c9f45f20669311439dd6c595061.jpg",
+          "text": "回复 @ZetcZinc :当我没说",
+          "likes": 1,
+          "date": "2024-08-05T06:27:50.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "235827124752",
@@ -13314,9 +19996,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "235828050352",
@@ -13328,9 +20012,63 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "235880158288",
+          "author": "噪点芝士片",
+          "avatar": "https://i0.hdslb.com/bfs/face/e30860dfe8985326a0ee41a54521f14a3e995863.jpg",
+          "text": "听不懂",
+          "likes": 0,
+          "date": "2024-08-05T11:24:29.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235916064544",
+          "author": "折纸飞机设计局",
+          "avatar": "https://i2.hdslb.com/bfs/face/3af1addb241feddc589f0b13181c043f469e99c1.jpg",
+          "text": "我怎么记得打完凋零获得凋零玫瑰[笑哭]刚玩我的世界没多久",
+          "likes": 0,
+          "date": "2024-08-05T14:17:39.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "238271761952",
+          "author": "chocolatoR",
+          "avatar": "https://i2.hdslb.com/bfs/face/8a33a3f5f7a386381199a32825b0d8cf6f11672b.jpg",
+          "text": "回复 @折纸飞机设计局 :凋灵玫瑰是凋零炸死其他生物时获得",
+          "likes": 1,
+          "date": "2024-08-17T01:34:52.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "238272361872",
+          "author": "折纸飞机设计局",
+          "avatar": "https://i2.hdslb.com/bfs/face/3af1addb241feddc589f0b13181c043f469e99c1.jpg",
+          "text": "回复 @网友三顺草 :哦，原来如此，感谢感谢[doge]",
+          "likes": 0,
+          "date": "2024-08-17T01:38:50.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -13343,6 +20081,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-15T03:08:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -13354,6 +20093,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-18T06:05:34.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -13367,21 +20107,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 8,
       "date": "2024-08-05T07:36:01.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
-        {
-          "id": "238159565280",
-          "author": "胖胖的心哦",
-          "avatar": "https://i1.hdslb.com/bfs/face/906835fb11cac5545108380611a4c270363fc0c9.jpg",
-          "text": "知道我挖铁矿挖到远古城之后有多绝望吗？\n虽然很富[笑哭]",
-          "likes": 11,
-          "date": "2024-08-16T11:23:58.000Z",
-          "emojis": [
-            {
-              "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
-            }
-          ]
-        },
         {
           "id": "238066567824",
           "author": "朗奇258",
@@ -13392,9 +20119,79 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[藏狐]",
-              "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png"
+              "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "238159565280",
+          "author": "胖胖的心哦",
+          "avatar": "https://i1.hdslb.com/bfs/face/906835fb11cac5545108380611a4c270363fc0c9.jpg",
+          "text": "知道我挖铁矿挖到远古城之后有多绝望吗？\n虽然很富[笑哭]",
+          "likes": 11,
+          "date": "2024-08-16T11:23:58.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "238267538896",
+          "author": "虎哥114514666666",
+          "avatar": "https://i1.hdslb.com/bfs/face/6413dbbb91e7cdc7f7dfc6406d72a735678b5fed.jpg",
+          "text": "回复 @朗奇258 :应该是pve大佬[吃瓜]",
+          "likes": 0,
+          "date": "2024-08-17T01:06:08.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "238913742576",
+          "author": "啊啊啊不好啊",
+          "avatar": "https://i2.hdslb.com/bfs/face/3d23458c64d5fedd9e4c1ac707ed280d415d3df7.jpg",
+          "text": "这种装备就算PVP都打不过",
+          "likes": 2,
+          "date": "2024-08-20T00:56:13.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "238982878752",
+          "author": "一只甜瓜派",
+          "avatar": "https://i1.hdslb.com/bfs/face/4f057e4abf73f95cf549621f11e2fe9ffb40a182.jpg",
+          "text": "回复 @胖胖的心哦 :全钻套加金苹果 被秒了[笑哭]",
+          "likes": 0,
+          "date": "2024-08-20T07:50:01.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "239248022112",
+          "author": "Nanxper",
+          "avatar": "https://i0.hdslb.com/bfs/face/8b8d318cf6b4ca4534301410d728358196df05dc.jpg",
+          "text": "回复 @不是墨诸但又是墨诸 :来试试下界合金(?)虽然感觉一样结果",
+          "likes": 0,
+          "date": "2024-08-21T12:25:46.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "239345441248",
@@ -13406,9 +20203,27 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "240278040928",
+          "author": "凋灵饲主",
+          "avatar": "https://i2.hdslb.com/bfs/face/d900a02aaea3a1d013128611e0e94cb17cd8111f.jpg",
+          "text": "回复 @胖胖的心哦 :不知道，但是我在自家往下挖矿挖到了试炼密室，从天花板掉下去跟试炼刷怪笼面对面[藏狐]然后我还只带了把石剑防身",
+          "likes": 0,
+          "date": "2024-08-26T10:13:29.000Z",
+          "emojis": [
+            {
+              "token": "[藏狐]",
+              "url": "https://i0.hdslb.com/bfs/emote/ba0937ef6f3ccca85e2e0047e6263f3b4da37201.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -13423,19 +20238,12 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
-        {
-          "id": "236263961296",
-          "author": "-KK_MO-",
-          "avatar": "https://i1.hdslb.com/bfs/face/30eedcec918b8d154000095aacf181a5835b937d.jpg",
-          "text": "回复 @浮华折梦 :可是除了基岩版简单模式坚守者有胜算外，其他模式，java凋灵虐爆坚守者",
-          "likes": 4,
-          "date": "2024-08-07T08:00:10.000Z",
-          "emojis": []
-        },
         {
           "id": "236246978544",
           "author": "浮华折梦",
@@ -13443,7 +20251,102 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "二阶段下来就秒了",
           "likes": 2,
           "date": "2024-08-07T06:13:09.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236263961296",
+          "author": "-KK_MO-",
+          "avatar": "https://i1.hdslb.com/bfs/face/30eedcec918b8d154000095aacf181a5835b937d.jpg",
+          "text": "回复 @浮华折梦 :可是除了基岩版简单模式坚守者有胜算外，其他模式，java凋灵虐爆坚守者",
+          "likes": 4,
+          "date": "2024-08-07T08:00:10.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "237890097952",
+          "author": "雨晴RaineCyan",
+          "avatar": "https://i1.hdslb.com/bfs/face/69ffaaaec0ed4b7bbbc561868b2b9d05c9d35813.jpg",
+          "text": "错误的，这俩都有办法无护甲吊打[doge]",
+          "likes": 1,
+          "date": "2024-08-15T07:20:34.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "238478170208",
+          "author": "鳳梨吹彼岸",
+          "avatar": "https://i0.hdslb.com/bfs/face/99ce8fcb7251dcc0ca6d9a142c8e5889f39fc616.jpg",
+          "text": "回复 @-KK_MO- :版本正确，JAVA版的凋零真不是我这种新手全装都能打得过的东西，基岩版的凋零二阶段就只会追着你打，JAVA版才是真正的升阶，不仅追着你，还会控距走位，有时候bug了还会转圈嘲讽[笑哭]",
+          "likes": 0,
+          "date": "2024-08-18T00:22:33.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "238790164288",
+          "author": "playerhdd906",
+          "avatar": "https://i0.hdslb.com/bfs/face/9e0458e9e31bba9b4b322206e69bd8971701678f.jpg",
+          "text": "回复 @鳳梨吹岸 :JAVA板凋零:我上早八",
+          "likes": 0,
+          "date": "2024-08-19T09:44:39.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239583919616",
+          "author": "绀--青",
+          "avatar": "https://i2.hdslb.com/bfs/face/d44ecc449034c2104467914256d78994a958928a.jpg",
+          "text": "啊，我上次闲着没事儿，在古城放了一个凋零，凋零也没打过就是基岩版的[笑哭]",
+          "likes": 0,
+          "date": "2024-08-23T04:24:12.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "239636414080",
+          "author": "-KK_MO-",
+          "avatar": "https://i1.hdslb.com/bfs/face/30eedcec918b8d154000095aacf181a5835b937d.jpg",
+          "text": "回复 @豺運滾滾 :你要离凋灵50格远，不然他没有自动回血",
+          "likes": 0,
+          "date": "2024-08-23T09:14:54.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239652555584",
+          "author": "绀--青",
+          "avatar": "https://i2.hdslb.com/bfs/face/d44ecc449034c2104467914256d78994a958928a.jpg",
+          "text": "回复 @-KK_MO- :开旁观模式可以不？隔那么远估计都看不清战况了[笑哭]",
+          "likes": 0,
+          "date": "2024-08-23T10:33:43.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "239672842160",
@@ -13452,7 +20355,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @豺運滾滾 :不能，因为也会影响，如果觉得远可以用望远镜",
           "likes": 1,
           "date": "2024-08-23T12:06:16.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "254559718624",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @-KK_MO- :情况有点复杂呀[笑哭]",
+          "likes": 0,
+          "date": "2025-02-06T06:22:43.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -13465,6 +20385,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 6,
       "date": "2024-08-09T04:46:38.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "236866919280",
@@ -13473,16 +20394,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "C你的时候就老实了",
           "likes": 4,
           "date": "2024-08-10T07:02:05.000Z",
-          "emojis": []
-        },
-        {
-          "id": "239438673520",
-          "author": "超大柸良秀",
-          "avatar": "https://i0.hdslb.com/bfs/face/749a2e88b4275ebfb3ce288ddf3ec720b4ab58fb.jpg",
-          "text": "兄弟你多久没吃饭了",
-          "likes": 2,
-          "date": "2024-08-22T10:34:14.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "236885644384",
@@ -13491,7 +20404,54 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @我是一只小墨水 :它是我邻居",
           "likes": 2,
           "date": "2024-08-10T08:57:35.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "237438637008",
+          "author": "湘江宁子",
+          "avatar": "https://i0.hdslb.com/bfs/face/5d05771e3e667d8774eb4accda494504b02cdde6.jpg",
+          "text": "回复 @锁叶草MCSYC :啊？",
+          "likes": 1,
+          "date": "2024-08-13T04:28:23.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "239438673520",
+          "author": "超大柸良秀",
+          "avatar": "https://i0.hdslb.com/bfs/face/749a2e88b4275ebfb3ce288ddf3ec720b4ab58fb.jpg",
+          "text": "兄弟你多久没吃饭了",
+          "likes": 2,
+          "date": "2024-08-22T10:34:14.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "240581740976",
+          "author": "账号已注销",
+          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+          "text": "回复 @易忧神经 :我没吃过饭（）[doge]",
+          "likes": 0,
+          "date": "2024-08-27T20:19:23.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "266894237504",
+          "author": "蓝幻昔FancyBlue",
+          "avatar": "https://i2.hdslb.com/bfs/face/c6deee79043ef9ff601b0bc81df82ec136c0b228.jpg",
+          "text": "哥们被监守者打似了（",
+          "likes": 0,
+          "date": "2025-06-27T15:25:17.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -13506,7 +20466,24 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 10,
       "date": "2024-07-30T12:09:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
+        {
+          "id": "235234402512",
+          "author": "奶酪和Jerry",
+          "avatar": "https://i1.hdslb.com/bfs/face/2362ecb25999258886d803752030d2d422dc1ab3.jpg",
+          "text": "都对了耶嘿。[doge]",
+          "likes": 0,
+          "date": "2024-08-02T09:28:19.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
         {
           "id": "235680293824",
           "author": "_mfm_",
@@ -13517,9 +20494,61 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[歪嘴]",
-              "url": "https://i0.hdslb.com/bfs/emote/4384050fbab0586259acdd170b510fe262f08a17.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4384050fbab0586259acdd170b510fe262f08a17.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "235922343536",
+          "author": "苦瓜游戏",
+          "avatar": "https://i0.hdslb.com/bfs/face/f8855829637046ed1d550a0dc2ce8a506656f9c2.jpg",
+          "text": "对了三个",
+          "likes": 0,
+          "date": "2024-08-05T14:46:23.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236594964576",
+          "author": "深夜廻-呼啸小遥",
+          "avatar": "https://i0.hdslb.com/bfs/face/fe1f049c22bae0de129228d6ffddbc1aa346df09.jpg",
+          "text": "末影人在1.18地狱没更新前是不会刷新，但更新后，可以刷新了，抱括骷髅",
+          "likes": 0,
+          "date": "2024-08-08T23:32:23.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236614392320",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "回复 @是深夜廻小遥吖 :末影人早就可以在地狱生成",
+          "likes": 0,
+          "date": "2024-08-09T02:17:57.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236614457088",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "回复 @是深夜廻小遥吖 :骷髅亦然",
+          "likes": 0,
+          "date": "2024-08-09T02:18:07.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "238991654448",
+          "author": "Nanxper",
+          "avatar": "https://i0.hdslb.com/bfs/face/8b8d318cf6b4ca4534301410d728358196df05dc.jpg",
+          "text": "好耶 100分",
+          "likes": 0,
+          "date": "2024-08-20T08:42:25.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "239518549952",
@@ -13528,7 +20557,18 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "6",
           "likes": 0,
           "date": "2024-08-22T17:10:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "250793611041",
+          "author": "GardenGG14_",
+          "avatar": "https://i2.hdslb.com/bfs/face/1e03a9cc02e24f0c6dddf482ef36e4c6987f10e1.jpg",
+          "text": "回复 @深夜廻-小遥 : 有没有可能地狱更新是1.16",
+          "likes": 0,
+          "date": "2025-01-02T08:39:39.000Z",
+          "emojis": [],
+          "images": []
         },
         {
           "id": "251939750752",
@@ -13537,7 +20577,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "第115个赞！（打破114）",
           "likes": 0,
           "date": "2025-01-09T13:29:59.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -13552,9 +20593,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -13566,6 +20609,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-01T11:38:38.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -13579,6 +20623,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 1,
       "date": "2024-08-08T12:11:29.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "241900495793",
@@ -13587,7 +20632,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "你猜他为什么叫试炼之地我全下界合金套去那，都没干过",
           "likes": 0,
           "date": "2024-09-11T13:51:14.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -13600,6 +20646,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-03T13:06:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     },
     {
@@ -13611,6 +20658,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-26T01:29:53.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -13626,9 +20674,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[大哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png"
+          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -13642,9 +20692,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": []
     },
     {
@@ -13656,6 +20708,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 0,
       "date": "2024-08-08T18:47:58.000Z",
       "emojis": [],
+      "images": [],
       "replies": []
     }
   ],
@@ -13669,6 +20722,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 4,
       "date": "2024-08-05T00:56:48.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "235950737392",
@@ -13680,9 +20734,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "235972634016",
@@ -13694,9 +20750,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "240715136096",
@@ -13708,9 +20766,21 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge_金箍]",
-              "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png"
+              "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "247019579857",
+          "author": "_鹤川nef",
+          "avatar": "https://i1.hdslb.com/bfs/face/b2d53e2fa367888a57ae825c604ddff5ce8a4132.jpg",
+          "text": "@wkfi3fe2560 哈哈哈哈哈",
+          "likes": 0,
+          "date": "2024-11-17T06:34:54.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -13725,9 +20795,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "235609374064",
@@ -13736,7 +20808,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "确实但是要人多有那种竞争感觉会快一点，我和朋友玩的时候一天左右就差不多要打龙了，自己一个人玩的话往往要拖很多天 而且总是不想玩",
           "likes": 75,
           "date": "2024-08-04T05:29:17.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "235642805168",
@@ -13748,9 +20821,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "235759356656",
@@ -13759,7 +20834,90 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "这是怎么做到的，有啥稳定的的下界合金获取方式吗",
           "likes": 4,
           "date": "2024-08-04T23:38:11.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235787245952",
+          "author": "我爱吃菠菜啊儿",
+          "avatar": "https://i1.hdslb.com/bfs/face/7dea40cb4729663e7de10c2752de65f57b1a46c7.jpg",
+          "text": "回复 @北枳橙 :只能摸堡垒和挖",
+          "likes": 0,
+          "date": "2024-08-05T03:08:25.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235795690032",
+          "author": "世无忧w",
+          "avatar": "https://i0.hdslb.com/bfs/face/58d6594ab4051b6ef6e97ffda1bdfe539182bd91.jpg",
+          "text": "回复 @朗奇258 :来玩GTNH，就算卷没几个月也卷不完[吃瓜]",
+          "likes": 1,
+          "date": "2024-08-05T03:54:54.000Z",
+          "emojis": [
+            {
+              "token": "[吃瓜]",
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "235949624304",
+          "author": "-有够会-",
+          "avatar": "https://i0.hdslb.com/bfs/face/6dac0d5d7b11c8a0970b3ba5da6ae926c0c7721e.jpg",
+          "text": "回复 @朗奇258 :问一句 服务器一是jave的比较多吗",
+          "likes": 0,
+          "date": "2024-08-05T17:28:35.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235972614560",
+          "author": "探究者阿莫斯",
+          "avatar": "https://i0.hdslb.com/bfs/face/c0e87b0d1ec314803440f3ca88477683464bac3a.jpg",
+          "text": "几个月后才回归的服务器数千格已经被探索完，管理员们全在搞猪人塔和工会基地，其他人都发展成下界合金了到处都忙活着，想加入但完全没有人搭理我，身上也只剩下2组钻石了升级模板还是借别人的[笑哭]",
+          "likes": 2,
+          "date": "2024-08-06T00:23:21.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "236032451152",
+          "author": "是阿零唉",
+          "avatar": "https://i0.hdslb.com/bfs/face/cd2c472d0d2f983891a509bb9e95f2f65d63a32f.jpg",
+          "text": "唉你干啥了？咋身上全是垃圾？没肝？哦我昨天速通了",
+          "likes": 0,
+          "date": "2024-08-06T06:12:02.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236821688352",
+          "author": "Dracaenei",
+          "avatar": "https://i0.hdslb.com/bfs/face/f373f75f02ed61e2ed608b9c0c5ba85f387732ff.jpg",
+          "text": "回复 @热爱轻音的少年 :你打错了，不是jave是jvav😡",
+          "likes": 0,
+          "date": "2024-08-10T02:46:08.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "237038454512",
+          "author": "夜靑橙",
+          "avatar": "https://i2.hdslb.com/bfs/face/157a07e54acceb9954e09aaf3760ddd216331a97.jpg",
+          "text": "不用两天，，只要够肝，一个晚上足矣",
+          "likes": 0,
+          "date": "2024-08-11T04:13:11.000Z",
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -13774,9 +20932,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "235638408096",
@@ -13788,9 +20948,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "235666407712",
@@ -13799,7 +20961,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "一天半就可以了",
           "likes": 11,
           "date": "2024-08-04T10:55:31.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
@@ -13816,10 +20979,28 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[笑哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+          "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "235685673328",
+          "author": "EarthsLastEmoBoy",
+          "avatar": "https://i0.hdslb.com/bfs/face/91d17a8f9efb84d491992630fadab73c4fc8253a.jpg",
+          "text": "一样[笑哭]",
+          "likes": 0,
+          "date": "2024-08-04T12:34:41.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
         {
           "id": "236595324960",
           "author": "戮骏搏",
@@ -13830,9 +21011,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "236789441232",
@@ -13841,7 +21024,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "一样，从来没合成过蜡烛\n而且另外三个都比较历史悠久，蜡烛很新（）",
           "likes": 1,
           "date": "2024-08-09T19:42:27.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "237193283056",
@@ -13853,9 +21037,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -13870,9 +21056,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
         {
           "id": "240242603216",
@@ -13881,7 +21069,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "主要是没有好附魔的话没有什么存在感，前期不如弓箭方便",
           "likes": 0,
           "date": "2024-08-26T06:51:47.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     },
@@ -13894,6 +21083,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 2,
       "date": "2024-07-30T01:44:12.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "236339446912",
@@ -13905,9 +21095,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[哦呼]",
-              "url": "https://i0.hdslb.com/bfs/emote/362bded07ea5434886271d23fa25f5d85d8af06c.png"
+              "url": "https://i0.hdslb.com/bfs/emote/362bded07ea5434886271d23fa25f5d85d8af06c.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "236478687760",
@@ -13919,9 +21111,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     }
@@ -13936,6 +21130,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 3,
       "date": "2024-08-05T04:38:41.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
           "id": "236032948736",
@@ -13944,7 +21139,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "虽然我也比较喜欢整理和规整，但是流浪栓绳是必杀的",
           "likes": 16,
           "date": "2024-08-06T06:15:44.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "236390714352",
@@ -13953,7 +21149,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @世界Shijie_ :我更喜欢拿着绿宝石，等他亮出东西的时候再用抢夺剑杀",
           "likes": 1,
           "date": "2024-08-07T23:39:09.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "236826920912",
@@ -13965,9 +21162,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[吃瓜]",
-              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png"
+              "url": "https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         }
       ]
     },
@@ -13980,15 +21179,23 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "replyCount": 19,
       "date": "2024-08-03T08:37:31.000Z",
       "emojis": [],
+      "images": [],
       "replies": [
         {
-          "id": "235628862480",
-          "author": "天堂之勇士",
-          "avatar": "https://i2.hdslb.com/bfs/face/2a7ba3e62232df9440956664e4aa9fbf823e1189.jpg",
-          "text": "回复 @buuuuu丸 :1.20.2，骨折无法叠加",
-          "likes": 6,
-          "date": "2024-08-04T07:25:22.000Z",
-          "emojis": []
+          "id": "235468340896",
+          "author": "沧海水鱼",
+          "avatar": "/media/avatars/shuiyu.webp",
+          "text": "老生电了[星星眼]",
+          "likes": 3,
+          "date": "2024-08-03T11:40:20.000Z",
+          "emojis": [
+            {
+              "token": "[星星眼]",
+              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "235626117200",
@@ -14000,23 +21207,127 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[笑哭]",
-              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
-          "id": "235468340896",
-          "author": "沧海水鱼",
-          "avatar": "/media/avatars/shuiyu.webp",
-          "text": "老生电了[星星眼]",
-          "likes": 3,
-          "date": "2024-08-03T11:40:20.000Z",
+          "id": "235628862480",
+          "author": "天堂之勇士",
+          "avatar": "https://i2.hdslb.com/bfs/face/2a7ba3e62232df9440956664e4aa9fbf823e1189.jpg",
+          "text": "回复 @buuuuu丸 :1.20.2，骨折无法叠加",
+          "likes": 6,
+          "date": "2024-08-04T07:25:22.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235879365168",
+          "author": "Sterze87",
+          "avatar": "https://i0.hdslb.com/bfs/face/605edd17e71a5788af688c539c0251ce97a5ab4a.jpg",
+          "text": "我是一二杂交种[笑哭]",
+          "likes": 1,
+          "date": "2024-08-05T11:19:57.000Z",
           "emojis": [
             {
-              "token": "[星星眼]",
-              "url": "https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png"
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
+        },
+        {
+          "id": "235885620672",
+          "author": "bili_1408694743",
+          "avatar": "https://i1.hdslb.com/bfs/face/987157f67113548c22d59e82784d935295727353.jpg",
+          "text": "回复 @buuuuu丸 :还真是，我说怎么我打折两次价格还是跟第一次打折一样，以后没有1绿宝石的全附魔书了[笑哭]",
+          "likes": 0,
+          "date": "2024-08-05T11:50:38.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "235889687824",
+          "author": "孤门云生",
+          "avatar": "https://i1.hdslb.com/bfs/face/ad5b5cb58f5e7b6b1bd6213e81177358ccccfa1e.jpg",
+          "text": "回复 @Zarosk :除非那个交易项目本身就很便宜，我们群里有个人1.21了还能搞出一元购[笑哭]",
+          "likes": 0,
+          "date": "2024-08-05T12:09:49.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "235895246112",
+          "author": "IFTHEWORLDENDS",
+          "avatar": "https://i1.hdslb.com/bfs/face/60fe6ae78950f5dd3a0acfbb020dc8c16411fcb1.jpg",
+          "text": "回复 @buuuuu丸 :我也1.21但我也可以打骨折 20的经验修补直接1绿宝石了[doge][doge]",
+          "likes": 0,
+          "date": "2024-08-05T12:37:31.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "235913969792",
+          "author": "孤门云生",
+          "avatar": "https://i1.hdslb.com/bfs/face/ad5b5cb58f5e7b6b1bd6213e81177358ccccfa1e.jpg",
+          "text": "回复 @Charlotte_simon :鸡肚了",
+          "likes": 0,
+          "date": "2024-08-05T14:07:57.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "235930921520",
+          "author": "IFTHEWORLDENDS",
+          "avatar": "https://i1.hdslb.com/bfs/face/60fe6ae78950f5dd3a0acfbb020dc8c16411fcb1.jpg",
+          "text": "回复 @buuuuu丸 :我前期绿宝石都是刷线机给的 现在做了大叔的半圆猪人塔 金子自由和腐肉自由就可以找牧师换 打了折扣1个金锭就能换一个宝石 如果还嫌少可以像我一样做个1.21的袭击塔 效率还是蛮可观的[doge][doge]",
+          "likes": 0,
+          "date": "2024-08-05T15:27:04.000Z",
+          "emojis": [
+            {
+              "token": "[doge]",
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
+            }
+          ],
+          "images": []
+        },
+        {
+          "id": "236023313344",
+          "author": "孤门云生",
+          "avatar": "https://i1.hdslb.com/bfs/face/ad5b5cb58f5e7b6b1bd6213e81177358ccccfa1e.jpg",
+          "text": "回复 @Charlotte_simon :好家伙，原来你是JAVA版,鸡肚你的颠佬[喜欢]",
+          "likes": 0,
+          "date": "2024-08-06T05:19:34.000Z",
+          "emojis": [
+            {
+              "token": "[喜欢]",
+              "url": "https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     },
@@ -14031,7 +21342,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[doge]",
-          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+          "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+          "animated": false
+        }
+      ],
+      "images": [
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/21cf7151fc57d49cbb20b58c200584873494377615788201.jpg",
+          "width": 1600,
+          "height": 720,
+          "animated": false
+        },
+        {
+          "url": "https://i0.hdslb.com/bfs/new_dyn/0b88cac28d0ba68ace548e4bc85622693494377615788201.jpg",
+          "width": 1600,
+          "height": 720,
+          "animated": false
         }
       ],
       "replies": [
@@ -14042,7 +21368,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "什么星露谷",
           "likes": 12,
           "date": "2024-08-04T13:59:37.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         },
         {
           "id": "236048277584",
@@ -14051,7 +21378,34 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "什么村庄天际线",
           "likes": 9,
           "date": "2024-08-06T07:47:53.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "236540439808",
+          "author": "vlo-MESA",
+          "avatar": "https://i2.hdslb.com/bfs/face/f65279e8fcf48b6f308c7fe23a5f978bc69efabd.jpg",
+          "text": "帝国时代4",
+          "likes": 2,
+          "date": "2024-08-08T13:57:38.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "237082439120",
+          "author": "昶青永晴永日青",
+          "avatar": "https://i2.hdslb.com/bfs/face/3afe6804a54f8405694cbe26bb4b0149712f8cca.jpg",
+          "text": "纪元180是吧[笑哭]",
+          "likes": 0,
+          "date": "2024-08-11T08:34:25.000Z",
+          "emojis": [
+            {
+              "token": "[笑哭]",
+              "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png",
+              "animated": false
+            }
+          ],
+          "images": []
         },
         {
           "id": "237532075520",
@@ -14060,7 +21414,29 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "真屋舍俨然",
           "likes": 4,
           "date": "2024-08-13T12:46:54.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "238274981088",
+          "author": "_我专_",
+          "avatar": "https://i2.hdslb.com/bfs/face/6bbf396dcdf421d4972afbc15b7d6350174825a8.jpg",
+          "text": "我记得我还在别的哪个评论区见过你和你的两张图[思考][妙啊]",
+          "likes": 0,
+          "date": "2024-08-17T01:55:57.000Z",
+          "emojis": [
+            {
+              "token": "[妙啊]",
+              "url": "https://i0.hdslb.com/bfs/emote/b4cb77159d58614a9b787b91b1cd22a81f383535.png",
+              "animated": false
+            },
+            {
+              "token": "[思考]",
+              "url": "https://i0.hdslb.com/bfs/emote/cfa9b7e89e4bfe04bbcd34ccb1b0df37f4fa905c.png",
+              "animated": false
+            }
+          ],
+          "images": []
         }
       ]
     }
@@ -14077,10 +21453,22 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "emojis": [
         {
           "token": "[大哭]",
-          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png"
+          "url": "https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png",
+          "animated": false
         }
       ],
+      "images": [],
       "replies": [
+        {
+          "id": "323278250528",
+          "author": "云海_永恒",
+          "avatar": "https://i1.hdslb.com/bfs/face/6bbec3e74f905c45e2db5c18c1b6956a794379a1.jpg",
+          "text": "咋突然开播了",
+          "likes": 0,
+          "date": "2026-11-07T18:17:34.000Z",
+          "emojis": [],
+          "images": []
+        },
         {
           "id": "319567990593",
           "author": "沧海水鱼",
@@ -14091,9 +21479,11 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "emojis": [
             {
               "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
+              "animated": false
             }
-          ]
+          ],
+          "images": []
         },
         {
           "id": "319569445217",
@@ -14102,16 +21492,8 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "text": "回复 @云海_永恒 :主要是这种不当素材剪视频的直接投直播回放也方便",
           "likes": 0,
           "date": "2026-11-08T06:20:36.000Z",
-          "emojis": []
-        },
-        {
-          "id": "323278250528",
-          "author": "云海_永恒",
-          "avatar": "https://i1.hdslb.com/bfs/face/6bbec3e74f905c45e2db5c18c1b6956a794379a1.jpg",
-          "text": "咋突然开播了",
-          "likes": 0,
-          "date": "2026-11-07T18:17:34.000Z",
-          "emojis": []
+          "emojis": [],
+          "images": []
         }
       ]
     }
