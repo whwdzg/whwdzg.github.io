@@ -16,13 +16,13 @@ export interface BilibiliCommentProgress {
   updatedAt: string;
 }
 
-export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-19T16:59:37.227Z";
+export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-20T01:18:03.268Z";
 
 export const BILIBILI_COMMENT_PROGRESS: BilibiliCommentProgress = {
-  "covered": 48,
+  "covered": 60,
   "total": 218,
   "cycle": 1,
-  "updatedAt": "2026-11-19T16:59:37.226Z"
+  "updatedAt": "2026-11-20T01:18:03.267Z"
 };
 
 export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
@@ -869,6 +869,240 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "date": "2025-06-29T09:34:53.000Z"
     }
   ],
+  "86": [
+    {
+      "id": "265771435952",
+      "author": "H3XB_XwX",
+      "avatar": "https://i0.hdslb.com/bfs/face/88e8c7ce80a3216b32844a268e2b61610cae3e26.jpg",
+      "text": "看来快乐恶魂要实装到游戏里了，不再是实验了[星星眼]",
+      "likes": 11,
+      "replyCount": 2,
+      "date": "2025-06-16T06:33:30.000Z"
+    },
+    {
+      "id": "264869095713",
+      "author": "晓泉口口口",
+      "avatar": "https://i1.hdslb.com/bfs/face/d2f0c141e894b715c21a0321974f58f6baca0adc.jpg",
+      "text": "6月17日来报到1.21.6实装",
+      "likes": 5,
+      "replyCount": 0,
+      "date": "2025-06-17T20:37:06.000Z"
+    },
+    {
+      "id": "264699386945",
+      "author": "hxhej",
+      "avatar": "/media/avatars/hxhej.webp",
+      "text": "L video",
+      "likes": 3,
+      "replyCount": 2,
+      "date": "2025-06-16T02:54:57.000Z"
+    }
+  ],
+  "87": [
+    {
+      "id": "264670177729",
+      "author": "叶新本尊",
+      "avatar": "https://i1.hdslb.com/bfs/face/75bd87a4e533b3b8345e23c22edf1b8ab0477f8c.jpg",
+      "text": "优秀啊",
+      "likes": 1,
+      "replyCount": 0,
+      "date": "2025-06-15T15:18:35.000Z"
+    },
+    {
+      "id": "265703433825",
+      "author": "币币爱慕C",
+      "avatar": "https://i2.hdslb.com/bfs/face/85bcd2d573c0442d39480c45d0dca0bbc78ab1c0.jpg",
+      "text": "我看过了，下界传送门方圆1000格之内都没有灵魂沙地，我这辈子是玩不到乐魂了[大哭]",
+      "likes": 0,
+      "replyCount": 2,
+      "date": "2025-06-26T13:30:33.000Z"
+    },
+    {
+      "id": "264971482801",
+      "author": "氧化亚牛排",
+      "avatar": "https://i0.hdslb.com/bfs/face/8836cde7ca9972552faa8eef28633cb997b0fb99.jpg",
+      "text": "玩1.20.1的[doge]",
+      "likes": 0,
+      "replyCount": 0,
+      "date": "2025-06-19T01:14:35.000Z"
+    }
+  ],
+  "88": [
+    {
+      "id": "267787594768",
+      "author": "DEEEEEKA",
+      "avatar": "https://i2.hdslb.com/bfs/face/29e347ac0e07453a6759248f56ed925fcc9706c4.jpg",
+      "text": "z",
+      "likes": 0,
+      "replyCount": 0,
+      "date": "2025-07-06T05:48:01.000Z"
+    },
+    {
+      "id": "265556197809",
+      "author": "账号已注销",
+      "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+      "text": "6",
+      "likes": 0,
+      "replyCount": 0,
+      "date": "2025-06-25T02:30:18.000Z"
+    }
+  ],
+  "89": [
+    {
+      "id": "265628768257",
+      "author": "风雨骤霁-Tyx7",
+      "avatar": "https://i0.hdslb.com/bfs/face/28846608bdefc7b611e2b9e512eb3f7d2ecdf7d1.jpg",
+      "text": "官方在2014年就有了史蒂夫皮肤，居然在202几年才发布出来。",
+      "likes": 7,
+      "replyCount": 1,
+      "date": "2025-06-25T16:52:20.000Z"
+    },
+    {
+      "id": "268071813232",
+      "author": "星辰大海_喵",
+      "avatar": "https://i2.hdslb.com/bfs/face/14b1fcb92416801a040965498c584fa66f019855.jpg",
+      "text": "[支持][支持]",
+      "likes": 3,
+      "replyCount": 6,
+      "date": "2025-07-08T18:35:54.000Z"
+    },
+    {
+      "id": "264726514465",
+      "author": "Thetimeoflove",
+      "avatar": "https://i1.hdslb.com/bfs/face/7e72c58637ff26df68fb30939de078d2bbbfcdbe.jpg",
+      "text": "minecraft的变化真的太大了",
+      "likes": 1,
+      "replyCount": 0,
+      "date": "2025-06-16T09:07:16.000Z"
+    }
+  ],
+  "90": [
+    {
+      "id": "266311457104",
+      "author": "H3XB_XwX",
+      "avatar": "https://i0.hdslb.com/bfs/face/88e8c7ce80a3216b32844a268e2b61610cae3e26.jpg",
+      "text": "底下空耳成芝士伪装了[笑哭]",
+      "likes": 1,
+      "replyCount": 0,
+      "date": "2025-06-21T17:08:39.000Z"
+    },
+    {
+      "id": "264647097217",
+      "author": "Thetimeoflove",
+      "avatar": "https://i1.hdslb.com/bfs/face/7e72c58637ff26df68fb30939de078d2bbbfcdbe.jpg",
+      "text": "字幕咋用不了？[大哭]",
+      "likes": 0,
+      "replyCount": 0,
+      "date": "2025-06-15T11:15:00.000Z"
+    }
+  ],
+  "91": [
+    {
+      "id": "264785665089",
+      "author": "月初2017",
+      "avatar": "https://i1.hdslb.com/bfs/face/dd59dedaeb1ee1e48e5c704d00da82254ac1b29d.jpg",
+      "text": "被发现秘密恼羞成怒是史蒂夫",
+      "likes": 8,
+      "replyCount": 0,
+      "date": "2025-06-17T01:42:09.000Z"
+    },
+    {
+      "id": "266311319968",
+      "author": "H3XB_XwX",
+      "avatar": "https://i0.hdslb.com/bfs/face/88e8c7ce80a3216b32844a268e2b61610cae3e26.jpg",
+      "text": "摄影师被射下去了没绷住[笑哭]",
+      "likes": 7,
+      "replyCount": 0,
+      "date": "2025-06-21T17:09:26.000Z"
+    }
+  ],
+  "92": [
+    {
+      "id": "264743452145",
+      "author": "fufu想要改昵称",
+      "avatar": "https://i1.hdslb.com/bfs/face/119b862020f62bcde2ce720b508f9ac4d9ca2811.webp",
+      "text": "蛙明灯winner！",
+      "likes": 12,
+      "replyCount": 0,
+      "date": "2025-06-16T12:16:08.000Z"
+    },
+    {
+      "id": "266872735808",
+      "author": "Mofish83",
+      "avatar": "https://i0.hdslb.com/bfs/face/20356c66a8f9f139679b9ac351ab71ab8e4b3491.jpg",
+      "text": "麻将工作室也是五个字[喜欢]",
+      "likes": 11,
+      "replyCount": 3,
+      "date": "2025-06-27T11:55:09.000Z"
+    },
+    {
+      "id": "268146765216",
+      "author": "Zuri大大大",
+      "avatar": "https://i2.hdslb.com/bfs/face/19e242b59a38f44c773ea90bdb35b2da684c46f7.jpg",
+      "text": "努尔好可爱！",
+      "likes": 2,
+      "replyCount": 0,
+      "date": "2025-07-09T11:37:35.000Z"
+    }
+  ],
+  "93": [
+    {
+      "id": "265771878816",
+      "author": "Simple_hzA",
+      "avatar": "https://i0.hdslb.com/bfs/face/dc66b16102a4cfa2825c918ccec59c5708996dc9.jpg",
+      "text": "其实一开始都是直接做铁甲吧",
+      "likes": 67,
+      "replyCount": 5,
+      "date": "2025-06-16T06:38:31.000Z"
+    },
+    {
+      "id": "265642230560",
+      "author": "AIM752",
+      "avatar": "https://i2.hdslb.com/bfs/face/25e23b47e8334f14020219fa5f8d1e5af2a14c3a.jpg",
+      "text": "防御力太低了，玩生存的时候根本就不会用",
+      "likes": 37,
+      "replyCount": 5,
+      "date": "2025-06-14T23:57:34.000Z"
+    },
+    {
+      "id": "266043470849",
+      "author": "许愿星233",
+      "avatar": "https://i2.hdslb.com/bfs/face/523b511430059fcca3931e1bed403e8cab1a63e2.jpg",
+      "text": "链甲不才是真正被遗忘的",
+      "likes": 15,
+      "replyCount": 1,
+      "date": "2025-06-29T23:09:57.000Z"
+    }
+  ],
+  "94": [
+    {
+      "id": "265660190448",
+      "author": "时耀-timeshine",
+      "avatar": "https://i0.hdslb.com/bfs/face/b4ef0900f52bb8eba3bdbf847503b7c67e4ce0db.jpg",
+      "text": "爸爸你没有刷铁机绷不住了",
+      "likes": 88,
+      "replyCount": 0,
+      "date": "2025-06-15T03:55:22.000Z"
+    },
+    {
+      "id": "265671251616",
+      "author": "HonLeft7_",
+      "avatar": "https://i1.hdslb.com/bfs/face/bd6861fbb8dfa7b2c4fec3c61b5300d7e4ddf0cc.jpg",
+      "text": "十五周年好像只是前几个月的事情[笑哭][doge]",
+      "likes": 50,
+      "replyCount": 4,
+      "date": "2025-06-15T05:46:32.000Z"
+    },
+    {
+      "id": "265796924272",
+      "author": "ANekx",
+      "avatar": "https://i2.hdslb.com/bfs/face/f5c54f9ee2e89b5654bfb92b21e8d7bd970feda6.jpg",
+      "text": "不是才过完15周年吗？怎么又16周年了[笑哭]",
+      "likes": 8,
+      "replyCount": 0,
+      "date": "2025-06-16T11:51:16.000Z"
+    }
+  ],
   "95": [
     {
       "id": "264602899825",
@@ -954,6 +1188,93 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "likes": 1,
       "replyCount": 0,
       "date": "2025-06-14T13:50:56.000Z"
+    }
+  ],
+  "103": [
+    {
+      "id": "261602137985",
+      "author": "Bepshi",
+      "avatar": "https://i2.hdslb.com/bfs/face/70b00ee81c517ceccb1e6ed65cf8ad7fc249daf9.jpg",
+      "text": "虽然这14年里官方的迷惑操作也没少干，游戏一些常年都有的问题很多也没解决，但整体来讲还是进步很大的",
+      "likes": 175,
+      "replyCount": 4,
+      "date": "2025-05-11T07:33:06.000Z"
+    },
+    {
+      "id": "261614677921",
+      "author": "铁血-提尔比茨",
+      "avatar": "https://i1.hdslb.com/bfs/face/b2084916905f228eff3dc469349482a43ac7a848.jpg",
+      "text": "个人感觉2011年看着更舒服，可能是小的时候玩的比较多吧[doge]",
+      "likes": 74,
+      "replyCount": 10,
+      "date": "2025-05-11T10:29:42.000Z"
+    },
+    {
+      "id": "261666068753",
+      "author": "影0107",
+      "avatar": "https://i1.hdslb.com/bfs/face/182680a2f1c17a4dc7dc4c50a864ff600789a6e6.jpg",
+      "text": "老版本虽然经典，但耐不住时间推移，现在MC最需要的是不断注入新鲜血液才能更吸引玩家。[笑哭][笑哭]",
+      "likes": 53,
+      "replyCount": 5,
+      "date": "2025-05-12T04:16:38.000Z"
+    }
+  ],
+  "104": [
+    {
+      "id": "262559572848",
+      "author": "探究者阿莫斯",
+      "avatar": "https://i0.hdslb.com/bfs/face/c0e87b0d1ec314803440f3ca88477683464bac3a.jpg",
+      "text": "油管看到过有一大帮子人因为蓝和红，导致搞不清楚幻魔者那一个是什么生物",
+      "likes": 10,
+      "replyCount": 0,
+      "date": "2025-05-11T07:47:23.000Z"
+    },
+    {
+      "id": "261601435057",
+      "author": "Jiwoniverse",
+      "avatar": "https://i0.hdslb.com/bfs/face/519c9d6d6e50eaa65030e90050637195264b9c8d.jpg",
+      "text": "视频有我翻译的字幕，打开字幕后选择(中文(中国))即可配合字幕食用该视频！[鼓掌]",
+      "likes": 2,
+      "replyCount": 3,
+      "date": "2025-05-11T07:22:28.000Z"
+    },
+    {
+      "id": "261623767185",
+      "author": "冷空气TuT",
+      "avatar": "https://i1.hdslb.com/bfs/face/83f5881bdee9e1c7f2077ce428e8e4375d2363c7.jpg",
+      "text": "只认出来了第二个[笑哭]",
+      "likes": 1,
+      "replyCount": 0,
+      "date": "2025-05-11T12:24:35.000Z"
+    }
+  ],
+  "105": [
+    {
+      "id": "262605498400",
+      "author": "不会画画的废佬",
+      "avatar": "https://i2.hdslb.com/bfs/face/71e47a5f717dd7ea0f76db42634831d5cc65d556.jpg",
+      "text": "所以官方自己也知道这个steve不讨喜啊[笑哭]",
+      "likes": 462,
+      "replyCount": 4,
+      "date": "2025-05-11T18:07:12.000Z"
+    },
+    {
+      "id": "261615228017",
+      "author": "-菲力浦-",
+      "avatar": "https://i0.hdslb.com/bfs/face/143fae0d1cf01a9f784ee0656f21e0d57c7ae899.jpg",
+      "text": "steve：我居然梦到了平行世界的我",
+      "likes": 84,
+      "replyCount": 1,
+      "date": "2025-05-11T10:35:27.000Z"
+    },
+    {
+      "id": "261600627745",
+      "author": "Jiwoniverse",
+      "avatar": "https://i0.hdslb.com/bfs/face/519c9d6d6e50eaa65030e90050637195264b9c8d.jpg",
+      "text": "视频有我翻译的字幕，打开字幕后选择(中文(中国))即可配合字幕食用该视频！[鼓掌]",
+      "likes": 25,
+      "replyCount": 1,
+      "date": "2025-05-11T07:09:04.000Z"
     }
   ],
   "250": [

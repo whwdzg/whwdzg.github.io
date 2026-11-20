@@ -62,7 +62,7 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-19T16:39:25.661Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-20T01:17:08.467Z";
 
 export const BILIBILI_PROFILE: BilibiliProfile = {
   "name": "沧海水鱼",
@@ -72,7 +72,7 @@ export const BILIBILI_PROFILE: BilibiliProfile = {
   "level": 6,
   "fans": 2164,
   "following": 476,
-  "likes": 182892,
+  "likes": 182895,
   "videos": 177,
   "articles": 1,
   "opus": 48,
@@ -643,7 +643,7 @@ export const BILIBILI_ARTICLES: BilibiliArticle[] = [
     "url": "https://www.bilibili.com/read/cv37503252",
     "cover": "/media/bilibili/article-37503252.jpg",
     "date": "2024-08-23T06:00:29.000Z",
-    "views": 266,
+    "views": 267,
     "likes": 4,
     "words": 730
   }

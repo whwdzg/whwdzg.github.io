@@ -47,7 +47,7 @@ export interface GithubProfileSnapshot {
   };
 }
 
-export const GITHUB_SYNCED_AT = "2026-11-19T16:51:20.614Z";
+export const GITHUB_SYNCED_AT = "2026-11-20T01:16:34.556Z";
 
 export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "avatar": "https://avatars.githubusercontent.com/u/91038761?v=4",
@@ -62,7 +62,7 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "location": "Shanghai",
   "blog": "whwdzg.github.io",
   "contributions": {
-    "total": 345,
+    "total": 357,
     "weeks": [
       {
         "days": [
@@ -2121,8 +2121,8 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
           },
           {
             "date": "2026-11-20",
-            "count": 6,
-            "color": "#9be9a8"
+            "count": 18,
+            "color": "#40c463"
           }
         ]
       }
@@ -2142,7 +2142,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 1,
     "language": "TypeScript",
     "updatedAt": "2026-11-16T17:14:31Z",
-    "pushedAt": "2026-11-19T16:46:21Z",
+    "pushedAt": "2026-11-19T17:09:32Z",
     "archived": false
   },
   {
@@ -2268,7 +2268,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "TypeScript",
     "updatedAt": "2026-11-19T15:58:37Z",
-    "pushedAt": "2026-11-19T16:29:33Z",
+    "pushedAt": "2026-11-19T18:43:12Z",
     "archived": false
   }
 ];

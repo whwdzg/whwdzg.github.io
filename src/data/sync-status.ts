@@ -13,31 +13,43 @@ export interface SyncSource {
 }
 
 export const SYNC_STATUS = {
-  "updatedAt": "2026-11-19T08:51:07.510Z",
+  "updatedAt": "2026-11-20T01:18:03.301Z",
   "sources": {
     "github": {
       "label": "GitHub",
-      "at": "2026-11-19T08:50:26.860Z",
+      "at": "2026-11-20T01:16:34.590Z",
       "count": 9,
-      "status": "ok"
+      "status": "ok",
+      "lastAttempt": "2026-11-20T01:16:34.590Z",
+      "stale": false,
+      "error": ""
     },
     "modrinth": {
       "label": "Modrinth",
-      "at": "2026-11-19T08:50:17.469Z",
+      "at": "2026-11-20T01:16:08.979Z",
       "count": 6,
-      "status": "ok"
+      "status": "ok",
+      "lastAttempt": "2026-11-20T01:16:08.979Z",
+      "stale": false,
+      "error": ""
     },
     "mcmod": {
       "label": "MC百科",
-      "at": "2026-11-19T08:50:21.232Z",
+      "at": "2026-11-20T01:16:28.709Z",
       "count": 3,
-      "status": "ok"
+      "status": "ok",
+      "lastAttempt": "2026-11-20T01:16:28.709Z",
+      "stale": false,
+      "error": ""
     },
     "bilibili": {
       "label": "哔哩哔哩",
       "at": "2026-11-19T08:51:07.510Z",
       "count": 251,
-      "status": "ok"
+      "status": "error",
+      "lastAttempt": "2026-11-20T01:18:03.301Z",
+      "stale": true,
+      "error": "--fail"
     }
   }
 } as const;
