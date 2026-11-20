@@ -7,6 +7,7 @@ import {
   DismissRegular,
   LocationRegular,
 } from '@fluentui/react-icons';
+import { createPortal } from 'react-dom';
 import { cn } from '../../lib/cn';
 import './lightbox.css';
 
@@ -149,7 +150,7 @@ export function ImageLightbox() {
     });
   };
 
-  return (
+  return createPortal(
     <div
       className="image-lightbox"
       role="dialog"
@@ -337,6 +338,7 @@ export function ImageLightbox() {
         )}
       </div>
 
-    </div>
+    </div>,
+    document.body,
   );
 }

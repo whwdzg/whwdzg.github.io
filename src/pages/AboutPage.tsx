@@ -77,6 +77,13 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.21.2',
+    date: '2026-11-20',
+    items: [
+      '图片查看器改为挂载到 body，确保从 B 站视频详情弹窗打开评论图时始终显示在弹窗上方。',
+    ],
+  },
+  {
     version: '3.21.1',
     date: '2026-11-20',
     items: [
@@ -482,7 +489,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.21.1"
+        eyebrow="ABOUT · 3.21.2"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -525,7 +532,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.21.1 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.21.2 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
