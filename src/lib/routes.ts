@@ -180,6 +180,14 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/tools/MarkdownMindmapPage'),
   },
   {
+    path: '/tools/ai-detect/',
+    title: 'AI 内容痕迹检查 · 水鱼 Blog',
+    shortTitle: 'AI 痕迹',
+    description: '从元数据、文字与隐形水印、生成参数和写作惯用词中分析 AI 内容线索。',
+    prefetch: false,
+    load: () => import('../pages/tools/AiDetectPage'),
+  },
+  {
     path: '/tools/',
     title: '站内工具 · 水鱼 Blog',
     shortTitle: '工具',

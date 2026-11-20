@@ -1,4 +1,4 @@
-# 水鱼 Blog · 3.23.0
+# 水鱼 Blog · 3.24.0
 
 沧海水鱼（whwdzg）的个人网站，2026 年从零重写。
 
@@ -19,7 +19,7 @@
 - **留言板**：站内人工摘录与 GitHub「留言板」Issue 同步驱动；`/comments/github/` 另提供完整 Issue 列表、筛选 / 搜索 / 深链接 / 引用回复，写入统一跳转 GitHub。
 - **项目页**：6 个数据包详情页、`/projects/modrinth/` 索引与「掩星」世界观页；合成、附魔、掉落、染料配方与进度树全部可视化。
 - **子站**：Asteria Player 与来福 Simulation Wiki 的独立项目页；GitHub 项目页只详细展开这两个子站。
-- **工具**：Base64、BaseX、进制转换、Unicode、科学计算器（函数图像 + LaTeX）、Markdown 思维导图、Minecraft 投影查看器，以及 MC 数据包 / 资源包解析器。
+- **工具**：Base64、BaseX、进制转换、Unicode、科学计算器（函数图像 + LaTeX）、Markdown 思维导图、AI 内容痕迹检查、Minecraft 投影查看器，以及 MC 数据包 / 资源包解析器。
 - **B 站合集**：通过公开 view 接口同步合集全部成员视频，站内可查看封面、标题、发布日期与时长；GitHub Actions 每周一自动刷新，也可手动触发。
 - **链接**：访问带 `.html` 的地址会自动改写成无扩展名的站内路径。
 - **体验**：正文图片大图、正文内嵌音乐 / 视频播放器、季节粒子（春夏秋冬）、页眉收起补位、轮播倒计时、中文 Minecraft Wiki 物品链接。
@@ -215,7 +215,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 ## 版本与部署
 
-当前版本 **3.23.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
+当前版本 **3.24.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
 
 关于页展示：
 

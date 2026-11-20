@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.23.0",
-  "description": "沧海水鱼内容站点 3.23.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.24.0",
+  "description": "沧海水鱼内容站点 3.24.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "96d327103e4dcc591366079370c7c63822e3acf0",
-  "commitShort": "96d3271",
-  "commitTime": "2026-11-21T00:14:32+08:00",
-  "buildTime": "2026-11-20T16:22:55.880Z",
+  "commit": "64c8e56e2da63742a7716aa8bd78b67645ff9bff",
+  "commitShort": "64c8e56",
+  "commitTime": "2026-11-21T00:25:07+08:00",
+  "buildTime": "2026-11-20T16:34:37.294Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "64c8e56e2da63742a7716aa8bd78b67645ff9bff",
+      "short": "64c8e56e",
+      "time": "2026-11-21T00:25:07+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add immersive PWA titlebar and header drag",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/64c8e56e2da63742a7716aa8bd78b67645ff9bff"
+    },
     {
       "hash": "96d327103e4dcc591366079370c7c63822e3acf0",
       "short": "96d32710",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "fix: remove unsupported online status",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/712ee61f1adc8585223f5d17071ec1412ed8593d"
-    },
-    {
-      "hash": "26fcbde3ae914f40419b64f7b4cffe1eb87137b8",
-      "short": "26fcbde3",
-      "time": "2026-11-19T01:52:23+08:00",
-      "author": "Alex Yang",
-      "subject": "fix: remove unsupported online status",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/26fcbde3ae914f40419b64f7b4cffe1eb87137b8"
     }
   ]
 }

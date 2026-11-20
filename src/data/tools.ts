@@ -101,6 +101,16 @@ export const TOOLS: ToolItem[] = [
     accent: '#8b5cf6',
     tag: '文本',
   },
+  {
+    id: 'ai-detect',
+    title: 'AI 内容痕迹检查',
+    subtitle: 'AI Trace',
+    description: '检查文件元数据、文字 / 隐形水印、生成参数与写作惯用词，逐项给出 AI 线索判断。',
+    path: '/tools/ai-detect/',
+    icon: 'shield',
+    accent: '#d16a4f',
+    tag: '分析',
+  },
 ];
 
 export function toolById(idOrPath: string): ToolItem | undefined {

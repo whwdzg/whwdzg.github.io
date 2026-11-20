@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.24.0',
+    date: '2026-11-21',
+    items: [
+      '新增 AI 内容痕迹检查工具：分析图片元数据、生成参数、C2PA / 隐形水印、文字水印与写作惯用词。',
+      '图像与文字均输出逐项评判、分数与保守的最终结论，并明确标注启发式限制。',
+    ],
+  },
+  {
     version: '3.23.0',
     date: '2026-11-21',
     items: [
@@ -506,7 +514,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.23.0"
+        eyebrow="ABOUT · 3.24.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -549,7 +557,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.23.0 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.24.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
