@@ -13,7 +13,7 @@ export default function ToolsPage() {
       <PageIntro
         eyebrow="SITE · TOOLS"
         title="站内工具"
-        lead="2.0 工具条目的重做版：编码、进制、Unicode、科学计算器与 Minecraft 投影。全部在浏览器本地运行，不上传输入内容。"
+        lead="编码、进制、Unicode、科学计算器、Markdown 思维导图与 Minecraft 投影。全部在浏览器本地运行，不上传输入内容。"
         meta={[
           { icon: 'code', label: `${TOOLS.length} 个工具` },
           { icon: 'shield', label: '本地处理' },

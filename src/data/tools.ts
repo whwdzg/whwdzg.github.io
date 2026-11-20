@@ -91,6 +91,16 @@ export const TOOLS: ToolItem[] = [
     accent: '#4f9d69',
     tag: 'Minecraft',
   },
+  {
+    id: 'markdown-mindmap',
+    title: 'Markdown 思维导图',
+    subtitle: 'Mindmap',
+    description: 'Markdown 与思维导图双向实时同步，支持层级图形、分支配色、LaTeX 与高清导出。',
+    path: '/tools/markdown-mindmap/',
+    icon: 'sparkle',
+    accent: '#8b5cf6',
+    tag: '文本',
+  },
 ];
 
 export function toolById(idOrPath: string): ToolItem | undefined {

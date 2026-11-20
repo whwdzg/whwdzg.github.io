@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.22.0',
+    date: '2026-11-21',
+    items: [
+      '新增 Markdown 思维导图工具：Markdown ↔ 节点双向实时同步。',
+      '支持标题 / 列表层级、数字编号、KaTeX LaTeX、分支配色与分层节点图形。',
+      '支持 PNG / JPEG / WebP / SVG 与 PDF 导出，分辨率自动推荐或手动选择。',
+    ],
+  },
+  {
     version: '3.21.2',
     date: '2026-11-20',
     items: [
@@ -489,7 +498,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.21.2"
+        eyebrow="ABOUT · 3.22.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -532,7 +541,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.21.2 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.22.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

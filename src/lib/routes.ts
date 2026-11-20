@@ -172,6 +172,14 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/projects/GitHubProjectsPage'),
   },
   {
+    path: '/tools/markdown-mindmap/',
+    title: 'Markdown 思维导图 · 水鱼 Blog',
+    shortTitle: '思维导图',
+    description: 'Markdown 与思维导图双向编辑，支持层级、配色、LaTeX 与 PDF / 图片导出。',
+    prefetch: false,
+    load: () => import('../pages/tools/MarkdownMindmapPage'),
+  },
+  {
     path: '/tools/',
     title: '站内工具 · 水鱼 Blog',
     shortTitle: '工具',
