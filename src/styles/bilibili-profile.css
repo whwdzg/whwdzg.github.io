@@ -137,3 +137,18 @@
 .bili-dynamic-images a:nth-child(n+2) img { width: 150px; height: 110px; }
 
 .bili-recent-dynamics__image { display: block; width: 100%; max-height: 170px; margin-top: 5px; border: 1px solid var(--stroke); border-radius: 5px; object-fit: cover; cursor: zoom-in; }
+
+.bili-comment-emoji { display: inline-block; width: 20px; height: 20px; margin: 0 1px; object-fit: contain; vertical-align: -4px; }
+.bili-comment-replies { margin-top: 5px; padding-left: 8px; border-left: 2px solid color-mix(in srgb, var(--accent) 24%, var(--stroke)); }
+.bili-comment-replies summary { cursor: pointer; color: var(--accent); font-family: var(--font-mono); font-size: 8px; list-style: none; }
+.bili-comment-replies summary::-webkit-details-marker { display: none; }
+.bili-comment-replies summary::before { content: '▸ '; }
+.bili-comment-replies[open] summary::before { content: '▾ '; }
+.bili-comment-replies__list { display: grid; gap: 7px; margin-top: 6px; }
+.bili-comment-reply { display: flex; align-items: flex-start; gap: 6px; }
+.bili-comment-reply > img { width: 22px; height: 22px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; background: var(--surface-2); }
+.bili-comment-reply > div { min-width: 0; flex: 1; }
+.bili-comment-reply .bili-comments__meta { font-size: 7.5px; }
+.bili-comment-reply p { margin-top: 1px; font-size: 9.5px; }
+.bili-comment-replies__more { display: inline-flex; align-items: center; gap: 3px; margin-top: 5px; color: var(--accent); font-family: var(--font-mono); font-size: 8px; }
+.bili-comment-replies__more svg { width: 11px; height: 11px; }

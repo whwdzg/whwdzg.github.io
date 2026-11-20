@@ -1724,7 +1724,7 @@
     padding: 16px;
   }
 
-  .video-detail__nav span {
+  .video-detail__nav > span {
     display: none;
   }
 

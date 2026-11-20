@@ -77,6 +77,15 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.19.0',
+    date: '2026-11-20',
+    items: [
+      'B 站视频与动态评论支持表情和楼中楼；评论快照包含一级评论、表情与接口返回的回复预览。',
+      '视频与动态评论改为每天各 15 条轮换更新；首次已全量抓取 218 个视频与 20 条动态的评论。',
+      '修复视频详情窗口上一条 / 下一条按钮在窄屏隐藏图标和文字的问题。',
+    ],
+  },
+  {
     version: '3.18.0',
     date: '2026-11-20',
     items: [
@@ -435,7 +444,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.18.0"
+        eyebrow="ABOUT · 3.19.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -478,7 +487,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.18.0 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.19.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

@@ -22,13 +22,31 @@ export interface BilibiliProfile {
   };
 }
 
-export interface BilibiliDynamicComment {
+export interface BilibiliDynamicCommentEmoji {
+  token: string;
+  url: string;
+}
+
+export interface BilibiliDynamicCommentReply {
   id: string;
   author: string;
   avatar: string;
   text: string;
   likes: number;
   date: string;
+  emojis: BilibiliDynamicCommentEmoji[];
+}
+
+export interface BilibiliDynamicComment {
+  id: string;
+  author: string;
+  avatar: string;
+  text: string;
+  likes: number;
+  replyCount?: number;
+  date: string;
+  emojis: BilibiliDynamicCommentEmoji[];
+  replies: BilibiliDynamicCommentReply[];
 }
 
 export interface BilibiliDynamic {
@@ -62,7 +80,24 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-20T01:17:08.467Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-20T14:23:21.645Z";
+
+export interface BilibiliDynamicCommentProgress {
+  covered: number;
+  total: number;
+  cycle: number;
+  updatedAt: string;
+  failed?: string[];
+}
+
+export const BILIBILI_DYNAMIC_COMMENT_PROGRESS: BilibiliDynamicCommentProgress = {
+  "covered": 20,
+  "total": 20,
+  "cycle": 1,
+  "updatedAt": "2026-11-20T14:24:36.759Z",
+  "failed": []
+
+};
 
 export const BILIBILI_PROFILE: BilibiliProfile = {
   "name": "沧海水鱼",
@@ -72,7 +107,7 @@ export const BILIBILI_PROFILE: BilibiliProfile = {
   "level": 6,
   "fans": 2164,
   "following": 476,
-  "likes": 182895,
+  "likes": 182893,
   "videos": 177,
   "articles": 1,
   "opus": 48,
@@ -117,7 +152,20 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "/media/avatars/hxhej.webp",
         "text": "扣一发住址",
         "likes": 0,
-        "date": "2026-10-10T15:37:51.000Z"
+        "replyCount": 1,
+        "date": "2026-10-10T15:37:51.000Z",
+        "emojis": [],
+        "replies": [
+          {
+            "id": "316683149617",
+            "author": "沧海水鱼",
+            "avatar": "/media/avatars/shuiyu.webp",
+            "text": "已拉黑（不是",
+            "likes": 0,
+            "date": "2026-10-10T15:56:18.000Z",
+            "emojis": []
+          }
+        ]
       }
     ]
   },
@@ -192,7 +240,10 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "/media/avatars/shuiyu.webp",
         "text": "那理论来说，联投了那我这期不用剪了对吧，所以素材录费了也没关系对吧（对的吧",
         "likes": 0,
-        "date": "2026-08-12T04:39:00.000Z"
+        "replyCount": 0,
+        "date": "2026-08-12T04:39:00.000Z",
+        "emojis": [],
+        "replies": []
       },
       {
         "id": "309865630929",
@@ -200,7 +251,25 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "https://i1.hdslb.com/bfs/face/4a92555d07c4cd2beec19e8645ba86c141df6161.jpg",
         "text": "哇还有安卓猫咪\n陪一张我的【超级拉面猫】",
         "likes": 0,
-        "date": "2026-08-11T15:20:25.000Z"
+        "replyCount": 1,
+        "date": "2026-08-11T15:20:25.000Z",
+        "emojis": [],
+        "replies": [
+          {
+            "id": "309919592529",
+            "author": "沧海水鱼",
+            "avatar": "/media/avatars/shuiyu.webp",
+            "text": "没招了[笑哭]成这样了",
+            "likes": 0,
+            "date": "2026-08-12T04:33:02.000Z",
+            "emojis": [
+              {
+                "token": "[笑哭]",
+                "url": "https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -251,7 +320,20 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "/media/avatars/shuiyu.webp",
         "text": "坏消息，录上了但没完全（",
         "likes": 0,
-        "date": "2026-07-13T09:29:10.000Z"
+        "replyCount": 1,
+        "date": "2026-07-13T09:29:10.000Z",
+        "emojis": [],
+        "replies": [
+          {
+            "id": "306207108337",
+            "author": "沧海水鱼",
+            "avatar": "/media/avatars/shuiyu.webp",
+            "text": "没事了其实录全了",
+            "likes": 0,
+            "date": "2026-07-15T07:54:05.000Z",
+            "emojis": []
+          }
+        ]
       }
     ]
   },
@@ -284,7 +366,10 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "/media/avatars/hxhej.webp",
         "text": "who care？",
         "likes": 2,
-        "date": "2026-07-05T15:15:17.000Z"
+        "replyCount": 0,
+        "date": "2026-07-05T15:15:17.000Z",
+        "emojis": [],
+        "replies": []
       },
       {
         "id": "304985694401",
@@ -292,7 +377,10 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "/media/avatars/shuiyu.webp",
         "text": "所以视频又要延期了\n下一期一定剪出来（应该一定可以了吧",
         "likes": 2,
-        "date": "2026-07-05T15:12:13.000Z"
+        "replyCount": 0,
+        "date": "2026-07-05T15:12:13.000Z",
+        "emojis": [],
+        "replies": []
       }
     ]
   },
@@ -319,7 +407,25 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "https://i1.hdslb.com/bfs/face/947c04ad8c1e73cb38ae98642f9c0039e9b87a21.jpg",
         "text": "剪",
         "likes": 0,
-        "date": "2026-05-31T11:10:22.000Z"
+        "replyCount": 1,
+        "date": "2026-05-31T11:10:22.000Z",
+        "emojis": [],
+        "replies": [
+          {
+            "id": "304254524272",
+            "author": "LimitedShadow",
+            "avatar": "https://i1.hdslb.com/bfs/face/947c04ad8c1e73cb38ae98642f9c0039e9b87a21.jpg",
+            "text": "以及小知识：来福的所有相关稿件流量都很糟糕，希望你能打破这个魔咒[委屈][委屈]",
+            "likes": 0,
+            "date": "2026-05-31T11:11:00.000Z",
+            "emojis": [
+              {
+                "token": "[委屈]",
+                "url": "https://i0.hdslb.com/bfs/emote/d2f26cbdd6c96960320af03f5514c5b524990840.png"
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "301630929329",
@@ -327,7 +433,10 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "https://i1.hdslb.com/bfs/face/0b8d6f638deb8dc2252748f14bc32b9ca09c242a.jpg",
         "text": "挖",
         "likes": 0,
-        "date": "2026-06-04T14:44:07.000Z"
+        "replyCount": 0,
+        "date": "2026-06-04T14:44:07.000Z",
+        "emojis": [],
+        "replies": []
       },
       {
         "id": "301220619297",
@@ -335,7 +444,10 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "https://i0.hdslb.com/bfs/face/1660b31b37136288cb84307869f52d07e72c2346.jpg",
         "text": "快剪，然后把所有人引来来福simulation陪我们打麦块。",
         "likes": 0,
-        "date": "2026-05-31T11:10:01.000Z"
+        "replyCount": 0,
+        "date": "2026-05-31T11:10:01.000Z",
+        "emojis": [],
+        "replies": []
       }
     ]
   },
@@ -428,7 +540,15 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "https://i1.hdslb.com/bfs/face/9e1bbfbf552f26d42295eed9f4d4d1b38fdf1e3c.jpg",
         "text": "已安装，很期待，支持[doge_金箍]",
         "likes": 0,
-        "date": "2025-10-17T14:04:07.000Z"
+        "replyCount": 0,
+        "date": "2025-10-17T14:04:07.000Z",
+        "emojis": [
+          {
+            "token": "[doge_金箍]",
+            "url": "https://i0.hdslb.com/bfs/emote/aadaca1895e09c5596fc6365192ec93a23718cf0.png"
+          }
+        ],
+        "replies": []
       },
       {
         "id": "277737838705",
@@ -436,7 +556,10 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "https://i0.hdslb.com/bfs/face/1660b31b37136288cb84307869f52d07e72c2346.jpg",
         "text": "支持",
         "likes": 0,
-        "date": "2025-10-15T13:40:16.000Z"
+        "replyCount": 0,
+        "date": "2025-10-15T13:40:16.000Z",
+        "emojis": [],
+        "replies": []
       }
     ]
   },
@@ -463,7 +586,10 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "/media/avatars/shuiyu.webp",
         "text": "逃课失败，这波还是得适配，顺便把全部的资源包和数据包版本号都适配了各个版本的语法",
         "likes": 1,
-        "date": "2025-10-04T14:07:02.000Z"
+        "replyCount": 0,
+        "date": "2025-10-04T14:07:02.000Z",
+        "emojis": [],
+        "replies": []
       }
     ]
   },
@@ -526,7 +652,20 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "/media/avatars/hxhej.webp",
         "text": "删我评论LLL",
         "likes": 0,
-        "date": "2025-09-13T10:07:53.000Z"
+        "replyCount": 1,
+        "date": "2025-09-13T10:07:53.000Z",
+        "emojis": [],
+        "replies": [
+          {
+            "id": "274551013233",
+            "author": "沧海水鱼",
+            "avatar": "/media/avatars/shuiyu.webp",
+            "text": "谁没事删你评论",
+            "likes": 0,
+            "date": "2025-09-13T10:43:04.000Z",
+            "emojis": []
+          }
+        ]
       },
       {
         "id": "274545472529",
@@ -534,7 +673,25 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "https://i0.hdslb.com/bfs/face/1660b31b37136288cb84307869f52d07e72c2346.jpg",
         "text": "大师级更新",
         "likes": 0,
-        "date": "2025-09-13T09:46:53.000Z"
+        "replyCount": 1,
+        "date": "2025-09-13T09:46:53.000Z",
+        "emojis": [],
+        "replies": [
+          {
+            "id": "274551144609",
+            "author": "沧海水鱼",
+            "avatar": "/media/avatars/shuiyu.webp",
+            "text": "战略性更名[doge]",
+            "likes": 0,
+            "date": "2025-09-13T10:43:30.000Z",
+            "emojis": [
+              {
+                "token": "[doge]",
+                "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -579,7 +736,29 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "/media/avatars/hxhej.webp",
         "text": "招。。。笑",
         "likes": 1,
-        "date": "2025-07-31T13:06:49.000Z"
+        "replyCount": 2,
+        "date": "2025-07-31T13:06:49.000Z",
+        "emojis": [],
+        "replies": [
+          {
+            "id": "269582951409",
+            "author": "沧海水鱼",
+            "avatar": "/media/avatars/shuiyu.webp",
+            "text": "别笑，如果这个项目有戏的话，以后可能找你",
+            "likes": 1,
+            "date": "2025-07-31T13:14:06.000Z",
+            "emojis": []
+          },
+          {
+            "id": "269588644369",
+            "author": "hxhej",
+            "avatar": "/media/avatars/hxhej.webp",
+            "text": "回复 @滄海水魚 :好的，不笑了",
+            "likes": 1,
+            "date": "2025-07-31T13:59:09.000Z",
+            "emojis": []
+          }
+        ]
       },
       {
         "id": "269657529937",
@@ -587,7 +766,15 @@ export const BILIBILI_DYNAMICS: BilibiliDynamic[] = [
         "avatar": "https://i0.hdslb.com/bfs/face/1660b31b37136288cb84307869f52d07e72c2346.jpg",
         "text": "[支持]",
         "likes": 0,
-        "date": "2025-08-01T05:35:14.000Z"
+        "replyCount": 0,
+        "date": "2025-08-01T05:35:14.000Z",
+        "emojis": [
+          {
+            "token": "[支持]",
+            "url": "https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png"
+          }
+        ],
+        "replies": []
       }
     ]
   },
