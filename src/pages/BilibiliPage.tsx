@@ -32,11 +32,20 @@ import { StaleBadge } from '../components/common/StaleBadge';
 import { useRouter } from '../lib/router';
 import { readStorage, writeStorage } from '../lib/storage';
 import { videos, videosById, videoStats, type Video } from '../data/videos';
+import { BILIBILI_COLLECTIONS } from '../data/bilibili-collections';
 import { LINKS } from '../data/site';
 
 type StatusFilter = 'all' | 'playable' | 'collection' | 'live' | 'private' | 'offline';
 type SortMode = 'newest' | 'oldest' | 'title' | 'views';
 type ViewMode = 'grid' | 'list';
+
+const COLLECTION_BVIDS = new Set(
+  BILIBILI_COLLECTIONS.flatMap((collection) => collection.sections.flatMap((section) => section.episodes.map((episode) => episode.bvid))),
+);
+
+function isCollectionMember(video: Video): boolean {
+  return video.status !== 'collection' && Boolean(video.bvid) && COLLECTION_BVIDS.has(video.bvid);
+}
 
 const PAGE_SIZE = 12;
 const VIEW_KEY = 'whwdzg-bilibili-view';
@@ -110,7 +119,7 @@ export default function BilibiliPage() {
   const filtered = useMemo(() => {
     const needle = deferredQuery.trim().toLowerCase();
     const result = videos.filter((video) => {
-      if (collapseCollections && status !== 'collection' && video.status === 'collection') return false;
+      if (collapseCollections && isCollectionMember(video)) return false;
       if (!matchesStatus(video, status)) return false;
       if (year === 'unknown' && video.date) return false;
       if (year !== 'all' && year !== 'unknown' && video.date?.slice(0, 4) !== year) return false;
@@ -193,7 +202,7 @@ export default function BilibiliPage() {
   };
 
   const randomVideo = () => {
-    const pool = videos.filter((video) => !video.disabled && !(collapseCollections && video.status === 'collection'));
+    const pool = videos.filter((video) => !video.disabled && !(collapseCollections && isCollectionMember(video)));
     if (!pool.length) return;
     openDetail(pool[Math.floor(Math.random() * pool.length)]);
   };
