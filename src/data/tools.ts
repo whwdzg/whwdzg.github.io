@@ -111,6 +111,16 @@ export const TOOLS: ToolItem[] = [
     accent: '#d16a4f',
     tag: '分析',
   },
+  {
+    id: 'markdown-editor',
+    title: 'Markdown 编辑器',
+    subtitle: 'Markdown Notes',
+    description: '类似 Obsidian 的本地笔记工作台：分栏实时预览、KaTeX、表格、任务列表、双向链接与导入导出。',
+    path: '/tools/markdown-editor/',
+    icon: 'document',
+    accent: '#5b8def',
+    tag: '文本',
+  },
 ];
 
 export function toolById(idOrPath: string): ToolItem | undefined {

@@ -116,6 +116,7 @@ export default defineConfig({
         mcResourcepack: path.resolve('tools/mc-resourcepack/index.html'),
         markdownMindmap: path.resolve('tools/markdown-mindmap/index.html'),
         aiDetect: path.resolve('tools/ai-detect/index.html'),
+        markdownEditor: path.resolve('tools/markdown-editor/index.html'),
         about: path.resolve('about/index.html'),
       },
       output: {

@@ -188,6 +188,14 @@ export const ROUTES: RouteMeta[] = [
     load: () => import('../pages/tools/AiDetectPage'),
   },
   {
+    path: '/tools/markdown-editor/',
+    title: 'Markdown 编辑器 · 水鱼 Blog',
+    shortTitle: 'Markdown',
+    description: '类似 Obsidian 的本地 Markdown 笔记工作台，支持实时预览、LaTeX、双向链接与导入导出。',
+    prefetch: false,
+    load: () => import('../pages/tools/MarkdownEditorPage'),
+  },
+  {
     path: '/tools/',
     title: '站内工具 · 水鱼 Blog',
     shortTitle: '工具',

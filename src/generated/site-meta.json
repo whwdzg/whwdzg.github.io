@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.24.0",
-  "description": "沧海水鱼内容站点 3.24.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.25.0",
+  "description": "沧海水鱼内容站点 3.25.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "64c8e56e2da63742a7716aa8bd78b67645ff9bff",
-  "commitShort": "64c8e56",
-  "commitTime": "2026-11-21T00:25:07+08:00",
-  "buildTime": "2026-11-20T16:34:37.294Z",
+  "commit": "166b31309a2266f8c1b88d7d3484568611a029c3",
+  "commitShort": "166b313",
+  "commitTime": "2026-11-21T00:35:34+08:00",
+  "buildTime": "2026-11-20T16:51:46.427Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "166b31309a2266f8c1b88d7d3484568611a029c3",
+      "short": "166b3130",
+      "time": "2026-11-21T00:35:34+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add AI content trace inspection tool",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/166b31309a2266f8c1b88d7d3484568611a029c3"
+    },
     {
       "hash": "64c8e56e2da63742a7716aa8bd78b67645ff9bff",
       "short": "64c8e56e",
@@ -242,14 +250,6 @@
       "author": "github-actions[bot]",
       "subject": "chore: sync external data snapshots",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/4b1533099f6625711e1ddfbcf65d302c01612861"
-    },
-    {
-      "hash": "712ee61f1adc8585223f5d17071ec1412ed8593d",
-      "short": "712ee61f",
-      "time": "2026-11-19T01:52:23+08:00",
-      "author": "Alex Yang",
-      "subject": "fix: remove unsupported online status",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/712ee61f1adc8585223f5d17071ec1412ed8593d"
     }
   ]
 }
