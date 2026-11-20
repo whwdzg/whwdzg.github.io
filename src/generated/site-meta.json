@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.21.0",
-  "description": "沧海水鱼内容站点 3.21.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.21.1",
+  "description": "沧海水鱼内容站点 3.21.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "7a7d9b660dd465bc6a936705dff121a70d3d7745",
-  "commitShort": "7a7d9b6",
-  "commitTime": "2026-11-20T22:59:35+08:00",
-  "buildTime": "2026-11-20T15:12:56.192Z",
+  "commit": "ce2f2f5a85ac0e8071ef06a6b4dba006d49b0293",
+  "commitShort": "ce2f2f5",
+  "commitTime": "2026-11-20T23:13:53+08:00",
+  "buildTime": "2026-11-20T15:33:05.932Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "ce2f2f5a85ac0e8071ef06a6b4dba006d49b0293",
+      "short": "ce2f2f5a",
+      "time": "2026-11-20T23:13:53+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: support 10 nested comments and images",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/ce2f2f5a85ac0e8071ef06a6b4dba006d49b0293"
+    },
     {
       "hash": "7a7d9b660dd465bc6a936705dff121a70d3d7745",
       "short": "7a7d9b66",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "style: remove Windows chrome from occultation terminal",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/055332463aa0fec337fbb8e72ff40f932ac6e4c6"
-    },
-    {
-      "hash": "6b1d4f182455ff3815cdd70b1018305e4420e0ee",
-      "short": "6b1d4f18",
-      "time": "2026-11-19T01:38:23+08:00",
-      "author": "Alex Yang",
-      "subject": "style: remove Windows chrome from occultation terminal",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/6b1d4f182455ff3815cdd70b1018305e4420e0ee"
     }
   ]
 }
