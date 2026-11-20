@@ -9,8 +9,9 @@
   "scope": "/",
   "display": "standalone",
   "display_override": [
-    "standalone",
     "window-controls-overlay",
+    "standalone",
+    "minimal-ui",
     "browser"
   ],
   "orientation": "any",

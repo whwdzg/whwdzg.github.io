@@ -1,4 +1,4 @@
-# 水鱼 Blog · 3.22.0
+# 水鱼 Blog · 3.23.0
 
 沧海水鱼（whwdzg）的个人网站，2026 年从零重写。
 
@@ -25,7 +25,7 @@
 - **体验**：正文图片大图、正文内嵌音乐 / 视频播放器、季节粒子（春夏秋冬）、页眉收起补位、轮播倒计时、中文 Minecraft Wiki 物品链接。
 - **关于页**：版本号、构建时间、当前提交、最近提交时间线（构建时快照，可手动从 GitHub API 刷新）、设计 / 技术 / 性能说明、目录结构与本地开发命令。
 - **设置面板**：主题、强调色（含自定义）、液态玻璃、8 张壁纸与每日轮换、页眉进度条、粒子动画（樱花 / 梧桐 / 银杏 / 雪花）、动效偏好、页眉自动收起、性能模式、PWA 安装、缓存清理、设置导入导出、UA 与版本信息。
-- **PWA**：manifest、Service Worker（导航 network-first，静态资源 cache-first）、离线页与安装入口。
+- **PWA**：manifest、Service Worker（导航 network-first，静态资源 cache-first）、离线页与安装入口；桌面安装版支持 Window Controls Overlay 沉浸标题栏与页眉拖动窗口。
 - **部署**：Vite 多入口构建，GitHub Actions 构建并发布到 GitHub Pages。
 
 ### 还没搬过来的部分
@@ -215,7 +215,7 @@ npm run data:collections # 同步 B 站合集全部成员视频、封面与时�
 
 ## 版本与部署
 
-当前版本 **3.22.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
+当前版本 **3.23.0**（`package.json`）。版本号遵循语义化版本：完整重写递增 major，功能新增递增 minor，修复递增 patch。
 
 关于页展示：
 
