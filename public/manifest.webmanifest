@@ -8,11 +8,19 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["standalone", "window-controls-overlay", "browser"],
+  "display_override": [
+    "standalone",
+    "window-controls-overlay",
+    "browser"
+  ],
   "orientation": "any",
   "theme_color": "#0b0d12",
   "background_color": "#0b0d12",
-  "categories": ["personal", "entertainment", "productivity"],
+  "categories": [
+    "personal",
+    "entertainment",
+    "productivity"
+  ],
   "icons": [
     {
       "src": "/icons/logo-192.png",
@@ -21,14 +29,32 @@
       "purpose": "any"
     },
     {
+      "src": "/icons/logo-32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "/icons/logo-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
       "src": "/icons/favicon.ico",
-      "sizes": "64x64 32x32 16x16",
+      "sizes": "16x16 32x32 48x48 64x64",
       "type": "image/x-icon"
     }
   ],
@@ -38,42 +64,78 @@
       "short_name": "影像",
       "description": "哔哩哔哩影像归档",
       "url": "/bilibili/",
-      "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/icons/logo-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "留言板",
       "short_name": "留言",
       "description": "留言摘录与写作入口",
       "url": "/comments/",
-      "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/icons/logo-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "GitHub 评论区",
       "short_name": "GitHub",
       "description": "由 Issue 驱动的讨论与回复",
       "url": "/comments/github/",
-      "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/icons/logo-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Modrinth 项目",
       "short_name": "项目",
       "description": "六个数据包与模组项目",
       "url": "/projects/modrinth/",
-      "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/icons/logo-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "站内工具",
       "short_name": "工具",
       "description": "编码、计算器与 Minecraft 投影",
       "url": "/tools/",
-      "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/icons/logo-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "关于",
       "short_name": "关于",
       "description": "版本、提交历史与技术说明",
       "url": "/about/",
-      "icons": [{ "src": "/icons/logo-192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/icons/logo-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }

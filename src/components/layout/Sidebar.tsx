@@ -90,7 +90,7 @@ export function Sidebar() {
       >
         <div className="sidebar__brand">
           <Link to="/" className="sidebar__brand-link" onNavigate={close}>
-            <img src="/icons/logo-192.png" alt="" width={32} height={32} />
+            <img src="/icons/logo-32.png" alt="" width={32} height={32} />
             <span>
               <strong>水鱼 Blog</strong>
               <small>whwdzg.github.io</small>

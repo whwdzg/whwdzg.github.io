@@ -48,6 +48,9 @@ const CORE = [
   '/about/',
   '/manifest.webmanifest',
   '/icons/logo-192.png',
+  '/icons/logo-32.png',
+  '/icons/apple-touch-icon.png',
+  '/icons/maskable-512.png',
   '/icons/favicon.ico',
   '/offline.html',
 ];

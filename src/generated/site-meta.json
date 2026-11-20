@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.17.1",
-  "description": "沧海水鱼内容站点 3.17.1 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.18.0",
+  "description": "沧海水鱼内容站点 3.18.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "bac391dcdc2b24776ccf7d54da54ffa4a8eef142",
-  "commitShort": "bac391d",
-  "commitTime": "2026-11-20T01:02:47+08:00",
-  "buildTime": "2026-11-19T17:07:26.451Z",
+  "commit": "3219515a9929f91c97c776542ae517c869383aeb",
+  "commitShort": "3219515",
+  "commitTime": "2026-11-20T01:08:57+08:00",
+  "buildTime": "2026-11-20T13:48:46.839Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "3219515a9929f91c97c776542ae517c869383aeb",
+      "short": "3219515a",
+      "time": "2026-11-20T01:08:57+08:00",
+      "author": "Alex Yang",
+      "subject": "content: refresh homepage for current site",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/3219515a9929f91c97c776542ae517c869383aeb"
+    },
     {
       "hash": "bac391dcdc2b24776ccf7d54da54ffa4a8eef142",
       "short": "bac391dc",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "feat: auto-load Bilibili archive on scroll",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/e9ab0724ac9fac29c7b237b7ee17a416b163bf57"
-    },
-    {
-      "hash": "e6dfe35b6a1a30305ecc76f72f67c79bec4f0074",
-      "short": "e6dfe35b",
-      "time": "2026-11-19T01:14:35+08:00",
-      "author": "Alex Yang",
-      "subject": "feat: auto-load Bilibili archive on scroll",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/e6dfe35b6a1a30305ecc76f72f67c79bec4f0074"
     }
   ]
 }

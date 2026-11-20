@@ -61,7 +61,7 @@ export function Header({ isFullscreen, onToggleFullscreen }: HeaderProps) {
             </IconButton>
 
             <Link to="/" className="brand" aria-label={`${SITE.name} 主页`}>
-              <img className="brand__logo" src="/icons/logo-192.png" alt="" width={28} height={28} />
+              <img className="brand__logo" src="/icons/logo-32.png" alt="" width={28} height={28} />
               <span className="brand__text">
                 <span className="brand__name">{SITE.name}</span>
                 <span className="brand__divider" aria-hidden>

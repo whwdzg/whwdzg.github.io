@@ -77,6 +77,14 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.18.0',
+    date: '2026-11-20',
+    items: [
+      '重新设计站点图标：深蓝渐变圆角方块、水鱼与波纹，作为新的品牌标识。',
+      '生成 SVG、16 / 32 / 192 / 512 PNG、Apple Touch、Maskable 与 favicon.ico，并应用到全部页面、PWA、侧边栏、页脚和离线页。',
+    ],
+  },
+  {
     version: '3.17.1',
     date: '2026-11-20',
     items: [
@@ -427,7 +435,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.17.1"
+        eyebrow="ABOUT · 3.18.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -470,7 +478,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.17.1 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.18.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
