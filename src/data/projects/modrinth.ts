@@ -27,11 +27,11 @@ export interface ModrinthProjectSnapshot {
   modrinthUrl: string;
 }
 
-export const MODRINTH_SYNCED_AT = "2026-11-21T00:47:38.313Z";
+export const MODRINTH_SYNCED_AT = "2026-11-21T23:47:48.971Z";
 
 export const MODRINTH_TOTALS = {
-  "downloads": 180484,
-  "followers": 111
+  "downloads": 180781,
+  "followers": 112
 } as const;
 
 export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
@@ -42,7 +42,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-crafting-recipes.webp",
     "title": "Better Crafting Recipes ( whwdzg's Recipe)",
     "description": "Formerly named whwdzg's Recipe\nAdd some recipes to Minecraft",
-    "downloads": 12567,
+    "downloads": 12586,
     "followers": 5,
     "latestVersion": "1.9.3.6",
     "latestVersionName": "1.9.3.6",
@@ -276,7 +276,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-enchantments.webp",
     "title": "Better Enchantments",
     "description": "pack provide better vanilla enchantment effects to minecraft",
-    "downloads": 2349,
+    "downloads": 2360,
     "followers": 2,
     "latestVersion": "1.0.1.3",
     "latestVersionName": "1.0.1.3",
@@ -378,7 +378,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-mob-drop.webp",
     "title": "Better Mob Drop",
     "description": "A Minecraft mod/data pack which provide more reasonable mob drop",
-    "downloads": 91563,
+    "downloads": 91736,
     "followers": 31,
     "latestVersion": "1.2.6.4",
     "latestVersionName": "1.2.6.4",
@@ -728,8 +728,8 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/glowing-players.webp",
     "title": "Glowing Players",
     "description": "A mod/data pack which will provide glowing effect to players.",
-    "downloads": 72398,
-    "followers": 68,
+    "downloads": 72492,
+    "followers": 69,
     "latestVersion": "1.1.0",
     "latestVersionName": "Glowing Players 1.1.0",
     "latestVersionDate": "2026-11-15T14:22:52.845874Z",

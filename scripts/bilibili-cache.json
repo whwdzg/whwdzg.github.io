@@ -485,11 +485,7 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i2.hdslb.com/bfs/archive/c48ca5787bf1fe7c5ec80a8b1318c71e5c2ec5e5.jpg@640w_360h.webp",
-    "local": "v23.webp",
-    "lastError": {
-      "code": -412,
-      "message": "request was banned"
-    }
+    "local": "v23.webp"
   },
   "BV1e84y147qh": {
     "code": 62002,
@@ -535,8 +531,8 @@
     "code": 62012,
     "message": "62012",
     "lastError": {
-      "code": 62012,
-      "message": "62012"
+      "code": -412,
+      "message": "request was banned"
     }
   },
   "BV1LB4y1h7LV": {
@@ -720,7 +716,11 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i0.hdslb.com/bfs/archive/2a20cf51ca71157a127b83edf6797a789a358263.png@640w_360h.webp",
-    "local": "v46.webp"
+    "local": "v46.webp",
+    "lastError": {
+      "code": -412,
+      "message": "request was banned"
+    }
   },
   "BV1iBhm66EPR": {
     "code": 0,
@@ -4115,11 +4115,7 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i0.hdslb.com/bfs/archive/d352da878ab05bfbbf00ed4ba7166096c671980c.jpg@640w_360h.webp",
-    "local": "v149.webp",
-    "lastError": {
-      "code": -412,
-      "message": "request was banned"
-    }
+    "local": "v149.webp"
   },
   "BV1wgrgYGERo": {
     "code": 0,
@@ -4214,11 +4210,7 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i0.hdslb.com/bfs/archive/26da8680429a78de72505a38a1c2f3d6223e0864.jpg@640w_360h.webp",
-    "local": "v153.webp",
-    "lastError": {
-      "code": -412,
-      "message": "request was banned"
-    }
+    "local": "v153.webp"
   },
   "BV1bdruYQEdo": {
     "code": 0,

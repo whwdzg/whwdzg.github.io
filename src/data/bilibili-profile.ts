@@ -90,7 +90,7 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-21T00:48:23.310Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-21T23:48:31.930Z";
 
 export interface BilibiliDynamicCommentProgress {
   covered: number;
@@ -101,10 +101,10 @@ export interface BilibiliDynamicCommentProgress {
 }
 
 export const BILIBILI_DYNAMIC_COMMENT_PROGRESS: BilibiliDynamicCommentProgress = {
-  "covered": 15,
+  "covered": 20,
   "total": 20,
   "cycle": 2,
-  "updatedAt": "2026-11-21T00:48:22.442Z",
+  "updatedAt": "2026-11-21T23:48:30.874Z",
   "failed": []
 };
 
@@ -114,16 +114,16 @@ export const BILIBILI_PROFILE: BilibiliProfile = {
   "avatar": "/media/bilibili/avatar.webp",
   "sign": "自信去尝试\n不定期更新，一咕咕很久的那种",
   "level": 6,
-  "fans": 2164,
-  "following": 476,
-  "likes": 182896,
-  "videos": 177,
+  "fans": 2163,
+  "following": 480,
+  "likes": 182910,
+  "videos": 178,
   "articles": 1,
   "opus": 48,
   "live": {
     "active": false,
     "roomStatus": 1,
-    "title": "来福日常~~玩bingo",
+    "title": "来福日常~~",
     "cover": "/media/bilibili/live-cover.jpg",
     "online": 0,
     "roomId": 23655191,

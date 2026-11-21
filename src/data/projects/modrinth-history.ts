@@ -29,7 +29,7 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
-      "downloads": 12567,
+      "downloads": 12586,
       "followers": 5
     }
   ],
@@ -56,7 +56,7 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
-      "downloads": 2349,
+      "downloads": 2360,
       "followers": 2
     }
   ],
@@ -83,7 +83,7 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
-      "downloads": 91563,
+      "downloads": 91736,
       "followers": 31
     }
   ],
@@ -137,8 +137,8 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
-      "downloads": 72398,
-      "followers": 68
+      "downloads": 72492,
+      "followers": 69
     }
   ],
   "magical-dye": [
