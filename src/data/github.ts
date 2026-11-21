@@ -47,7 +47,7 @@ export interface GithubProfileSnapshot {
   };
 }
 
-export const GITHUB_SYNCED_AT = "2026-11-20T01:16:34.556Z";
+export const GITHUB_SYNCED_AT = "2026-11-21T00:47:56.886Z";
 
 export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "avatar": "https://avatars.githubusercontent.com/u/91038761?v=4",
@@ -62,7 +62,7 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "location": "Shanghai",
   "blog": "whwdzg.github.io",
   "contributions": {
-    "total": 357,
+    "total": 382,
     "weeks": [
       {
         "days": [
@@ -2121,7 +2121,12 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
           },
           {
             "date": "2026-11-20",
-            "count": 18,
+            "count": 31,
+            "color": "#216e39"
+          },
+          {
+            "date": "2026-11-21",
+            "count": 12,
             "color": "#40c463"
           }
         ]
@@ -2142,7 +2147,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 1,
     "language": "TypeScript",
     "updatedAt": "2026-11-16T17:14:31Z",
-    "pushedAt": "2026-11-19T17:09:32Z",
+    "pushedAt": "2026-11-20T16:55:22Z",
     "archived": false
   },
   {
@@ -2240,7 +2245,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "TypeScript",
     "updatedAt": "2026-11-12T17:07:41Z",
-    "pushedAt": "2026-11-18T16:16:53Z",
+    "pushedAt": "2026-11-20T16:14:25Z",
     "archived": false
   },
   {
@@ -2254,7 +2259,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "JavaScript",
     "updatedAt": "2026-08-15T16:11:57Z",
-    "pushedAt": "2026-11-19T14:37:04Z",
+    "pushedAt": "2026-11-20T15:55:58Z",
     "archived": false
   },
   {
@@ -2268,7 +2273,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "TypeScript",
     "updatedAt": "2026-11-19T15:58:37Z",
-    "pushedAt": "2026-11-19T18:43:12Z",
+    "pushedAt": "2026-11-20T17:17:39Z",
     "archived": false
   }
 ];

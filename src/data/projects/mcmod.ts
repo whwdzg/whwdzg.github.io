@@ -20,12 +20,12 @@ export const MCMOD_PROJECTS: McmodEntry[] = [
     "title": "更好的合成配方",
     "subtitle": "Better Crafting Recipes",
     "status": "活跃 · 开源",
-    "views": 21200,
-    "viewsLabel": "2.12万",
+    "views": 21300,
+    "viewsLabel": "2.13万",
     "edits": 10,
     "lastEdit": "8月前",
     "tags": "配方 合成辅助 合成 配方书",
-    "fetchedAt": "2026-11-20T01:16:12.528Z"
+    "fetchedAt": "2026-11-21T00:47:41.564Z"
   },
   {
     "slug": "better-enchantments",
@@ -33,12 +33,12 @@ export const MCMOD_PROJECTS: McmodEntry[] = [
     "title": "更好附魔",
     "subtitle": "Better Enchantments",
     "status": "半弃坑 · 开源",
-    "views": 8387,
-    "viewsLabel": "8387",
+    "views": 8393,
+    "viewsLabel": "8393",
     "edits": 6,
     "lastEdit": "5月前",
     "tags": "附魔",
-    "fetchedAt": "2026-11-20T01:16:13.294Z"
+    "fetchedAt": "2026-11-21T00:47:42.450Z"
   },
   {
     "slug": "better-mob-drop",
@@ -46,12 +46,12 @@ export const MCMOD_PROJECTS: McmodEntry[] = [
     "title": "更好的生物掉落",
     "subtitle": "Better Mob Drop",
     "status": "停更 · 开源",
-    "views": 36100,
-    "viewsLabel": "3.61万",
+    "views": 36200,
+    "viewsLabel": "3.62万",
     "edits": 10,
     "lastEdit": "1月前",
     "tags": "掉落物 掉落",
-    "fetchedAt": "2026-11-20T01:16:14.051Z"
+    "fetchedAt": "2026-11-21T00:47:43.088Z"
   }
 ];
 
