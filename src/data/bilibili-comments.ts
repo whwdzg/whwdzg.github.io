@@ -43,13 +43,13 @@ export interface BilibiliCommentProgress {
   updatedAt: string;
 }
 
-export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-21T23:49:20.772Z";
+export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-23T00:19:53.842Z";
 
 export const BILIBILI_COMMENT_PROGRESS: BilibiliCommentProgress = {
-  "covered": 30,
+  "covered": 45,
   "total": 218,
   "cycle": 2,
-  "updatedAt": "2026-11-21T23:49:20.772Z"
+  "updatedAt": "2026-11-23T00:19:53.841Z"
 };
 
 export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {

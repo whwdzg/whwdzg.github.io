@@ -47,7 +47,7 @@ export interface GithubProfileSnapshot {
   };
 }
 
-export const GITHUB_SYNCED_AT = "2026-11-21T23:48:06.758Z";
+export const GITHUB_SYNCED_AT = "2026-11-23T00:18:29.710Z";
 
 export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "avatar": "https://avatars.githubusercontent.com/u/91038761?v=4",
@@ -64,45 +64,6 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "contributions": {
     "total": 382,
     "weeks": [
-      {
-        "days": [
-          {
-            "date": "2025-11-16",
-            "count": 0,
-            "color": "#ebedf0"
-          },
-          {
-            "date": "2025-11-17",
-            "count": 0,
-            "color": "#ebedf0"
-          },
-          {
-            "date": "2025-11-18",
-            "count": 0,
-            "color": "#ebedf0"
-          },
-          {
-            "date": "2025-11-19",
-            "count": 0,
-            "color": "#ebedf0"
-          },
-          {
-            "date": "2025-11-20",
-            "count": 0,
-            "color": "#ebedf0"
-          },
-          {
-            "date": "2025-11-21",
-            "count": 0,
-            "color": "#ebedf0"
-          },
-          {
-            "date": "2025-11-22",
-            "count": 0,
-            "color": "#ebedf0"
-          }
-        ]
-      },
       {
         "days": [
           {
@@ -2130,6 +2091,20 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
             "color": "#40c463"
           }
         ]
+      },
+      {
+        "days": [
+          {
+            "date": "2026-11-22",
+            "count": 0,
+            "color": "#ebedf0"
+          },
+          {
+            "date": "2026-11-23",
+            "count": 0,
+            "color": "#ebedf0"
+          }
+        ]
       }
     ]
   }
@@ -2147,7 +2122,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 1,
     "language": "TypeScript",
     "updatedAt": "2026-11-16T17:14:31Z",
-    "pushedAt": "2026-11-21T00:49:11Z",
+    "pushedAt": "2026-11-21T23:49:22Z",
     "archived": false
   },
   {

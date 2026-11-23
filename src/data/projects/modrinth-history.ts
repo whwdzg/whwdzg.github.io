@@ -29,7 +29,12 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
-      "downloads": 12586,
+      "downloads": 12567,
+      "followers": 5
+    },
+    {
+      "date": "2026-11-23",
+      "downloads": 12599,
       "followers": 5
     }
   ],
@@ -56,7 +61,12 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
-      "downloads": 2360,
+      "downloads": 2349,
+      "followers": 2
+    },
+    {
+      "date": "2026-11-23",
+      "downloads": 2364,
       "followers": 2
     }
   ],
@@ -83,7 +93,12 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
-      "downloads": 91736,
+      "downloads": 91563,
+      "followers": 31
+    },
+    {
+      "date": "2026-11-23",
+      "downloads": 91900,
       "followers": 31
     }
   ],
@@ -112,6 +127,11 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
       "date": "2026-11-21",
       "downloads": 1429,
       "followers": 3
+    },
+    {
+      "date": "2026-11-23",
+      "downloads": 1431,
+      "followers": 3
     }
   ],
   "glowing-players": [
@@ -137,7 +157,12 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
-      "downloads": 72492,
+      "downloads": 72398,
+      "followers": 68
+    },
+    {
+      "date": "2026-11-23",
+      "downloads": 72584,
       "followers": 69
     }
   ],
@@ -164,6 +189,11 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-21",
+      "downloads": 178,
+      "followers": 2
+    },
+    {
+      "date": "2026-11-23",
       "downloads": 178,
       "followers": 2
     }

@@ -60,7 +60,7 @@ export const videos: Video[] = [
       "favorite": 0,
       "coin": 0,
       "share": 0,
-      "like": 1
+      "like": 2
     }
   },
   {
@@ -3492,16 +3492,16 @@ export const videos: Video[] = [
     "label": "在哔哩哔哩观看",
     "disabled": false,
     "durationSeconds": 44,
-    "views": 39407,
+    "views": 39415,
     "aid": 113655555297938,
     "stats": {
-      "view": 39407,
+      "view": 39415,
       "danmaku": 41,
       "reply": 59,
-      "favorite": 739,
+      "favorite": 738,
       "coin": 14,
       "share": 95,
-      "like": 3041
+      "like": 3042
     }
   },
   {
