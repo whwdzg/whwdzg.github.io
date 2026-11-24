@@ -12,6 +12,8 @@ export interface RouteMeta {
   shortTitle: string;
   /** 首屏空闲时是否预取；项目详情页默认关闭，避免一次下载所有数据 */
   prefetch?: boolean;
+  /** 是否出现在全站搜索中；隐私页只从关于页进入。 */
+  searchable?: boolean;
   load: () => Promise<{ default: React.ComponentType }>;
 }
 
@@ -294,6 +296,15 @@ export const ROUTES: RouteMeta[] = [
     description: '沧海水鱼 2026 年 11 月 8 日更新的 B 站动态原文：关于更新与直播。',
     prefetch: false,
     load: () => import('../pages/ColumnDetailPage'),
+  },
+  {
+    path: '/privacy/',
+    title: '隐私政策 · 水鱼 Blog',
+    shortTitle: '隐私政策',
+    description: '水鱼 Blog 与 Asteria Player、Paligraph Canvas、来福 Simulation Wiki 的隐私说明。',
+    prefetch: false,
+    searchable: false,
+    load: () => import('../pages/PrivacyPage'),
   },
   {
     path: '/about/',

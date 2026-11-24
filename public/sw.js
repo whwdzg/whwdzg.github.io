@@ -46,6 +46,7 @@ const CORE = [
   '/tools/mc-datapack/',
   '/tools/mc-resourcepack/',
   '/about/',
+  '/privacy/',
   '/manifest.webmanifest',
   '/icons/logo-192.png',
   '/icons/logo-32.png',

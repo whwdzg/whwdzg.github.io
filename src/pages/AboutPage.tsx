@@ -19,6 +19,7 @@ import {
   ShieldRegular,
   SparkleRegular,
 } from '@fluentui/react-icons';
+import { Link } from '../lib/router';
 import { PageIntro } from '../components/layout/PageIntro';
 import { TableOfContents } from '../components/common/TableOfContents';
 import { Reveal } from '../components/common/Reveal';
@@ -76,6 +77,14 @@ const LOAD_STEPS = [
 ];
 
 const CHANGELOG = [
+  {
+    version: '3.26.0',
+    date: '2026-11-24',
+    items: [
+      '新增隐私政策页，覆盖主站与 Asteria Player、Paligraph Canvas、来福 Simulation Wiki 三个子站。',
+      '政策说明本地存储、第三方请求、数据删除方式与适用范围；入口仅在关于页。',
+    ],
+  },
   {
     version: '3.25.2',
     date: '2026-11-24',
@@ -536,7 +545,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.25.2"
+        eyebrow="ABOUT · 3.26.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -579,7 +588,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.25.2 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.26.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
@@ -920,6 +929,9 @@ npm run data:sync`}
             <a href={LINKS.bilibili} target="_blank" rel="noopener noreferrer">
               <FluentIcon name="tv" size={16} aria-hidden /> 哔哩哔哩
             </a>
+            <Link to="/privacy/">
+              <ShieldRegular aria-hidden /> 隐私政策
+            </Link>
           </div>
         </div>
       </div>

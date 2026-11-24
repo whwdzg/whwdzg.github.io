@@ -63,7 +63,7 @@ const ROUTE_KEYWORDS: Record<string, string> = {
 };
 
 const STATIC_ITEMS: SearchableItem[] = [
-  ...ROUTES.filter((route) => (!route.path.startsWith('/projects/') && !route.path.startsWith('/tools/')) || route.path === '/projects/modrinth/' || route.path === '/tools/').map((route) => ({
+  ...ROUTES.filter((route) => route.searchable !== false && ((!route.path.startsWith('/projects/') && !route.path.startsWith('/tools/')) || route.path === '/projects/modrinth/' || route.path === '/tools/')).map((route) => ({
     id: `page:${route.path}`,
     title: route.shortTitle,
     subtitle: route.description,

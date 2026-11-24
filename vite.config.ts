@@ -48,7 +48,7 @@ function serviceWorkerManifest(): Plugin {
         .filter((file) => {
           if (file === 'sw.js' || file === 'sw-assets.json' || file.endsWith('.map')) return false;
           if (file === 'index.html' || file === 'manifest.webmanifest' || file === 'offline.html') return true;
-          if (/^(bilibili|comments|comments\/github|projects\/[^/]+|user\/[^/]+|columns|columns\/[^/]+|tools|tools\/[^/]+|about)\/index\.html$/.test(file)) return true;
+          if (/^(bilibili|comments|comments\/github|projects\/[^/]+|user\/[^/]+|columns|columns\/[^/]+|tools|tools\/[^/]+|about|privacy)\/index\.html$/.test(file)) return true;
           if (file.startsWith('assets/') && /\.(js|css)$/.test(file)) return true;
           if (file.startsWith('icons/')) return true;
           if (file.startsWith('media/avatars/') || file.startsWith('media/projects/')) return true;
@@ -118,6 +118,7 @@ export default defineConfig({
         aiDetect: path.resolve('tools/ai-detect/index.html'),
         markdownEditor: path.resolve('tools/markdown-editor/index.html'),
         about: path.resolve('about/index.html'),
+        privacy: path.resolve('privacy/index.html'),
       },
       output: {
         manualChunks(id) {
