@@ -13,32 +13,32 @@ export interface SyncSource {
 }
 
 export const SYNC_STATUS = {
-  "updatedAt": "2026-11-23T00:19:53.872Z",
+  "updatedAt": "2026-11-24T04:19:14.511Z",
   "sources": {
     "github": {
       "label": "GitHub",
-      "at": "2026-11-23T00:18:29.737Z",
+      "at": "2026-11-24T04:18:00.969Z",
       "count": 9,
       "status": "ok",
-      "lastAttempt": "2026-11-23T00:18:29.737Z",
+      "lastAttempt": "2026-11-24T04:18:00.969Z",
       "stale": false,
       "error": ""
     },
     "modrinth": {
       "label": "Modrinth",
-      "at": "2026-11-23T00:18:14.068Z",
+      "at": "2026-11-24T04:17:42.235Z",
       "count": 6,
       "status": "ok",
-      "lastAttempt": "2026-11-23T00:18:14.068Z",
+      "lastAttempt": "2026-11-24T04:17:42.235Z",
       "stale": false,
       "error": ""
     },
     "mcmod": {
       "label": "MC百科",
-      "at": "2026-11-23T00:18:25.963Z",
+      "at": "2026-11-24T04:17:57.422Z",
       "count": 3,
       "status": "ok",
-      "lastAttempt": "2026-11-23T00:18:25.963Z",
+      "lastAttempt": "2026-11-24T04:17:57.422Z",
       "stale": false,
       "error": ""
     },
@@ -47,7 +47,7 @@ export const SYNC_STATUS = {
       "at": "2026-11-19T08:51:07.510Z",
       "count": 251,
       "status": "error",
-      "lastAttempt": "2026-11-23T00:19:53.872Z",
+      "lastAttempt": "2026-11-24T04:19:14.511Z",
       "stale": true,
       "error": "--fail"
     }

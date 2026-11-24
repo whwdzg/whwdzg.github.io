@@ -47,14 +47,14 @@ export interface GithubProfileSnapshot {
   };
 }
 
-export const GITHUB_SYNCED_AT = "2026-11-23T00:18:29.710Z";
+export const GITHUB_SYNCED_AT = "2026-11-24T04:18:00.934Z";
 
 export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "avatar": "https://avatars.githubusercontent.com/u/91038761?v=4",
   "name": "Alex Yang",
   "login": "whwdzg",
   "bio": "Just nobody.",
-  "followers": 5,
+  "followers": 4,
   "following": 13,
   "publicRepos": 20,
   "totalStars": 16,
@@ -2103,6 +2103,11 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
             "date": "2026-11-23",
             "count": 0,
             "color": "#ebedf0"
+          },
+          {
+            "date": "2026-11-24",
+            "count": 0,
+            "color": "#ebedf0"
           }
         ]
       }
@@ -2122,7 +2127,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 1,
     "language": "TypeScript",
     "updatedAt": "2026-11-16T17:14:31Z",
-    "pushedAt": "2026-11-21T23:49:22Z",
+    "pushedAt": "2026-11-23T00:19:55Z",
     "archived": false
   },
   {

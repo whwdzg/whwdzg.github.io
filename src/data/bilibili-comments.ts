@@ -43,13 +43,13 @@ export interface BilibiliCommentProgress {
   updatedAt: string;
 }
 
-export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-23T00:19:53.842Z";
+export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-24T04:19:14.469Z";
 
 export const BILIBILI_COMMENT_PROGRESS: BilibiliCommentProgress = {
-  "covered": 45,
+  "covered": 60,
   "total": 218,
   "cycle": 2,
-  "updatedAt": "2026-11-23T00:19:53.841Z"
+  "updatedAt": "2026-11-24T04:19:14.469Z"
 };
 
 export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
@@ -3679,7 +3679,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
     {
       "id": "265771878816",
       "author": "Simple_hzA",
-      "avatar": "https://i0.hdslb.com/bfs/face/dc66b16102a4cfa2825c918ccec59c5708996dc9.jpg",
+      "avatar": "https://i0.hdslb.com/bfs/face/97271877ca175cf90c1192562b824da79172f690.jpg",
       "text": "其实一开始都是直接做铁甲吧",
       "likes": 67,
       "replyCount": 5,

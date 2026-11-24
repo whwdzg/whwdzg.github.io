@@ -27,10 +27,10 @@ export interface ModrinthProjectSnapshot {
   modrinthUrl: string;
 }
 
-export const MODRINTH_SYNCED_AT = "2026-11-23T00:18:13.801Z";
+export const MODRINTH_SYNCED_AT = "2026-11-24T04:17:41.884Z";
 
 export const MODRINTH_TOTALS = {
-  "downloads": 181056,
+  "downloads": 181310,
   "followers": 112
 } as const;
 
@@ -42,7 +42,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-crafting-recipes.webp",
     "title": "Better Crafting Recipes ( whwdzg's Recipe)",
     "description": "Formerly named whwdzg's Recipe\nAdd some recipes to Minecraft",
-    "downloads": 12599,
+    "downloads": 12616,
     "followers": 5,
     "latestVersion": "1.9.3.6",
     "latestVersionName": "1.9.3.6",
@@ -276,7 +276,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-enchantments.webp",
     "title": "Better Enchantments",
     "description": "pack provide better vanilla enchantment effects to minecraft",
-    "downloads": 2364,
+    "downloads": 2368,
     "followers": 2,
     "latestVersion": "1.0.1.3",
     "latestVersionName": "1.0.1.3",
@@ -378,7 +378,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-mob-drop.webp",
     "title": "Better Mob Drop",
     "description": "A Minecraft mod/data pack which provide more reasonable mob drop",
-    "downloads": 91900,
+    "downloads": 92054,
     "followers": 31,
     "latestVersion": "1.2.6.4",
     "latestVersionName": "1.2.6.4",
@@ -728,7 +728,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/glowing-players.webp",
     "title": "Glowing Players",
     "description": "A mod/data pack which will provide glowing effect to players.",
-    "downloads": 72584,
+    "downloads": 72663,
     "followers": 69,
     "latestVersion": "1.1.0",
     "latestVersionName": "Glowing Players 1.1.0",
