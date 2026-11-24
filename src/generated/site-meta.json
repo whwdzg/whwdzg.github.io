@@ -1,16 +1,24 @@
 {
   "name": "whwdzg-site",
-  "version": "3.26.0",
-  "description": "沧海水鱼内容站点 3.26.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
+  "version": "3.27.0",
+  "description": "沧海水鱼内容站点 3.27.0 —— 数据包、影像归档、GitHub 评论区、子站与站内工具",
   "license": "GPL-3.0-or-later",
   "repoUrl": "https://github.com/whwdzg/whwdzg.github.io",
   "branch": "main",
-  "commit": "cad3aafdbc117ed168b524fd30749a7213a5fe14",
-  "commitShort": "cad3aaf",
-  "commitTime": "2026-11-24T22:55:08+08:00",
-  "buildTime": "2026-11-24T15:35:45.685Z",
+  "commit": "1e613fd546e58fb5175a33e9c114cbf023eb13dd",
+  "commitShort": "1e613fd",
+  "commitTime": "2026-11-24T23:40:45+08:00",
+  "buildTime": "2026-11-24T15:48:58.397Z",
   "versionSource": "package.json",
   "commits": [
+    {
+      "hash": "1e613fd546e58fb5175a33e9c114cbf023eb13dd",
+      "short": "1e613fd5",
+      "time": "2026-11-24T23:40:45+08:00",
+      "author": "Alex Yang",
+      "subject": "feat: add privacy policy for site and subsites",
+      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/1e613fd546e58fb5175a33e9c114cbf023eb13dd"
+    },
     {
       "hash": "cad3aafdbc117ed168b524fd30749a7213a5fe14",
       "short": "cad3aafd",
@@ -242,14 +250,6 @@
       "author": "Alex Yang",
       "subject": "content: replace first column with latest Bilibili post",
       "url": "https://github.com/whwdzg/whwdzg.github.io/commit/78a61bef2c47bab03a6c96687f0311998e40e570"
-    },
-    {
-      "hash": "62f372ea98dd491dc4dbcc754cb694b54460f86f",
-      "short": "62f372ea",
-      "time": "2026-11-19T22:46:40+08:00",
-      "author": "Alex Yang",
-      "subject": "content: replace first column with latest Bilibili post",
-      "url": "https://github.com/whwdzg/whwdzg.github.io/commit/62f372ea98dd491dc4dbcc754cb694b54460f86f"
     }
   ]
 }

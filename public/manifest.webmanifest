@@ -24,14 +24,32 @@
   ],
   "icons": [
     {
+      "src": "/icons/logo-32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/logo-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "/icons/logo-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/logo-32.png",
-      "sizes": "32x32",
+      "src": "/icons/logo-256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/logo-384.png",
+      "sizes": "384x384",
       "type": "image/png",
       "purpose": "any"
     },
@@ -56,8 +74,8 @@
       "url": "/bilibili/",
       "icons": [
         {
-          "src": "/icons/logo-192.png",
-          "sizes": "192x192",
+          "src": "/icons/logo-96.png",
+          "sizes": "96x96",
           "type": "image/png"
         }
       ]
@@ -69,8 +87,8 @@
       "url": "/comments/",
       "icons": [
         {
-          "src": "/icons/logo-192.png",
-          "sizes": "192x192",
+          "src": "/icons/logo-96.png",
+          "sizes": "96x96",
           "type": "image/png"
         }
       ]
@@ -82,8 +100,8 @@
       "url": "/comments/github/",
       "icons": [
         {
-          "src": "/icons/logo-192.png",
-          "sizes": "192x192",
+          "src": "/icons/logo-96.png",
+          "sizes": "96x96",
           "type": "image/png"
         }
       ]
@@ -95,8 +113,8 @@
       "url": "/projects/modrinth/",
       "icons": [
         {
-          "src": "/icons/logo-192.png",
-          "sizes": "192x192",
+          "src": "/icons/logo-96.png",
+          "sizes": "96x96",
           "type": "image/png"
         }
       ]
@@ -108,8 +126,8 @@
       "url": "/tools/",
       "icons": [
         {
-          "src": "/icons/logo-192.png",
-          "sizes": "192x192",
+          "src": "/icons/logo-96.png",
+          "sizes": "96x96",
           "type": "image/png"
         }
       ]
@@ -121,11 +139,29 @@
       "url": "/about/",
       "icons": [
         {
-          "src": "/icons/logo-192.png",
-          "sizes": "192x192",
+          "src": "/icons/logo-96.png",
+          "sizes": "96x96",
           "type": "image/png"
         }
       ]
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "水鱼 Blog 桌面首页"
+    },
+    {
+      "src": "/screenshots/home-narrow.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "水鱼 Blog 移动端首页"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }

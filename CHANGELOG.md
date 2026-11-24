@@ -1,5 +1,13 @@
 # 更新日志
 
+## 3.27.0 — 2026-11-24
+
+### PWABuilder manifest
+
+- 增加 96 / 256 / 384 PNG 图标与 96 图标快捷方式。
+- 增加 1280×720 宽屏与 390×844 窄屏截图。
+- 增加 related_applications / prefer_related_applications 字段。
+
 ## 3.26.0 — 2026-11-24
 
 ### 隐私政策

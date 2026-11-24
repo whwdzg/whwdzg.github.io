@@ -78,6 +78,13 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.27.0',
+    date: '2026-11-24',
+    items: [
+      '按 PWABuilder / 应用商店要求补全 manifest：96 / 256 / 384 图标、宽屏与窄屏截图、related_applications 与快捷方式图标。',
+    ],
+  },
+  {
     version: '3.26.0',
     date: '2026-11-24',
     items: [
@@ -545,7 +552,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.26.0"
+        eyebrow="ABOUT · 3.27.0"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -588,7 +595,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.26.0 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.27.0 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>
