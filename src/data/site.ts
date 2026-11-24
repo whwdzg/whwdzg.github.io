@@ -417,7 +417,7 @@ export const PRIMARY_NAV: NavItem[] = [
 export const ARCHIVE_LINKS: SiteLink[] = [
   { label: '2.0 源码分支', href: LINKS.repo2, description: '2.0-final 完整静态站', external: true },
   { label: 'Legacy 1.0', href: LINKS.legacy, description: '最初的静态页面', external: true },
-  { label: '本站源码', href: LINKS.repo, description: '3.25.1 的 React + Vite 源码', external: true },
+  { label: '本站源码', href: LINKS.repo, description: '3.25.2 的 React + Vite 源码', external: true },
 ];
 
 export type FluentIconName = keyof typeof FLUENT_ICON_NAMES;

@@ -77,6 +77,13 @@ const LOAD_STEPS = [
 
 const CHANGELOG = [
   {
+    version: '3.25.2',
+    date: '2026-11-24',
+    items: [
+      'PWA manifest 图标改为纯 PNG；SVG 继续作为浏览器 favicon，但不参与应用商店图标声明。',
+    ],
+  },
+  {
     version: '3.25.1',
     date: '2026-11-24',
     items: [
@@ -529,7 +536,7 @@ export default function AboutPage() {
   return (
     <div className="page page--about">
       <PageIntro
-        eyebrow="ABOUT · 3.25.1"
+        eyebrow="ABOUT · 3.25.2"
         title="关于本站"
         lead="一个个人向导览与存档站点，也是一次从零开始的前端练习。这里记录版本、提交、技术选择，以及为什么每一个视觉决定都要为性能让路。"
         meta={[
@@ -572,7 +579,7 @@ export default function AboutPage() {
             <div className="version-hero">
               <div>
                 <p className="version-hero__number">v{siteMeta.version}</p>
-                <p className="version-hero__label">3.25.1 · Fluent Sun Valley rebuild</p>
+                <p className="version-hero__label">3.25.2 · Fluent Sun Valley rebuild</p>
               </div>
               <div className="version-hero__actions">
                 <Button variant="secondary" icon={<CopyRegular aria-hidden />} onClick={copyVersion}>

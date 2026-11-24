@@ -1,5 +1,12 @@
 # 更新日志
 
+## 3.25.2 — 2026-11-24
+
+### PWA manifest
+
+- manifest icons 仅保留 PNG（192 / 512 / maskable）。
+- SVG 图标继续通过 HTML favicon 使用，不参与应用商店图标声明。
+
 ## 3.25.1 — 2026-11-24
 
 ### PWA manifest
