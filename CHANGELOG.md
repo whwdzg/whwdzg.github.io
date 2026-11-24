@@ -1,5 +1,11 @@
 # 更新日志
 
+## 3.25.1 — 2026-11-24
+
+### PWA manifest
+
+- 从 manifest icons 移除 `favicon.ico`，仅保留 PNG / SVG 图标。
+
 ## 3.25.0 — 2026-11-21
 
 ### Markdown 编辑器
