@@ -47,7 +47,7 @@ export interface GithubProfileSnapshot {
   };
 }
 
-export const GITHUB_SYNCED_AT = "2026-11-24T04:18:00.934Z";
+export const GITHUB_SYNCED_AT = "2026-11-25T03:02:20.327Z";
 
 export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "avatar": "https://avatars.githubusercontent.com/u/91038761?v=4",
@@ -62,7 +62,7 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
   "location": "Shanghai",
   "blog": "whwdzg.github.io",
   "contributions": {
-    "total": 382,
+    "total": 396,
     "weeks": [
       {
         "days": [
@@ -2106,8 +2106,13 @@ export const GITHUB_PROFILE: GithubProfileSnapshot = {
           },
           {
             "date": "2026-11-24",
-            "count": 0,
-            "color": "#ebedf0"
+            "count": 8,
+            "color": "#9be9a8"
+          },
+          {
+            "date": "2026-11-25",
+            "count": 6,
+            "color": "#9be9a8"
           }
         ]
       }
@@ -2127,7 +2132,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 1,
     "language": "TypeScript",
     "updatedAt": "2026-11-16T17:14:31Z",
-    "pushedAt": "2026-11-23T00:19:55Z",
+    "pushedAt": "2026-11-24T15:51:01Z",
     "archived": false
   },
   {
@@ -2225,7 +2230,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "TypeScript",
     "updatedAt": "2026-11-12T17:07:41Z",
-    "pushedAt": "2026-11-20T16:14:25Z",
+    "pushedAt": "2026-11-24T16:34:53Z",
     "archived": false
   },
   {
@@ -2239,7 +2244,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "JavaScript",
     "updatedAt": "2026-08-15T16:11:57Z",
-    "pushedAt": "2026-11-20T15:55:58Z",
+    "pushedAt": "2026-11-24T15:56:12Z",
     "archived": false
   },
   {
@@ -2253,7 +2258,7 @@ export const GITHUB_REPOS: GithubRepoSnapshot[] = [
     "openIssues": 0,
     "language": "TypeScript",
     "updatedAt": "2026-11-19T15:58:37Z",
-    "pushedAt": "2026-11-20T17:17:39Z",
+    "pushedAt": "2026-11-24T16:32:50Z",
     "archived": false
   }
 ];

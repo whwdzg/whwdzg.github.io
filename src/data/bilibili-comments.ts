@@ -43,13 +43,13 @@ export interface BilibiliCommentProgress {
   updatedAt: string;
 }
 
-export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-24T04:19:14.469Z";
+export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-25T03:03:31.508Z";
 
 export const BILIBILI_COMMENT_PROGRESS: BilibiliCommentProgress = {
-  "covered": 60,
+  "covered": 75,
   "total": 218,
   "cycle": 2,
-  "updatedAt": "2026-11-24T04:19:14.469Z"
+  "updatedAt": "2026-11-25T03:03:31.508Z"
 };
 
 export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
@@ -4319,7 +4319,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
     {
       "id": "261713545793",
       "author": "剑士沐星玄",
-      "avatar": "https://i0.hdslb.com/bfs/face/61440400247cadbcc5b84ee082abd908a1a15cb9.jpg",
+      "avatar": "https://i0.hdslb.com/bfs/face/eff30693282097b64a7378385004cd9a75e283e8.jpg",
       "text": "我在现场。我是那条蓝色的美西螈",
       "likes": 13,
       "replyCount": 0,
@@ -5562,7 +5562,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
     {
       "id": "259020474977",
       "author": "本沃司Bird_yox",
-      "avatar": "https://i0.hdslb.com/bfs/face/644e0527071e6c4d033a2e2701c0180488097f43.jpg",
+      "avatar": "https://i0.hdslb.com/bfs/face/045b0bbb530aaf489c070a4ced8b344f64fd7577.jpg",
       "text": "[吃瓜]",
       "likes": 1,
       "replyCount": 0,
