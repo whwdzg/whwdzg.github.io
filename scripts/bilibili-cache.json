@@ -143,8 +143,8 @@
     "code": 62012,
     "message": "62012",
     "lastError": {
-      "code": -412,
-      "message": "request was banned"
+      "code": 62012,
+      "message": "62012"
     }
   },
   "BV1Y7qpYnEe9": {
@@ -1710,7 +1710,11 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i2.hdslb.com/bfs/archive/391f2e6691f78118cdb1332f71c8da5d25a13ac3.jpg@640w_360h.webp",
-    "local": "v77.webp"
+    "local": "v77.webp",
+    "lastError": {
+      "code": -412,
+      "message": "request was banned"
+    }
   },
   "BV18JuJzCEJ4": {
     "code": 0,
@@ -6920,7 +6924,11 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i0.hdslb.com/bfs/archive/98339c3e779b8d4137564973dfa1d4d5f5c86dc1.jpg@640w_360h.webp",
-    "local": "v235.webp"
+    "local": "v235.webp",
+    "lastError": {
+      "code": -412,
+      "message": "request was banned"
+    }
   },
   "BV1dtY4e5EZs": {
     "code": 0,

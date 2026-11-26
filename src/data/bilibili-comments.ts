@@ -43,13 +43,13 @@ export interface BilibiliCommentProgress {
   updatedAt: string;
 }
 
-export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-25T03:03:31.508Z";
+export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-26T02:13:57.493Z";
 
 export const BILIBILI_COMMENT_PROGRESS: BilibiliCommentProgress = {
-  "covered": 75,
+  "covered": 90,
   "total": 218,
   "cycle": 2,
-  "updatedAt": "2026-11-25T03:03:31.508Z"
+  "updatedAt": "2026-11-26T02:13:57.492Z"
 };
 
 export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
@@ -6399,7 +6399,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
     {
       "id": "257070293297",
       "author": "我是芒果ovo",
-      "avatar": "https://i0.hdslb.com/bfs/face/8913ba93e55c34c0b00fd4eb06cc431e474ce979.jpg",
+      "avatar": "https://i0.hdslb.com/bfs/face/19b7b0f199b9c727b021104b08e138808442a0d4.jpg",
       "text": "1树上有发光浆果\n2吃牛排不加饱食度\n3绿色青蛙 不同群系青蛙颜色不一样\n4女巫不打人\n5木船名字樱花船\n6白天睡觉\n7沼泽为什么有美西园？\n8猫皮肤错误\n9女巫掠夺者声音@\n10女巫小屋有楼梯[doge]",
       "likes": 8,
       "replyCount": 0,
@@ -6662,7 +6662,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "author": "某凡不烦owo",
       "avatar": "https://i0.hdslb.com/bfs/face/ccd0bf16463d45213ca25f87999772aa72101de4.jpg",
       "text": "小时候给村民村庄加过城墙[笑哭]",
-      "likes": 257,
+      "likes": 258,
       "replyCount": 16,
       "date": "2025-03-01T10:06:47.000Z",
       "emojis": [
@@ -6799,7 +6799,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       "author": "呆过花果山的猴",
       "avatar": "https://i1.hdslb.com/bfs/face/cb1000ac739eaf686b494ba3b32e1f8c9b594eea.jpg",
       "text": "喝一瓶不祥药水，然后把他的表亲们揍一顿，系统机制会强行让他开心起来[doge]",
-      "likes": 201,
+      "likes": 202,
       "replyCount": 2,
       "date": "2025-03-01T07:35:02.000Z",
       "emojis": [
@@ -6816,7 +6816,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "author": "黑白不咕咕",
           "avatar": "https://i1.hdslb.com/bfs/face/dd8a438be4d226d43804b51dcdbce096e702cde6.jpg",
           "text": "你看村民高兴的都冒爱心了",
-          "likes": 27,
+          "likes": 28,
           "date": "2025-03-02T00:41:34.000Z",
           "emojis": [],
           "images": []
@@ -6826,7 +6826,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
           "author": "一块豆腐分两瓣",
           "avatar": "https://i2.hdslb.com/bfs/face/4afc2b5e11e7c8d7456eefab4a3b95761ea5bfdf.jpg",
           "text": "村民高兴是因为你帮他们打退了掠夺者，但是他们不知道不祥之兆也是你带来的[doge]",
-          "likes": 42,
+          "likes": 43,
           "date": "2025-03-14T23:45:54.000Z",
           "emojis": [
             {
@@ -7588,30 +7588,50 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
       ]
     },
     {
-      "id": "257228101040",
-      "author": "Plant_Drink",
-      "avatar": "https://i2.hdslb.com/bfs/face/1dee8177f6e87db3586c4899d67ce8b3295f8f9e.jpg",
-      "text": "没有昼夜交替的一天该怎样定义呢🧐",
-      "likes": 30,
-      "replyCount": 1,
-      "date": "2025-03-08T01:45:48.000Z",
-      "emojis": [],
+      "id": "256776228512",
+      "author": "抛尸与终局之人",
+      "avatar": "https://i1.hdslb.com/bfs/face/982ec59945fbb5dcef6e8a9d13a4a519bd61bc07.jpg",
+      "text": "猪灵真的勇，凋灵都敢打（然后被两喷秒了[蔚蓝档案表情包_做错了]）",
+      "likes": 38,
+      "replyCount": 3,
+      "date": "2025-03-02T09:41:59.000Z",
+      "emojis": [
+        {
+          "token": "[蔚蓝档案表情包_做错了]",
+          "url": "https://i0.hdslb.com/bfs/garb/4d54335de0ff297e6850742696c7d441183edaa0.png",
+          "animated": false
+        }
+      ],
       "images": [],
       "replies": [
         {
-          "id": "256499733297",
-          "author": "VimeeTM",
-          "avatar": "https://i0.hdslb.com/bfs/face/member/noface.jpg",
-          "text": "注意到，当Minecraft刻为18000时，时间会跨过午夜来到第二天[doge]",
-          "likes": 19,
-          "date": "2025-03-08T10:20:09.000Z",
-          "emojis": [
-            {
-              "token": "[doge]",
-              "url": "https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png",
-              "animated": false
-            }
-          ],
+          "id": "256222600801",
+          "author": "牌苏打水牌",
+          "avatar": "https://i0.hdslb.com/bfs/face/6353cf2132dd615b19c8b21165f10e978d1abe03.jpg",
+          "text": "头像逆天",
+          "likes": 1,
+          "date": "2025-03-04T20:58:05.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "256222538817",
+          "author": "牌苏打水牌",
+          "avatar": "https://i0.hdslb.com/bfs/face/6353cf2132dd615b19c8b21165f10e978d1abe03.jpg",
+          "text": "啊呀，骇死我了",
+          "likes": 1,
+          "date": "2025-03-04T20:58:13.000Z",
+          "emojis": [],
+          "images": []
+        },
+        {
+          "id": "271526394817",
+          "author": "一个T2资源制造仪_",
+          "avatar": "https://i0.hdslb.com/bfs/face/39d80cda87d361227d0931a8b83c71e0287db590.jpg",
+          "text": "回复 @区火锅苏苏 :他头像不就是个小善魂吗？还是说他当时的头像跟现在的不一样",
+          "likes": 0,
+          "date": "2025-08-16T03:50:25.000Z",
+          "emojis": [],
           "images": []
         }
       ]
@@ -7699,7 +7719,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
         },
         {
           "id": "255503439360",
-          "author": "卢崩乃音-TBC社",
+          "author": "卢崩奶昔-TBC社",
           "avatar": "https://i0.hdslb.com/bfs/face/42981b5c54a97c1ebe07dd13ee5b34182bb67f4f.jpg",
           "text": "猫也会捕捉兔子",
           "likes": 0,
