@@ -90,7 +90,7 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-26T02:13:06.449Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-27T02:10:58.551Z";
 
 export interface BilibiliDynamicCommentProgress {
   covered: number;
@@ -101,10 +101,10 @@ export interface BilibiliDynamicCommentProgress {
 }
 
 export const BILIBILI_DYNAMIC_COMMENT_PROGRESS: BilibiliDynamicCommentProgress = {
-  "covered": 20,
+  "covered": 15,
   "total": 20,
-  "cycle": 4,
-  "updatedAt": "2026-11-26T02:13:04.386Z",
+  "cycle": 5,
+  "updatedAt": "2026-11-27T02:10:57.817Z",
   "failed": []
 };
 
@@ -116,7 +116,7 @@ export const BILIBILI_PROFILE: BilibiliProfile = {
   "level": 6,
   "fans": 2163,
   "following": 480,
-  "likes": 182937,
+  "likes": 182938,
   "videos": 178,
   "articles": 1,
   "opus": 48,

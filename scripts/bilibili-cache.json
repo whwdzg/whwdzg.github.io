@@ -143,8 +143,8 @@
     "code": 62012,
     "message": "62012",
     "lastError": {
-      "code": 62012,
-      "message": "62012"
+      "code": -412,
+      "message": "request was banned"
     }
   },
   "BV1Y7qpYnEe9": {
@@ -200,8 +200,8 @@
     "code": 62012,
     "message": "62012",
     "lastError": {
-      "code": -412,
-      "message": "request was banned"
+      "code": 62012,
+      "message": "62012"
     }
   },
   "BV1gJDqYpEHS": {
@@ -1691,11 +1691,11 @@
     "pubdate": 1752570499,
     "duration": 53,
     "aid": 114856451645253,
-    "view": 5433,
+    "view": 5435,
     "danmaku": 3,
     "stat": {
       "aid": 114856451645253,
-      "view": 5433,
+      "view": 5435,
       "danmaku": 3,
       "reply": 23,
       "favorite": 56,
@@ -1710,11 +1710,7 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i2.hdslb.com/bfs/archive/391f2e6691f78118cdb1332f71c8da5d25a13ac3.jpg@640w_360h.webp",
-    "local": "v77.webp",
-    "lastError": {
-      "code": -412,
-      "message": "request was banned"
-    }
+    "local": "v77.webp"
   },
   "BV18JuJzCEJ4": {
     "code": 0,
@@ -4152,11 +4148,7 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i2.hdslb.com/bfs/archive/44b17eec7a5c81bfc6eb3c88b9bf1c5cfd8d20a6.jpg@640w_360h.webp",
-    "local": "v150.webp",
-    "lastError": {
-      "code": -412,
-      "message": "request was banned"
-    }
+    "local": "v150.webp"
   },
   "BV1mfruYUEYd": {
     "code": 0,
@@ -5208,11 +5200,7 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i1.hdslb.com/bfs/archive/17081849eb04725d025d3e6f623d0a0e6ecde8a6.jpg@640w_360h.webp",
-    "local": "v182.webp",
-    "lastError": {
-      "code": -412,
-      "message": "request was banned"
-    }
+    "local": "v182.webp"
   },
   "BV1vmBiYcEY4": {
     "code": 0,
@@ -5717,11 +5705,11 @@
     "pubdate": 1729245409,
     "duration": 16,
     "aid": 113327812386737,
-    "view": 80735,
+    "view": 80737,
     "danmaku": 156,
     "stat": {
       "aid": 113327812386737,
-      "view": 80735,
+      "view": 80737,
       "danmaku": 156,
       "reply": 105,
       "favorite": 217,
@@ -5736,11 +5724,7 @@
     },
     "owner": "沧海水鱼",
     "pic": "https://i0.hdslb.com/bfs/archive/1d217d02b335b6270cb47606b87ea4a52100f2ea.jpg@640w_360h.webp",
-    "local": "v199.webp",
-    "lastError": {
-      "code": -412,
-      "message": "request was banned"
-    }
+    "local": "v199.webp"
   },
   "BV1qAC2YzEnM": {
     "code": 0,

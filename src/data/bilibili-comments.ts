@@ -43,13 +43,13 @@ export interface BilibiliCommentProgress {
   updatedAt: string;
 }
 
-export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-26T02:13:57.493Z";
+export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-27T02:11:50.103Z";
 
 export const BILIBILI_COMMENT_PROGRESS: BilibiliCommentProgress = {
-  "covered": 90,
+  "covered": 105,
   "total": 218,
   "cycle": 2,
-  "updatedAt": "2026-11-26T02:13:57.492Z"
+  "updatedAt": "2026-11-27T02:11:50.103Z"
 };
 
 export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
@@ -9764,7 +9764,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
         {
           "id": "253197323841",
           "author": "WWAAOwO",
-          "avatar": "https://i2.hdslb.com/bfs/face/7598016c0d806c83af6d0bca06d84b685f34f546.jpg",
+          "avatar": "https://i2.hdslb.com/bfs/face/3c625c84467ad57ebb5992a3bdfd485139fb2c31.jpg",
           "text": "经典配色才做好",
           "likes": 10,
           "date": "2025-01-29T12:23:39.000Z",

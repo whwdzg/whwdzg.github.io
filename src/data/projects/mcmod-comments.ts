@@ -26,7 +26,7 @@ export interface McmodComment {
 
 export type McmodComments = Record<string, McmodComment[]>;
 
-export const MCMOD_COMMENTS_SYNCED_AT = "2026-11-26T02:12:35.509Z";
+export const MCMOD_COMMENTS_SYNCED_AT = "2026-11-27T02:10:30.903Z";
 
 export const MCMOD_COMMENTS: McmodComments = {
   "better-crafting-recipes": [
@@ -48,7 +48,7 @@ export const MCMOD_COMMENTS: McmodComments = {
           "avatar": "https://i.mcmod.cn/user/avatar/21/216083/216083_1735461919_nOaW.png@60x60.jpg",
           "replyTo": "",
           "date": "2026-11-16 22:59:54",
-          "relative": "9天前",
+          "relative": "10天前",
           "likes": 0,
           "text": "这个没有模组联动内容awa"
         },
@@ -58,7 +58,7 @@ export const MCMOD_COMMENTS: McmodComments = {
           "avatar": "https://i.mcmod.cn/user/avatar/21/216083/216083_1735461919_nOaW.png@60x60.jpg",
           "replyTo": "",
           "date": "2026-11-16 23:01:46",
-          "relative": "9天前",
+          "relative": "10天前",
           "likes": 0,
           "text": "但是因为是采用数据包，兼容性最好且轻量"
         }
@@ -431,7 +431,7 @@ export const MCMOD_COMMENTS: McmodComments = {
       "avatar": "https://www.mcmod.cn/static/public/images/identicons/df.jpg",
       "floor": "9楼",
       "date": "2026-11-14 20:42:28",
-      "relative": "11天前",
+      "relative": "12天前",
       "channel": 1,
       "replyCount": 1,
       "likes": 0,
@@ -443,7 +443,7 @@ export const MCMOD_COMMENTS: McmodComments = {
           "avatar": "https://i.mcmod.cn/user/avatar/21/216083/216083_1735461919_nOaW.png@60x60.jpg",
           "replyTo": "",
           "date": "2026-11-18 23:37:20",
-          "relative": "7天前",
+          "relative": "8天前",
           "likes": 0,
           "text": "已更新"
         }
@@ -506,7 +506,7 @@ export const MCMOD_COMMENTS: McmodComments = {
       "channel": 1,
       "replyCount": 1,
       "likes": 1,
-      "text": "纠错纠错\n“最新版本的Minecraft中，Mojang为了所谓保护生物，很多生物都没有对应的凋落物，而这个数据包/模组就是为了解决这个问题的！”https://modrinth.com/datapack/better-mob-drop\n“掉落物”写成了“调落物”\n$(\"#link_DotUwsdgEXVOosTs\").webuiPopover({title:\"这是一个站外链接\",content:\"此链接会跳转到:\nhttps://modrinth.com/datapack/better-mob-drop\n\n前往链接不要再提示我\n\",trigger:\"click\",closeable:true,delay:0});",
+      "text": "纠错纠错\n“最新版本的Minecraft中，Mojang为了所谓保护生物，很多生物都没有对应的凋落物，而这个数据包/模组就是为了解决这个问题的！”https://modrinth.com/datapack/better-mob-drop\n“掉落物”写成了“调落物”\n$(\"#link_RDiYcRtUYTqZGCPA\").webuiPopover({title:\"这是一个站外链接\",content:\"此链接会跳转到:\nhttps://modrinth.com/datapack/better-mob-drop\n\n前往链接不要再提示我\n\",trigger:\"click\",closeable:true,delay:0});",
       "replies": [
         {
           "id": "1901857",
