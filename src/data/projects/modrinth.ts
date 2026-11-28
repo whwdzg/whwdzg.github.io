@@ -27,10 +27,10 @@ export interface ModrinthProjectSnapshot {
   modrinthUrl: string;
 }
 
-export const MODRINTH_SYNCED_AT = "2026-11-27T02:10:17.200Z";
+export const MODRINTH_SYNCED_AT = "2026-11-28T01:58:00.365Z";
 
 export const MODRINTH_TOTALS = {
-  "downloads": 181921,
+  "downloads": 182158,
   "followers": 112
 } as const;
 
@@ -42,7 +42,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-crafting-recipes.webp",
     "title": "Better Crafting Recipes ( whwdzg's Recipe)",
     "description": "Formerly named whwdzg's Recipe\nAdd some recipes to Minecraft",
-    "downloads": 12674,
+    "downloads": 12686,
     "followers": 5,
     "latestVersion": "1.9.3.6",
     "latestVersionName": "1.9.3.6",
@@ -276,7 +276,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-enchantments.webp",
     "title": "Better Enchantments",
     "description": "pack provide better vanilla enchantment effects to minecraft",
-    "downloads": 2395,
+    "downloads": 2409,
     "followers": 2,
     "latestVersion": "1.0.1.3",
     "latestVersionName": "1.0.1.3",
@@ -378,7 +378,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/better-mob-drop.webp",
     "title": "Better Mob Drop",
     "description": "A Minecraft mod/data pack which provide more reasonable mob drop",
-    "downloads": 92321,
+    "downloads": 92425,
     "followers": 31,
     "latestVersion": "1.2.6.4",
     "latestVersionName": "1.2.6.4",
@@ -598,7 +598,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/only-survival-mode.webp",
     "title": "Only Survival Mode",
     "description": "A very simple data pack that only allow survival mode",
-    "downloads": 1442,
+    "downloads": 1444,
     "followers": 3,
     "latestVersion": "1.1.0",
     "latestVersionName": "Only Survival Mode 1.1.0",
@@ -728,7 +728,7 @@ export const MODRINTH_PROJECTS: ModrinthProjectSnapshot[] = [
     "icon": "/media/projects/glowing-players.webp",
     "title": "Glowing Players",
     "description": "A mod/data pack which will provide glowing effect to players.",
-    "downloads": 72911,
+    "downloads": 73016,
     "followers": 69,
     "latestVersion": "1.1.0",
     "latestVersionName": "Glowing Players 1.1.0",

@@ -2150,10 +2150,10 @@ export const videos: Video[] = [
     "label": "在哔哩哔哩观看",
     "disabled": false,
     "durationSeconds": 29,
-    "views": 4350,
+    "views": 4352,
     "aid": 114163569400200,
     "stats": {
-      "view": 4350,
+      "view": 4352,
       "danmaku": 1,
       "reply": 14,
       "favorite": 48,

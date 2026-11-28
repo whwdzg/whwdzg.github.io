@@ -90,7 +90,7 @@ export interface BilibiliArticle {
   words: number;
 }
 
-export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-27T02:10:58.551Z";
+export const BILIBILI_PROFILE_SYNCED_AT = "2026-11-28T01:58:44.842Z";
 
 export interface BilibiliDynamicCommentProgress {
   covered: number;
@@ -101,10 +101,10 @@ export interface BilibiliDynamicCommentProgress {
 }
 
 export const BILIBILI_DYNAMIC_COMMENT_PROGRESS: BilibiliDynamicCommentProgress = {
-  "covered": 15,
+  "covered": 20,
   "total": 20,
   "cycle": 5,
-  "updatedAt": "2026-11-27T02:10:57.817Z",
+  "updatedAt": "2026-11-28T01:58:43.895Z",
   "failed": []
 };
 
@@ -115,8 +115,8 @@ export const BILIBILI_PROFILE: BilibiliProfile = {
   "sign": "自信去尝试\n不定期更新，一咕咕很久的那种",
   "level": 6,
   "fans": 2163,
-  "following": 480,
-  "likes": 182938,
+  "following": 483,
+  "likes": 182935,
   "videos": 178,
   "articles": 1,
   "opus": 48,

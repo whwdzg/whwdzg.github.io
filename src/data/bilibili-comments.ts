@@ -43,13 +43,13 @@ export interface BilibiliCommentProgress {
   updatedAt: string;
 }
 
-export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-27T02:11:50.103Z";
+export const BILIBILI_COMMENTS_SYNCED_AT = "2026-11-28T01:59:36.370Z";
 
 export const BILIBILI_COMMENT_PROGRESS: BilibiliCommentProgress = {
-  "covered": 105,
+  "covered": 120,
   "total": 218,
   "cycle": 2,
-  "updatedAt": "2026-11-27T02:11:50.103Z"
+  "updatedAt": "2026-11-28T01:59:36.370Z"
 };
 
 export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
@@ -11728,7 +11728,7 @@ export const BILIBILI_VIDEO_COMMENTS: Record<string, BilibiliComment[]> = {
     },
     {
       "id": "250458978401",
-      "author": "该账号不再使用20",
+      "author": "这个用户昵称没有",
       "avatar": "https://i1.hdslb.com/bfs/face/b5a14678ce7dead922fa757cecc9baf00c7ebb35.jpg",
       "text": "我的世界本来就是像素游戏，你把它怎么压缩都知道[doge]",
       "likes": 19,

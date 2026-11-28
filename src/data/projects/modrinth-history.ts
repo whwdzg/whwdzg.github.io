@@ -56,6 +56,11 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
       "date": "2026-11-27",
       "downloads": 12674,
       "followers": 5
+    },
+    {
+      "date": "2026-11-28",
+      "downloads": 12686,
+      "followers": 5
     }
   ],
   "better-enchantments": [
@@ -107,6 +112,11 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     {
       "date": "2026-11-27",
       "downloads": 2395,
+      "followers": 2
+    },
+    {
+      "date": "2026-11-28",
+      "downloads": 2409,
       "followers": 2
     }
   ],
@@ -160,6 +170,11 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
       "date": "2026-11-27",
       "downloads": 92321,
       "followers": 31
+    },
+    {
+      "date": "2026-11-28",
+      "downloads": 92425,
+      "followers": 31
     }
   ],
   "only-survival-mode": [
@@ -211,6 +226,11 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     {
       "date": "2026-11-27",
       "downloads": 1442,
+      "followers": 3
+    },
+    {
+      "date": "2026-11-28",
+      "downloads": 1444,
       "followers": 3
     }
   ],
@@ -264,6 +284,11 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
       "date": "2026-11-27",
       "downloads": 72911,
       "followers": 69
+    },
+    {
+      "date": "2026-11-28",
+      "downloads": 73016,
+      "followers": 69
     }
   ],
   "magical-dye": [
@@ -314,6 +339,11 @@ export const MODRINTH_HISTORY: Record<string, ModrinthHistoryPoint[]> = {
     },
     {
       "date": "2026-11-27",
+      "downloads": 178,
+      "followers": 2
+    },
+    {
+      "date": "2026-11-28",
       "downloads": 178,
       "followers": 2
     }
